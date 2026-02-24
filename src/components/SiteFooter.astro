@@ -1,23 +1,29 @@
 ---
 const links = [
-  { label: 'About', href: '/company/about' },
-  { label: 'Security', href: '/company/security' },
-  { label: 'Contact', href: '/company/contact' },
-  { label: 'Privacy', href: '/legal/privacy' },
-  { label: 'Terms', href: '/legal/terms' }
+  { label: "About", href: "/company/about" },
+  { label: "Security", href: "/company/security" },
+  { label: "Contact", href: "/company/contact" },
+  { label: "Privacy", href: "/legal/privacy" },
+  { label: "Terms", href: "/legal/terms" },
 ];
 ---
+
 <section class="bg-ink text-paper">
   <div class="container-wide py-20">
     <div class="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
       <div>
         <div class="eyebrow text-paper/70">Next step</div>
-        <h2 class="mt-4 text-[clamp(2.2rem,4.6vw,3.75rem)] font-semibold tracking-tight text-paper">
+        <h2
+          class="mt-4 text-[clamp(2.2rem,4.6vw,3.75rem)] font-semibold tracking-tight text-paper"
+        >
           Are you ready to transform your brand?
         </h2>
-        <p class="mt-6 max-w-[80ch] text-lg leading-relaxed text-paper/80 md:text-xl">
-          Share your thoughts about what you’re building, where AI engages with your brand, and what needs
-          controlling. We can help you clarify and scope your next steps.
+        <p
+          class="mt-6 max-w-[80ch] text-lg leading-relaxed text-paper/80 md:text-xl"
+        >
+          Share your thoughts about what you’re building, where AI engages with
+          your brand, and what needs controlling. We can help you clarify and
+          scope your next steps.
         </p>
       </div>
 
@@ -59,10 +65,18 @@ const links = [
           </div>
         </div>
 
-        <div class="bg-paper p-12 lg:-mr-[calc(50vw-50%)] lg:pr-[calc(50vw-50%)]">
-          <form id="home-contact-form" class="grid gap-6 max-w-[520px]" novalidate>
+        <div
+          class="bg-paper p-12 lg:-mr-[calc(50vw-50%)] lg:pr-[calc(50vw-50%)]"
+        >
+          <form
+            id="home-contact-form"
+            class="grid gap-6 max-w-[520px]"
+            novalidate
+          >
             <div class="grid gap-2">
-              <label for="home-name" class="text-base font-semibold text-ink/70">Name</label>
+              <label for="home-name" class="text-base font-semibold text-ink/70"
+                >Name</label
+              >
               <input
                 id="home-name"
                 name="name"
@@ -74,7 +88,10 @@ const links = [
             </div>
 
             <div class="grid gap-2">
-              <label for="home-email" class="text-base font-semibold text-ink/70">Email*</label>
+              <label
+                for="home-email"
+                class="text-base font-semibold text-ink/70">Email*</label
+              >
               <input
                 id="home-email"
                 name="email"
@@ -87,7 +104,10 @@ const links = [
             </div>
 
             <div class="grid gap-2">
-              <label for="home-subject" class="text-base font-semibold text-ink/70">Subject*</label>
+              <label
+                for="home-subject"
+                class="text-base font-semibold text-ink/70">Subject*</label
+              >
               <input
                 id="home-subject"
                 name="topic"
@@ -98,7 +118,10 @@ const links = [
             </div>
 
             <div class="grid gap-2">
-              <label for="home-message" class="text-base font-semibold text-ink/70">Message</label>
+              <label
+                for="home-message"
+                class="text-base font-semibold text-ink/70">Message</label
+              >
               <textarea
                 id="home-message"
                 name="message"
@@ -108,58 +131,65 @@ const links = [
               ></textarea>
             </div>
 
-              <div class="pt-2">
-                <div class="flex justify-end pr-10">
-                  <button
-                    type="submit"
-                    class="rounded-md bg-ink px-8 py-3 text-sm font-semibold text-paper"
-                  >
-                    Submit
-                  </button>
-                </div>
-                <div id="home-contact-status" class="mt-3 text-sm text-steel" aria-live="polite"></div>
+            <div class="pt-2">
+              <div class="flex justify-end pr-10">
+                <button
+                  type="submit"
+                  class="rounded-md bg-ink px-8 py-3 text-sm font-semibold text-paper"
+                >
+                  Submit
+                </button>
               </div>
-            </form>
-          </div>
+              <div
+                id="home-contact-status"
+                class="mt-3 text-sm text-steel"
+                aria-live="polite"
+              >
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
+  </div>
 </section>
 
 <section class="relative overflow-hidden bg-slate text-paper">
-  <div class="absolute inset-0 bg-slate" aria-hidden="true"></div>
   <div class="absolute inset-0 bg-slate" aria-hidden="true"></div>
 
   <div class="container-wide relative z-10 py-20">
     <div class="mx-auto max-w-[980px]">
       <img
-        src="/images/partners/advanced-analytica.svg"
+        src="/images/partners/logo.png"
         alt="Advanced Analytica"
         loading="lazy"
-        class="mx-auto h-10 w-auto opacity-90 md:h-12"
+        class="mx-auto h-10 w-auto opacity-100 md:h-12"
       />
 
-      <div class="mt-10 grid gap-4 text-base leading-relaxed text-paper/85 md:text-lg">
+      <div
+        class="mt-10 grid gap-4 text-base leading-relaxed text-paper/85 md:text-lg"
+      >
         <p>
-          To succeed today, business must respond to challenges that are not addressed by traditional approaches.
-          They require world-class solutions that integrate people, processes, information and technology at the time
-          they are needed.
+          Modern enterprises face challenges that traditional approaches can't
+          solve. They require world-class solutions that integrate people,
+          processes, information, and technology—precisely when needed.
         </p>
         <p>
-          Advanced Analytica partners with these businesses to protect and capitalise on data and AI, manage risk,
-          deliver transparency and control costs. Through enterprise-level expertise and three decades of deep
-          industry experience, Advanced Analytica creates real value through the use of innovative technology and
-          intelligent automation that turns data into a strategic asset.
+          Advanced Analytica partners with these organizations to protect and
+          capitalise on data and AI, manage risk, deliver transparency, and
+          control costs. With enterprise-level expertise and three decades of
+          industry experience, Advanced Analytica creates measurable value
+          through innovative technology and intelligent automation that
+          transforms data into a strategic asset.
         </p>
+        <p class="mx-auto h-10 w-auto md:h-12">Supported by</p>
       </div>
-
-      <div class="mt-16 text-center">
-        <div class="text-lg text-paper/80">Supported by</div>
+      <div>
         <img
-          src="/images/partners/innovate-uk-edge.svg"
-          alt="UKRI, Innovate UK, Business Connect"
+          src="/images/partners/aa_support.svg"
+          alt="Advanced Analytica"
           loading="lazy"
-          class="mx-auto mt-7 h-10 w-auto opacity-90 md:h-12"
+          class="mx-auto h-10 w-auto opacity-90 md:h-12"
         />
       </div>
     </div>
@@ -169,14 +199,20 @@ const links = [
 <footer class="border-t border-paper/10 bg-ink text-paper">
   <div class="container-wide flex flex-col gap-6 py-10 text-sm text-paper/70">
     <div class="flex flex-wrap items-center justify-between gap-4">
-      <div class="text-xs font-semibold tracking-[0.2em] uppercase text-paper">Brand Semantics</div>
+      <div class="text-xs font-semibold tracking-[0.2em] uppercase text-paper">
+        Advanced Analytica
+      </div>
       <div class="flex flex-wrap gap-4">
-        {links.map((item) => (
-          <a href={item.href} class="hover:text-paper transition-colors">{item.label}</a>
-        ))}
+        {
+          links.map((item) => (
+            <a href={item.href} class="hover:text-paper transition-colors">
+              {item.label}
+            </a>
+          ))
+        }
       </div>
     </div>
-    <div class="text-xs">© {new Date().getFullYear()} Brand Semantics. Built for static deployment.</div>
+    <div class="text-xs">© {new Date().getFullYear()} Advanced Analytica.</div>
   </div>
 </footer>
 
@@ -212,7 +248,7 @@ const links = [
         "",
         "---",
         "",
-        message
+        message,
       ]
         .filter(Boolean)
         .join("\n");
