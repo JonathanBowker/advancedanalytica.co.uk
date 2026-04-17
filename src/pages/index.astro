@@ -1,5 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "../components/PostCard.astro";
+import { getCollection } from "astro:content";
 import { SITE_URL } from "../lib/seo/site";
 import usesPurposeUnderstandingImg from "../components/uses/assessment.svg?url";
 import usesSystemFramingImg from "../components/uses/frame.svg?url";
@@ -92,6 +94,11 @@ const usesTabs = [
 },
 ] as const;
 const defaultUsesKey = usesTabs[0].key;
+const latestPosts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf()
+);
+const HOME_POST_INITIAL_COUNT = 3;
+const HOME_POST_BATCH_SIZE = 3;
 const page = {
   title,
   description,
@@ -103,7 +110,7 @@ const page = {
 <BaseLayout title={title} description={description} page={page}>
   <!-- 1. HERO -->
   <section
-    class="relative overflow-hidden bg-slate text-paper min-h-[calc(100vh-5rem)]"
+    class="relative overflow-hidden bg-gradient-to-br from-black via-[#0b0e14] to-[#171b24] text-paper min-h-[calc(100vh-5rem)]"
   >
     <div
       class="container-wide relative z-10 pt-[9.5rem] pb-[8.5rem] lg:pt-[10.5rem] lg:pb-[9.5rem]"
@@ -844,58 +851,50 @@ const page = {
       <h2
         class="text-center text-[clamp(2.4rem,5vw,4.5rem)] font-semibold tracking-tight text-ink"
       >
-        Why Industry Leaders Use IBOM
+        Latest Posts
       </h2>
       <p class="text-center mt-4 text-lg text-ink/70 md:text-xl">
-        Evidence from teams scaling governed AI systems across enterprise
-        workflows.
+        The latest thinking on governed AI systems, operational control, and
+        knowledge-first delivery.
       </p>
 
-      <div class="mt-12 grid gap-8 lg:grid-cols-3">
-        {
-          [
-            {
-              quote:
-                "IBOM gave us a clear operating layer that turned brand rules into executable policy. It closed the gap between guidelines and runtime behavior without slowing delivery.",
-              name: "Ayesha Khan",
-              title: "VP Brand Governance, Global Media Group",
-            },
-            {
-              quote:
-                "The evaluation and monitoring discipline is what changed the game. We can prove compliance, measure drift, and update safely as models evolve.",
-              name: "Tomás Herrera",
-              title: "Chief Risk Officer, Consumer Platforms",
-            },
-            {
-              quote:
-                "We finally have a single source of truth that engineers and brand teams both trust. IBOM made governance operational, not just theoretical.",
-              name: "Lena Park",
-              title: "Head of Product, AI Experiences",
-            },
-          ].map((item) => (
-            <article class="rounded-2xl border border-fog bg-surface p-8 shadow-outline">
-              <p class="text-base leading-relaxed text-ink/80 md:text-lg">
-                “{item.quote}”
-              </p>
-              <div class="mt-8 flex items-center gap-4">
-                <div class="h-12 w-12 rounded-full bg-fog" />
-                <div>
-                  <div class="text-sm font-semibold text-ink">{item.name}</div>
-                  <div class="text-xs text-ink/60">{item.title}</div>
-                </div>
-              </div>
-            </article>
-          ))
+      <style is:inline>
+        .home-post-card {
+          opacity: 0;
+          transform: translateY(14px);
+          transition: opacity 520ms ease, transform 520ms ease;
+          will-change: opacity, transform;
         }
+
+        .home-post-card.home-post-card-in {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      </style>
+
+      <div id="home-posts-grid" class="mt-12 grid gap-8 lg:grid-cols-3">
+        {latestPosts.map((post, idx) => (
+          <div
+            data-home-post={String(idx)}
+            class={`home-post-card ${idx >= HOME_POST_INITIAL_COUNT ? "hidden" : "home-post-card-in"}`.trim()}
+          >
+            <PostCard post={post} />
+          </div>
+        ))}
       </div>
 
       <div class="mt-12 flex items-center justify-center">
-        <a
-          href="#get-in-touch"
+        <button
+          id="home-posts-load-more"
+          type="button"
           class="inline-flex items-center justify-center gap-3 rounded-md bg-[#ff8c69] px-8 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper shadow-outline hover:bg-[#e97d5d] transition-colors"
-          aria-label="Explore the next section"
+          data-initial-count={String(HOME_POST_INITIAL_COUNT)}
+          data-batch-size={String(HOME_POST_BATCH_SIZE)}
+          aria-controls="home-posts-grid"
+          aria-label="Load more posts"
+          style={latestPosts.length > HOME_POST_INITIAL_COUNT ? "" : "display:none;"}
         >
-          <span>Keep Exploring</span>
+          <span>Load More</span>
           <svg
             class="h-6 w-6 text-paper"
             viewBox="0 0 20 20"
@@ -906,8 +905,46 @@ const page = {
               d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"
             ></path>
           </svg>
-        </a>
+        </button>
       </div>
     </div>
   </section>
+
+  <script is:inline>
+    (() => {
+      const button = document.getElementById("home-posts-load-more");
+      const grid = document.getElementById("home-posts-grid");
+      if (!(button instanceof HTMLButtonElement) || !grid) return;
+
+      const cards = Array.from(grid.querySelectorAll("[data-home-post]"));
+      const initialCount = Number(button.getAttribute("data-initial-count") || "0");
+      const batchSize = Number(button.getAttribute("data-batch-size") || "0");
+      if (!Number.isFinite(initialCount) || !Number.isFinite(batchSize)) return;
+
+      const getVisibleCount = () =>
+        cards.reduce((count, el) => (el.classList.contains("hidden") ? count : count + 1), 0);
+
+      const updateButton = () => {
+        if (getVisibleCount() >= cards.length) button.style.display = "none";
+      };
+
+      button.addEventListener("click", () => {
+        const visible = getVisibleCount();
+        const next = Math.min(cards.length, visible + batchSize);
+
+        for (let i = visible; i < next; i++) {
+          const el = cards[i];
+          if (!el) continue;
+          el.classList.remove("hidden");
+          window.requestAnimationFrame(() => {
+            window.setTimeout(() => el.classList.add("home-post-card-in"), (i - visible) * 55);
+          });
+        }
+
+        updateButton();
+      });
+
+      updateButton();
+    })();
+  </script>
 </BaseLayout>

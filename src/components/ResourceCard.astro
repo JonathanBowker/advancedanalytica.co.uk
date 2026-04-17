@@ -13,7 +13,7 @@ const { resource } = Astro.props as {
 };
 ---
 <article class="group rounded-xl border border-fog bg-surface p-6 shadow-outline">
-  <a href={`/resources/${resource.slug}`} class="block overflow-hidden rounded-xl bg-[#1f2450] shadow-outline">
+  <a href={`/resources/${resource.slug}`} class="block overflow-hidden rounded-xl bg-[#0b0e14] shadow-outline">
     {resource.data.coverImage ? (
       <img
         src={resource.data.coverImage}
@@ -22,7 +22,7 @@ const { resource } = Astro.props as {
         class="aspect-square w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
       />
     ) : (
-      <div class="aspect-square w-full bg-[radial-gradient(circle_at_top,#2c3569,#101432)]"></div>
+      <div class="aspect-square w-full bg-[radial-gradient(circle_at_top,#1a1d24,#050608)]"></div>
     )}
   </a>
 
@@ -37,4 +37,3 @@ const { resource } = Astro.props as {
   </h3>
   <p class="mt-3 text-sm text-steel">{resource.data.description}</p>
 </article>
-

@@ -16,7 +16,7 @@ export const theme = {
     background: "#F6F7F8",
     // Card / surface background.
     surface: "#FFFFFF",
-    slate: "#121826",
+    slate: "#0B0E14",
     steel: "#2B3445",
     fog: "#E3E6EB",
 
