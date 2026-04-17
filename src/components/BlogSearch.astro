@@ -1,7 +1,7 @@
 ---
 ---
 <div class="rounded-xl border border-fog bg-surface p-6 shadow-outline">
-  <div class="text-sm font-semibold text-ink">Search the blog</div>
+  <div class="text-sm font-semibold text-ink">Search opinions</div>
   <p class="mt-2 text-xs text-steel">Search title, description, and tags only.</p>
   <input
     id="blog-search"
@@ -34,7 +34,7 @@
   };
 
   const load = async () => {
-    const response = await fetch('/blog/search.json');
+    const response = await fetch('/opinions/search.json');
     if (!response.ok) return;
     const data = await response.json();
 

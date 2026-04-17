@@ -15,7 +15,7 @@ export async function GET() {
     name: 'Advanced Analytica Opinions',
     description: 'Opinionated perspectives on operating brand as policy-aware systems.',
     items: posts.map((post) => ({
-      url: `${SITE_URL}/blog/${encodeURIComponent(post.slug)}/`,
+      url: `${SITE_URL}/opinions/${encodeURIComponent(post.slug)}/`,
       title: post.data.title,
       description: post.data.description,
       publishedAt: post.data.publishedAt,
@@ -32,4 +32,3 @@ export async function GET() {
     }
   });
 }
-

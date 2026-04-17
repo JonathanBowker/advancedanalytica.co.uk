@@ -55,7 +55,7 @@ export async function GET() {
     {
       title: 'Opinions',
       description: 'Opinionated perspectives on operating brand as policy-aware systems.',
-      url: '/blog',
+      url: '/opinions',
       type: 'Page'
     },
     {
@@ -89,8 +89,8 @@ export async function GET() {
     title: post.data.title,
     description: post.data.description,
     tags: post.data.tags,
-    url: `/blog/${post.slug}`,
-    type: 'Blog'
+    url: `/opinions/${post.slug}`,
+    type: 'Opinion'
   }));
 
   const caseStudies = await getCollection('caseStudies', ({ data }) => !data.draft);

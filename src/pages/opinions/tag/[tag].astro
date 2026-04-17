@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PostCard from '../../../components/PostCard.astro';
+import { getCollection } from 'astro:content';
+import { SITE_URL } from '../../../lib/seo/site';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  const tags = new Set<string>();
+  posts.forEach((post) => post.data.tags.forEach((tag) => tags.add(tag)));
+  return Array.from(tags).map((tag) => ({ params: { tag: encodeURIComponent(tag) }, props: { tag } }));
+}
+
+const { tag } = Astro.props as { tag: string };
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).filter((post) =>
+  post.data.tags.includes(tag)
+);
+
+const title = `Tag: ${tag}`;
+const description = `Posts tagged with ${tag}.`;
+
+const page = {
+  title,
+  description,
+  url: `${SITE_URL}/opinions/tag/${encodeURIComponent(tag)}`,
+  breadcrumbs: [
+    { name: 'Home', url: `${SITE_URL}/` },
+    { name: 'Opinions', url: `${SITE_URL}/opinions/` },
+    { name: `Tag: ${tag}`, url: `${SITE_URL}/opinions/tag/${encodeURIComponent(tag)}` }
+  ]
+};
+---
+<BaseLayout title={title} description={description} page={page}>
+  <section class="container-wide py-16">
+    <div class="eyebrow">Opinions Tag</div>
+    <h1 class="mt-4 text-4xl font-semibold text-ink">{tag}</h1>
+    <p class="mt-3 text-sm text-steel">{posts.length} posts</p>
+  </section>
+  <section class="container-wide pb-20">
+    <div class="grid gap-6 lg:grid-cols-2">
+      {posts.map((post) => (
+        <PostCard post={post} />
+      ))}
+    </div>
+  </section>
+</BaseLayout>

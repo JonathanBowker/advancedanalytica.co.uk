@@ -1,120 +1,15 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import PostCard from '../../components/PostCard.astro';
-import BlogSearch from '../../components/BlogSearch.astro';
-import { getCollection } from 'astro:content';
-import { SITE_URL } from '../../lib/seo/site';
-
-const title = 'Opinions';
-const description = 'Opinionated perspectives on operating brand as policy-aware systems.';
-
-const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
-  (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf()
-);
-
-const INITIAL_COUNT = 6;
-const BATCH_SIZE = 6;
-
-const page = {
-  title,
-  description,
-  url: `${SITE_URL}/blog/`,
-  breadcrumbs: [
-    { name: 'Home', url: `${SITE_URL}/` },
-    { name: 'Opinions', url: `${SITE_URL}/blog/` }
-  ]
-};
+const target = '/opinions';
 ---
-<BaseLayout title={title} description={description} page={page}>
-  <section class="container-wide py-16">
-    <div class="mx-auto max-w-[980px]">
-      <h1 class="text-[clamp(2.25rem,5vw,4rem)] font-semibold tracking-tight text-ink">
-        Opinions
-      </h1>
-      <p class="mt-6 text-lg leading-relaxed text-steel md:text-xl">
-        Opinionated perspectives on building policy-aware brand systems across operations, governance, and AI workflows.
-      </p>
-    </div>
-  </section>
-
-  <section class="container-wide pb-20">
-    <style is:inline>
-      .case-study-card {
-        opacity: 0;
-        transform: translateY(14px);
-        transition: opacity 520ms ease, transform 520ms ease;
-        will-change: opacity, transform;
-      }
-      .case-study-card.case-study-in {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    </style>
-
-    <div id="case-studies-grid" class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-      {posts.map((post, idx) => (
-        <div
-          data-case-study={String(idx)}
-          class={`case-study-card ${idx >= INITIAL_COUNT ? "hidden" : "case-study-in"}`.trim()}
-        >
-          <PostCard post={post} />
-        </div>
-      ))}
-    </div>
-
-    <div class="mt-12 flex items-center justify-center">
-      <button
-        id="case-studies-load-more"
-        type="button"
-        class="rounded-md bg-[#ef27f4] px-12 py-4 text-sm font-semibold tracking-[0.18em] uppercase text-paper shadow-outline hover:bg-[#d823dd] transition-colors"
-        data-initial-count={String(INITIAL_COUNT)}
-        data-batch-size={String(BATCH_SIZE)}
-        aria-controls="case-studies-grid"
-        aria-label="Load more posts"
-        style={posts.length > INITIAL_COUNT ? "" : "display:none;"}
-      >
-        LOAD MORE
-      </button>
-    </div>
-  </section>
-
-  <script is:inline>
-    (() => {
-      const button = document.getElementById("case-studies-load-more");
-      const grid = document.getElementById("case-studies-grid");
-      if (!(button instanceof HTMLButtonElement)) return;
-      if (!grid) return;
-
-      const cards = Array.from(grid.querySelectorAll("[data-case-study]"));
-      const initialCount = Number(button.getAttribute("data-initial-count") || "0");
-      const batchSize = Number(button.getAttribute("data-batch-size") || "0");
-      if (!Number.isFinite(initialCount) || !Number.isFinite(batchSize)) return;
-
-      const getVisibleCount = () =>
-        cards.reduce((count, el) => (el.classList.contains("hidden") ? count : count + 1), 0);
-
-      const updateButton = () => {
-        const visible = getVisibleCount();
-        if (visible >= cards.length) button.style.display = "none";
-      };
-
-      button.addEventListener("click", () => {
-        const visible = getVisibleCount();
-        const next = Math.min(cards.length, visible + batchSize);
-        for (let i = visible; i < next; i++) {
-          const el = cards[i];
-          if (!el) continue;
-          el.classList.remove("hidden");
-          // Let the browser apply display changes first, then animate in.
-          window.requestAnimationFrame(() => {
-            window.setTimeout(() => el.classList.add("case-study-in"), (i - visible) * 55);
-          });
-        }
-        updateButton();
-      });
-
-      // In case the initial render was modified by hydration or user preferences.
-      updateButton();
-    })();
-  </script>
-</BaseLayout>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content={`0;url=${target}`} />
+    <link rel="canonical" href={target} />
+    <title>Redirecting…</title>
+  </head>
+  <body>
+    <p><a href={target}>Continue to Opinions</a></p>
+  </body>
+</html>

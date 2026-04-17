@@ -1,51 +1,33 @@
 ---
-import BaseLayout from '../../../layouts/BaseLayout.astro';
-import PostCard from '../../../components/PostCard.astro';
 import { getCollection } from 'astro:content';
-import { SITE_URL } from '../../../lib/seo/site';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
-  const series = new Set<string>();
-  posts.forEach((post) => {
-    if (post.data.series) series.add(post.data.series);
-  });
-  return Array.from(series).map((seriesName) => ({
-    params: { series: encodeURIComponent(seriesName) },
-    props: { series: seriesName }
+  const series = [
+    ...new Set(
+      posts
+        .map((post) => post.data.series)
+        .filter((value): value is string => Boolean(value))
+    ),
+  ].sort((a, b) => a.localeCompare(b));
+
+  return series.map((entry) => ({
+    params: { series: entry },
+    props: { target: `/opinions/series/${encodeURIComponent(entry)}` }
   }));
 }
 
-const { series } = Astro.props as { series: string };
-const posts = (await getCollection('blog', ({ data }) => !data.draft)).filter(
-  (post) => post.data.series === series
-);
-
-const title = `Series: ${series}`;
-const description = `Posts in the ${series} series.`;
-
-const page = {
-  title,
-  description,
-  url: `${SITE_URL}/blog/series/${encodeURIComponent(series)}`,
-  breadcrumbs: [
-    { name: 'Home', url: `${SITE_URL}/` },
-    { name: 'Opinions', url: `${SITE_URL}/blog/` },
-    { name: `Series: ${series}`, url: `${SITE_URL}/blog/series/${encodeURIComponent(series)}` }
-  ]
-};
+const { target } = Astro.props;
 ---
-<BaseLayout title={title} description={description} page={page}>
-  <section class="container-wide py-16">
-    <div class="eyebrow">Opinions Series</div>
-    <h1 class="mt-4 text-4xl font-semibold text-ink">{series}</h1>
-    <p class="mt-3 text-sm text-steel">{posts.length} posts</p>
-  </section>
-  <section class="container-wide pb-20">
-    <div class="grid gap-6 lg:grid-cols-2">
-      {posts.map((post) => (
-        <PostCard post={post} />
-      ))}
-    </div>
-  </section>
-</BaseLayout>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content={`0;url=${target}`} />
+    <link rel="canonical" href={target} />
+    <title>Redirecting…</title>
+  </head>
+  <body>
+    <p><a href={target}>Continue to Opinions</a></p>
+  </body>
+</html>

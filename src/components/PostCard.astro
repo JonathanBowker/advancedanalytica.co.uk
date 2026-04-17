@@ -15,7 +15,7 @@ const { post } = Astro.props as {
   tagBasePath?: string;
 };
 
-const basePath = Astro.props.basePath ?? '/blog';
+const basePath = Astro.props.basePath ?? '/opinions';
 const tagBasePath = Astro.props.tagBasePath ?? `${basePath}/tag`;
 ---
 <article class="group rounded-xl border border-fog bg-surface p-6 shadow-outline">

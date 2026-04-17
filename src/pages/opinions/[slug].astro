@@ -1,0 +1,182 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TagPill from '../../components/TagPill.astro';
+import components from '../../lib/mdx/components';
+import { getCollection } from 'astro:content';
+import { SITE_URL } from '../../lib/seo/site';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}
+
+const { post } = Astro.props as { post: Awaited<ReturnType<typeof getCollection>>[number] };
+const { Content, headings } = await post.render();
+
+const allPosts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.publishedAt.valueOf() - b.data.publishedAt.valueOf()
+);
+const related = allPosts.filter((entry) => entry.slug !== post.slug).slice(0, 3);
+
+const title = post.data.title;
+const description = post.data.description;
+const url = `${SITE_URL}/opinions/${post.slug}`;
+
+const page = {
+  title,
+  description,
+  url,
+  breadcrumbs: [
+    { name: 'Home', url: `${SITE_URL}/` },
+    { name: 'Opinions', url: `${SITE_URL}/opinions/` },
+    { name: title, url }
+  ],
+  isArticle: true,
+  article: {
+    title,
+    description,
+    publishedAt: post.data.publishedAt,
+    author: post.data.author,
+    tags: post.data.tags,
+    section: post.data.series,
+    url
+  }
+};
+---
+<BaseLayout title={title} description={description} page={page} bodyClass="case-study">
+  <section>
+    <div class="relative z-10 bg-[#0b0e14]">
+      <div class="absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
+        {post.data.coverImage && (
+          <img
+            src={post.data.coverImage}
+            alt=""
+            loading="eager"
+            decoding="async"
+            class="absolute inset-0 h-full w-full scale-125 object-cover blur-2xl saturate-150 brightness-125 opacity-75"
+          />
+        )}
+        <div class="absolute inset-0 bg-black/30"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/55"></div>
+      </div>
+
+      <div class="container-wide relative z-20 pt-10 pb-8">
+        <a href="/opinions" class="inline-flex items-center gap-3 text-sm font-semibold tracking-[0.2em] uppercase text-white/80 hover:text-white transition-colors">
+          <span class="text-2xl leading-none">←</span>
+          BACK
+        </a>
+
+        <div class="mt-6 grid gap-10 lg:grid-cols-[480px_1fr] lg:items-start">
+          <div class="lg:hidden">
+            {post.data.coverImage ? (
+              <img
+                src={post.data.coverImage}
+                alt={title}
+                loading="eager"
+                class="aspect-square w-full rounded-2xl object-cover shadow-outline"
+              />
+            ) : (
+              <div class="rounded-2xl bg-[#0b0e14] shadow-outline">
+                <div class="aspect-square w-full rounded-2xl bg-[radial-gradient(circle_at_top,#1a1d24,#050608)]"></div>
+              </div>
+            )}
+          </div>
+
+          <div class="hidden lg:block" aria-hidden="true"></div>
+
+          <div>
+            <div class="flex flex-wrap gap-3">
+              {post.data.tags.map((tag) => (
+                <span class="rounded-sm bg-[#ef27f4] px-4 py-2 text-xs font-semibold uppercase text-paper">
+                  {tag}
+                </span>
+            ))}
+          </div>
+
+            <h1 class="mt-4 text-[clamp(2rem,4vw,3.25rem)] font-normal tracking-tight text-white">
+              {title}
+            </h1>
+            <div class="mt-6 text-sm text-white/70">{post.data.author}</div>
+          </div>
+        </div>
+
+        <div class="pointer-events-none absolute left-0 bottom-0 z-30 hidden w-[480px] translate-y-1/2 lg:block">
+          {post.data.coverImage ? (
+            <img
+              src={post.data.coverImage}
+              alt={title}
+              loading="eager"
+              class="aspect-square w-full rounded-2xl object-cover shadow-outline"
+            />
+          ) : (
+            <div class="rounded-2xl bg-[#0b0e14] shadow-outline">
+              <div class="aspect-square w-full rounded-2xl bg-[radial-gradient(circle_at_top,#1a1d24,#050608)]"></div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+
+    <div class="relative z-0 -mt-px bg-white">
+      <div class="container-wide pb-6 pt-2 lg:pb-44">
+        <div class="grid gap-10 lg:grid-cols-[480px_1fr]">
+          <div></div>
+          <div>
+            <p class="max-w-[40ch] text-base leading-relaxed text-ink md:text-lg">
+              {description}
+            </p>
+            <div class="mt-4">
+              <a
+                href="#case-study-content"
+                class="text-sm font-semibold tracking-[0.18em] uppercase text-orange-500 hover:text-orange-600"
+              >
+                READ MORE
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="case-study-content" class="bg-white pt-px">
+    <div class="container-wide pb-8">
+      <div class="max-w-[900px]">
+        <article class="prose prose-case-study">
+          <Content components={components} />
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-wide pt-8 pb-6">
+    <div class="rounded-2xl border border-fog bg-surface p-6 md:p-7">
+      <blockquote class="m-0 text-lg leading-relaxed text-ink md:text-[1.625rem]">
+        “{description}”
+      </blockquote>
+      <div class="mt-4 text-sm font-semibold text-ink">{post.data.author}</div>
+      <div class="mt-1 text-xs text-steel">{post.data.series ?? 'Opinion'}</div>
+    </div>
+  </section>
+
+  <section class="container-wide pt-0 pb-20">
+    <div class="flex items-center justify-between gap-4">
+      <h2 class="text-2xl font-semibold text-ink">Related Posts</h2>
+      <a href="/opinions" class="text-xs font-semibold tracking-[0.2em] uppercase text-steel hover:text-ink">
+        View All
+      </a>
+    </div>
+
+    <div class="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      {related.map((entry) => (
+        <a href={`/opinions/${entry.slug}`} class="rounded-xl border border-fog bg-surface p-6">
+          <div class="text-xs uppercase tracking-[0.2em] text-steel">
+            {entry.data.series ?? 'Opinion'}
+          </div>
+          <div class="mt-3 text-lg font-semibold text-ink">{entry.data.title}</div>
+          <p class="mt-2 text-sm text-steel">{entry.data.description}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
