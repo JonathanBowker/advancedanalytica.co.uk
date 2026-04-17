@@ -1,4 +1,4 @@
-import { BRANDO_SCHEMA_URL, IBOM, ORGANisaTION, SITE_NAME, SITE_URL } from './site';
+import { BRANDO_SCHEMA_URL, DEFAULT_OG_IMAGE, IBOM, ORGANisaTION, SITE_NAME, SITE_URL, toAbsoluteUrl } from './site';
 
 type Breadcrumb = {
   name: string;
@@ -14,13 +14,23 @@ type ArticleMeta = {
   tags?: string[];
   section?: string;
   url: string;
+  image?: string;
 };
+
+type PageSchemaType =
+  | 'WebPage'
+  | 'AboutPage'
+  | 'ContactPage'
+  | 'CollectionPage'
+  | 'SearchResultsPage';
 
 type PageMeta = {
   title: string;
   description: string;
   url: string;
   breadcrumbs: Breadcrumb[];
+  schemaType?: PageSchemaType;
+  image?: string;
   isArticle?: boolean;
   article?: ArticleMeta;
 };
@@ -58,6 +68,8 @@ export const buildGraph = (page: PageMeta) => {
   const serviceId = `${IBOM.url}#service`;
   const brandoId = `${BRANDO_SCHEMA_URL}#project`;
   const pageId = `${page.url}#webpage`;
+  const pageSchemaType = page.schemaType ?? 'WebPage';
+  const pageImage = toAbsoluteUrl(page.image) ?? toAbsoluteUrl(page.article?.image) ?? DEFAULT_OG_IMAGE;
 
   const graph: Record<string, unknown>[] = [
     {
@@ -66,6 +78,7 @@ export const buildGraph = (page: PageMeta) => {
       name: ORGANisaTION.name,
       url: ORGANisaTION.url,
       description: ORGANisaTION.description,
+      logo: ORGANisaTION.logo,
       knowsAbout: [serviceId, brandoId]
     },
     {
@@ -73,14 +86,20 @@ export const buildGraph = (page: PageMeta) => {
       '@id': websiteId,
       name: SITE_NAME,
       url: SITE_URL,
-      publisher: { '@id': organisationId }
+      publisher: { '@id': organisationId },
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: `${SITE_URL}/search/?q={search_term_string}`,
+        'query-input': 'required name=search_term_string'
+      }
     },
     {
-      '@type': 'WebPage',
+      '@type': pageSchemaType,
       '@id': pageId,
       name: page.title,
       description: page.description,
       url: page.url,
+      primaryImageOfPage: pageImage,
       isPartOf: { '@id': websiteId },
       about: [{ '@id': serviceId }],
       breadcrumb: { '@id': `${page.url}#breadcrumb` }
@@ -128,6 +147,7 @@ export const buildGraph = (page: PageMeta) => {
         url: ORGANisaTION.url
       },
       publisher: { '@id': organisationId },
+      image: toAbsoluteUrl(page.article.image) ?? pageImage,
       mainEntityOfPage: { '@id': pageId },
       keywords: page.article.tags?.join(', '),
       articleSection: page.article.section,
