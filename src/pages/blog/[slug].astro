@@ -140,7 +140,7 @@ const page = {
   </section>
 
   <section id="case-study-content" class="bg-white pt-px">
-    <div class="container-wide pb-16">
+    <div class="container-wide pb-8">
       <div class="max-w-[900px]">
         <article class="prose prose-case-study">
           <Content components={components} />
@@ -149,17 +149,17 @@ const page = {
     </div>
   </section>
 
-  <section class="container-wide pb-16">
-    <div class="rounded-2xl border border-fog bg-surface p-8 md:p-10">
-      <blockquote class="text-lg leading-relaxed text-ink md:text-xl">
+  <section class="container-wide pt-8 pb-6">
+    <div class="rounded-2xl border border-fog bg-surface p-6 md:p-7">
+      <blockquote class="m-0 text-lg leading-relaxed text-ink md:text-[1.625rem]">
         “{description}”
       </blockquote>
-      <div class="mt-6 text-sm font-semibold text-ink">{post.data.author}</div>
-      <div class="text-xs text-steel">{post.data.series ?? 'Opinion'}</div>
+      <div class="mt-4 text-sm font-semibold text-ink">{post.data.author}</div>
+      <div class="mt-1 text-xs text-steel">{post.data.series ?? 'Opinion'}</div>
     </div>
   </section>
 
-  <section class="container-wide pb-20">
+  <section class="container-wide pt-0 pb-20">
     <div class="flex items-center justify-between gap-4">
       <h2 class="text-2xl font-semibold text-ink">Related Posts</h2>
       <a href="/blog" class="text-xs font-semibold tracking-[0.2em] uppercase text-steel hover:text-ink">

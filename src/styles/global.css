@@ -142,6 +142,10 @@
     margin-top: 0;
   }
 
+  .prose.prose-case-study > :last-child {
+    margin-bottom: 0;
+  }
+
   h1,
   h2,
   h3,
