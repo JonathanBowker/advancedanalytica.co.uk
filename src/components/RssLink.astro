@@ -1,0 +1,22 @@
+---
+const { href, label = 'RSS Feed' } = Astro.props as {
+  href: string;
+  label?: string;
+};
+---
+<a
+  href={href}
+  class="inline-flex items-center gap-2 rounded-md border border-fog bg-surface px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-steel transition-colors hover:border-ink/20 hover:text-ink"
+>
+  <svg
+    class="h-4 w-4 text-[#ff8c69]"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    aria-hidden="true"
+  >
+    <path d="M6.18 17.82a1.64 1.64 0 1 0 0-3.28 1.64 1.64 0 0 0 0 3.28Z" />
+    <path d="M4.55 10.11v2.58a6.76 6.76 0 0 1 6.76 6.76h2.58c0-5.15-4.19-9.34-9.34-9.34Z" />
+    <path d="M4.55 4.95v2.58c6.96 0 12.62 5.66 12.62 12.62h2.58c0-8.38-6.82-15.2-15.2-15.2Z" />
+  </svg>
+  {label}
+</a>

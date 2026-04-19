@@ -5,10 +5,20 @@ const plainText = (fieldName: string) =>
     message: `${fieldName} must not contain HTML markup`
   });
 
+const plainTitle = () =>
+  z
+    .string()
+    .refine((value) => !/<[^>]+>/.test(value), {
+      message: 'title must not contain HTML markup'
+    })
+    .refine((value) => !/[®™©]/.test(value), {
+      message: 'title must not contain trademark or copyright symbols'
+    });
+
 const blog = defineCollection({
   type: 'content',
   schema: z.object({
-    title: plainText('title'),
+    title: plainTitle(),
     description: plainText('description'),
     coverImage: z.string().optional(),
     publishedAt: z.date(),
@@ -22,7 +32,7 @@ const blog = defineCollection({
 const caseStudies = defineCollection({
   type: 'content',
   schema: z.object({
-    title: plainText('title'),
+    title: plainTitle(),
     description: plainText('description'),
     coverImage: z.string().optional(),
     publishedAt: z.date(),
@@ -35,7 +45,7 @@ const caseStudies = defineCollection({
 const resources = defineCollection({
   type: 'content',
   schema: z.object({
-    title: plainText('title'),
+    title: plainTitle(),
     description: plainText('description'),
     coverImage: z.string().optional(),
     category: z.string().optional(),
@@ -47,7 +57,7 @@ const resources = defineCollection({
 const products = defineCollection({
   type: 'content',
   schema: z.object({
-    title: plainText('title'),
+    title: plainTitle(),
     description: plainText('description'),
     category: z.string().optional(),
     order: z.number().default(0),
@@ -58,7 +68,7 @@ const products = defineCollection({
 const useCases = defineCollection({
   type: 'content',
   schema: z.object({
-    title: plainText('title'),
+    title: plainTitle(),
     description: plainText('description'),
     industry: z.string().optional(),
     outcomes: z.array(z.string()).optional(),
@@ -69,7 +79,7 @@ const useCases = defineCollection({
 const docs = defineCollection({
   type: 'content',
   schema: z.object({
-    title: plainText('title'),
+    title: plainTitle(),
     description: plainText('description'),
     draft: z.boolean().default(false)
   })
@@ -78,7 +88,7 @@ const docs = defineCollection({
 const brand = defineCollection({
   type: 'content',
   schema: z.object({
-    title: plainText('title'),
+    title: plainTitle(),
     description: plainText('description').optional(),
     draft: z.boolean().default(false)
   })
@@ -87,7 +97,7 @@ const brand = defineCollection({
 const roles = defineCollection({
   type: 'content',
   schema: z.object({
-    title: plainText('title'),
+    title: plainTitle(),
     functionSlug: z.string(),
     summary: plainText('summary'),
     detail: plainText('detail'),
@@ -99,7 +109,7 @@ const roles = defineCollection({
 const personas = defineCollection({
   type: 'content',
   schema: z.object({
-    title: plainText('title'),
+    title: plainTitle(),
     personaName: plainText('personaName'),
     functionSlug: z.string(),
     roleSlug: z.string(),

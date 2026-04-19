@@ -119,7 +119,7 @@ export async function GET() {
           title: item.data.title,
           description: item.data.description,
           tags: item.data.tags,
-          coverImage: item.data.coverImage ? `${SITE_URL}${item.data.coverImage}` : undefined,
+          coverImage: `${SITE_URL}${getGeneratedCoverPath('resource', item.slug)}`,
           itemType: 'CreativeWork'
         }))
     ]

@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import RssLink from '../components/RssLink.astro';
+import { SITE_URL } from '../lib/seo/site';
+
+const title = 'RSS Feeds';
+const description = 'RSS feeds for Advanced Analytica opinions, use cases, resources, and the full site feed.';
+
+const page = {
+  title,
+  description,
+  url: `${SITE_URL}/rss/`,
+  schemaType: 'CollectionPage',
+  breadcrumbs: [
+    { name: 'Home', url: `${SITE_URL}/` },
+    { name: 'RSS', url: `${SITE_URL}/rss/` }
+  ]
+};
+
+const feeds = [
+  {
+    title: 'Site Feed',
+    description: 'A single RSS feed for key pages, opinions, use cases, and resources.',
+    href: '/rss/site.xml'
+  },
+  {
+    title: 'Opinions Feed',
+    description: 'Thought leadership and commentary on governed AI systems and operating models.',
+    href: '/rss/opinions.xml'
+  },
+  {
+    title: 'Use Cases Feed',
+    description: 'Real-world use cases showing policy-aware execution, assurance, and delivery.',
+    href: '/rss/use-cases.xml'
+  },
+  {
+    title: 'Resources Feed',
+    description: 'Guides, checklists, and templates for teams building governed AI systems.',
+    href: '/rss/resources.xml'
+  }
+];
+---
+<BaseLayout title={title} description={description} page={page}>
+  <section class="relative overflow-hidden bg-[radial-gradient(circle_at_top_left,rgba(239,39,244,0.14),transparent_36%),linear-gradient(135deg,#05070b_0%,#0b0e14_45%,#131722_100%)] text-paper">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_75%_30%,rgba(255,140,105,0.12),transparent_28%)]" aria-hidden="true"></div>
+    <div class="container-wide relative py-20 md:py-24">
+      <div class="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+        <div class="max-w-[860px]">
+          <div class="eyebrow text-paper/70">Feeds</div>
+          <h1 class="mt-4 text-[clamp(2.5rem,5.2vw,4.6rem)] font-semibold tracking-tight text-paper">
+            RSS feeds for governed AI content.
+          </h1>
+          <p class="mt-6 max-w-[56rem] text-lg leading-relaxed text-paper/80 md:text-xl">
+            Subscribe to the full Advanced Analytica stream or follow individual feeds for opinions, use cases, and resources. Every feed is public, lightweight, and ready to plug into your reader, workflow, or publishing system.
+          </p>
+        </div>
+
+        <div class="rounded-[1.75rem] border border-paper/12 bg-paper/5 p-6 shadow-outline backdrop-blur">
+          <div class="text-xs font-semibold uppercase tracking-[0.18em] text-paper/60">Available feeds</div>
+          <div class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+            {feeds.map((feed) => (
+              <a
+                href={feed.href}
+                class="flex items-center justify-between gap-4 rounded-xl border border-paper/12 bg-black/20 px-4 py-3 text-sm font-semibold text-paper transition-colors hover:border-paper/30 hover:bg-black/30"
+              >
+                <span>{feed.title}</span>
+                <span class="text-[#ff8c69]" aria-hidden="true">RSS</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-paper">
+    <div class="container-wide py-20">
+      <div class="mx-auto max-w-[980px]">
+        <div class="mb-12">
+          <div class="eyebrow text-steel">Choose a feed</div>
+          <h2 class="mt-3 text-[clamp(2rem,4vw,3.2rem)] font-semibold tracking-tight text-ink">
+            Pick the stream that fits your workflow.
+          </h2>
+          <p class="mt-5 max-w-[70ch] text-lg leading-relaxed text-steel md:text-xl">
+            Use the full site feed for broad monitoring, or subscribe to a narrower stream if you only want commentary, implementation examples, or reference material.
+          </p>
+        </div>
+
+        <div class="grid gap-6 md:grid-cols-2">
+          {feeds.map((feed) => (
+            <article class="rounded-[1.5rem] border border-fog bg-surface p-7 shadow-outline md:p-8">
+              <div class="flex items-center justify-between gap-4">
+                <div class="inline-flex items-center rounded-full bg-[#ef27f4]/10 px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[#ef27f4]">
+                  RSS Feed
+                </div>
+                <div class="text-xs uppercase tracking-[0.18em] text-steel">XML</div>
+              </div>
+              <h2 class="mt-5 text-[clamp(1.55rem,2vw,2rem)] font-semibold tracking-tight text-ink">
+                {feed.title}
+              </h2>
+              <p class="mt-3 text-base leading-relaxed text-steel md:text-lg">
+                {feed.description}
+              </p>
+              <div class="mt-6 flex flex-wrap items-center gap-4">
+                <RssLink href={feed.href} label="Open Feed" />
+                <a
+                  href={feed.href}
+                  class="text-sm font-semibold uppercase tracking-[0.14em] text-[#ff8c69] transition-colors hover:text-[#e97d5d]"
+                >
+                  Copy URL
+                </a>
+              </div>
+              <div class="mt-6 rounded-xl border border-fog bg-paper px-4 py-3 text-sm text-steel">
+                {SITE_URL}{feed.href}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

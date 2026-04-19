@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
+import RssLink from '../../components/RssLink.astro';
 import { getCollection } from 'astro:content';
 import { SITE_URL } from '../../lib/seo/site';
 
@@ -35,6 +36,9 @@ const page = {
         Practical use cases showing how teams deploy IBOM<sup>®</sup> to govern brand meaning across AI systems,
         operations, and policy workflows.
       </p>
+      <div class="mt-8">
+        <RssLink href="/rss/use-cases.xml" label="Use Cases RSS" />
+      </div>
     </div>
   </section>
 

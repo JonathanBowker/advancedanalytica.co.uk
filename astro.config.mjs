@@ -11,6 +11,9 @@ export default defineConfig({
   output: 'static',
   site: 'https://advancedanalytica.co.uk',
   vite: {
+    optimizeDeps: {
+      include: ['d3']
+    },
     plugins: [tailwindcss()]
   },
   integrations: [mdx(), sitemap()]

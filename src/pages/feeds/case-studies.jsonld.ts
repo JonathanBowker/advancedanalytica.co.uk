@@ -1,6 +1,7 @@
 import { getCollection } from 'astro:content';
 import { SITE_URL } from '../../lib/seo/site';
 import { buildDataFeed } from '../../lib/seo/feeds';
+import { getGeneratedCoverPath } from '../../lib/contentCover';
 
 export const prerender = true;
 
@@ -21,7 +22,7 @@ export async function GET() {
       publishedAt: post.data.publishedAt,
       author: post.data.author,
       tags: post.data.tags,
-      coverImage: post.data.coverImage ? `${SITE_URL}${post.data.coverImage}` : undefined,
+      coverImage: `${SITE_URL}${getGeneratedCoverPath('use-case', post.slug)}`,
       itemType: 'TechArticle'
     }))
   });

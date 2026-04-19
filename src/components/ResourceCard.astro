@@ -1,4 +1,6 @@
 ---
+import { getGeneratedCoverPath } from '../lib/contentCover';
+
 const { resource } = Astro.props as {
   resource: {
     slug: string;
@@ -11,19 +13,18 @@ const { resource } = Astro.props as {
     };
   };
 };
+
+const coverPath = getGeneratedCoverPath('resource', resource.slug);
+const coverAlt = `${resource.data.title} — ${resource.data.description}`;
 ---
 <article class="group rounded-xl border border-fog bg-surface p-6 shadow-outline">
   <a href={`/resources/${resource.slug}`} class="block overflow-hidden rounded-xl bg-[#0b0e14] shadow-outline">
-    {resource.data.coverImage ? (
-      <img
-        src={resource.data.coverImage}
-        alt={resource.data.title}
-        loading="lazy"
-        class="aspect-square w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-      />
-    ) : (
-      <div class="aspect-square w-full bg-[radial-gradient(circle_at_top,#1a1d24,#050608)]"></div>
-    )}
+    <img
+      src={coverPath}
+      alt={coverAlt}
+      loading="lazy"
+      class="aspect-square w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+    />
   </a>
 
   <div class="mt-5 flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.2em] text-steel">

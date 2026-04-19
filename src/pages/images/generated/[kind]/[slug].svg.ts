@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 
 export const prerender = true;
 
-type CoverKind = 'opinion' | 'use-case';
+type CoverKind = 'opinion' | 'use-case' | 'resource';
 
 const escapeXml = (value: string) =>
   value
@@ -44,9 +44,17 @@ const renderSvg = ({
   tags: string[];
 }) => {
   const plainTitle = stripHtml(title);
-  const label = kind === 'opinion' ? 'OPINION' : 'USE CASE';
-  const accent = kind === 'opinion' ? '#ef27f4' : '#ff8c69';
-  const accentSoft = kind === 'opinion' ? 'rgba(239,39,244,0.22)' : 'rgba(255,140,105,0.22)';
+  const label = kind === 'opinion' ? 'OPINION' : kind === 'use-case' ? 'USE CASE' : 'RESOURCE';
+  const accent =
+    kind === 'opinion' ? '#ef27f4' : kind === 'use-case' ? '#ff8c69' : '#94a3b8';
+  const labelFill =
+    kind === 'resource' ? '#202733' : accent;
+  const accentSoft =
+    kind === 'opinion'
+      ? 'rgba(239,39,244,0.22)'
+      : kind === 'use-case'
+        ? 'rgba(255,140,105,0.22)'
+        : 'rgba(148,163,184,0.24)';
   const titleLines = wrapTitle(plainTitle);
   const titleY = 600 - ((titleLines.length - 1) * 58) / 2;
   const tagLine = tags.slice(0, 3).join(' · ').toUpperCase();
@@ -81,7 +89,7 @@ const renderSvg = ({
   </g>
 
   <g transform="translate(126 144)">
-    <rect width="192" height="56" rx="10" fill="${accent}" />
+    <rect width="192" height="56" rx="10" fill="${labelFill}" />
     <text x="96" y="35" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="700" letter-spacing="0.12em" fill="#ffffff">${label}</text>
   </g>
 
@@ -95,13 +103,14 @@ const renderSvg = ({
   </g>
 
   <text x="600" y="900" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="21" font-weight="600" letter-spacing="0.22em" fill="rgba(255,255,255,0.72)">ADVANCED ANALYTICA</text>
-  <text x="600" y="946" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="500" letter-spacing="0.18em" fill="rgba(255,255,255,0.56)">${escapeXml(tagLine || (kind === 'opinion' ? 'IBOM · GOVERNANCE · SYSTEMS' : 'IBOM · POLICY · DELIVERY'))}</text>
+  <text x="600" y="946" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="500" letter-spacing="0.18em" fill="rgba(255,255,255,0.56)">${escapeXml(tagLine || (kind === 'opinion' ? 'IBOM · GOVERNANCE · SYSTEMS' : kind === 'use-case' ? 'IBOM · POLICY · DELIVERY' : 'IBOM · GUIDES · RESOURCES'))}</text>
 </svg>`;
 };
 
 export async function getStaticPaths() {
   const opinions = await getCollection('blog', ({ data }) => !data.draft);
   const useCases = await getCollection('caseStudies', ({ data }) => !data.draft);
+  const resources = await getCollection('resources', ({ data }) => !data.draft);
 
   return [
     ...opinions.map((entry) => ({
@@ -111,6 +120,10 @@ export async function getStaticPaths() {
     ...useCases.map((entry) => ({
       params: { kind: 'use-case', slug: entry.slug },
       props: { kind: 'use-case' as CoverKind, title: entry.data.title, tags: entry.data.tags ?? [] }
+    })),
+    ...resources.map((entry) => ({
+      params: { kind: 'resource', slug: entry.slug },
+      props: { kind: 'resource' as CoverKind, title: entry.data.title, tags: entry.data.tags ?? [] }
     }))
   ];
 }

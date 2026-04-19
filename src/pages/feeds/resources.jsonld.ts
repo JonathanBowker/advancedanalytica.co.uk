@@ -1,6 +1,7 @@
 import { getCollection } from 'astro:content';
 import { SITE_URL } from '../../lib/seo/site';
 import { buildDataFeed } from '../../lib/seo/feeds';
+import { getGeneratedCoverPath } from '../../lib/contentCover';
 
 export const prerender = true;
 
@@ -19,7 +20,7 @@ export async function GET() {
       title: item.data.title,
       description: item.data.description,
       tags: item.data.tags,
-      coverImage: item.data.coverImage ? `${SITE_URL}${item.data.coverImage}` : undefined,
+      coverImage: `${SITE_URL}${getGeneratedCoverPath('resource', item.slug)}`,
       itemType: 'CreativeWork'
     }))
   });
@@ -30,4 +31,3 @@ export async function GET() {
     }
   });
 }
-
