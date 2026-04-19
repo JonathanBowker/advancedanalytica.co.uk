@@ -1,8 +1,8 @@
 <div
   data-aice-gateway-cluster
-  class="relative overflow-hidden rounded-3xl border border-ink/10 bg-[#070b13] shadow-outline"
+  class="relative overflow-hidden rounded-3xl border border-ink/10 bg-[#030508] shadow-outline"
 >
-  <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(85,127,255,0.35),rgba(7,11,19,0.92)_42%,rgba(7,11,19,1)_72%)]"></div>
+  <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(226,232,240,0.2),rgba(18,22,29,0.9)_42%,rgba(3,5,8,1)_74%)]"></div>
   <svg class="relative block h-auto w-full" viewBox="0 0 1200 720" aria-label="AICE MCP Gateway architecture diagram"></svg>
 </div>
 
@@ -163,7 +163,7 @@
       .attr('type', 'matrix')
       .attr(
         'values',
-        '1 0 0 0 0  0 1 0 0 0  0 0 1 0 0.2  0 0 0 0.8 0'
+        '1 0 0 0 0.05  0 1 0 0 0.05  0 0 1 0 0.05  0 0 0 0.8 0'
       )
       .attr('result', 'glowColor');
     const merge = glow.append('feMerge');
