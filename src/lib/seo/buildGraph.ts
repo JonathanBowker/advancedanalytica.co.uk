@@ -1,4 +1,4 @@
-import { BRANDO_SCHEMA_URL, DEFAULT_OG_IMAGE, IBOM, ORGANisaTION, SITE_NAME, SITE_URL, toAbsoluteUrl } from './site';
+import { BRANDO_SCHEMA_URL, DEFAULT_OG_IMAGE, IBOM, ORGANIZATION, SITE_NAME, SITE_URL, toAbsoluteUrl } from './site';
 
 type Breadcrumb = {
   name: string;
@@ -15,6 +15,7 @@ type ArticleMeta = {
   section?: string;
   url: string;
   image?: string;
+  imageAlt?: string;
 };
 
 type PageSchemaType =
@@ -31,6 +32,7 @@ type PageMeta = {
   breadcrumbs: Breadcrumb[];
   schemaType?: PageSchemaType;
   image?: string;
+  imageAlt?: string;
   isArticle?: boolean;
   article?: ArticleMeta;
 };
@@ -70,15 +72,16 @@ export const buildGraph = (page: PageMeta) => {
   const pageId = `${page.url}#webpage`;
   const pageSchemaType = page.schemaType ?? 'WebPage';
   const pageImage = toAbsoluteUrl(page.image) ?? toAbsoluteUrl(page.article?.image) ?? DEFAULT_OG_IMAGE;
+  const pageImageAlt = page.imageAlt ?? page.article?.imageAlt ?? page.description;
 
   const graph: Record<string, unknown>[] = [
     {
-      '@type': 'Organisation',
+      '@type': 'Organization',
       '@id': organisationId,
-      name: ORGANisaTION.name,
-      url: ORGANisaTION.url,
-      description: ORGANisaTION.description,
-      logo: ORGANisaTION.logo,
+      name: ORGANIZATION.name,
+      url: ORGANIZATION.url,
+      description: ORGANIZATION.description,
+      logo: ORGANIZATION.logo,
       knowsAbout: [serviceId, brandoId]
     },
     {
@@ -99,7 +102,11 @@ export const buildGraph = (page: PageMeta) => {
       name: page.title,
       description: page.description,
       url: page.url,
-      primaryImageOfPage: pageImage,
+      primaryImageOfPage: {
+        '@type': 'ImageObject',
+        url: pageImage,
+        description: pageImageAlt
+      },
       isPartOf: { '@id': websiteId },
       about: [{ '@id': serviceId }],
       breadcrumb: { '@id': `${page.url}#breadcrumb` }
@@ -111,7 +118,7 @@ export const buildGraph = (page: PageMeta) => {
       description: IBOM.description,
       url: IBOM.url,
       provider: { '@id': organisationId },
-      isBasedOn: { '@id': brandoId }
+      subjectOf: { '@id': brandoId }
     },
     {
       '@type': 'CreativeWork',
@@ -142,12 +149,16 @@ export const buildGraph = (page: PageMeta) => {
       datePublished: page.article.publishedAt.toISOString(),
       dateModified: (page.article.modifiedAt ?? page.article.publishedAt).toISOString(),
       author: {
-        '@type': 'Organisation',
-        name: page.article.author ?? ORGANisaTION.name,
-        url: ORGANisaTION.url
+        '@type': 'Organization',
+        name: page.article.author ?? ORGANIZATION.name,
+        url: ORGANIZATION.url
       },
       publisher: { '@id': organisationId },
-      image: toAbsoluteUrl(page.article.image) ?? pageImage,
+      image: {
+        '@type': 'ImageObject',
+        url: toAbsoluteUrl(page.article.image) ?? pageImage,
+        description: page.article.imageAlt ?? pageImageAlt
+      },
       mainEntityOfPage: { '@id': pageId },
       keywords: page.article.tags?.join(', '),
       articleSection: page.article.section,

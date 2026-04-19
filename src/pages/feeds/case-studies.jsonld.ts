@@ -13,7 +13,7 @@ export async function GET() {
   const payload = buildDataFeed({
     feedUrl,
     name: 'Advanced Analytica Use Cases',
-    description: 'Real-world examples of IBOM<sup>®</sup> in action: policy, execution, and assurance.',
+    description: 'Real-world examples of IBOM® in action: policy, execution, and assurance.',
     items: posts.map((post) => ({
       url: `${SITE_URL}/use-cases/${encodeURIComponent(post.slug)}/`,
       title: post.data.title,

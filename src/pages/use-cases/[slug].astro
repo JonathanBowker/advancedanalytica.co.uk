@@ -22,6 +22,7 @@ const title = post.data.title;
 const description = post.data.description;
 const url = `${SITE_URL}/use-cases/${post.slug}`;
 const coverImage = getGeneratedCoverPath('use-case', post.slug);
+const coverAlt = `${title} — ${description}`;
 
 const page = {
   title,
@@ -40,8 +41,10 @@ const page = {
     author: post.data.author,
     tags: post.data.tags,
     url,
-    image: coverImage
-  }
+    image: coverImage,
+    imageAlt: coverAlt
+  },
+  imageAlt: coverAlt
 };
 ---
 <BaseLayout title={title} description={description} page={page} bodyClass="case-study">
@@ -75,7 +78,7 @@ const page = {
             {coverImage ? (
               <img
                 src={coverImage}
-                alt={title}
+                alt={coverAlt}
                 loading="eager"
                 class="aspect-square w-full rounded-2xl object-cover shadow-outline"
               />
@@ -108,7 +111,7 @@ const page = {
           {coverImage ? (
             <img
               src={coverImage}
-              alt={title}
+              alt={coverAlt}
               loading="eager"
               class="aspect-square w-full rounded-2xl object-cover shadow-outline"
             />

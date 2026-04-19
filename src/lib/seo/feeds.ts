@@ -1,4 +1,4 @@
-import { IBOM, ORGANisaTION, SITE_NAME, SITE_URL } from './site';
+import { IBOM, ORGANIZATION, SITE_NAME, SITE_URL } from './site';
 
 type FeedItem = {
   url: string;
@@ -44,11 +44,11 @@ export const buildDataFeed = ({ feedUrl, name, description, items }: DataFeedOpt
 
   const graph: Record<string, unknown>[] = [
     {
-      '@type': 'Organisation',
+      '@type': 'Organization',
       '@id': organisationId,
-      name: ORGANisaTION.name,
-      url: ORGANisaTION.url,
-      description: ORGANisaTION.description,
+      name: ORGANIZATION.name,
+      url: ORGANIZATION.url,
+      description: ORGANIZATION.description,
       knowsAbout: [serviceId]
     },
     {
@@ -78,9 +78,9 @@ export const buildDataFeed = ({ feedUrl, name, description, items }: DataFeedOpt
           description: item.description,
           author: item.author
             ? {
-                '@type': 'Organisation',
+                '@type': 'Organization',
                 name: item.author,
-                url: ORGANisaTION.url
+                url: ORGANIZATION.url
               }
             : undefined,
           keywords: item.tags?.join(', '),
@@ -111,4 +111,3 @@ export const buildDataFeed = ({ feedUrl, name, description, items }: DataFeedOpt
     '@graph': graph
   });
 };
-

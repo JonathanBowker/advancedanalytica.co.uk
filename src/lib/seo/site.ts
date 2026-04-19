@@ -16,12 +16,12 @@ export const toAbsoluteUrl = (value?: string) => {
 export const BRANDO_SCHEMA_URL = 'https://brandoschema.org';
 
 export const IBOM = {
-  name: 'IBOM<sup>®</sup>',
+  name: 'IBOM®',
   description: 'Intelligent Brand Operating Model for executable brand systems.',
   url: `${SITE_URL}/services/ibom`
 };
 
-export const ORGANisaTION = {
+export const ORGANIZATION = {
   name: SITE_NAME,
   url: SITE_URL,
   description: 'Brand meaning to executable systems.',

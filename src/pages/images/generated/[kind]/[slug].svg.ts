@@ -50,9 +50,12 @@ const renderSvg = ({
   const titleLines = wrapTitle(plainTitle);
   const titleY = 600 - ((titleLines.length - 1) * 58) / 2;
   const tagLine = tags.slice(0, 3).join(' · ').toUpperCase();
+  const imageDescription = `Generated ${label.toLowerCase()} cover for ${plainTitle} by Advanced Analytica${tagLine ? `. Topics: ${tagLine}.` : '.'}`;
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200" role="img" aria-label="${escapeXml(plainTitle)}">
+  <title>${escapeXml(plainTitle)}</title>
+  <desc>${escapeXml(imageDescription)}</desc>
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#05070b" />

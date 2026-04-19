@@ -9,8 +9,14 @@ export async function GET() {
   const payload = buildDataFeed({
     feedUrl,
     name: 'Advanced Analytica Feeds',
-    description: 'Schema.org DataFeeds for Use Cases, Opinions, and Resources.',
+    description: 'Schema.org DataFeeds for the full Advanced Analytica site, plus section-specific feeds.',
     items: [
+      {
+        url: `${SITE_URL}/feeds/site.jsonld`,
+        title: 'Site Feed',
+        description: 'Master feed for key pages, opinions, use cases, and resources.',
+        itemType: 'DataFeed'
+      },
       {
         url: `${SITE_URL}/feeds/use-cases.jsonld`,
         title: 'Use Cases Feed',
