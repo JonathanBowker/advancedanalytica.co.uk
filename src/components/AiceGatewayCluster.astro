@@ -85,8 +85,8 @@
       children: [
         { name: 'Brand Agent' },
         { name: 'Support Agent' },
-        { name: 'Finance Agent' },
-        { name: 'Marketing Agent' }
+        { name: 'Marketing Agent' },
+        { name: 'Other Agents' }
       ]
     };
 
@@ -102,12 +102,12 @@
           children: [{ name: 'Tickets' }, { name: 'Knowledge' }, { name: 'Escalations' }]
         },
         {
-          name: 'Finance MCP',
-          children: [{ name: 'Controls' }, { name: 'Approvals' }, { name: 'Reporting' }]
-        },
-        {
           name: 'Marketing MCP',
           children: [{ name: 'Campaigns' }, { name: 'Channels' }, { name: 'Content' }]
+        },
+        {
+          name: 'Other MCP',
+          children: [{ name: 'Systems' }, { name: 'Policies' }, { name: 'Workflows' }]
         }
       ]
     };
@@ -395,7 +395,7 @@
     const defaultRightStroke = '#7ab0ff';
     const defaultBridgeStroke = '#86b5ff';
     const activeStroke = '#ef27f4';
-    const agentOrder = ['Brand Agent', 'Support Agent', 'Finance Agent', 'Marketing Agent'];
+    const agentOrder = ['Brand Agent', 'Support Agent', 'Marketing Agent', 'Other Agents'];
     let rightGroup;
     let autoplayTimer = null;
     let autoplayIndex = 0;
@@ -404,8 +404,8 @@
     const agentToMcp = {
       'Brand Agent': 'Brand MCP',
       'Support Agent': 'Support MCP',
-      'Finance Agent': 'Finance MCP',
-      'Marketing Agent': 'Marketing MCP'
+      'Marketing Agent': 'Marketing MCP',
+      'Other Agents': 'Other MCP'
     };
 
     const setLeftAgentState = (targetName, active) => {
