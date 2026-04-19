@@ -1,0 +1,442 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostCard from "../../components/PostCard.astro";
+import { getCollection } from "astro:content";
+import { SITE_URL } from "../../lib/seo/site";
+import {
+  businessFunctions,
+  getRolePath,
+  type BusinessFunction,
+} from "../../lib/businessFunctions";
+
+export function getStaticPaths() {
+  return businessFunctions.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props as { entry: BusinessFunction };
+
+const relatedUseCases = (await getCollection("caseStudies", ({ data }) => !data.draft))
+  .filter((post) => post.data.tags?.some((tag) => entry.useCaseTags.includes(tag)))
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
+  .slice(0, 3);
+
+const relatedPosts = (await getCollection("blog", ({ data }) => !data.draft))
+  .filter((post) => post.data.tags.some((tag) => entry.opinionTags.includes(tag)))
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
+  .slice(0, 3);
+
+const functionRoles = (await getCollection("roles", ({ data }) =>
+  !data.draft && data.functionSlug === entry.slug,
+))
+  .sort((a, b) => a.data.order - b.data.order);
+
+const title = entry.title;
+const description = entry.description;
+
+const page = {
+  title,
+  description,
+  url: `${SITE_URL}/functions/${entry.slug}/`,
+  breadcrumbs: [
+    { name: "Home", url: `${SITE_URL}/` },
+    { name: title, url: `${SITE_URL}/functions/${entry.slug}/` },
+  ],
+};
+
+const journeySteps = [
+  {
+    title: "Get in touch",
+    body: "Start with a working conversation about your function, your current constraints, and where governed AI can create the clearest operational value first.",
+  },
+  {
+    title: "Build knowledge",
+    body: entry.journey[0]?.body ?? "",
+  },
+  {
+    title: "Deploy AICE",
+    body: entry.journey[1]?.body ?? "",
+  },
+  {
+    title: "Assured Operations",
+    body: entry.journey[2]?.body ?? "",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} page={page}>
+  <section class="bg-gradient-to-br from-black via-[#0b0e14] to-[#171b24] text-paper">
+    <div class="container-wide py-16 md:py-20">
+      <div class="grid gap-10 lg:grid-cols-[1.18fr_0.82fr] lg:items-start">
+        <div>
+          <div class="eyebrow text-paper/70">{entry.eyebrow}</div>
+          <h1 class="mt-5 text-[clamp(2.8rem,5vw,4.85rem)] font-semibold tracking-tight leading-[1.05] text-paper">
+            {entry.title}
+          </h1>
+          <p class="mt-5 max-w-[24ch] text-[clamp(1.45rem,2.4vw,2.2rem)] font-light leading-[1.2] text-[#ef27f4]">
+            {entry.heading}
+          </p>
+          <p class="mt-6 max-w-[70ch] text-lg leading-relaxed text-paper/80 md:text-xl">
+            {entry.intro}
+          </p>
+
+          <div class="mt-8 flex flex-wrap gap-4">
+            <a
+              href={entry.useCasesHref}
+              class="inline-flex items-center justify-center gap-2 rounded-md bg-[#ef27f4] px-5 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper transition-colors hover:bg-[#d823dd]"
+            >
+              Use cases
+            </a>
+            <a
+              href={entry.opinionsHref}
+              class="inline-flex items-center justify-center gap-2 rounded-md border border-[#ef27f4] px-5 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-[#ef27f4] transition-colors hover:bg-[#ef27f4] hover:text-paper"
+            >
+              Latest thinking
+            </a>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <div class="rounded-2xl border border-paper/15 bg-paper/5 p-8 backdrop-blur">
+            <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#ef27f4]">
+              Why start here
+            </div>
+            <p class="mt-4 text-base leading-relaxed text-paper/80 md:text-lg">
+              {entry.startingPoint}
+            </p>
+          </div>
+
+          <div class="rounded-2xl border border-paper/15 bg-paper/5 p-8 backdrop-blur">
+            <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#ef27f4]">
+              Typical roles
+            </div>
+            <div class="mt-6 flex flex-wrap gap-3">
+              {
+                functionRoles.map((role, index) => (
+                  <button
+                    type="button"
+                    data-role-link={String(index)}
+                    data-role-target={`role-path-${index}`}
+                    class="inline-flex items-center rounded-full border border-paper/15 bg-black/10 px-4 py-2 text-sm font-medium text-paper/80 transition-colors hover:border-[#ef27f4] hover:text-paper"
+                  >
+                    {role.data.title}
+                  </button>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-12 border-t border-paper/10 pt-10">
+        <div class="text-center text-xs font-semibold tracking-[0.2em] uppercase text-paper/50">
+          Browse functions
+        </div>
+        <div class="mt-5 flex flex-wrap justify-center gap-3">
+          {
+            businessFunctions.map((item) => (
+              <a
+                href={`/functions/${item.slug}/`}
+                aria-current={item.slug === entry.slug ? "page" : undefined}
+                class:list={[
+                  "inline-flex items-center rounded-full border px-4 py-2 text-xs font-semibold tracking-[0.14em] uppercase transition-colors",
+                  item.slug === entry.slug
+                    ? "border-[#ef27f4] bg-[#ef27f4] text-paper"
+                    : "border-paper/20 text-paper/70 hover:border-[#ef27f4] hover:text-paper",
+                ]}
+              >
+                {item.eyebrow}
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-wide py-16 md:py-20">
+    <div class="eyebrow text-center">How It Shows Up</div>
+    <h2 class="mt-4 text-center text-[clamp(2.2rem,4vw,3.6rem)] font-semibold tracking-tight text-ink">
+      How IBOM and AICE apply to this function
+    </h2>
+    <p class="mx-auto mt-5 max-w-[75ch] text-center text-lg leading-relaxed text-steel md:text-xl">
+      The same underlying model is at work in every function: build the knowledge asset, govern the way systems
+      use it, and make operational behaviour easier to control.
+    </p>
+
+    <div class="mt-12 grid gap-6 md:grid-cols-3">
+      {
+        entry.focusAreas.map((item) => (
+          <div class="rounded-2xl border border-fog bg-surface p-8 shadow-outline">
+            <div class="text-xl font-semibold tracking-tight text-ink">{item.title}</div>
+            <p class="mt-4 text-base leading-relaxed text-steel">{item.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section id="role-paths" class="container-wide pb-16 md:pb-20">
+    <div class="eyebrow text-center">Role Paths</div>
+    <h2 class="mt-4 text-center text-[clamp(2.1rem,4vw,3.4rem)] font-semibold tracking-tight text-ink">
+      What is your role?
+    </h2>
+    <p class="mx-auto mt-5 max-w-[72ch] text-center text-lg leading-relaxed text-steel md:text-xl">
+      Select the role that best matches where you sit in this function. The same operating model applies, but the
+      practical value shows up differently depending on the decisions you own.
+    </p>
+
+    <style is:inline>
+      .function-role-card[aria-pressed="true"] {
+        border-color: #ef27f4;
+        background: rgba(239, 39, 244, 0.06);
+      }
+    </style>
+
+    <div id="function-role-selector" class="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      {
+        functionRoles.map((role, index) => (
+          <button
+            type="button"
+            data-role-card={String(index)}
+            id={`role-path-${index}`}
+            aria-pressed={index === 0 ? "true" : "false"}
+            class="function-role-card scroll-mt-28 rounded-2xl border border-fog bg-surface p-8 text-left shadow-outline transition-colors hover:border-[#ef27f4]"
+          >
+            <div class="text-xl font-semibold tracking-tight text-ink">{role.data.title}</div>
+            <p class="mt-4 text-base leading-relaxed text-steel">{role.data.summary}</p>
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="mt-10 rounded-[2rem] border border-[#ef27f4]/20 bg-[#ef27f4]/5 p-8 md:p-10">
+      {
+        functionRoles.map((role, index) => (
+          <div data-role-panel={String(index)} hidden={index === 0 ? undefined : true}>
+            <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#ef27f4]">
+              Selected role
+            </div>
+            <h3 class="mt-4 text-[clamp(1.8rem,3vw,2.7rem)] font-semibold tracking-tight text-ink">
+              {role.data.title}
+            </h3>
+            <p class="mt-5 max-w-[70ch] text-lg leading-relaxed text-steel md:text-xl">
+              {role.data.detail}
+            </p>
+            <div class="mt-8 flex flex-wrap gap-4">
+              <a
+                href={getRolePath(entry.slug, role.data.title)}
+                class="inline-flex items-center justify-center gap-2 rounded-md bg-[#ef27f4] px-5 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper transition-colors hover:bg-[#d823dd]"
+              >
+                Role page
+              </a>
+              <a
+                href={entry.useCasesHref}
+                class="inline-flex items-center justify-center gap-2 rounded-md border border-[#ef27f4] px-5 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-[#ef27f4] transition-colors hover:bg-[#ef27f4] hover:text-paper"
+              >
+                Use cases
+              </a>
+              <a
+                href={entry.opinionsHref}
+                class="inline-flex items-center justify-center gap-2 rounded-md border border-[#ef27f4] px-5 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-[#ef27f4] transition-colors hover:bg-[#ef27f4] hover:text-paper"
+              >
+                Latest thinking
+              </a>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="bg-paper text-ink">
+    <div class="container-wide py-16 md:py-20">
+      <div class="grid gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
+        <div>
+          <div class="eyebrow">The Journey</div>
+          <h2 class="mt-4 text-[clamp(2.4rem,4.6vw,4.3rem)] font-semibold tracking-tight leading-[1.04] text-ink">
+            From knowledge to assured operations
+          </h2>
+          <p class="mt-5 max-w-[34rem] text-lg leading-relaxed text-steel md:text-xl">
+            Every function follows the same spec-driven route. We begin with a conversation about your operating
+            reality, then move through knowledge structuring, governed deployment, and live assurance.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-4">
+            <a
+              href="#get-in-touch"
+              class="inline-flex items-center justify-center gap-2 rounded-md bg-[#ef27f4] px-5 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper transition-colors hover:bg-[#d823dd]"
+            >
+              Get in touch
+            </a>
+            <a
+              href={entry.useCasesHref}
+              class="inline-flex items-center justify-center gap-2 rounded-md border border-[#ef27f4] px-5 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-[#ef27f4] transition-colors hover:bg-[#ef27f4] hover:text-paper"
+            >
+              Use cases
+            </a>
+          </div>
+        </div>
+
+        <div class="grid gap-6 md:grid-cols-2">
+          {
+            journeySteps.map((step, index) => (
+              <div class="rounded-[1.75rem] border border-fog bg-surface p-8 shadow-outline">
+                <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#ef27f4]">
+                  Step {index + 1}
+                </div>
+                <h3 class="mt-4 text-2xl font-semibold tracking-tight text-ink">{step.title}</h3>
+                <p class="mt-4 text-base leading-relaxed text-steel">{step.body}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-wide py-16 md:py-20">
+    <div class="rounded-[2rem] border border-[#ef27f4]/20 bg-gradient-to-br from-[#ef27f4]/8 via-paper to-[#ff8c69]/10 p-8 shadow-outline md:p-12">
+      <div class="eyebrow">Next Step</div>
+      <h2 class="mt-4 text-[clamp(2rem,3.4vw,3.2rem)] font-semibold tracking-tight text-ink">
+        Continue from this function
+      </h2>
+      <p class="mt-5 max-w-[72ch] text-lg leading-relaxed text-steel md:text-xl">
+        {entry.closing}
+      </p>
+
+      <div class="mt-8 flex flex-wrap gap-4">
+        <a
+          href={entry.useCasesHref}
+          class="inline-flex items-center justify-center gap-2 rounded-md bg-[#ef27f4] px-5 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper transition-colors hover:bg-[#d823dd]"
+        >
+          Use cases
+        </a>
+        <a
+          href={entry.opinionsHref}
+          class="inline-flex items-center justify-center gap-2 rounded-md border border-[#ef27f4] px-5 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-[#ef27f4] transition-colors hover:bg-[#ef27f4] hover:text-paper"
+        >
+          Latest thinking
+        </a>
+        <a
+          href="#get-in-touch"
+          class="inline-flex items-center justify-center gap-2 rounded-md border border-[#ef27f4] px-5 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-[#ef27f4] transition-colors hover:bg-[#ef27f4] hover:text-paper"
+        >
+          Get in touch
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-wide pb-16 md:pb-20">
+    <div class="eyebrow text-center">Use Cases</div>
+    <h2 class="mt-4 text-center text-[clamp(2.1rem,4vw,3.4rem)] font-semibold tracking-tight text-ink">
+      Related use cases for this function
+    </h2>
+    <p class="mx-auto mt-5 max-w-[72ch] text-center text-lg leading-relaxed text-steel md:text-xl">
+      Examples of how this function-level operating logic shows up in real delivery work.
+    </p>
+
+    <div class="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      {relatedUseCases.map((post) => <PostCard post={post} basePath="/use-cases" />)}
+    </div>
+  </section>
+
+  <section class="container-wide pb-16 md:pb-20">
+    <div class="eyebrow text-center">Related Posts</div>
+    <h2 class="mt-4 text-center text-[clamp(2.1rem,4vw,3.4rem)] font-semibold tracking-tight text-ink">
+      Related thinking for this function
+    </h2>
+    <p class="mx-auto mt-5 max-w-[72ch] text-center text-lg leading-relaxed text-steel md:text-xl">
+      Posts that expand on the governance, delivery, and operating questions behind this function.
+    </p>
+
+    <div class="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      {relatedPosts.map((post) => <PostCard post={post} />)}
+    </div>
+  </section>
+
+  <section class="container-wide pb-20">
+    <div class="eyebrow text-center">Frequently Asked Questions</div>
+    <h2 class="mt-4 text-center text-[clamp(2.1rem,4vw,3.4rem)] font-semibold tracking-tight text-ink">
+      Questions about this function
+    </h2>
+    <div class="mx-auto mt-12 max-w-4xl space-y-4">
+      {
+        entry.faqs.map((faq) => (
+          <details class="rounded-2xl border border-fog bg-surface p-6 shadow-outline">
+            <summary class="cursor-pointer list-none text-lg font-semibold tracking-tight text-ink">
+              {faq.question}
+            </summary>
+            <p class="mt-4 text-base leading-relaxed text-steel">{faq.answer}</p>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+
+  <script is:inline>
+    (() => {
+      const selector = document.getElementById("function-role-selector");
+      if (!selector) return;
+
+      const cards = Array.from(selector.querySelectorAll("[data-role-card]"));
+      const panels = Array.from(document.querySelectorAll("[data-role-panel]"));
+      const roleLinks = Array.from(document.querySelectorAll("[data-role-link]"));
+      if (!cards.length || !panels.length) return;
+
+      const setActive = (key) => {
+        cards.forEach((card) =>
+          card.setAttribute(
+            "aria-pressed",
+            card.getAttribute("data-role-card") === key ? "true" : "false",
+          ),
+        );
+
+        panels.forEach((panel) => {
+          panel.hidden = panel.getAttribute("data-role-panel") !== key;
+        });
+      };
+
+      const setActiveFromHash = () => {
+        const hash = window.location.hash;
+        if (!hash) return;
+        const targetId = hash.replace(/^#/, "");
+        const target = document.getElementById(targetId);
+        if (!target) return;
+        const key = target.getAttribute("data-role-card");
+        if (!key) return;
+        setActive(key);
+      };
+
+      cards.forEach((card) => {
+        card.addEventListener("click", () => {
+          const key = card.getAttribute("data-role-card");
+          if (!key) return;
+          setActive(key);
+          if (card.id) {
+            history.replaceState(null, "", `#${card.id}`);
+          }
+        });
+      });
+
+      roleLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          const key = link.getAttribute("data-role-link");
+          const targetId = link.getAttribute("data-role-target");
+          if (!key) return;
+          setActive(key);
+          if (targetId) {
+            const target = document.getElementById(targetId);
+            target?.scrollIntoView({ behavior: "smooth", block: "start" });
+            history.replaceState(null, "", `#${targetId}`);
+          }
+        });
+      });
+
+      window.addEventListener("hashchange", setActiveFromHash);
+      setActiveFromHash();
+    })();
+  </script>
+</BaseLayout>

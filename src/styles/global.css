@@ -100,8 +100,8 @@
   .eyebrow {
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    font-size: 0.75rem;
-    color: var(--color-steel);
+    font-size: 1.05rem;
+    color: #ef27f4;
   }
 
   .prose {

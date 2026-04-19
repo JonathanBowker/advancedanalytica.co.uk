@@ -1,0 +1,338 @@
+---
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import PostCard from "../../../../components/PostCard.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import { SITE_URL } from "../../../../lib/seo/site";
+import {
+  businessFunctions,
+  getRolePath,
+  toSlug,
+  type BusinessFunction,
+} from "../../../../lib/businessFunctions";
+
+type RolePageProps = {
+  entry: BusinessFunction;
+  role: CollectionEntry<"roles">;
+  siblingRoles: CollectionEntry<"roles">[];
+};
+
+export async function getStaticPaths() {
+  const roles = await getCollection("roles", ({ data }) => !data.draft);
+
+  return roles.flatMap((role) => {
+    const entry = businessFunctions.find((item) => item.slug === role.data.functionSlug);
+    if (!entry) return [];
+
+    const siblingRoles = roles
+      .filter((item) => item.data.functionSlug === entry.slug)
+      .sort((a, b) => a.data.order - b.data.order);
+
+    return {
+      params: { slug: entry.slug, role: toSlug(role.data.title) },
+      props: { entry, role, siblingRoles },
+    };
+  });
+}
+
+const { entry, role, siblingRoles } = Astro.props as RolePageProps;
+
+const relatedUseCases = (await getCollection("caseStudies", ({ data }) => !data.draft))
+  .filter((post) => post.data.tags?.some((tag) => entry.useCaseTags.includes(tag)))
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
+  .slice(0, 3);
+
+const relatedPosts = (await getCollection("blog", ({ data }) => !data.draft))
+  .filter((post) => post.data.tags.some((tag) => entry.opinionTags.includes(tag)))
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
+  .slice(0, 3);
+
+const journeySteps = [
+  {
+    title: "Get in touch",
+    body: `Start with a focused conversation about ${role.data.title.toLowerCase()}, the decisions you own, and where governed AI can create the clearest value first.`,
+  },
+  {
+    title: "Build knowledge",
+    body: entry.journey[0]?.body ?? "",
+  },
+  {
+    title: "Deploy AICE",
+    body: entry.journey[1]?.body ?? "",
+  },
+  {
+    title: "Assured Operations",
+    body: entry.journey[2]?.body ?? "",
+  },
+];
+
+const roleFaqs = [
+  {
+    question: `Why does this matter for ${role.data.title.toLowerCase()}?`,
+    answer: `${role.data.detail} It gives this role a clearer way to influence how AI systems behave in practice, not just how they are described on paper.`,
+  },
+  {
+    question: "What changes once the knowledge layer is structured?",
+    answer: `Instead of relying on fragmented guidance and local interpretation, ${entry.title} can work from a clearer specification base that supports repeatable decisions, stronger traceability, and better alignment across teams and systems.`,
+  },
+  {
+    question: `How does AICE help ${role.data.title.toLowerCase()} specifically?`,
+    answer: `The AICE gives this role a governed runtime layer for controlling how AI systems access knowledge, apply rules, and interact with approved tools. That makes it easier to move from policy or intent into live operational behaviour with more confidence.`,
+  },
+  {
+    question: "What does assured operation look like here?",
+    answer: `It means outputs and actions can be tested, monitored, and revised against the operating logic you defined, so ${entry.title.toLowerCase()} is supported by systems that are easier to trust, review, and improve over time.`,
+  },
+  {
+    question: "What is the right first step?",
+    answer: `Usually a focused conversation about the decisions, constraints, and operational pressure points this role owns. From there, we can define whether the strongest starting point is knowledge capture, AICE deployment, or a linked path through both.`,
+  },
+];
+
+const title = `${role.data.title} | ${entry.title}`;
+const description = `${role.data.summary} ${role.data.detail}`;
+
+const page = {
+  title,
+  description,
+  url: `${SITE_URL}${getRolePath(entry.slug, role.data.title)}`,
+  breadcrumbs: [
+    { name: "Home", url: `${SITE_URL}/` },
+    { name: entry.title, url: `${SITE_URL}/functions/${entry.slug}/` },
+    { name: role.data.title, url: `${SITE_URL}${getRolePath(entry.slug, role.data.title)}` },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} page={page}>
+  <section class="bg-gradient-to-br from-black via-[#0b0e14] to-[#171b24] text-paper">
+    <div class="container-wide py-16 md:py-20">
+      <div class="grid gap-10 lg:grid-cols-[1.12fr_0.88fr] lg:items-start">
+        <div>
+          <div class="eyebrow text-paper/70">{entry.eyebrow}</div>
+          <div class="mt-4 text-xs font-semibold tracking-[0.2em] uppercase text-[#ef27f4]">
+            Role page
+          </div>
+          <h1 class="mt-5 text-[clamp(2.8rem,5vw,4.85rem)] font-semibold tracking-tight leading-[1.05] text-paper">
+            {role.data.title}
+          </h1>
+          <p class="mt-5 max-w-[72ch] text-[clamp(1.35rem,2.2vw,2rem)] font-light leading-[1.2] text-[#ef27f4]">
+            Role path within {entry.title}
+          </p>
+          <p class="mt-6 max-w-[72ch] text-lg leading-relaxed text-paper/80 md:text-xl">
+            {role.data.detail}
+          </p>
+
+          <div class="mt-8 flex flex-wrap gap-4">
+            <a
+              href="#get-in-touch"
+              class="inline-flex items-center justify-center gap-2 rounded-md bg-[#ef27f4] px-5 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper transition-colors hover:bg-[#d823dd]"
+            >
+              Get in touch
+            </a>
+            <a
+              href={`/functions/${entry.slug}/`}
+              class="inline-flex items-center justify-center gap-2 rounded-md border border-[#ef27f4] px-5 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-[#ef27f4] transition-colors hover:bg-[#ef27f4] hover:text-paper"
+            >
+              Back to function
+            </a>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <div class="rounded-2xl border border-paper/15 bg-paper/5 p-8 backdrop-blur">
+            <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#ef27f4]">
+              Why this role matters
+            </div>
+            <p class="mt-4 text-base leading-relaxed text-paper/80 md:text-lg">
+              {entry.startingPoint}
+            </p>
+          </div>
+
+          <div class="rounded-2xl border border-paper/15 bg-paper/5 p-8 backdrop-blur">
+            <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#ef27f4]">
+              This role works across
+            </div>
+            <div class="mt-6 space-y-4">
+              {entry.focusAreas.slice(0, 3).map((item) => (
+                <div class="border-t border-paper/10 pt-4 first:border-t-0 first:pt-0">
+                <div class="text-lg font-semibold tracking-tight text-paper">{item.title}</div>
+                <p class="mt-2 text-sm leading-relaxed text-paper/70">{item.body}</p>
+              </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-12 border-t border-paper/10 pt-10">
+        <div class="text-center text-xs font-semibold tracking-[0.2em] uppercase text-paper/50">
+          Browse roles in {entry.title}
+        </div>
+        <div class="mt-5 flex flex-wrap justify-center gap-3">
+          {
+            siblingRoles.map((item) => (
+              <a
+                href={getRolePath(entry.slug, item.data.title)}
+                aria-current={item.data.title === role.data.title ? "page" : undefined}
+                class:list={[
+                  "inline-flex items-center rounded-full border px-4 py-2 text-xs font-semibold tracking-[0.14em] uppercase transition-colors",
+                  item.data.title === role.data.title
+                    ? "border-[#ef27f4] bg-[#ef27f4] text-paper"
+                    : "border-paper/20 text-paper/70 hover:border-[#ef27f4] hover:text-paper",
+                ]}
+              >
+                {item.data.title}
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-wide py-16 md:py-20">
+    <div class="eyebrow text-center">Role Context</div>
+    <h2 class="mt-4 text-center text-[clamp(2.2rem,4vw,3.6rem)] font-semibold tracking-tight text-ink">
+      How IBOM and AICE support this role
+    </h2>
+    <p class="mx-auto mt-5 max-w-[75ch] text-center text-lg leading-relaxed text-steel md:text-xl">
+      The same operating model applies, but the value for {role.data.title.toLowerCase()} shows up in the decisions,
+      controls, and systems this role is responsible for.
+    </p>
+
+    <div class="mt-12 grid gap-6 md:grid-cols-3">
+      <div class="rounded-2xl border border-fog bg-surface p-8 shadow-outline">
+        <div class="text-xl font-semibold tracking-tight text-ink">Start from governed knowledge</div>
+        <p class="mt-4 text-base leading-relaxed text-steel">
+          {entry.journey[0]?.body}
+        </p>
+      </div>
+      <div class="rounded-2xl border border-fog bg-surface p-8 shadow-outline">
+        <div class="text-xl font-semibold tracking-tight text-ink">Control live system behaviour</div>
+        <p class="mt-4 text-base leading-relaxed text-steel">
+          {entry.journey[1]?.body}
+        </p>
+      </div>
+      <div class="rounded-2xl border border-fog bg-surface p-8 shadow-outline">
+        <div class="text-xl font-semibold tracking-tight text-ink">Operate with assurance</div>
+        <p class="mt-4 text-base leading-relaxed text-steel">
+          {entry.journey[2]?.body}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-paper text-ink">
+    <div class="container-wide py-16 md:py-20">
+      <div class="grid gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
+        <div>
+          <div class="eyebrow">The Journey</div>
+          <h2 class="mt-4 text-[clamp(2.4rem,4.6vw,4.3rem)] font-semibold tracking-tight leading-[1.04] text-ink">
+            From knowledge to assured operations
+          </h2>
+          <p class="mt-5 max-w-[34rem] text-lg leading-relaxed text-steel md:text-xl">
+            This role follows the same route as the wider function: clarify the operating reality, structure the
+            knowledge, deploy AICE with control, and run the model with live assurance.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-4">
+            <a
+              href="#get-in-touch"
+              class="inline-flex items-center justify-center gap-2 rounded-md bg-[#ef27f4] px-5 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper transition-colors hover:bg-[#d823dd]"
+            >
+              Get in touch
+            </a>
+            <a
+              href={entry.useCasesHref}
+              class="inline-flex items-center justify-center gap-2 rounded-md border border-[#ef27f4] px-5 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-[#ef27f4] transition-colors hover:bg-[#ef27f4] hover:text-paper"
+            >
+              Use cases
+            </a>
+          </div>
+        </div>
+
+        <div class="grid gap-6 md:grid-cols-2">
+          {
+            journeySteps.map((step, index) => (
+              <div class="rounded-[1.75rem] border border-fog bg-surface p-8 shadow-outline">
+                <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#ef27f4]">
+                  Step {index + 1}
+                </div>
+                <h3 class="mt-4 text-2xl font-semibold tracking-tight text-ink">{step.title}</h3>
+                <p class="mt-4 text-base leading-relaxed text-steel">{step.body}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-wide py-16 md:py-20">
+    <div class="rounded-[2rem] border border-[#ef27f4]/20 bg-gradient-to-br from-[#ef27f4]/8 via-paper to-[#ff8c69]/10 p-8 shadow-outline md:p-12">
+      <div class="eyebrow">Role Outcomes</div>
+      <h2 class="mt-4 text-[clamp(2rem,3.4vw,3.2rem)] font-semibold tracking-tight text-ink">
+        What strong operation looks like for {role.data.title.toLowerCase()}
+      </h2>
+      <p class="mt-5 max-w-[72ch] text-lg leading-relaxed text-steel md:text-xl">
+        This role is strongest when governed knowledge, controlled runtime behaviour, and assured operations all work
+        from the same operating model.
+      </p>
+
+      <div class="mt-8 grid gap-4 md:grid-cols-3">
+        {entry.focusAreas.map((item) => (
+          <div class="rounded-2xl border border-[#ef27f4]/10 bg-paper/70 p-6">
+            <div class="text-lg font-semibold tracking-tight text-ink">{item.title}</div>
+            <p class="mt-3 text-sm leading-relaxed text-steel">{item.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="container-wide pb-16 md:pb-20">
+    <div class="eyebrow text-center">Use Cases</div>
+      <h2 class="mt-4 text-center text-[clamp(2.1rem,4vw,3.4rem)] font-semibold tracking-tight text-ink">
+        Related use cases for {role.data.title.toLowerCase()}
+      </h2>
+    <p class="mx-auto mt-5 max-w-[72ch] text-center text-lg leading-relaxed text-steel md:text-xl">
+      Real delivery examples that sit closest to the pressures, controls, and opportunities this role cares about.
+    </p>
+
+    <div class="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      {relatedUseCases.map((post) => <PostCard post={post} basePath="/use-cases" />)}
+    </div>
+  </section>
+
+  <section class="container-wide pb-16 md:pb-20">
+    <div class="eyebrow text-center">Related Posts</div>
+      <h2 class="mt-4 text-center text-[clamp(2.1rem,4vw,3.4rem)] font-semibold tracking-tight text-ink">
+        Related thinking for {role.data.title.toLowerCase()}
+      </h2>
+    <p class="mx-auto mt-5 max-w-[72ch] text-center text-lg leading-relaxed text-steel md:text-xl">
+      Posts that expand on the governance, delivery, and operating questions this role is likely to care about most.
+    </p>
+
+    <div class="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      {relatedPosts.map((post) => <PostCard post={post} />)}
+    </div>
+  </section>
+
+  <section class="container-wide pb-20">
+    <div class="eyebrow text-center">Frequently Asked Questions</div>
+    <h2 class="mt-4 text-center text-[clamp(2.1rem,4vw,3.4rem)] font-semibold tracking-tight text-ink">
+      Questions this role often raises
+    </h2>
+    <div class="mx-auto mt-12 max-w-4xl space-y-4">
+      {
+        roleFaqs.map((faq) => (
+          <details class="rounded-2xl border border-fog bg-surface p-6 shadow-outline">
+            <summary class="cursor-pointer list-none text-lg font-semibold tracking-tight text-ink">
+              {faq.question}
+            </summary>
+            <p class="mt-4 text-base leading-relaxed text-steel">{faq.answer}</p>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>
