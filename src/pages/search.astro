@@ -18,37 +18,96 @@ const page = {
 ---
 
 <BaseLayout title={title} description={description} page={page}>
-  <section class="container-wide py-16">
-    <div class="eyebrow">Search</div>
-    <h1 class="mt-4 text-4xl font-semibold text-ink">Find what you need</h1>
-    <p class="mt-3 text-base text-steel">
-      Search across blog posts and key pages.
-    </p>
+  <section class="relative overflow-hidden border-b border-paper/10 bg-ink pb-16 pt-24 md:pb-20 md:pt-32">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(239,39,244,0.18),rgba(7,11,19,0.94)_34%,rgba(7,11,19,1)_72%)]"></div>
+    <div class="container-wide relative">
+      <div class="mx-auto max-w-[980px]">
+        <div class="eyebrow text-paper/70">Search</div>
+        <h1 class="mt-4 text-[clamp(2.4rem,5.5vw,4.4rem)] font-semibold tracking-tight text-paper">
+          Find what you need
+        </h1>
+        <p class="mt-6 max-w-[46rem] text-lg leading-relaxed text-paper/75 md:text-xl">
+          Search across opinions, use cases, resources, and key pages.
+        </p>
 
-    <form id="search-form" class="mt-8 flex flex-col gap-4 sm:flex-row">
-      <label class="sr-only" for="search-input">Search</label>
-      <input
-        id="search-input"
-        name="q"
-        type="search"
-        placeholder="Search..."
-        class="w-full rounded-md border border-fog bg-surface px-4 py-3 text-base text-ink placeholder:text-steel focus:outline-none focus:ring-2 focus:ring-strandOrange/60 sm:max-w-lg"
-      />
-      <button
-        type="submit"
-        class="rounded-md bg-ink px-6 py-3 text-sm font-semibold text-paper"
-      >
-        Search
-      </button>
-    </form>
-
-    <div class="mt-10 flex items-center justify-between text-sm text-steel">
-      <span id="search-status">Enter a query to see results.</span>
-      <span id="search-count"></span>
+        <form id="search-form" class="mt-10">
+          <label class="sr-only" for="search-input">Search</label>
+          <div class="flex flex-col gap-4 rounded-3xl border border-paper/10 bg-paper/5 p-4 shadow-outline backdrop-blur md:flex-row md:items-center md:p-5">
+            <input
+              id="search-input"
+              name="q"
+              type="search"
+              placeholder="Search the site..."
+              class="w-full rounded-2xl border border-paper/10 bg-[#12161d] px-5 py-4 text-base text-paper placeholder:text-paper/40 focus:outline-none focus:ring-2 focus:ring-[#ef27f4]/40 md:text-lg"
+            />
+            <button
+              type="submit"
+              class="inline-flex items-center justify-center rounded-2xl bg-[#ef27f4] px-8 py-4 text-sm font-semibold tracking-[0.18em] uppercase text-paper shadow-outline transition-colors hover:bg-[#d823dd]"
+            >
+              Search
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+  </section>
 
-    <div class="mt-8">
-      <ul id="search-results" class="grid gap-6"></ul>
+  <section class="bg-paper py-12 md:py-16">
+    <style is:inline>
+      .search-result-card {
+        opacity: 0;
+        transform: translateY(12px);
+        transition: opacity 320ms ease, transform 320ms ease;
+      }
+
+      .search-result-card.search-result-in {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .search-filter-pill.is-active {
+        border-color: rgba(239, 39, 244, 0.35);
+        background: rgba(239, 39, 244, 0.08);
+        color: #12161d;
+      }
+    </style>
+
+    <div class="container-wide">
+      <div class="flex flex-col gap-3 border-b border-fog pb-6 text-sm text-steel md:flex-row md:items-center md:justify-between">
+        <span id="search-status">Enter a query to see results.</span>
+        <span id="search-count"></span>
+      </div>
+
+      <div class="mt-8 grid gap-10 lg:grid-cols-[260px_minmax(0,1fr)] lg:items-start">
+        <aside class="lg:sticky lg:top-28">
+          <div class="rounded-3xl border border-fog bg-surface p-6 shadow-[0_24px_60px_rgba(7,11,19,0.06)]">
+            <div class="text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-steel">Filters</div>
+
+            <div class="mt-6">
+              <div class="text-sm font-semibold text-ink">Content Type</div>
+              <div id="search-type-filters" class="mt-4 grid gap-2"></div>
+            </div>
+
+            <div class="mt-8 border-t border-fog pt-6">
+              <div class="flex items-center justify-between gap-3">
+                <div class="text-sm font-semibold text-ink">Tags</div>
+                <button
+                  id="search-clear-filters"
+                  type="button"
+                  class="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-steel transition-colors hover:text-[#ef27f4]"
+                >
+                  Clear
+                </button>
+              </div>
+              <div id="search-tag-filters" class="mt-4 flex flex-wrap gap-2"></div>
+            </div>
+          </div>
+        </aside>
+
+        <div>
+          <ul id="search-results" class="grid gap-8"></ul>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -59,8 +118,11 @@ const page = {
       const status = document.getElementById("search-status");
       const count = document.getElementById("search-count");
       const results = document.getElementById("search-results");
+      const typeFilters = document.getElementById("search-type-filters");
+      const tagFilters = document.getElementById("search-tag-filters");
+      const clearFiltersButton = document.getElementById("search-clear-filters");
 
-      if (!form || !input || !status || !count || !results) return;
+      if (!form || !input || !status || !count || !results || !typeFilters || !tagFilters || !clearFiltersButton) return;
 
       const normalize = (value) =>
         (value || "")
@@ -68,14 +130,167 @@ const page = {
           .trim()
           .toLowerCase();
 
+      const escapeRegExp = (value) =>
+        value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+      const tokenize = (value) =>
+        normalize(value)
+          .replace(/[^a-z0-9\s]/g, " ")
+          .split(/\s+/)
+          .filter(Boolean);
+
+      const highlightText = (value, tokens) => {
+        if (!value) return "";
+        if (!tokens.length) return value;
+
+        const uniqueTokens = Array.from(new Set(tokens)).sort((a, b) => b.length - a.length);
+        const pattern = uniqueTokens.map(escapeRegExp).join("|");
+        if (!pattern) return value;
+
+        return value.replace(
+          new RegExp(`(${pattern})`, "gi"),
+          '<mark class="rounded-sm bg-[#ef27f4]/15 px-0.5 text-ink">$1</mark>'
+        );
+      };
+
+      const scoreItem = (item, query, tokens) => {
+        const title = normalize(item.title);
+        const description = normalize(item.description);
+        const snippet = normalize(item.snippet);
+        const searchText = normalize(item.searchText || "");
+        const tags = normalize(Array.isArray(item.tags) ? item.tags.join(" ") : "");
+        const fullMatch = title.includes(query);
+        const allTokensPresent = tokens.every((token) => searchText.includes(token));
+
+        if (!fullMatch && !allTokensPresent) return -1;
+
+        let score = 0;
+
+        if (title === query) score += 200;
+        if (title.startsWith(query)) score += 120;
+        if (fullMatch) score += 80;
+        if (description.includes(query)) score += 36;
+        if (snippet.includes(query)) score += 28;
+        if (tags.includes(query)) score += 30;
+
+        tokens.forEach((token) => {
+          if (title.includes(token)) score += 28;
+          if (tags.includes(token)) score += 18;
+          if (description.includes(token)) score += 14;
+          if (snippet.includes(token)) score += 10;
+          if (searchText.includes(token)) score += 4;
+        });
+
+        if (item.type === "Page") score += 4;
+        if (item.type === "Resource") score += 2;
+
+        return score;
+      };
+
       const fetchIndex = async () => {
         const res = await fetch("/search.json");
         if (!res.ok) return [];
         return await res.json();
       };
 
+      const selectedTypes = new Set();
+      const selectedTags = new Set();
+
+      const getAvailableTypes = (items) =>
+        Array.from(
+          items.reduce((acc, item) => {
+            const type = item.type || "Result";
+            acc.set(type, (acc.get(type) || 0) + 1);
+            return acc;
+          }, new Map())
+        ).sort((a, b) => a[0].localeCompare(b[0]));
+
+      const getAvailableTags = (items) => {
+        const counts = items.reduce((acc, item) => {
+          (item.tags || []).forEach((tag) => {
+            acc.set(tag, (acc.get(tag) || 0) + 1);
+          });
+          return acc;
+        }, new Map());
+
+        return Array.from(counts.entries())
+          .sort((a, b) => {
+            if (b[1] !== a[1]) return b[1] - a[1];
+            return a[0].localeCompare(b[0]);
+          })
+          .slice(0, 18);
+      };
+
+      const renderTypeFilters = (entries) => {
+        typeFilters.innerHTML = "";
+
+        entries.forEach(([type, total]) => {
+          const label = document.createElement("label");
+          label.className =
+            "flex cursor-pointer items-center justify-between gap-3 rounded-2xl border border-fog bg-paper px-4 py-3 text-sm text-ink transition-colors hover:border-[#ef27f4]/30";
+
+          const left = document.createElement("span");
+          left.className = "flex items-center gap-3";
+
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.value = type;
+          checkbox.checked = selectedTypes.has(type);
+          checkbox.className = "h-4 w-4 rounded border-fog text-[#ef27f4] focus:ring-[#ef27f4]/35";
+          checkbox.addEventListener("change", () => {
+            if (checkbox.checked) selectedTypes.add(type);
+            else selectedTypes.delete(type);
+            runSearch(document.getElementById("search-input")?.value || "");
+          });
+
+          const name = document.createElement("span");
+          name.textContent = type;
+
+          const badge = document.createElement("span");
+          badge.className =
+            "rounded-full bg-surface px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-steel";
+          badge.textContent = String(total);
+
+          left.appendChild(checkbox);
+          left.appendChild(name);
+          label.appendChild(left);
+          label.appendChild(badge);
+          typeFilters.appendChild(label);
+        });
+      };
+
+      const renderTagFilters = (entries) => {
+        tagFilters.innerHTML = "";
+
+        entries.forEach(([tag, total]) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className =
+            "search-filter-pill inline-flex items-center gap-2 rounded-full border border-fog bg-paper px-3 py-2 text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-steel transition-colors hover:border-[#ef27f4]/30 hover:text-ink";
+
+          if (selectedTags.has(tag)) button.classList.add("is-active");
+
+          const label = document.createElement("span");
+          label.textContent = tag;
+
+          const count = document.createElement("span");
+          count.className = "text-steel/80";
+          count.textContent = String(total);
+
+          button.appendChild(label);
+          button.appendChild(count);
+          button.addEventListener("click", () => {
+            if (selectedTags.has(tag)) selectedTags.delete(tag);
+            else selectedTags.add(tag);
+            runSearch(document.getElementById("search-input")?.value || "");
+          });
+          tagFilters.appendChild(button);
+        });
+      };
+
       const render = (items, query) => {
         results.innerHTML = "";
+        const tokens = tokenize(query);
         if (!query) {
           status.textContent = "Enter a query to see results.";
           count.textContent = "";
@@ -93,24 +308,51 @@ const page = {
 
         items.forEach((item) => {
           const li = document.createElement("li");
-          li.className = "rounded-xl border border-fog bg-surface p-6 shadow-outline";
+          li.className =
+            "search-result-card search-result-in border-b border-fog/80 pb-8";
+
+          const metaRow = document.createElement("div");
+          metaRow.className = "mb-2 flex flex-wrap items-center gap-3 text-xs";
 
           const title = document.createElement("a");
           title.href = item.url;
-          title.className = "text-xl font-semibold text-ink hover:text-accent";
-          title.textContent = item.title;
+          title.className = "block text-[1.55rem] font-semibold leading-tight tracking-tight text-ink transition-colors hover:text-[#ef27f4] md:text-[1.8rem]";
+          title.innerHTML = highlightText(item.title, tokens);
 
-          const meta = document.createElement("div");
-          meta.className = "mt-2 text-xs uppercase tracking-[0.2em] text-steel";
+          const meta = document.createElement("span");
+          meta.className =
+            "inline-flex w-fit rounded-full bg-[#ef27f4] px-2.5 py-1 text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-paper";
           meta.textContent = item.type || "Result";
 
-          const desc = document.createElement("p");
-          desc.className = "mt-3 text-sm text-steel";
-          desc.textContent = item.description || "";
+          const url = document.createElement("a");
+          url.href = item.url;
+          url.className = "text-[0.82rem] font-medium text-steel transition-colors hover:text-ink";
+          url.textContent = item.url;
 
-          li.appendChild(meta);
+          metaRow.appendChild(meta);
+          metaRow.appendChild(url);
+
+          const desc = document.createElement("p");
+          desc.className = "mt-3 max-w-[72ch] text-[0.98rem] leading-relaxed text-steel";
+          desc.innerHTML = highlightText(item.description || "", tokens);
+
+          li.appendChild(metaRow);
           li.appendChild(title);
           li.appendChild(desc);
+
+          if (item.snippet) {
+            const snippet = document.createElement("p");
+            snippet.className = "mt-3 max-w-[76ch] text-[0.95rem] leading-relaxed text-ink/80";
+            snippet.innerHTML = highlightText(item.snippet, tokens);
+            li.appendChild(snippet);
+          }
+
+          if (item.author) {
+            const author = document.createElement("div");
+            author.className = "mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-steel";
+            author.textContent = item.author;
+            li.appendChild(author);
+          }
 
           if (item.tags && item.tags.length) {
             const tags = document.createElement("div");
@@ -118,7 +360,7 @@ const page = {
             item.tags.forEach((tag) => {
               const pill = document.createElement("span");
               pill.className =
-                "rounded-full border border-fog bg-paper px-3 py-1 text-xs font-semibold text-ink";
+                "rounded-full border border-fog bg-surface px-3 py-1 text-[0.72rem] font-semibold text-ink";
               pill.textContent = tag;
               tags.appendChild(pill);
             });
@@ -135,23 +377,33 @@ const page = {
         const q = normalize(query);
         if (!index.length) index = await fetchIndex();
 
+        renderTypeFilters(getAvailableTypes(index));
+        renderTagFilters(getAvailableTags(index));
+
         if (!q) {
           render([], "");
           return;
         }
 
-        const filtered = index.filter((item) => {
-          const haystack = [
-            item.title,
-            item.description,
-            Array.isArray(item.tags) ? item.tags.join(" ") : ""
-          ]
-            .join(" ")
-            .toLowerCase();
-          return haystack.includes(q);
-        });
+        const tokens = tokenize(q);
+        const ranked = index
+          .map((item) => ({
+            ...item,
+            _score: scoreItem(item, q, tokens)
+          }))
+          .filter((item) => item._score >= 0)
+          .filter((item) => !selectedTypes.size || selectedTypes.has(item.type || "Result"))
+          .filter((item) => {
+            if (!selectedTags.size) return true;
+            const tags = Array.isArray(item.tags) ? item.tags : [];
+            return Array.from(selectedTags).every((tag) => tags.includes(tag));
+          })
+          .sort((a, b) => {
+            if (b._score !== a._score) return b._score - a._score;
+            return (a.title || "").localeCompare(b.title || "");
+          });
 
-        render(filtered, query.trim());
+        render(ranked, query.trim());
       };
 
       const params = new URLSearchParams(window.location.search);
@@ -182,6 +434,12 @@ const page = {
         const query = input.value || "";
         updateUrl(query);
         runSearch(query);
+      });
+
+      clearFiltersButton.addEventListener("click", () => {
+        selectedTypes.clear();
+        selectedTags.clear();
+        runSearch(input.value || "");
       });
     })();
   </script>

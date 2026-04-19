@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PostCard from "../components/PostCard.astro";
+import AiceGatewayCluster from "../components/AiceGatewayCluster.astro";
 import { getCollection } from "astro:content";
 import { SITE_URL } from "../lib/seo/site";
 import { businessFunctions } from "../lib/businessFunctions";
@@ -143,11 +144,11 @@ const page = {
             Ungoverned AI isn't a risk you manage, it's a liability you inherit if you don't govern it. The <strong
               class="font-medium text-paper"
               >Intelligent Business Operating Model - IBOM<sup>®</sup></strong
-            >, transforms business intent into machine language, so your
-            proprietary expertise becomes governed, auditable intelligence. Move
-            beyond uncertainty and ensure your AI <strong
-              class="font-medium text-paper"
-              >performs to your defined specifications, at scale</strong
+            >, transforms business intent into machine language so you can turn your
+            proprietary expertise into governed, auditable intelligence. Move
+            beyond uncertainty and ensure your AI
+            <strong class="font-medium text-paper"
+              >performs to your specifications, at scale</strong
             >.
           </p>
 
@@ -210,9 +211,9 @@ const page = {
           <p>
             Most organisations treat AI as a plug-and-play miracle, only to find
             it's unreliable when it meets reality. The problem isn’t the AI,
-            it’s the data. Your business logic, brand guidelines, and compliance
-            "unwritten rules" are currently Dark Knowledge: buried in static
-            PDFs, siloed tools and spreadsheets, and the heads of your best
+            it’s the data. Business logic, brand guidelines, and compliance
+            procedures exist as Dark Knowledge: buried in static PDFs, siloed
+            SaaS tools, spreadsheets, and the heads of your best
             people.
           </p>
           <p class="mt-6">
@@ -451,7 +452,7 @@ const page = {
           <div class="rounded-2xl border border-ink/10 bg-fog p-6">
             <h4 class="text-lg font-semibold text-[#ef27f4]">Coordinates Your Tools</h4>
             <p class="mt-3 text-steel leading-relaxed">
-              It connects AI to the systems your business already relies on, from databases to operational software,
+              It connects AI to the systems your business already relies on, from documents and databases to operational software,
               through one governed point of control.
             </p>
           </div>
@@ -472,14 +473,8 @@ const page = {
           </p>
         </div>
 
-        <div class="relative mt-10 w-full overflow-hidden rounded-3xl border border-ink/10 bg-fog shadow-outline">
-          <img
-            src="/images/infrastructure/aice-mcp-gateway-architecture.png"
-            alt="Diagram showing enterprise agents connecting through an MCP gateway to systems including NetSuite, Snowflake, Workday, AWS, Salesforce, SAP, HubSpot, and Office 365."
-            class="block w-full h-auto"
-            loading="lazy"
-            decoding="async"
-          />
+        <div class="relative mt-10 w-full">
+          <AiceGatewayCluster />
         </div>
       </div>
     </div>

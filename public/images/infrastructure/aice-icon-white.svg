@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1172.75 1338.03">
+  <defs>
+    <style>
+      .cls-1 {
+        font-family: NewHero-Medium, 'New Hero';
+        font-size: 143.94px;
+        font-weight: 500;
+      }
+
+      .cls-1, .cls-2 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g>
+      <ellipse class="cls-2" cx="793.09" cy="169.02" rx="171.08" ry="169.02"/>
+      <circle class="cls-2" cx="122.2" cy="986.46" r="122.2"/>
+      <path class="cls-2" d="M972.9,1336.9c-140.75,13.94-258.07-103.38-244.13-244.13,10.31-104.15,94.56-188.4,198.72-198.71,140.75-13.94,258.07,103.38,244.13,244.13-10.31,104.15-94.56,188.4-198.72,198.71"/>
+      <rect class="cls-2" x="706.48" y="638.54" width="36.61" height="475.78" transform="translate(-404.44 741.19) rotate(-43.58)"/>
+      <rect class="cls-2" x="508.37" y="326.47" width="294.73" height="36.61" transform="translate(-30.38 624.23) rotate(-49.9)"/>
+      <polygon class="cls-2" points="322 459.98 212.22 336.3 240.07 311.79 348.94 435.18 322 459.98"/>
+      <rect class="cls-2" x="120.46" y="815.45" width="281.25" height="36.61" transform="translate(-534.62 472.97) rotate(-48.22)"/>
+      <text class="cls-1" transform="translate(286.33 372.36)"><tspan x="0" y="0">®</tspan></text>
+      <path class="cls-2" d="M457.42,817.96c-117.55,0-213.18-95.63-213.18-213.18s95.63-213.18,213.18-213.18,213.18,95.63,213.18,213.18-95.63,213.18-213.18,213.18ZM457.42,475.81c-71.12,0-128.98,57.86-128.98,128.98s57.86,128.98,128.98,128.98,128.98-57.86,128.98-128.98-57.86-128.98-128.98-128.98Z"/>
+      <circle class="cls-2" cx="167.44" cy="268.61" r="87.98"/>
+    </g>
+  </g>
+</svg>

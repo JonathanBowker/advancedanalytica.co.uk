@@ -1,0 +1,611 @@
+<div
+  data-aice-gateway-cluster
+  class="relative overflow-hidden rounded-3xl border border-ink/10 bg-[#070b13] shadow-outline"
+>
+  <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(85,127,255,0.35),rgba(7,11,19,0.92)_42%,rgba(7,11,19,1)_72%)]"></div>
+  <svg class="relative block h-auto w-full" viewBox="0 0 1200 720" aria-label="AICE MCP Gateway architecture diagram"></svg>
+</div>
+
+<style is:inline>
+  [data-flow-line].is-flowing {
+    stroke-dasharray: 8 10;
+    animation: aice-comm-flow 1s linear infinite;
+  }
+
+  [data-aice-rotor] {
+    opacity: 0;
+    stroke-dashoffset: 0;
+  }
+
+  [data-aice-rotor].is-active {
+    opacity: 1;
+    animation: aice-rotor-flow 1.2s linear infinite;
+  }
+
+  [data-aice-icon-active] {
+    opacity: 0;
+  }
+
+  [data-aice-icon-active].is-active {
+    opacity: 1;
+    animation: aice-icon-beat 1.1s ease-in-out infinite;
+  }
+
+  @keyframes aice-rotor-flow {
+    from {
+      stroke-dashoffset: 0;
+    }
+    to {
+      stroke-dashoffset: -1350;
+    }
+  }
+
+  @keyframes aice-comm-flow {
+    from {
+      stroke-dashoffset: 0;
+    }
+    to {
+      stroke-dashoffset: -36;
+    }
+  }
+
+  @keyframes aice-icon-beat {
+    0%,
+    100% {
+      opacity: 0.7;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  import * as d3 from 'd3';
+
+  (() => {
+    const host = document.querySelector('[data-aice-gateway-cluster]');
+    if (!(host instanceof HTMLElement)) return;
+
+    const svg = host.querySelector('svg');
+    if (!(svg instanceof SVGSVGElement)) return;
+
+    const width = 1200;
+    const height = 720;
+    const gatewayWidth = 196;
+    const gatewayHeight = 300;
+    const gatewayX = width / 2 - gatewayWidth / 2 - 22;
+    const gatewayY = height / 2 - gatewayHeight / 2;
+    const leftSpan = 284;
+    const rightSpan = 332;
+    const gap = 28;
+
+    const leftData = {
+      name: 'Enterprise IT',
+      children: [
+        { name: 'Brand Agent' },
+        { name: 'Support Agent' },
+        { name: 'Finance Agent' },
+        { name: 'Marketing Agent' }
+      ]
+    };
+
+    const rightData = {
+      name: 'Connected Systems',
+      children: [
+        {
+          name: 'Brand MCP',
+          children: [{ name: 'Standards' }, { name: 'Toolkits' }, { name: 'Assets' }]
+        },
+        {
+          name: 'Support MCP',
+          children: [{ name: 'Tickets' }, { name: 'Knowledge' }, { name: 'Escalations' }]
+        },
+        {
+          name: 'Finance MCP',
+          children: [{ name: 'Controls' }, { name: 'Approvals' }, { name: 'Reporting' }]
+        },
+        {
+          name: 'Marketing MCP',
+          children: [{ name: 'Campaigns' }, { name: 'Channels' }, { name: 'Content' }]
+        }
+      ]
+    };
+
+    const leftRoot = d3.hierarchy(leftData);
+    const rightRoot = d3.hierarchy(rightData);
+
+    d3.cluster().size([height - 140, leftSpan])(leftRoot);
+    d3.cluster().size([height - 140, rightSpan])(rightRoot);
+
+    leftRoot.each((node) => {
+      node.x += 70;
+      node.y = gatewayX - gap - node.y;
+    });
+
+    rightRoot.each((node) => {
+      node.x += 70;
+      node.y = gatewayX + gatewayWidth + gap + node.y;
+
+      if (node.depth === 2 && node.parent?.children) {
+        const siblingIndex = node.parent.children.indexOf(node);
+        node.x += (siblingIndex - 1) * 12;
+      }
+    });
+
+    const root = d3.select(svg);
+    root.selectAll('*').remove();
+
+    const defs = root.append('defs');
+
+    root
+      .append('text')
+      .attr('x', width / 2)
+      .attr('y', 54)
+      .attr('text-anchor', 'middle')
+      .attr('fill', '#ffffff')
+      .attr('font-size', 26)
+      .attr('font-weight', 700)
+      .text('IBOM - Intelligent Business Operating Model');
+
+    const glow = defs
+      .append('filter')
+      .attr('id', 'aice-glow')
+      .attr('x', '-50%')
+      .attr('y', '-50%')
+      .attr('width', '200%')
+      .attr('height', '200%');
+
+    glow.append('feGaussianBlur').attr('stdDeviation', 6).attr('result', 'blur');
+    glow
+      .append('feColorMatrix')
+      .attr('in', 'blur')
+      .attr('type', 'matrix')
+      .attr(
+        'values',
+        '1 0 0 0 0  0 1 0 0 0  0 0 1 0 0.2  0 0 0 0.8 0'
+      )
+      .attr('result', 'glowColor');
+    const merge = glow.append('feMerge');
+    merge.append('feMergeNode').attr('in', 'glowColor');
+    merge.append('feMergeNode').attr('in', 'SourceGraphic');
+
+    const links = root.append('g');
+    const nodes = root.append('g');
+
+    const STANDARD_PILL_HEIGHT = 38;
+    const textFitWidth = (name, min = 124, padding = 34) =>
+      Math.max(min, name.length * 9 + padding);
+    const nodeTheme = (node, side = 'right') => {
+      if (node.depth === 0) return 'root';
+      if (side === 'right' && node.children) return 'group';
+      return 'leaf';
+    };
+    const nodeBox = (node, side = 'right') => {
+      const theme = nodeTheme(node, side);
+      if (theme === 'root') return { width: 0, height: 0, theme };
+      return {
+        width: textFitWidth(node.data.name, theme === 'group' ? 144 : 124, theme === 'group' ? 40 : 32),
+        height: STANDARD_PILL_HEIGHT,
+        theme
+      };
+    };
+    const edgeX = (node, side, edge) => {
+      const box = nodeBox(node, side);
+      if (box.theme === 'root') return node.y;
+      const halfWidth = box.width / 2;
+      if (edge === 'entry') {
+        return side === 'left' ? node.y + halfWidth : node.y - halfWidth;
+      }
+      return side === 'left' ? node.y - halfWidth : node.y + halfWidth;
+    };
+    const clusterLinkPath = (d, side) => {
+      const sx = edgeX(d.source, side, 'exit');
+      const tx = edgeX(d.target, side, 'entry');
+      const sy = d.source.x;
+      const ty = d.target.x;
+
+      if (side === 'right' && d.source.depth === 1 && d.target.depth === 2) {
+        const mx = sx + (tx - sx) * 0.42;
+        return `M${sx},${sy} C${mx},${sy} ${mx},${ty} ${tx},${ty}`;
+      }
+
+      const mx = (sx + tx) / 2;
+      return `M${sx},${sy} C${mx},${sy} ${mx},${ty} ${tx},${ty}`;
+    };
+
+    const drawLinkSet = (selection, color, side, opacity = 0.9) => {
+      links
+        .selectAll(selection)
+        .data(side === 'left' ? leftRoot.links() : rightRoot.links())
+        .join('path')
+        .attr('class', selection.slice(1))
+        .attr('d', (d) => clusterLinkPath(d, side))
+        .attr('fill', 'none')
+        .attr('stroke', color)
+        .attr('stroke-width', 2.4)
+        .attr('stroke-linecap', 'round')
+        .attr('stroke-opacity', opacity)
+        .attr('filter', 'url(#aice-glow)')
+        .attr('data-flow-line', '')
+        .attr('data-link-key', (d) => `${d.source.data.name}__${d.target.data.name}`);
+    };
+
+    drawLinkSet('.left-link', '#6ea2ff', 'left');
+    drawLinkSet('.right-link', '#7ab0ff', 'right');
+
+    const rightParentNames = new Set(rightData.children.map((node) => node.name));
+
+    links.selectAll('.right-link')
+      .filter((d) => rightParentNames.has(d.source.data.name))
+      .attr('stroke-width', 3.4)
+      .attr('stroke-opacity', 1)
+      .attr('stroke-linecap', 'round');
+
+    links.selectAll('.right-link')
+      .filter((d) => d.source.depth === 1 && d.target.depth === 2)
+      .attr('stroke-width', 2.2);
+
+    const bridge = links.append('g');
+    const bridgeEdges = [
+      { x: leftRoot.x, source: gatewayX, target: leftRoot.y },
+      { x: rightRoot.x, source: gatewayX + gatewayWidth, target: rightRoot.y }
+    ];
+
+    bridgeEdges.forEach((edge, index) => {
+      bridge
+        .append('path')
+        .attr(
+          'd',
+          `M${edge.source},${edge.x} C${edge.source + (index === 0 ? -18 : 18)},${edge.x} ${edge.target + (index === 0 ? 18 : -18)},${edge.x} ${edge.target},${edge.x}`
+        )
+        .attr('fill', 'none')
+        .attr('stroke', '#86b5ff')
+        .attr('stroke-width', 2.2)
+        .attr('stroke-linecap', 'round')
+        .attr('filter', 'url(#aice-glow)')
+        .attr('data-flow-line', '')
+        .attr('data-bridge-side', index === 0 ? 'left' : 'right');
+    });
+
+    root
+      .append('rect')
+      .attr('x', gatewayX)
+      .attr('y', gatewayY)
+      .attr('width', gatewayWidth)
+      .attr('height', gatewayHeight)
+      .attr('rx', 14)
+      .attr('fill', 'transparent')
+      .attr('stroke', 'rgba(255,255,255,0.52)')
+      .attr('stroke-width', 2.4);
+
+    const gatewayRotor = root
+      .append('rect')
+      .attr('data-aice-rotor', '')
+      .attr('x', gatewayX)
+      .attr('y', gatewayY)
+      .attr('width', gatewayWidth)
+      .attr('height', gatewayHeight)
+      .attr('rx', 14)
+      .attr('fill', 'none')
+      .attr('stroke', '#ef27f4')
+      .attr('stroke-width', 3.2)
+      .attr('stroke-linecap', 'round')
+      .attr('stroke-dasharray', '130 1220')
+      .attr('filter', 'url(#aice-glow)');
+
+    const gatewayLabel = root
+      .append('g')
+      .attr('transform', `translate(${gatewayX + gatewayWidth / 2}, ${height / 2})`);
+
+    gatewayLabel
+      .append('image')
+      .attr('href', '/images/infrastructure/aice-icon-white.svg')
+      .attr('x', -24)
+      .attr('y', -114)
+      .attr('width', 48)
+      .attr('height', 48);
+
+    const gatewayActiveIcon = gatewayLabel
+      .append('image')
+      .attr('data-aice-icon-active', '')
+      .attr('href', '/images/infrastructure/aice-icon-white.svg')
+      .attr('x', -24)
+      .attr('y', -114)
+      .attr('width', 48)
+      .attr('height', 48)
+      .style('filter', 'brightness(0) saturate(100%) invert(27%) sepia(92%) saturate(3045%) hue-rotate(289deg) brightness(104%) contrast(95%) drop-shadow(0 0 12px rgba(239,39,244,0.85))');
+
+    gatewayLabel
+      .append('text')
+      .attr('text-anchor', 'middle')
+      .attr('y', -32)
+      .attr('fill', '#ffffff')
+      .attr('font-size', 28)
+      .attr('font-weight', 700)
+      .text('AICE');
+
+    gatewayLabel
+      .append('text')
+      .attr('text-anchor', 'middle')
+      .attr('y', -6)
+      .attr('fill', 'rgba(255,255,255,0.95)')
+      .attr('font-size', 19)
+      .attr('font-weight', 600)
+      .text('MCP Gateway');
+
+    gatewayLabel
+      .append('text')
+      .attr('text-anchor', 'middle')
+      .attr('y', 22)
+      .attr('fill', 'rgba(255,255,255,0.82)')
+      .attr('font-size', 11)
+      .attr('letter-spacing', '0.18em')
+      .text('IBOM CONTROL LAYER');
+
+    gatewayLabel
+      .append('text')
+      .attr('text-anchor', 'middle')
+      .attr('y', 40)
+      .attr('fill', 'rgba(255,255,255,0.72)')
+      .attr('font-size', 9)
+      .attr('letter-spacing', '0.14em')
+      .text('BRAND-FIRST COMMUNICATIONS');
+
+    const drawPill = (group, name, theme = 'leaf') => {
+      const width = textFitWidth(name, theme === 'group' ? 144 : 124, theme === 'group' ? 40 : 32);
+      const height = STANDARD_PILL_HEIGHT;
+      group
+        .append('rect')
+        .attr('x', -width / 2)
+        .attr('y', -height / 2)
+        .attr('width', width)
+        .attr('height', height)
+        .attr('rx', height / 2)
+        .attr('fill', theme === 'group' ? 'rgba(18,22,29,0.82)' : 'rgba(10,12,16,0.92)')
+        .attr('stroke', theme === 'group' ? 'rgba(164,189,255,0.55)' : 'rgba(255,255,255,0.7)')
+        .attr('stroke-width', 1.6);
+      group
+        .append('text')
+        .attr('text-anchor', 'middle')
+        .attr('dominant-baseline', 'middle')
+        .attr('fill', '#f8fafc')
+        .attr('font-size', theme === 'group' ? 14 : 13)
+        .attr('font-weight', theme === 'group' ? 700 : 600)
+        .text(name);
+    };
+
+    const leftGroup = nodes
+      .append('g')
+      .selectAll('g')
+      .data(leftRoot.descendants())
+      .join('g')
+      .attr('transform', (d) => `translate(${d.y},${d.x})`);
+
+    leftGroup.each(function (d) {
+      const group = d3.select(this);
+      if (d.depth === 0) {
+        return;
+      } else {
+        drawPill(group, d.data.name);
+      }
+    });
+
+    const defaultLeftStroke = '#6ea2ff';
+    const defaultRightStroke = '#7ab0ff';
+    const defaultBridgeStroke = '#86b5ff';
+    const activeStroke = '#ef27f4';
+    const agentOrder = ['Brand Agent', 'Support Agent', 'Finance Agent', 'Marketing Agent'];
+    let rightGroup;
+    let autoplayTimer = null;
+    let autoplayIndex = 0;
+    let isInView = false;
+    let isManualHover = false;
+    const agentToMcp = {
+      'Brand Agent': 'Brand MCP',
+      'Support Agent': 'Support MCP',
+      'Finance Agent': 'Finance MCP',
+      'Marketing Agent': 'Marketing MCP'
+    };
+
+    const setLeftAgentState = (targetName, active) => {
+      const activeNode = leftRoot
+        .descendants()
+        .find((node) => node.depth === 1 && node.data.name === targetName);
+      const activeMcpName = active ? agentToMcp[targetName] : '';
+      const isActiveAgent = Boolean(activeNode && activeMcpName);
+      const activeMcpNames = new Set();
+
+      const activeKeys = new Set();
+      const activeRightKeys = new Set();
+      const activeRightChildren = [];
+
+      if (activeNode && isActiveAgent) {
+        activeKeys.add(`${leftRoot.data.name}__${activeNode.data.name}`);
+        activeMcpNames.add(activeMcpName);
+        activeMcpNames.add('Brand MCP');
+
+        activeMcpNames.forEach((mcpName) => {
+          activeRightKeys.add(`Connected Systems__${mcpName}`);
+
+          const activeMcpNode = rightRoot
+            .descendants()
+            .find((node) => node.depth === 1 && node.data.name === mcpName);
+
+          if (activeMcpNode?.children) {
+            activeMcpNode.children.forEach((child) => {
+              activeRightKeys.add(`${mcpName}__${child.data.name}`);
+              activeRightChildren.push(child.data.name);
+            });
+          }
+        });
+      }
+
+      links.selectAll('.left-link')
+        .attr('stroke', (d) =>
+          isActiveAgent && activeKeys.has(`${d.source.data.name}__${d.target.data.name}`)
+            ? activeStroke
+            : defaultLeftStroke
+        )
+        .attr('stroke-width', (d) =>
+          isActiveAgent && activeKeys.has(`${d.source.data.name}__${d.target.data.name}`) ? 3.6 : 2.4
+        )
+        .attr('stroke-opacity', (d) =>
+          isActiveAgent && activeKeys.has(`${d.source.data.name}__${d.target.data.name}`) ? 1 : 0.9
+        )
+        .classed('is-flowing', (d) =>
+          isActiveAgent && activeKeys.has(`${d.source.data.name}__${d.target.data.name}`)
+        );
+
+      links.selectAll('.right-link')
+        .attr('stroke', (d) =>
+          isActiveAgent && activeRightKeys.has(`${d.source.data.name}__${d.target.data.name}`)
+            ? activeStroke
+            : defaultRightStroke
+        )
+        .attr('stroke-width', (d) =>
+          d.source.depth === 1 && d.target.depth === 2
+            ? isActiveAgent && activeRightKeys.has(`${d.source.data.name}__${d.target.data.name}`) ? 3 : 2.2
+            : isActiveAgent && activeRightKeys.has(`${d.source.data.name}__${d.target.data.name}`) ? 3.6 : 2.4
+        )
+        .attr('stroke-opacity', (d) =>
+          isActiveAgent && activeRightKeys.has(`${d.source.data.name}__${d.target.data.name}`) ? 1 : 0.9
+        )
+        .classed('is-flowing', (d) =>
+          isActiveAgent && activeRightKeys.has(`${d.source.data.name}__${d.target.data.name}`)
+        );
+
+
+      bridge.selectAll('[data-bridge-side="left"]')
+        .attr('stroke', isActiveAgent ? activeStroke : defaultBridgeStroke)
+        .attr('stroke-width', isActiveAgent ? 3 : 2.2)
+        .classed('is-flowing', isActiveAgent);
+
+      bridge.selectAll('[data-bridge-side="right"]')
+        .attr('stroke', isActiveAgent ? activeStroke : defaultBridgeStroke)
+        .attr('stroke-width', isActiveAgent ? 3 : 2.2)
+        .classed('is-flowing', isActiveAgent);
+
+      if (rightGroup) {
+        rightGroup
+          .filter((d) =>
+            (d.depth === 1 && activeMcpNames.has(d.data.name)) ||
+            (d.depth === 2 && activeRightChildren.includes(d.data.name))
+          )
+          .select('rect')
+          .attr('stroke', (d) =>
+            isActiveAgent
+              ? 'rgba(239,39,244,0.95)'
+              : d.depth === 1
+                ? 'rgba(164,189,255,0.55)'
+                : 'rgba(255,255,255,0.7)'
+          )
+          .attr('stroke-width', isActiveAgent ? 2.2 : 1.6);
+
+        rightGroup
+          .filter((d) =>
+            (d.depth === 1 && !activeMcpNames.has(d.data.name)) ||
+            (d.depth === 2 && !activeRightChildren.includes(d.data.name))
+          )
+          .select('rect')
+          .attr('stroke', (d) =>
+            d.depth === 1 ? 'rgba(164,189,255,0.55)' : 'rgba(255,255,255,0.7)'
+          )
+          .attr('stroke-width', 1.6);
+      }
+
+      gatewayRotor.classed('is-active', isActiveAgent);
+      gatewayActiveIcon.classed('is-active', isActiveAgent);
+    };
+
+    const stopAutoplay = () => {
+      if (autoplayTimer) {
+        window.clearInterval(autoplayTimer);
+        autoplayTimer = null;
+      }
+    };
+
+    const runAutoplayStep = () => {
+      const agentName = agentOrder[autoplayIndex % agentOrder.length];
+      setLeftAgentState(agentName, true);
+
+      leftGroup
+        .filter((d) => d.depth === 1)
+        .select('rect')
+        .attr('stroke', (d) =>
+          d.data.name === agentName ? 'rgba(239,39,244,0.95)' : 'rgba(255,255,255,0.7)'
+        )
+        .attr('stroke-width', (d) => (d.data.name === agentName ? 2.2 : 1.6));
+
+      autoplayIndex += 1;
+    };
+
+    const startAutoplay = () => {
+      if (autoplayTimer || !isInView || isManualHover) return;
+      runAutoplayStep();
+      autoplayTimer = window.setInterval(runAutoplayStep, 1400);
+    };
+
+    leftGroup
+      .filter((d) => d.depth === 1)
+      .on('mouseenter', function (event, d) {
+        isManualHover = true;
+        stopAutoplay();
+        setLeftAgentState(d.data.name, true);
+        d3.select(this).select('rect')
+          .attr('stroke', 'rgba(239,39,244,0.95)')
+          .attr('stroke-width', 2.2);
+      })
+      .on('mouseleave', function () {
+        isManualHover = false;
+        setLeftAgentState('', false);
+        d3.select(this).select('rect')
+          .attr('stroke', 'rgba(255,255,255,0.7)')
+          .attr('stroke-width', 1.6);
+
+        startAutoplay();
+      });
+
+    rightGroup = nodes
+      .append('g')
+      .selectAll('g')
+      .data(rightRoot.descendants())
+      .join('g')
+      .attr('transform', (d) => `translate(${d.y},${d.x})`);
+
+    rightGroup.each(function (d) {
+      const group = d3.select(this);
+      if (d.depth === 0) return;
+      drawPill(group, d.data.name, d.children ? 'group' : 'right-leaf');
+    });
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          isInView = Boolean(entry?.isIntersecting);
+
+          if (isInView) {
+            startAutoplay();
+          } else {
+            stopAutoplay();
+            if (!isManualHover) {
+              setLeftAgentState('', false);
+              leftGroup
+                .filter((d) => d.depth === 1)
+                .select('rect')
+                .attr('stroke', 'rgba(255,255,255,0.7)')
+                .attr('stroke-width', 1.6);
+            }
+          }
+        },
+        { threshold: 0.45 }
+      );
+
+      observer.observe(host);
+    } else {
+      isInView = true;
+      startAutoplay();
+    }
+  })();
+</script>

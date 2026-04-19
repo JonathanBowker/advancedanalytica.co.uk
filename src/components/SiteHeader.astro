@@ -7,7 +7,7 @@ const nav = [
   { label: 'About', href: '/company/about' }
 ];
 ---
- <header class="fixed top-0 z-50 w-full border-b border-paper/10 bg-ink/95 backdrop-blur">
+ <header data-site-header class="fixed top-0 z-50 w-full border-b border-paper/10 bg-ink/95 backdrop-blur">
   <div class="container-nav flex items-center justify-between py-5 md:py-7">
     <a href="/" class="flex items-center gap-3 text-paper justify-self-start">
       <img
@@ -37,49 +37,130 @@ const nav = [
         <path d="M12 6l4 4-4 4" />
       </svg>
     </a>
-    <div class="hidden md:flex md:items-center md:gap-6">
-      <nav class="flex items-center gap-8 text-base text-paper/80">
-        {nav.map((item) =>
-          item.children ? (
-            <div class="relative group after:absolute after:inset-x-0 after:top-full after:h-4 after:content-[''] after:bg-transparent">
-              <a
-                href={item.href}
-                class="inline-flex items-center gap-2 hover:text-paper transition-colors"
-                aria-haspopup="true"
-              >
-                {item.label}
-                <svg
-                  class="h-4 w-4 opacity-60 transition-transform group-hover:rotate-180 group-focus-within:rotate-180"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
+    <div class="hidden md:flex md:flex-1 md:items-center md:justify-end md:gap-6">
+      <div class="relative flex items-center gap-6">
+        <nav data-main-nav class="flex items-center gap-8 text-base text-paper/80 transition-opacity duration-200">
+          {nav.map((item) =>
+            item.children ? (
+              <div class="relative group after:absolute after:inset-x-0 after:top-full after:h-4 after:content-[''] after:bg-transparent">
+                <a
+                  href={item.href}
+                  class="inline-flex items-center gap-2 hover:text-paper transition-colors"
+                  aria-haspopup="true"
                 >
-                  <path d="M5.75 7.75L10 12l4.25-4.25" />
-                </svg>
-              </a>
+                  {item.label}
+                  <svg
+                    class="h-4 w-4 opacity-60 transition-transform group-hover:rotate-180 group-focus-within:rotate-180"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path d="M5.75 7.75L10 12l4.25-4.25" />
+                  </svg>
+                </a>
 
-              <div class="absolute left-1/2 top-full z-50 mt-2 w-[320px] -translate-x-1/2 translate-y-2 scale-[0.98] opacity-0 pointer-events-none transition-all duration-200 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:scale-100 group-focus-within:opacity-100 group-focus-within:pointer-events-auto">
-                <div class="rounded-xl bg-[#d8f6ff] p-3 shadow-outline">
-                  <div class="grid">
-                    {item.children.map((child) => (
-                      <a
-                        href={child.href}
-                        class="rounded-lg px-5 py-4 text-sm font-semibold text-ink/90 hover:bg-white/50 hover:text-ink transition-colors"
-                      >
-                        {child.label}
-                      </a>
-                    ))}
+                <div class="absolute left-1/2 top-full z-50 mt-2 w-[320px] -translate-x-1/2 translate-y-2 scale-[0.98] opacity-0 pointer-events-none transition-all duration-200 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:scale-100 group-focus-within:opacity-100 group-focus-within:pointer-events-auto">
+                  <div class="rounded-xl bg-[#d8f6ff] p-3 shadow-outline">
+                    <div class="grid">
+                      {item.children.map((child) => (
+                        <a
+                          href={child.href}
+                          class="rounded-lg px-5 py-4 text-sm font-semibold text-ink/90 hover:bg-white/50 hover:text-ink transition-colors"
+                        >
+                          {child.label}
+                        </a>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
+            ) : (
+              <a href={item.href} class="inline-flex items-center hover:text-paper transition-colors">
+                {item.label}
+              </a>
+            )
+          )}
+        </nav>
+        <button
+          type="button"
+          data-search-toggle
+          aria-label="Open search"
+          aria-expanded="false"
+          aria-controls="site-search-panel"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-paper/15 text-paper/80 transition-colors hover:border-paper/30 hover:text-paper"
+        >
+          <svg
+            class="h-4 w-4"
+            viewBox="0 0 20 20"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="9" cy="9" r="5"></circle>
+            <path d="M13 13l4 4"></path>
+          </svg>
+        </button>
+        <div
+          id="site-search-panel"
+          data-search-panel
+          class="absolute inset-y-[-0.35rem] left-0 right-0 flex items-center opacity-0 pointer-events-none -translate-x-8 transition-all duration-300 ease-out"
+        >
+          <form action="/search" method="get" class="w-full">
+            <label class="sr-only" for="site-search-input">Search</label>
+            <div class="relative">
+              <input
+                id="site-search-input"
+                name="q"
+                type="search"
+                placeholder="Search the site..."
+                class="w-full rounded-md border border-paper/15 bg-[#12161d] px-4 py-3 pr-24 text-base text-paper placeholder:text-paper/45 focus:outline-none focus:ring-2 focus:ring-[#ef27f4]/40"
+              />
+              <button
+                type="submit"
+                aria-label="Submit search"
+                class="absolute right-11 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-md text-paper/70 transition-colors hover:text-paper"
+              >
+                <svg
+                  class="h-4 w-4"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <circle cx="9" cy="9" r="5"></circle>
+                  <path d="M13 13l4 4"></path>
+                </svg>
+              </button>
+              <button
+                type="button"
+                data-search-close
+                aria-label="Close search"
+                class="absolute right-3 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-md text-paper/70 transition-colors hover:text-paper"
+              >
+                <svg
+                  class="h-4 w-4"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M5 5l10 10"></path>
+                  <path d="M15 5L5 15"></path>
+                </svg>
+              </button>
             </div>
-          ) : (
-            <a href={item.href} class="inline-flex items-center hover:text-paper transition-colors">
-              {item.label}
-            </a>
-          )
-        )}
-      </nav>
+          </form>
+        </div>
+      </div>
       <a
         href="#get-in-touch"
         class="inline-flex items-center gap-2 rounded-md bg-[#ef27f4] px-5 py-2.5 text-sm font-semibold text-paper shadow-outline hover:bg-[#d823dd] transition-colors"
@@ -102,3 +183,49 @@ const nav = [
     </div>
   </div>
 </header>
+<script is:inline>
+  (() => {
+    const header = document.querySelector('[data-site-header]');
+    if (!(header instanceof HTMLElement)) return;
+
+    const toggle = header.querySelector('[data-search-toggle]');
+    const panel = header.querySelector('[data-search-panel]');
+    const input = header.querySelector('#site-search-input');
+    const close = header.querySelector('[data-search-close]');
+    const nav = header.querySelector('[data-main-nav]');
+
+    if (!(toggle instanceof HTMLButtonElement)) return;
+    if (!(panel instanceof HTMLElement)) return;
+    if (!(input instanceof HTMLInputElement)) return;
+    if (!(close instanceof HTMLButtonElement)) return;
+
+    const setOpen = (open) => {
+      nav?.classList.toggle('opacity-0', open);
+      nav?.classList.toggle('pointer-events-none', open);
+      panel.classList.toggle('opacity-0', !open);
+      panel.classList.toggle('-translate-x-8', !open);
+      panel.classList.toggle('pointer-events-none', !open);
+      panel.classList.toggle('opacity-100', open);
+      panel.classList.toggle('translate-x-0', open);
+      panel.classList.toggle('pointer-events-auto', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Close search' : 'Open search');
+      if (open) window.requestAnimationFrame(() => input.focus());
+    };
+
+    toggle.addEventListener('click', () => {
+      const open = toggle.getAttribute('aria-expanded') === 'true';
+      setOpen(!open);
+    });
+
+    close.addEventListener('click', () => setOpen(false));
+
+    document.addEventListener('click', (event) => {
+      if (!header.contains(event.target)) setOpen(false);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') setOpen(false);
+    });
+  })();
+</script>
