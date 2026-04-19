@@ -12,11 +12,15 @@ draft: false
 
 When brand intent is executed by AI systems, the primary risk is not *one* bad output. The risk is *systemic drift* across channels, teams, and time.
 
+At Advanced Analytica, we treat assurance as a core part of the operating model, not as a review process bolted on afterwards. If a business is using AI across content, service, sales, or internal operations, it needs a way to prove that outputs still align with policy, standards, and intended behaviour.
+
 ## What “drift” looks like in practice
 - Tone that slowly becomes generic.
 - Visual rules that degrade under edge cases.
 - Claims that creep into unsafe territory.
 - Local-market adaptations that erode core identity.
+
+Drift often begins quietly. One workflow starts shortcutting a disclaimer. A regional team adapts messaging beyond what was intended. A helpful internal assistant starts combining approved language with unapproved claims. Over time, the organisation loses confidence because nobody can say precisely which rules were followed, where they broke down, or how the problem spread.
 
 <Insight>
 You cannot govern what you cannot measure. Assurance turns “brand quality” into signals and controls.
@@ -29,13 +33,26 @@ You cannot govern what you cannot measure. Assurance turns “brand quality” i
 4. Correct definitions (policy updates) and redeploy.
 5. Prove improvement (before/after metrics).
 
+In practice, that loop needs clear ownership. Someone has to own the policy, someone has to own the system, and someone has to own the release decision when assurance signals indicate a problem. Without that governance structure, “monitoring” becomes a dashboard nobody is accountable for.
+
 ## What to instrument
 - **Policy violations:** hard constraints (must / must not).
 - **Alignment score:** softer, semantic similarity to intent.
 - **Coverage:** which channels/use-cases are monitored.
 - **Latency to correction:** time from detection to redeploy.
 
+## What this means in the IBOM® model
+Within the IBOM®, assurance belongs to the later stages of the operating model, but it depends on everything that came before it being structured properly. If the organisation has not defined its intent clearly, mapped its knowledge properly, and expressed policy in a machine-operable form, assurance has nothing stable to measure against.
+
+That is why we connect assurance to the full chain:
+
+- policy and specification created upstream
+- governed deployment through the AICE
+- live monitoring in operation
+- controlled revision when the evidence says something needs to change
+
+Assurance is how a brand-first operating model becomes defensible in real work.
+
 <Note>
 Assurance is not “QA at the end”. It is a runtime discipline that lives inside the operating model.
 </Note>
-

@@ -12,17 +12,30 @@ draft: false
 
 Once governance is operational, improvement becomes continuous: reduce violations, increase alignment, and shorten time-to-correction.
 
+That distinction matters. In weak AI programmes, “optimisation” often becomes a justification for changing outputs until they look good in the moment. In a governed model, optimisation should improve how reliably the system executes the intended policy, not quietly rewrite the policy itself.
+
 ## What to optimise
 - Evaluation thresholds and scoring
 - Test coverage for new channels/use-cases
 - Escalation rules and ownership
 - Policy clarity (remove ambiguity)
 
+It is also sensible to optimise the surrounding operating model:
+
+- how quickly incidents are triaged
+- how easily teams can identify the right policy bundle
+- how much manual review is still needed
+- how often recurring exceptions can be eliminated through better specification
+
 ## What not to optimise
 - Core intent (that belongs to strategy)
 - Legal constraints (those are non-negotiable)
 
+## Why feedback loops matter
+The value of optimisation comes from shortening the distance between observation and correction. If assurance detects drift but nothing changes upstream, the organisation has measurement without control. The point of a feedback loop is to move evidence back into mapping, specification, testing, and release.
+
+This is why optimisation belongs inside the IBOM® lifecycle rather than outside it. It is not a postscript. It is part of how a governed system becomes easier to run, safer to scale, and more dependable in live work.
+
 <Note>
 Optimisation is the discipline of making the system easier to run while staying faithful to intent.
 </Note>
-

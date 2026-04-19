@@ -12,17 +12,31 @@ draft: false
 
 Traditional brand governance assumes humans read documents. In AI-mediated workflows, policies are executed continuously and at scale. That demands a testing discipline.
 
+If a policy can change behaviour in production, it should be treated with the same release discipline as software. That means versioning, testing, promotion, rollback, and evidence. Otherwise the organisation is still relying on trust and manual interpretation, just with faster failure modes.
+
 ## What to test
 - **Hard constraints:** e.g. forbidden terms, legal disclaimers, mandatory elements.
 - **Context rules:** “only in X region / channel / persona”.
 - **Exception handling:** what happens when inputs are incomplete.
 - **Regression:** previous issues should not reappear after edits.
 
+It is also important to test whether policy logic behaves sensibly across realistic business scenarios, not only ideal examples. A good test suite should include the messy cases that happen in live delivery: partial inputs, conflicting context, outdated assets, and cross-functional requests that span multiple policies.
+
 ## The minimum viable test suite
 1. Golden examples (known-good outputs).
 2. Known-bad examples (must fail).
 3. Edge-case prompts (adversarial / ambiguous).
 4. Localisation variants (market-specific rules).
+
+## What Advanced Analytica means by policy testing
+Within the IBOM®, testing is not only about content samples. It is about validating the specification layer itself. If the business has defined brand, policy, and operational rules in a domain definition language, those definitions can be tested before they are promoted into live systems through the AICE.
+
+That lets teams ask practical questions such as:
+
+- did the updated rule break an existing approved use case?
+- did a regional exception override something it should not?
+- did a compliance constraint disappear from the final policy bundle?
+- does the system still behave correctly when context changes?
 
 <Warning>
 Without regression tests, policy changes become a new source of risk.
@@ -33,3 +47,5 @@ Without regression tests, policy changes become a new source of risk.
 - Every change runs tests.
 - Only passing versions are promoted.
 - Rollback is a first-class capability.
+
+This is one of the clearest differences between static guidelines and governed AI systems. A PDF can be published. A policy-driven operating model has to be released safely.

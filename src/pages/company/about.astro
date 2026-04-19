@@ -18,13 +18,15 @@ const page = {
 };
 ---
 <BaseLayout title={title} description={description} page={page}>
-  <section class="relative overflow-hidden bg-slate text-paper">
-    <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/45" aria-hidden="true"></div>
+  <section class="relative overflow-hidden bg-gradient-to-br from-black via-[#0b0e14] to-[#171b24] text-paper">
+    <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/45" aria-hidden="true"></div>
+    <div class="absolute -left-24 top-20 h-72 w-72 rounded-full bg-[#ef27f4]/10 blur-3xl" aria-hidden="true"></div>
+    <div class="absolute right-0 top-0 h-80 w-80 rounded-full bg-[#ff8c69]/10 blur-3xl" aria-hidden="true"></div>
 
     <div class="container-wide relative z-10 pt-28 pb-24">
       <div class="grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
         <div>
-          <div class="eyebrow text-paper/70">Company</div>
+          <div class="eyebrow text-paper/70">About Advanced Analytica</div>
           <h1 class="mt-5 font-masthead text-[clamp(2.75rem,5.4vw,5rem)] font-normal tracking-tight text-paper leading-[1.02]">
             Advanced Analytica
           </h1>
@@ -82,29 +84,29 @@ const page = {
           </div>
         </div>
 
-        <div class="rounded-2xl border border-paper/15 bg-black/20 backdrop-blur p-8 shadow-outline">
-          <div class="text-lg font-semibold tracking-[0.2em] uppercase text-paper/70">What we focus on</div>
-          <p class="mt-5 text-sm leading-relaxed text-paper/70">
+        <div class="rounded-2xl border border-paper/15 bg-ink/30 p-8 shadow-outline backdrop-blur">
+          <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#ef27f4]">What we focus on</div>
+          <p class="mt-5 text-sm leading-relaxed text-paper/75">
             We work where organisations need expert knowledge, business rules,
             and governance controls to become operational inputs for AI systems.
           </p>
-          <div class="mt-6 grid gap-5 text-base leading-relaxed text-paper/75">
-            <div>
+          <div class="mt-6 grid gap-4 text-base leading-relaxed text-paper/75">
+            <div class="rounded-xl border border-paper/10 bg-black/20 p-5">
               <div class="text-sm font-semibold uppercase tracking-[0.2em] text-paper">Knowledge</div>
               <div class="mt-1 text-sm font-semibold text-paper">What the organisation knows</div>
               <div class="mt-2 text-sm">Policies, processes, standards, documents, and specialist expertise.</div>
             </div>
-            <div>
+            <div class="rounded-xl border border-paper/10 bg-black/20 p-5">
               <div class="text-sm font-semibold uppercase tracking-[0.2em] text-paper">Structure</div>
               <div class="mt-1 text-sm font-semibold text-paper">How it is defined clearly</div>
               <div class="mt-2 text-sm">Specifications, schemas, datasets, linked records, and machine-readable logic.</div>
             </div>
-            <div>
+            <div class="rounded-xl border border-paper/10 bg-black/20 p-5">
               <div class="text-sm font-semibold uppercase tracking-[0.2em] text-paper">Delivery</div>
               <div class="mt-1 text-sm font-semibold text-paper">How systems can use it</div>
               <div class="mt-2 text-sm">APIs, MCP servers, internal tools, and governed runtime workflows.</div>
             </div>
-            <div>
+            <div class="rounded-xl border border-paper/10 bg-black/20 p-5">
               <div class="text-sm font-semibold uppercase tracking-[0.2em] text-paper">Control</div>
               <div class="mt-1 text-sm font-semibold text-paper">How it is governed in use</div>
               <div class="mt-2 text-sm">Ownership, approvals, traceability, testing, and controlled change over time.</div>
@@ -135,52 +137,54 @@ const page = {
     </div>
   </section>
 
-  <section class="container-wide py-20">
-    <div class="grid gap-6 lg:grid-cols-3">
+  <section class="bg-paper">
+    <div class="container-wide py-20">
+      <div class="grid gap-6 lg:grid-cols-3">
         <div class="rounded-2xl border border-fog bg-surface p-8 shadow-outline">
-          <div class="text-xs font-semibold tracking-[0.2em] uppercase text-steel">Operating model</div>
+          <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#ef27f4]">Operating model</div>
           <div class="mt-4 text-2xl font-semibold tracking-tight text-ink">IBOM<sup>®</sup></div>
           <p class="mt-4 text-base leading-relaxed text-steel">
             A structured lifecycle for turning organisational intent into clear
             specifications, governed systems, and live operational delivery.
           </p>
         </div>
-      <div class="rounded-2xl border border-fog bg-surface p-8 shadow-outline">
-        <div class="text-xs font-semibold tracking-[0.2em] uppercase text-steel">Foundation</div>
-        <div class="mt-4 text-2xl font-semibold tracking-tight text-ink">Brando Schema</div>
-        <p class="mt-4 text-base leading-relaxed text-steel">
-          An open semantic foundation for expressing knowledge, policy,
-          relationships, and governance in structured form.
-        </p>
-        <a
-          class="mt-6 inline-flex items-center gap-2 text-xs font-semibold tracking-[0.2em] uppercase text-ink hover:text-accent transition-colors"
-          href={BRANDO_SCHEMA_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Visit Brando Schema <span aria-hidden="true">→</span>
-        </a>
-      </div>
-      <div class="rounded-2xl border border-fog bg-surface p-8 shadow-outline">
-        <div class="text-xs font-semibold tracking-[0.2em] uppercase text-steel">Execution</div>
-        <div class="mt-4 text-2xl font-semibold tracking-tight text-ink">Governed delivery</div>
-        <p class="mt-4 text-base leading-relaxed text-steel">
-          Controlled access, supervised build processes, and auditability so AI
-          systems can operate against trusted knowledge and defined rules.
-        </p>
+        <div class="rounded-2xl border border-fog bg-surface p-8 shadow-outline">
+          <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#ef27f4]">Foundation</div>
+          <div class="mt-4 text-2xl font-semibold tracking-tight text-ink">Brando Schema</div>
+          <p class="mt-4 text-base leading-relaxed text-steel">
+            An open semantic foundation for expressing knowledge, policy,
+            relationships, and governance in structured form.
+          </p>
+          <a
+            class="mt-6 inline-flex items-center gap-2 text-xs font-semibold tracking-[0.2em] uppercase text-[#ff8c69] hover:text-ink transition-colors"
+            href={BRANDO_SCHEMA_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Visit Brando Schema <span aria-hidden="true">→</span>
+          </a>
+        </div>
+        <div class="rounded-2xl border border-fog bg-surface p-8 shadow-outline">
+          <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#ef27f4]">Execution</div>
+          <div class="mt-4 text-2xl font-semibold tracking-tight text-ink">Governed delivery</div>
+          <p class="mt-4 text-base leading-relaxed text-steel">
+            Controlled access, supervised build processes, and auditability so AI
+            systems can operate against trusted knowledge and defined rules.
+          </p>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="bg-paper">
+  <section class="bg-[#0b0e14] text-paper">
     <div class="container-wide py-20">
       <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
         <div>
-          <div class="eyebrow">What we deliver</div>
-          <h2 class="mt-4 text-[clamp(2rem,4.2vw,3.5rem)] font-semibold tracking-tight text-ink">
+          <div class="eyebrow text-paper/70">What we deliver</div>
+          <h2 class="mt-4 font-masthead text-[clamp(2rem,4.2vw,3.5rem)] font-normal tracking-tight text-paper">
             Practical governance you can ship
           </h2>
-          <p class="mt-6 max-w-[80ch] text-lg leading-relaxed text-steel md:text-xl">
+          <p class="mt-6 max-w-[80ch] text-lg leading-relaxed text-paper/80 md:text-xl">
             IBOM<sup>®</sup> starts with what the organisation already has: knowledge,
             rules, processes, and expert judgement. The work is turning that
             material into clear specifications, structured assets, and governed
@@ -197,9 +201,9 @@ const page = {
             { title: 'Operational controls', body: 'Checks, approval logic, and audit trails that run in live delivery.' },
             { title: 'Change control', body: 'Versioned updates, owners, and traceability so systems evolve safely over time.' }
           ].map((item) => (
-            <div class="rounded-2xl border border-fog bg-surface p-6 shadow-outline">
-              <div class="text-xs font-semibold tracking-[0.2em] uppercase text-steel">{item.title}</div>
-              <p class="mt-3 text-sm leading-relaxed text-steel">{item.body}</p>
+            <div class="rounded-2xl border border-paper/15 bg-ink/30 p-6 shadow-outline backdrop-blur">
+              <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#ef27f4]">{item.title}</div>
+              <p class="mt-3 text-sm leading-relaxed text-paper/75">{item.body}</p>
             </div>
           ))}
         </div>
@@ -207,11 +211,12 @@ const page = {
     </div>
   </section>
 
-  <section class="container-wide py-20">
-    <div class="grid gap-10 lg:grid-cols-2 lg:items-start">
+  <section class="bg-paper">
+    <div class="container-wide py-20">
+      <div class="grid gap-10 lg:grid-cols-2 lg:items-start">
       <div>
           <div class="eyebrow">Where it fits</div>
-          <h2 class="mt-4 text-[clamp(2rem,4.2vw,3.25rem)] font-semibold tracking-tight text-ink">
+          <h2 class="mt-4 font-masthead text-[clamp(2rem,4.2vw,3.25rem)] font-normal tracking-tight text-ink">
             Integrated, not isolated
           </h2>
           <p class="mt-6 max-w-[80ch] text-lg leading-relaxed text-steel md:text-xl">
@@ -235,17 +240,18 @@ const page = {
         ))}
       </div>
     </div>
+    </div>
   </section>
 
-  <section class="bg-paper">
+  <section class="bg-[#0b0e14] text-paper">
     <div class="container-wide py-20">
       <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
         <div>
-          <div class="eyebrow">How we work</div>
-          <h2 class="mt-4 text-[clamp(2rem,4.2vw,3.5rem)] font-semibold tracking-tight text-ink">
+          <div class="eyebrow text-paper/70">How we work</div>
+          <h2 class="mt-4 font-masthead text-[clamp(2rem,4.2vw,3.5rem)] font-normal tracking-tight text-paper">
             From intent to operation
           </h2>
-          <p class="mt-6 text-lg leading-relaxed text-steel md:text-xl">
+          <p class="mt-6 text-lg leading-relaxed text-paper/80 md:text-xl">
             We treat organisational knowledge as an operational asset: defined
             clearly, structured properly, connected to systems, and governed in
             use.
@@ -261,9 +267,9 @@ const page = {
             { title: 'Operation', body: 'Run systems with oversight, monitoring, and accountable decision pathways.' },
             { title: 'Assurance', body: 'Test outcomes, track performance, and update safely as needs change.' }
           ].map((step) => (
-            <div class="rounded-2xl border border-fog bg-surface p-6 shadow-outline">
-              <div class="text-xs font-semibold tracking-[0.2em] uppercase text-steel">{step.title}</div>
-              <p class="mt-3 text-sm leading-relaxed text-steel">{step.body}</p>
+            <div class="rounded-2xl border border-paper/15 bg-ink/30 p-6 shadow-outline backdrop-blur">
+              <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#ef27f4]">{step.title}</div>
+              <p class="mt-3 text-sm leading-relaxed text-paper/75">{step.body}</p>
             </div>
           ))}
         </div>
@@ -271,11 +277,12 @@ const page = {
     </div>
   </section>
 
-  <section class="container-wide py-20">
-    <div class="grid gap-10 lg:grid-cols-2 lg:items-start">
+  <section class="bg-paper">
+    <div class="container-wide py-20">
+      <div class="grid gap-10 lg:grid-cols-2 lg:items-start">
       <div>
           <div class="eyebrow">Principles</div>
-          <h2 class="mt-4 text-[clamp(2rem,4.2vw,3.25rem)] font-semibold tracking-tight text-ink">
+          <h2 class="mt-4 font-masthead text-[clamp(2rem,4.2vw,3.25rem)] font-normal tracking-tight text-ink">
             Governance you can operate
           </h2>
           <p class="mt-6 max-w-[80ch] text-lg leading-relaxed text-steel md:text-xl">
@@ -298,6 +305,7 @@ const page = {
           </div>
         ))}
       </div>
+    </div>
     </div>
   </section>
 </BaseLayout>

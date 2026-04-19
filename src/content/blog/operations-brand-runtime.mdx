@@ -12,18 +12,31 @@ draft: false
 
 In runtime operation, brand rules are not “checked occasionally”. They are enforced and measured during generation, translation, personalisation, and publication.
 
+This is the point where many AI initiatives succeed or fail. It is relatively easy to create a promising prototype. It is much harder to run a governed system reliably when it is being used by multiple teams, across multiple channels, under real operational pressure.
+
 ## Runtime capabilities
 - Policy enforcement at inference time
 - Context-aware tokens and persona constraints
 - Controlled overrides (campaigns, exceptions)
 - Auditing for every decision path
 
+Those capabilities need to sit inside the operational pathway, not beside it. If controls only exist as guidance or after-the-fact review, they do not meaningfully govern runtime behaviour.
+
 ## What to avoid
 - Hardcoding brand logic inside prompts with no versioning.
 - Shipping “temporary” exceptions with no expiry.
 - Treating monitoring as a separate project.
 
+## The role of the AICE
+This is where the AICE matters in our offer. It acts as the governed layer between the organisation’s systems, people, and AI interactions. That allows runtime operation to be managed through explicit policy, observable controls, and consistent communications logic rather than improvised prompt engineering.
+
+When operation is treated properly, the organisation can answer:
+
+- which policy version was active?
+- which context rules were applied?
+- why was an output accepted, blocked, or escalated?
+- where did the system deviate from intended behaviour?
+
 <Warning>
 If you cannot roll back a policy version, you are not operating brand governance safely.
 </Warning>
-

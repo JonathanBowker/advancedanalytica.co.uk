@@ -223,7 +223,7 @@
         .attr('d', (d) => clusterLinkPath(d, side))
         .attr('fill', 'none')
         .attr('stroke', color)
-        .attr('stroke-width', 2.4)
+        .attr('stroke-width', 1.8)
         .attr('stroke-linecap', 'round')
         .attr('stroke-opacity', opacity)
         .attr('filter', 'url(#aice-glow)')
@@ -231,20 +231,20 @@
         .attr('data-link-key', (d) => `${d.source.data.name}__${d.target.data.name}`);
     };
 
-    drawLinkSet('.left-link', '#6ea2ff', 'left');
-    drawLinkSet('.right-link', '#7ab0ff', 'right');
+    drawLinkSet('.left-link', 'rgba(226,232,240,0.72)', 'left');
+    drawLinkSet('.right-link', 'rgba(226,232,240,0.72)', 'right');
 
     const rightParentNames = new Set(rightData.children.map((node) => node.name));
 
     links.selectAll('.right-link')
       .filter((d) => rightParentNames.has(d.source.data.name))
-      .attr('stroke-width', 3.4)
+      .attr('stroke-width', 2.6)
       .attr('stroke-opacity', 1)
       .attr('stroke-linecap', 'round');
 
     links.selectAll('.right-link')
       .filter((d) => d.source.depth === 1 && d.target.depth === 2)
-      .attr('stroke-width', 2.2);
+      .attr('stroke-width', 1.6);
 
     const bridge = links.append('g');
     const bridgeEdges = [
@@ -260,8 +260,8 @@
           `M${edge.source},${edge.x} C${edge.source + (index === 0 ? -18 : 18)},${edge.x} ${edge.target + (index === 0 ? 18 : -18)},${edge.x} ${edge.target},${edge.x}`
         )
         .attr('fill', 'none')
-        .attr('stroke', '#86b5ff')
-        .attr('stroke-width', 2.2)
+        .attr('stroke', 'rgba(226,232,240,0.72)')
+        .attr('stroke-width', 1.7)
         .attr('stroke-linecap', 'round')
         .attr('filter', 'url(#aice-glow)')
         .attr('data-flow-line', '')
@@ -363,7 +363,7 @@
         .attr('height', height)
         .attr('rx', height / 2)
         .attr('fill', theme === 'group' ? 'rgba(18,22,29,0.82)' : 'rgba(10,12,16,0.92)')
-        .attr('stroke', theme === 'group' ? 'rgba(164,189,255,0.55)' : 'rgba(255,255,255,0.7)')
+        .attr('stroke', theme === 'group' ? 'rgba(226,232,240,0.45)' : 'rgba(255,255,255,0.7)')
         .attr('stroke-width', 1.6);
       group
         .append('text')
@@ -391,9 +391,9 @@
       }
     });
 
-    const defaultLeftStroke = '#6ea2ff';
-    const defaultRightStroke = '#7ab0ff';
-    const defaultBridgeStroke = '#86b5ff';
+    const defaultLeftStroke = 'rgba(226,232,240,0.72)';
+    const defaultRightStroke = 'rgba(226,232,240,0.72)';
+    const defaultBridgeStroke = 'rgba(226,232,240,0.72)';
     const activeStroke = '#ef27f4';
     const agentOrder = ['Brand Agent', 'Support Agent', 'Marketing Agent', 'Other Agents'];
     let rightGroup;
@@ -448,7 +448,7 @@
             : defaultLeftStroke
         )
         .attr('stroke-width', (d) =>
-          isActiveAgent && activeKeys.has(`${d.source.data.name}__${d.target.data.name}`) ? 3.6 : 2.4
+          isActiveAgent && activeKeys.has(`${d.source.data.name}__${d.target.data.name}`) ? 2.8 : 1.8
         )
         .attr('stroke-opacity', (d) =>
           isActiveAgent && activeKeys.has(`${d.source.data.name}__${d.target.data.name}`) ? 1 : 0.9
@@ -465,8 +465,8 @@
         )
         .attr('stroke-width', (d) =>
           d.source.depth === 1 && d.target.depth === 2
-            ? isActiveAgent && activeRightKeys.has(`${d.source.data.name}__${d.target.data.name}`) ? 3 : 2.2
-            : isActiveAgent && activeRightKeys.has(`${d.source.data.name}__${d.target.data.name}`) ? 3.6 : 2.4
+            ? isActiveAgent && activeRightKeys.has(`${d.source.data.name}__${d.target.data.name}`) ? 2.4 : 1.6
+            : isActiveAgent && activeRightKeys.has(`${d.source.data.name}__${d.target.data.name}`) ? 2.8 : 1.8
         )
         .attr('stroke-opacity', (d) =>
           isActiveAgent && activeRightKeys.has(`${d.source.data.name}__${d.target.data.name}`) ? 1 : 0.9
@@ -478,12 +478,12 @@
 
       bridge.selectAll('[data-bridge-side="left"]')
         .attr('stroke', isActiveAgent ? activeStroke : defaultBridgeStroke)
-        .attr('stroke-width', isActiveAgent ? 3 : 2.2)
+        .attr('stroke-width', isActiveAgent ? 2.4 : 1.7)
         .classed('is-flowing', isActiveAgent);
 
       bridge.selectAll('[data-bridge-side="right"]')
         .attr('stroke', isActiveAgent ? activeStroke : defaultBridgeStroke)
-        .attr('stroke-width', isActiveAgent ? 3 : 2.2)
+        .attr('stroke-width', isActiveAgent ? 2.4 : 1.7)
         .classed('is-flowing', isActiveAgent);
 
       if (rightGroup) {
@@ -497,7 +497,7 @@
             isActiveAgent
               ? 'rgba(239,39,244,0.95)'
               : d.depth === 1
-                ? 'rgba(164,189,255,0.55)'
+                ? 'rgba(226,232,240,0.45)'
                 : 'rgba(255,255,255,0.7)'
           )
           .attr('stroke-width', isActiveAgent ? 2.2 : 1.6);
@@ -509,7 +509,7 @@
           )
           .select('rect')
           .attr('stroke', (d) =>
-            d.depth === 1 ? 'rgba(164,189,255,0.55)' : 'rgba(255,255,255,0.7)'
+            d.depth === 1 ? 'rgba(226,232,240,0.45)' : 'rgba(255,255,255,0.7)'
           )
           .attr('stroke-width', 1.6);
       }

@@ -1,10 +1,15 @@
 import { defineCollection, z } from 'astro:content';
 
+const plainText = (fieldName: string) =>
+  z.string().refine((value) => !/<[^>]+>/.test(value), {
+    message: `${fieldName} must not contain HTML markup`
+  });
+
 const blog = defineCollection({
   type: 'content',
   schema: z.object({
-    title: z.string(),
-    description: z.string(),
+    title: plainText('title'),
+    description: plainText('description'),
     coverImage: z.string().optional(),
     publishedAt: z.date(),
     author: z.string().default('Advanced Analytica'),
@@ -17,8 +22,8 @@ const blog = defineCollection({
 const caseStudies = defineCollection({
   type: 'content',
   schema: z.object({
-    title: z.string(),
-    description: z.string(),
+    title: plainText('title'),
+    description: plainText('description'),
     coverImage: z.string().optional(),
     publishedAt: z.date(),
     author: z.string().default('Advanced Analytica'),
@@ -30,8 +35,8 @@ const caseStudies = defineCollection({
 const resources = defineCollection({
   type: 'content',
   schema: z.object({
-    title: z.string(),
-    description: z.string(),
+    title: plainText('title'),
+    description: plainText('description'),
     coverImage: z.string().optional(),
     category: z.string().optional(),
     tags: z.array(z.string()).default([]),
@@ -42,8 +47,8 @@ const resources = defineCollection({
 const products = defineCollection({
   type: 'content',
   schema: z.object({
-    title: z.string(),
-    description: z.string(),
+    title: plainText('title'),
+    description: plainText('description'),
     category: z.string().optional(),
     order: z.number().default(0),
     draft: z.boolean().default(false)
@@ -53,8 +58,8 @@ const products = defineCollection({
 const useCases = defineCollection({
   type: 'content',
   schema: z.object({
-    title: z.string(),
-    description: z.string(),
+    title: plainText('title'),
+    description: plainText('description'),
     industry: z.string().optional(),
     outcomes: z.array(z.string()).optional(),
     draft: z.boolean().default(false)
@@ -64,8 +69,8 @@ const useCases = defineCollection({
 const docs = defineCollection({
   type: 'content',
   schema: z.object({
-    title: z.string(),
-    description: z.string(),
+    title: plainText('title'),
+    description: plainText('description'),
     draft: z.boolean().default(false)
   })
 });
@@ -73,8 +78,8 @@ const docs = defineCollection({
 const brand = defineCollection({
   type: 'content',
   schema: z.object({
-    title: z.string(),
-    description: z.string().optional(),
+    title: plainText('title'),
+    description: plainText('description').optional(),
     draft: z.boolean().default(false)
   })
 });
@@ -82,10 +87,10 @@ const brand = defineCollection({
 const roles = defineCollection({
   type: 'content',
   schema: z.object({
-    title: z.string(),
+    title: plainText('title'),
     functionSlug: z.string(),
-    summary: z.string(),
-    detail: z.string(),
+    summary: plainText('summary'),
+    detail: plainText('detail'),
     order: z.number().default(0),
     draft: z.boolean().default(false)
   })
@@ -94,14 +99,14 @@ const roles = defineCollection({
 const personas = defineCollection({
   type: 'content',
   schema: z.object({
-    title: z.string(),
-    personaName: z.string(),
+    title: plainText('title'),
+    personaName: plainText('personaName'),
     functionSlug: z.string(),
     roleSlug: z.string(),
-    roleTitle: z.string(),
+    roleTitle: plainText('roleTitle'),
     seniority: z.string(),
-    organisationContext: z.string(),
-    summary: z.string(),
+    organisationContext: plainText('organisationContext'),
+    summary: plainText('summary'),
     goals: z.array(z.string()).default([]),
     painPoints: z.array(z.string()).default([]),
     questions: z.array(z.string()).default([]),

@@ -4,6 +4,7 @@ import TagPill from '../../components/TagPill.astro';
 import components from '../../lib/mdx/components';
 import { getCollection } from 'astro:content';
 import { SITE_URL } from '../../lib/seo/site';
+import { getGeneratedCoverPath } from '../../lib/contentCover';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -21,6 +22,7 @@ const related = allPosts.filter((entry) => entry.slug !== post.slug).slice(0, 3)
 const title = post.data.title;
 const description = post.data.description;
 const url = `${SITE_URL}/opinions/${post.slug}`;
+const coverImage = getGeneratedCoverPath('opinion', post.slug);
 
 const page = {
   title,
@@ -40,7 +42,7 @@ const page = {
     tags: post.data.tags,
     section: post.data.series,
     url,
-    image: post.data.coverImage
+    image: coverImage
   }
 };
 ---
@@ -48,9 +50,9 @@ const page = {
   <section>
     <div class="relative z-10 bg-[#0b0e14]">
       <div class="absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
-        {post.data.coverImage && (
+        {coverImage && (
           <img
-            src={post.data.coverImage}
+            src={coverImage}
             alt=""
             loading="eager"
             decoding="async"
@@ -69,9 +71,9 @@ const page = {
 
         <div class="mt-6 grid gap-10 lg:grid-cols-[480px_1fr] lg:items-start">
           <div class="lg:hidden">
-            {post.data.coverImage ? (
+            {coverImage ? (
               <img
-                src={post.data.coverImage}
+                src={coverImage}
                 alt={title}
                 loading="eager"
                 class="aspect-square w-full rounded-2xl object-cover shadow-outline"
@@ -102,9 +104,9 @@ const page = {
         </div>
 
         <div class="pointer-events-none absolute left-0 bottom-0 z-30 hidden w-[480px] translate-y-1/2 lg:block">
-          {post.data.coverImage ? (
+          {coverImage ? (
             <img
-              src={post.data.coverImage}
+              src={coverImage}
               alt={title}
               loading="eager"
               class="aspect-square w-full rounded-2xl object-cover shadow-outline"

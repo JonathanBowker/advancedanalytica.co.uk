@@ -14,3 +14,28 @@ draft: false
 - Request validation
 - Policy execution
 - Audit logging
+
+That sounds technical, but the business value is straightforward. MCP gives an organisation a standard way to expose governed capabilities to AI systems without hardwiring every rule into prompts or custom integrations.
+
+## Why that matters
+If an assistant, agent, or workflow needs to use approved brand language, retrieve the right asset, check whether a claim is permitted, or request an escalation path, it needs controlled access to that logic. MCP servers provide a structured interface for doing that.
+
+In a mature operating model, an MCP layer can:
+
+- expose approved knowledge bases and policy bundles
+- enforce who or what is allowed to call specific tools
+- apply pre-execution and post-execution checks
+- log requests and outcomes for assurance
+- route uncertain cases to human review
+
+## Where this fits in the Advanced Analytica offer
+We use the AICE as the governed communications layer and MCP as the interface pattern that allows systems to consume policy and knowledge safely. The IBOM® provides the operating model that determines what should exist in that layer in the first place.
+
+Put simply:
+
+- the IBOM® defines the operating discipline
+- machine-readable policy defines what the system should do
+- MCP exposes governed capabilities
+- the AICE carries those capabilities into live operation
+
+That is what turns governance from a document problem into an infrastructure capability.

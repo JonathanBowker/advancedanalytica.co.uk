@@ -12,11 +12,15 @@ draft: false
 
 As teams adopt agentic workflows, the governance challenge shifts: the system is no longer generating single outputs, it is executing multi-step work across tools.
 
+That changes the risk profile completely. An agent can look up data, trigger systems, transform content, make recommendations, and pass work downstream. If the organisation has not defined what is allowed, what must be checked, and where accountability sits, the problem is no longer output quality alone. It is operational behaviour.
+
 ## Where brand risk appears
 - Tool selection (which systems are allowed for which tasks).
 - Data access (what brand assets can be fetched and used).
 - Output validation (what must be checked before publish).
 - Auditability (what happened, when, and why).
+
+The same pattern applies beyond marketing. Service teams, sales operations, internal support, and risk functions all need agents to stay inside governed boundaries. The interface may be different, but the control problem is the same.
 
 ## A policy-aware agent pattern
 1. **Plan**: agent proposes steps and required assets.
@@ -25,7 +29,19 @@ As teams adopt agentic workflows, the governance challenge shifts: the system is
 4. **Validate**: outputs are checked against brand policy.
 5. **Escalate**: uncertain cases go to a human owner.
 
+## Where MCP and AICE fit
+This is where governed infrastructure matters. In our model, the AICE acts as the controlled communications layer and MCP servers provide structured access to tools, policies, and knowledge. That allows the organisation to mediate agent behaviour rather than hoping prompts will be enough.
+
+A well-designed MCP layer can do things such as:
+
+- validate whether the agent is allowed to call a tool
+- resolve which policy bundle applies in context
+- restrict which assets or datasets can be used
+- enforce post-execution checks before release or escalation
+- log the full decision path for review
+
+The result is not simply “safer prompts”. It is an agent workflow that can be governed, audited, and improved over time.
+
 <Note>
 Policy-aware tooling can be expressed as an MCP layer that enforces governance before tools are called.
 </Note>
-

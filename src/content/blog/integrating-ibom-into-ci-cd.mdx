@@ -1,5 +1,5 @@
 ---
-title: Integrating IBOM<sup>®</sup> into CI/CD Pipelines
+title: Integrating IBOM® into CI/CD Pipelines
 description: How to operationalize brand governance alongside software delivery.
 coverImage: /images/case-studies/integrating-ibom-into-ci-cd.svg
 publishedAt: 2025-12-28
@@ -12,11 +12,15 @@ draft: false
 
 IBOM<sup>®</sup> becomes real when brand rules and assets move through controlled pipelines: validated, versioned, and deployed into production systems.
 
+Many organisations already have mature engineering release practices, but those practices usually stop at application code. The policy, language, and governance logic that shapes AI behaviour often sits outside the delivery pipeline entirely. That is a gap. If policy affects runtime behaviour, it should move through controlled release in the same way as code.
+
 ## What goes in the pipeline
 - Brand definition artefacts (vocabulary, tokens, rules)
 - Policy bundles (hard constraints + context logic)
 - Test fixtures (golden examples + regressions)
 - Release notes (what changed, why, who approved)
+
+In practice, teams also need to track provenance: which definitions changed, which approval decision allowed them through, and which downstream systems depend on them. That becomes particularly important once multiple teams are sharing the same brand-first operating layer.
 
 ## Promotion stages
 1. Draft (authoring)
@@ -25,7 +29,20 @@ IBOM<sup>®</sup> becomes real when brand rules and assets move through controll
 4. Production (controlled release)
 5. Assurance (monitoring + rollbacks)
 
+## Why this matters to the offer
+At Advanced Analytica, we position the IBOM® as the operating model and the AICE as the controlled infrastructure that carries approved policy into live use. CI/CD is the bridge between those two. It is how specifications become safely deployable artefacts rather than static design intent.
+
+That means a robust pipeline should answer questions such as:
+
+- what changed in the specification layer?
+- which checks ran and what passed?
+- which version is live in which environment?
+- how do we roll back if policy behaviour proves unsafe or ineffective?
+
+<Insight>
+When governance enters the pipeline, identity, policy, and AI behaviour can be released with the same discipline as software.
+</Insight>
+
 <Insight>
 When brand becomes an operating layer, “release management” applies to identity as well as code.
 </Insight>
-

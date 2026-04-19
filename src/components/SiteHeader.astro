@@ -38,7 +38,7 @@ const nav = [
       </svg>
     </a>
     <div class="hidden md:flex md:flex-1 md:items-center md:justify-end md:gap-6">
-      <div class="relative flex items-center gap-6">
+      <div class="relative flex flex-1 items-center justify-end gap-6">
         <nav data-main-nav class="flex items-center gap-8 text-base text-paper/80 transition-opacity duration-200">
           {nav.map((item) =>
             item.children ? (
@@ -106,7 +106,7 @@ const nav = [
         <div
           id="site-search-panel"
           data-search-panel
-          class="absolute inset-y-[-0.35rem] left-0 right-0 flex items-center opacity-0 pointer-events-none -translate-x-8 transition-all duration-300 ease-out"
+          class="absolute inset-y-[-0.35rem] right-0 flex w-full max-w-[48rem] items-center opacity-0 pointer-events-none -translate-x-8 transition-all duration-300 ease-out"
         >
           <form action="/search" method="get" class="w-full">
             <label class="sr-only" for="site-search-input">Search</label>
