@@ -15,26 +15,28 @@ import usesRevisionGovernanceImg from "../components/uses/definition.svg?url";
 
 const title = "Intelligent Business Operating Model (IBOM<sup>®</sup>)";
 const description =
-  "Turn business logic into governed, executable infrastructure for AI systems — starting with brand governance.";
+  "Advanced Analytica helps organisations turn business logic into governed, executable infrastructure for AI systems, starting with brand governance.";
 const usesTabs = [
   {
     key: "purpose_understanding",
     label: "1. Purpose",
-    lead: "Phase 1",
+    stage: "Stage 1",
+    phase: "Phase 1",
     heading: "BUSINESS PURPOSE",
     subheading: "Define business purpose, outcomes, and constraints.",
-    body: "Establish the business purpose, strategic objectives, success criteria, and operating constraints for the AI system. This phase ensures all subsequent work is anchored to real business outcomes rather than technical enthusiasm alone. By the end of this phase, stakeholders share a documented understanding of what the system must achieve, how success will be measured, and what boundaries must be respected.",
+    body: "Set the business purpose, strategic outcomes, success measures, and operating boundaries for the system. This phase makes sure the work is anchored to real organisational need from the start. By the end of it, everyone is clear on what the system is for, how success will be judged, and what constraints must always be respected.",
     href: "#get-in-touch",
     cta: "Get in touch",
     image: usesPurposeUnderstandingImg,
   },
   {
     key: "system_framing",
-    label: "2. Frame",
-    lead: "Phase 2",
-    heading: "KNOWLEDGE FRAMING",
+    label: "2. Mapping",
+    stage: "Stage 2",
+    phase: "Phase 1",
+    heading: "KNOWLEDGE MAPPING",
     subheading: "Define the knowledge, sources, actors, and operating context.",
-    body: "Identify and validate the business knowledge, source materials, rules, subject matter expertise, tools, and integrations that will shape the system. This phase establishes the authoritative context needed to build the knowledge base on a credible foundation. By the end of this phase, the sources, boundaries, and operating landscape are clear enough to move into structured specification.",
+    body: "Identify the business knowledge, source materials, rules, expertise, tools, and integrations that will shape the system. This phase establishes the trusted context the model will depend on. By the end of it, the relevant sources, actors, and operating environment are clear enough to move into structured specification.",
     href: "#get-in-touch",
     cta: "Get in touch",
     image: usesSystemFramingImg,
@@ -42,10 +44,11 @@ const usesTabs = [
   {
     key: "specification_design",
     label: "3. Specify",
-    lead: "Phase 3",
+    stage: "Stage 3",
+    phase: "Phase 1",
     heading: "KNOWLEDGE SPECIFICATION",
     subheading: "Turn business logic into machine-operable specifications.",
-    body: "Translate business rules, expert judgment, processes, and policies into structured specifications that AI systems can interpret, reason over, and act upon. This is the shift at the heart of IBOM®: business intent becomes a usable machine-language foundation for both the knowledge base and the systems built from it. By the end of this phase, specification is ready to drive build, assurance, and operation.",
+    body: "Translate business rules, expert judgement, processes, and policies into structured specifications that systems can interpret and act on. At the heart of this is a domain definition language that uses dot syntax and snake_case to express business concepts, policies, controls, and instructions in a consistent machine-readable form. By the end of this phase, you have a specification layer that can drive build, assurance, and live operation.",
     href: "#get-in-touch",
     cta: "Get in touch",
     image: usesSpecificationDesignImg,
@@ -53,32 +56,35 @@ const usesTabs = [
   {
     key: "execution_generation",
     label: "4. Build",
-    lead: "Phase 4",
+    stage: "Stage 4",
+    phase: "Phase 2",
     heading: "SYSTEM BUILD",
     subheading: "Design and build governed AI systems from specification.",
-    body: "Use the approved specifications to supervise the AI-assisted design, build, and implementation of practical systems. This phase turns the knowledge base into applications, agents, workflows, and tools that can operate within clear governance boundaries. By the end of this phase, working systems are in place and ready to move through structured assurance and operational review.",
+    body: "Use the approved specifications to supervise the design and implementation of working systems. This phase turns the knowledge base into applications, agents, workflows, and tools that operate within clear governance boundaries. By the end of it, the system is built and ready to move through structured assurance.",
     href: "#get-in-touch",
     cta: "Get in touch",
     image: usesExecutionGenerationImg,
   },
   {
     key: "validation_evaluation",
-    label: "5. Assure",
-    lead: "Phase 5",
+    label: "5. Evaluate",
+    stage: "Stage 5",
+    phase: "Phase 2",
     heading: "ASSURANCE & EVALUATION",
     subheading: "Test safety, accuracy, performance, and policy adherence.",
-    body: "Validate that the system performs as intended against business objectives, operational rules, and governance requirements. This includes testing for quality, safety, edge cases, compliance, and specification fidelity before live deployment. By the end of this phase, you have clear evidence that the system is ready for production use within defined operational and governance thresholds.",
+    body: "Validate that the system performs as intended against business objectives, operational rules, and governance requirements. This includes testing for quality, safety, edge cases, compliance, and fidelity to specification before release. By the end of this phase, there is evidence that the system is ready for live use within agreed thresholds.",
     href: "#get-in-touch",
     cta: "Get in touch",
     image: usesValidationEvaluationImg,
   },
   {
     key: "deployment_operational_use",
-    label: "6. Operate",
-    lead: "Phase 6",
+    label: "6. Deploy",
+    stage: "Stage 6",
+    phase: "Phase 2",
     heading: "AICE DEPLOYMENT & OPERATION",
     subheading: "Deploy the AICE with control, monitoring, and live governance.",
-    body: "Deploy the system into production through the AICE with clear controls, monitoring, and operational oversight. This phase ensures the system can be used confidently in live environments while maintaining transparency, traceability, and performance at scale. By the end of this phase, the system is operating through governed infrastructure with the visibility and discipline needed for trustworthy ongoing use.",
+    body: "Deploy the system into production through the AICE with clear controls, monitoring, and operational oversight. This phase ensures the system can be used confidently in live environments while maintaining transparency, traceability, and performance at scale. By the end of it, the system is running through governed infrastructure with the visibility needed for trustworthy ongoing use.",
     href: "#get-in-touch",
     cta: "Get in touch",
     image: usesDeploymentOperationalUseImg,
@@ -86,10 +92,11 @@ const usesTabs = [
   {
     key: "revision_governance",
     label: "7. Govern",
-    lead: "Phase 7",
+    stage: "Stage 7",
+    phase: "Phase 2",
     heading: "REVISION & GOVERNANCE",
     subheading: "Continuously refine the system as needs evolve.",
-    body: "Maintain the system through structured review, revision, and governance. As business needs, risks, models, and environments change, specifications and implementations are updated in a controlled way so the operating model remains aligned, effective, and trustworthy. By the end of this phase, improvement becomes continuous and governance becomes part of how the system evolves over time.",
+    body: "Maintain the system through structured review, revision, and governance. As needs, risks, models, and environments change, specifications and implementations are updated in a controlled way so the operating model stays aligned and trustworthy. By the end of this phase, improvement is continuous and governance is part of how the system evolves over time.",
     href: "#get-in-touch",
     cta: "Get in touch",
     image: usesRevisionGovernanceImg,
@@ -144,7 +151,7 @@ const page = {
             Ungoverned AI isn't a risk you manage, it's a liability you inherit if you don't govern it. The <strong
               class="font-medium text-paper"
               >Intelligent Business Operating Model - IBOM<sup>®</sup></strong
-            >, transforms business intent into machine language so you can turn your
+            > is a <strong class="font-medium text-paper">brand-first operating model</strong> that transforms business intent into machine language so you can turn your
             proprietary expertise into governed, auditable intelligence. Move
             beyond uncertainty and ensure your AI
             <strong class="font-medium text-paper"
@@ -217,9 +224,9 @@ const page = {
             people.
           </p>
           <p class="mt-6">
-            The <b>IBOM<sup>®</sup></b> bridges this gap by engineering institutional
-            wisdom into a governed logic layer. We transform unwritten rules into
-            machine-readable law, scaling from brand governance to complex enterprise
+            The <b>IBOM<sup>®</sup></b> bridges this gap as a <b>brand-first operating
+            model</b>, engineering institutional wisdom into a governed logic layer.
+            We transform unwritten rules into machine-readable law, scaling from brand governance to complex enterprise
             operations. By establishing a practical, enforceable standard for every
             workflow, we move you beyond the unsure. <b
               >We train your AI to govern your AI.</b
@@ -290,9 +297,10 @@ const page = {
             Spec Engineering
           </h4>
           <p class="mt-3 text-base leading-relaxed text-paper/75">
-            We codify requirements into machine language, establishing
-            expert-validated instruction sets and technical guardrails that make
-            your specifications non-negotiable for AI agents.
+            We codify requirements into machine language using a domain
+            definition language with dot syntax and snake_case, creating
+            expert-validated specifications and policies that AI agents can
+            interpret consistently and follow in practice.
           </p>
         </div>
         <div
@@ -318,9 +326,9 @@ const page = {
         <p
           class="mx-auto mt-6 max-w-[90ch] text-center text-lg leading-relaxed text-paper/80 md:text-xl"
         >
-          We build proprietary infrastructure in two connected phases: turning
-          what you know into a permanent digital asset, then activating that
-          asset across your enterprise.
+          We deliver IBOM<sup>®</sup> in two connected phases. The first builds the
+          knowledge base. The second activates that knowledge through the AICE.
+          Both phases are structured by the same seven-stage operating model.
         </p>
       </div>
 
@@ -350,7 +358,7 @@ const page = {
             <li class="flex gap-3">
               <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#ef27f4]"
               ></span>
-              <span><b>Construct</b> governed datasets architected for advanced AI reasoning.</span>
+              <span><b>Construct</b> governed datasets and policy structures expressed in a machine-readable domain language.</span>
             </li>
             <li class="flex gap-3">
               <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#ef27f4]"
@@ -398,10 +406,10 @@ const page = {
 
       <div class="mt-12 flex items-center justify-center">
         <a
-          href="#uses"
+          href="#engine"
           class="inline-flex items-center justify-center gap-3 rounded-md bg-[#ff8c69] px-8 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper hover:bg-[#e97d5d] transition-colors"
         >
-          <span>The Implementation</span>
+          <span>The Infrastructure</span>
           <svg class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
             <path
               d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"
@@ -465,16 +473,16 @@ const page = {
           </div>
         </div>
 
-        <div class="mt-8 rounded-2xl border border-[#ef27f4]/20 bg-[#ef27f4]/5 p-6">
-          <div class="text-sm font-semibold tracking-[0.16em] uppercase text-[#ef27f4]">The Bottom Line</div>
-          <p class="mt-3 text-lg leading-relaxed text-ink">
-            Without the AICE, you are interacting with a chatbot. With the AICE, you are operating an
-            enterprise-grade intelligence system.
-          </p>
-        </div>
-
         <div class="relative mt-10 w-full">
           <AiceGatewayCluster />
+        </div>
+
+        <div class="mt-10 rounded-2xl border border-[#ef27f4]/20 bg-[#ef27f4]/5 p-6">
+          <div class="text-sm font-semibold tracking-[0.16em] uppercase text-[#ef27f4]">The Bottom Line</div>
+          <p class="mt-3 text-lg leading-relaxed text-ink">
+            Without the AICE, you are interacting with a chatbot. With the AICE, you are operating a brand-first
+            enterprise-grade intelligence system.
+          </p>
         </div>
       </div>
     </div>
@@ -490,8 +498,10 @@ const page = {
         IBOM<sup class="text-[0.45em] align-super">®</sup> Framework
       </h2>
       <p class="mx-auto mt-6 max-w-4xl text-center text-lg font-light leading-relaxed text-steel md:text-xl">
-        This is the shared operating process behind both the knowledge base and the AICE: the same spec-driven
-        framework used to structure business knowledge, build governed systems, and run them with confidence.
+        IBOM<sup class="text-[0.45em] align-super">®</sup> is a brand-first operating
+        model. This seven-stage framework structures both delivery phases: from
+        defining purpose and mapping knowledge through to specification,
+        evaluation, deployment, and governance.
       </p>
 
       <div class="mt-10">
@@ -553,8 +563,10 @@ const page = {
                 data-panel={t.key}
                 hidden={t.key === defaultUsesKey ? undefined : true}
               >
-                <div class="text-xs font-semibold tracking-[0.2em] uppercase text-steel">
-                  {t.lead}
+                <div class="flex flex-wrap items-center gap-3 text-xs font-semibold tracking-[0.2em] uppercase text-steel">
+                  <span>{t.stage}</span>
+                  <span class="h-1 w-1 rounded-full bg-[#ef27f4]/50"></span>
+                  <span>{t.phase}</span>
                 </div>
                 <div class="mt-4 text-2xl md:text-3xl font-semibold tracking-[0.08em] uppercase text-[#ef27f4]">
                   {t.heading}
@@ -690,7 +702,7 @@ const page = {
         <h2
           class="text-center text-[clamp(2.5rem,5vw,4.75rem)] font-semibold tracking-tight text-paper"
         >
-          From Knowledge Base to Controlled Operation
+          From Dark Knowledge to Controlled Operation
         </h2>
         <p
           class="mx-auto mt-10 max-w-[80ch] text-center text-lg leading-relaxed text-paper/80 md:text-xl"
@@ -894,7 +906,7 @@ const page = {
         <h2
           class="text-center text-[clamp(2.4rem,5vw,4.5rem)] font-semibold tracking-tight text-ink"
         >
-          What's your function?
+          Where does this fit in your business?
         </h2>
         <p class="mx-auto mt-4 max-w-[80ch] text-center text-lg leading-relaxed text-ink/70 md:text-xl">
           This model works across business functions. We typically start with brand
