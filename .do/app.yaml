@@ -1,9 +1,9 @@
-name: brandsemantics-com
+name: advancedanalytica-co-uk
 region: lon
 static_sites:
   - name: web
     git:
       branch: main
-      repo_clone_url: https://github.com/JonathanBowker/brandsemantics.com.git
+      repo_clone_url: https://github.com/JonathanBowker/advancedanalytica.co.uk.git
     build_command: pnpm build
     output_dir: dist
