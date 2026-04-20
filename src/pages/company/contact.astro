@@ -4,6 +4,8 @@ import { SITE_URL } from '../../lib/seo/site';
 
 const title = 'Contact';
 const description = 'Start a governance conversation with Advanced Analytica.';
+const leadEndpoint =
+  'https://advancedanalytica-co-uk-omj3v.ondigitalocean.app/api/leads/contact';
 
 const page = {
   title,
@@ -48,10 +50,10 @@ const page = {
       <div class="rounded-2xl border border-fog bg-surface p-8 shadow-outline">
         <form
           id="contact-form"
-          action="/api/leads/contact"
+          action={leadEndpoint}
           method="POST"
           data-lead-form
-          data-lead-endpoint="/api/leads/contact"
+          data-lead-endpoint={leadEndpoint}
           data-status-target="contact-status"
           class="grid gap-5"
           novalidate

@@ -1,5 +1,7 @@
 ---
 const { hideContactCta = false } = Astro.props;
+const leadEndpoint =
+  "https://advancedanalytica-co-uk-omj3v.ondigitalocean.app/api/leads/contact";
 
 const links = [
   { label: "About", href: "/company/about" },
@@ -89,10 +91,10 @@ const links = [
               >
                 <form
                   id="home-contact-form"
-                  action="/api/leads/contact"
+                  action={leadEndpoint}
                   method="POST"
                   data-lead-form
-                  data-lead-endpoint="/api/leads/contact"
+                  data-lead-endpoint={leadEndpoint}
                   data-status-target="home-contact-status"
                   class="grid gap-6 max-w-[520px]"
                   novalidate
