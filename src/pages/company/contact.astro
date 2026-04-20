@@ -18,6 +18,32 @@ const page = {
     { name: 'Contact', url: `${SITE_URL}/company/contact` }
   ]
 };
+
+const labelClass = 'text-sm font-semibold tracking-[0.08em] uppercase text-paper/75';
+const fieldClass =
+  'w-full rounded-xl border border-paper/15 bg-black/35 px-4 py-3 text-base text-paper outline-none transition-colors placeholder:text-paper/35 focus:border-[#ef27f4] focus:ring-2 focus:ring-[#ef27f4]/25';
+
+const briefingPrompts = [
+  'What you want AI or data systems to do better',
+  'Where knowledge, policy, approvals, or controls are currently hard to manage',
+  'Which teams, tools, workflows, or channels are in scope',
+  'Any security, compliance, assurance, or brand governance requirements'
+];
+
+const deliveryNotes = [
+  {
+    title: 'Secure delivery',
+    body: 'Your enquiry is submitted through a serverless contact endpoint and routed by AWS SES. Mailbox details and credentials are not exposed in the page.'
+  },
+  {
+    title: 'Confirmation email',
+    body: 'The form sends a confirmation email to the address provided, so the sender has a clear record that the enquiry was received.'
+  },
+  {
+    title: 'Human review',
+    body: 'We review enquiries directly and use the context provided to decide the most useful next step.'
+  }
+];
 ---
 <BaseLayout
   title={title}
@@ -25,29 +51,58 @@ const page = {
   page={page}
   hideFooterContactCta={true}
 >
-  <section class="container-wide py-16">
-    <div class="eyebrow">Company</div>
-    <h1 class="mt-4 text-4xl font-semibold text-ink">Get in touch</h1>
-    <p class="mt-4 text-lg text-steel max-w-prose">
-      Use this form to send a briefing request to Advanced Analytica with the right context.
-    </p>
+  <section class="relative overflow-hidden bg-gradient-to-br from-black via-[#0b0e14] to-[#171b24] text-paper">
+    <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/50" aria-hidden="true"></div>
+    <div class="absolute -left-28 top-20 h-80 w-80 rounded-full bg-[#ef27f4]/12 blur-3xl" aria-hidden="true"></div>
+    <div class="absolute right-0 top-10 h-80 w-80 rounded-full bg-[#ff8c69]/10 blur-3xl" aria-hidden="true"></div>
 
-    <div class="mt-12 grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:items-start">
-      <div class="rounded-2xl border border-fog bg-surface p-8 shadow-outline">
-        <div class="text-xs font-semibold tracking-[0.2em] uppercase text-steel">What to include</div>
-        <ul class="mt-6 space-y-3 text-base leading-relaxed text-steel">
-          <li>Your objective and audience</li>
-          <li>AI systems and channels in scope</li>
-          <li>Risk constraints (legal, regulated content, safety)</li>
-          <li>Who owns approvals and change control</li>
-        </ul>
-        <div class="mt-8 text-xs font-semibold tracking-[0.2em] uppercase text-steel">Note</div>
-        <p class="mt-3 text-base leading-relaxed text-steel">
-          Submitting sends your request securely to Advanced Analytica. We do not publish the destination mailbox or mail provider credentials in the page source.
-        </p>
-      </div>
+    <div class="container-wide relative z-10 py-24">
+      <div class="grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
+        <div>
+          <div class="eyebrow text-paper/70">Contact Advanced Analytica</div>
+          <h1 class="mt-5 max-w-[12ch] font-masthead text-[clamp(3rem,6vw,5.6rem)] font-normal leading-[1.02] tracking-tight text-paper">
+            Ready to put your knowledge to work?
+          </h1>
+          <p class="mt-7 max-w-[72ch] text-lg leading-relaxed text-paper/80 md:text-xl">
+            Tell us what you are trying to improve, what needs governing, and
+            where AI or data systems need to work more reliably. We will help
+            you turn the problem into a practical next step.
+          </p>
+          <p class="mt-5 max-w-[72ch] text-base leading-relaxed text-paper/65 md:text-lg">
+            You do not need a technical brief. Plain language is enough. We
+            work with business leaders, operational teams, technical teams, and
+            domain experts to make complex work clear and manageable.
+          </p>
 
-      <div class="rounded-2xl border border-fog bg-surface p-8 shadow-outline">
+          <div class="mt-10 rounded-2xl border border-paper/15 bg-ink/35 p-6 shadow-outline backdrop-blur">
+            <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#ef27f4]">
+              Helpful context
+            </div>
+            <ul class="mt-5 grid gap-4 text-sm leading-relaxed text-paper/75 md:text-base">
+              {briefingPrompts.map((item) => (
+                <li class="flex gap-3">
+                  <span class="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#ff8c69]" aria-hidden="true"></span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div class="rounded-[1.75rem] border border-paper/15 bg-ink/55 p-6 shadow-outline backdrop-blur md:p-8">
+          <div class="mb-7">
+            <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#ff8c69]">
+              Briefing request
+            </div>
+            <h2 class="mt-3 text-2xl font-semibold tracking-tight text-paper">
+              Send us the outline
+            </h2>
+            <p class="mt-3 text-sm leading-relaxed text-paper/65">
+              The form is routed through our AWS SES-backed serverless endpoint
+              and sends a confirmation email to the address you provide.
+            </p>
+          </div>
+
         <form
           id="contact-form"
           action={leadEndpoint}
@@ -68,19 +123,20 @@ const page = {
           />
 
           <div class="grid gap-2">
-            <label for="name" class="text-base font-semibold text-ink">Name</label>
+            <label for="name" class={labelClass}>Name</label>
             <input
               id="name"
               name="name"
               type="text"
               autocomplete="name"
               required
-              class="rounded-md border border-fog bg-paper px-4 py-3 text-base text-ink outline-none focus:border-accent focus:ring-2 focus:ring-accent/30"
+              placeholder="Your name"
+              class={fieldClass}
             />
           </div>
 
           <div class="grid gap-2">
-            <label for="email" class="text-base font-semibold text-ink">Email</label>
+            <label for="email" class={labelClass}>Email</label>
             <input
               id="email"
               name="email"
@@ -88,66 +144,100 @@ const page = {
               autocomplete="email"
               inputmode="email"
               required
-              class="rounded-md border border-fog bg-paper px-4 py-3 text-base text-ink outline-none focus:border-accent focus:ring-2 focus:ring-accent/30"
+              placeholder="you@example.com"
+              class={fieldClass}
             />
           </div>
 
           <div class="grid gap-5 md:grid-cols-2">
             <div class="grid gap-2">
-              <label for="company" class="text-base font-semibold text-ink">Company</label>
+              <label for="company" class={labelClass}>Company</label>
               <input
                 id="company"
                 name="company"
                 type="text"
-                autocomplete="organisation"
-                class="rounded-md border border-fog bg-paper px-4 py-3 text-base text-ink outline-none focus:border-accent focus:ring-2 focus:ring-accent/30"
+                autocomplete="organization"
+                placeholder="Organisation"
+                class={fieldClass}
               />
             </div>
             <div class="grid gap-2">
-              <label for="topic" class="text-base font-semibold text-ink">Topic</label>
+              <label for="topic" class={labelClass}>Topic</label>
               <select
                 id="topic"
                 name="topic"
                 required
-                class="rounded-md border border-fog bg-paper px-4 py-3 text-base text-ink outline-none focus:border-accent focus:ring-2 focus:ring-accent/30"
+                class={fieldClass}
               >
-                <option value="">Select…</option>
-                <option>IBOM lifecycle</option>
-                <option>Enterprise governance</option>
-                <option>Developers / MCP</option>
-                <option>Publishing / schema</option>
-                <option>Security / assurance</option>
+                <option value="">Select...</option>
+                <option>IBOM and governed AI</option>
+                <option>Knowledge mapping</option>
+                <option>API and MCP infrastructure</option>
+                <option>Security and assurance</option>
+                <option>Brand, policy, or compliance controls</option>
               </select>
             </div>
           </div>
 
           <div class="grid gap-2">
-            <label for="message" class="text-base font-semibold text-ink">Message</label>
+            <label for="message" class={labelClass}>Message</label>
             <textarea
               id="message"
               name="message"
               rows="6"
               required
-              class="rounded-md border border-fog bg-paper px-4 py-3 text-base text-ink outline-none focus:border-accent focus:ring-2 focus:ring-accent/30"
+              placeholder="Tell us what you need, what is not working today, or what you would like to build."
+              class={`${fieldClass} min-h-40 resize-y`}
             ></textarea>
           </div>
 
-          <div class="flex flex-wrap items-center justify-between gap-4 pt-2">
-            <div id="contact-status" class="text-base text-steel" aria-live="polite"></div>
+          <div class="flex flex-wrap items-center justify-between gap-4 pt-3">
+            <div id="contact-status" class="text-sm text-paper/70" aria-live="polite"></div>
             <button
               type="submit"
-              class="rounded-md border border-strandOrange/80 bg-transparent px-6 py-3 text-xs font-semibold tracking-[0.14em] uppercase text-strandOrange transition-colors hover:bg-strandOrange hover:text-ink"
+              class="inline-flex items-center gap-2 rounded-md bg-[#ef27f4] px-7 py-3 text-xs font-semibold tracking-[0.14em] uppercase text-paper shadow-outline transition-colors hover:bg-[#d823dd]"
             >
               Send Enquiry
+              <svg
+                class="h-4 w-4"
+                viewBox="0 0 20 20"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M4 10h12" />
+                <path d="M12 6l4 4-4 4" />
+              </svg>
             </button>
           </div>
 
           <noscript>
-            <p class="text-base text-steel">
+            <p class="text-base text-paper/70">
               JavaScript is disabled. Submitting the form will still send your enquiry through the secure form endpoint.
             </p>
           </noscript>
         </form>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <section class="bg-paper">
+    <div class="container-wide py-20">
+      <div class="grid gap-6 lg:grid-cols-3">
+        {deliveryNotes.map((item) => (
+          <div class="rounded-2xl border border-fog bg-surface p-8 shadow-outline">
+            <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#ef27f4]">
+              {item.title}
+            </div>
+            <p class="mt-4 text-base leading-relaxed text-steel">
+              {item.body}
+            </p>
+          </div>
+        ))}
       </div>
     </div>
   </section>
