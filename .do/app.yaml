@@ -19,6 +19,10 @@ static_sites:
       repo_clone_url: https://github.com/JonathanBowker/advancedanalytica.co.uk.git
     build_command: pnpm build
     output_dir: dist
+    envs:
+      - key: PUBLIC_GA_MEASUREMENT_ID
+        value: G-J6XQFZQSSR
+        scope: BUILD_TIME
 functions:
   - name: lead-api
     git:

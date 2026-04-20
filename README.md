@@ -32,4 +32,9 @@ pnpm build
 - Build command: `pnpm build`
 - Output directory: `dist/`
 
+## Analytics
+
+Google Analytics is consent-gated and only loads when `PUBLIC_GA_MEASUREMENT_ID`
+is set to a GA4 measurement ID such as `G-XXXXXXXXXX`.
+
 **Learn more or join the community at [advancedanalytica.co.uk](https://advancedanalytica.co.uk).**

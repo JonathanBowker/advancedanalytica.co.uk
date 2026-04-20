@@ -4,6 +4,7 @@ import ThemeVars from '../components/ThemeVars.astro';
 import JsonLd from '../components/JsonLd.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import GoogleAnalytics from '../components/GoogleAnalytics.astro';
 import type { PageMeta } from '../lib/seo/buildGraph';
 import { DEFAULT_OG_IMAGE, SITE_NAME } from '../lib/seo/site';
 
@@ -55,6 +56,7 @@ const socialType = page.isArticle ? 'article' : 'website';
       <slot />
     </main>
     <SiteFooter hideContactCta={Astro.props.hideFooterContactCta ?? false} />
+    <GoogleAnalytics />
     <script is:inline>
       (() => {
         const prefersReducedMotion =
