@@ -30,6 +30,10 @@ const buttonClass =
     : 'border-fog bg-surface text-ink hover:border-[#ef27f4] hover:bg-[#ef27f4] hover:text-white';
 
 const labelClass = variant === 'dark' ? 'text-white/60' : 'text-steel';
+const iconButtonClass = `inline-flex h-10 w-10 items-center justify-center rounded-full border transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ef27f4] focus-visible:ring-offset-2 ${
+  variant === 'dark' ? 'focus-visible:ring-offset-ink' : 'focus-visible:ring-offset-paper'
+} ${buttonClass}`;
+const iconClass = 'h-4 w-4';
 ---
 
 <div class="flex flex-wrap items-center gap-2" data-share-buttons>
@@ -39,60 +43,88 @@ const labelClass = variant === 'dark' ? 'text-white/60' : 'text-steel';
 
   <button
     type="button"
-    class={`rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] transition-colors ${buttonClass}`}
+    class={iconButtonClass}
     data-share-native
     data-share-url={url}
     data-share-title={cleanTitle}
     data-share-text={cleanDescription}
+    aria-label={`Share ${cleanTitle}`}
+    title="Share"
   >
-    Share
+    <svg class={iconClass} viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="18" cy="5" r="3"></circle>
+      <circle cx="6" cy="12" r="3"></circle>
+      <circle cx="18" cy="19" r="3"></circle>
+      <path d="M8.6 10.7 15.4 6.3"></path>
+      <path d="m8.6 13.3 6.8 4.4"></path>
+    </svg>
+    <span class="sr-only" data-share-button-label>Share</span>
   </button>
 
   <a
     href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`}
     target="_blank"
     rel="noopener noreferrer"
-    class={`rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] transition-colors ${buttonClass}`}
+    class={iconButtonClass}
     aria-label={`Share ${cleanTitle} on LinkedIn`}
+    title="Share on LinkedIn"
   >
-    LinkedIn
+    <svg class={iconClass} viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+      <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V8.98h3.42v1.57h.05c.48-.91 1.64-1.87 3.38-1.87 3.61 0 4.28 2.38 4.28 5.47v6.3zM5.32 7.41a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.1 20.45H3.54V8.98H7.1v11.47z"></path>
+    </svg>
   </a>
 
   <a
     href={`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`}
     target="_blank"
     rel="noopener noreferrer"
-    class={`rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] transition-colors ${buttonClass}`}
+    class={iconButtonClass}
     aria-label={`Share ${cleanTitle} on X`}
+    title="Share on X"
   >
-    X
+    <svg class={iconClass} viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+      <path d="M18.9 2.75h3.06l-6.68 7.64 7.86 10.86h-6.16l-4.82-6.3-5.52 6.3H3.58l7.15-8.17L3.2 2.75h6.31l4.36 5.76 5.03-5.76zm-1.07 16.59h1.7L8.58 4.56H6.76l11.07 14.78z"></path>
+    </svg>
   </a>
 
   <a
     href={`https://wa.me/?text=${encodedTitle}%20${encodedUrl}`}
     target="_blank"
     rel="noopener noreferrer"
-    class={`rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] transition-colors ${buttonClass}`}
+    class={iconButtonClass}
     aria-label={`Share ${cleanTitle} on WhatsApp`}
+    title="Share on WhatsApp"
   >
-    WhatsApp
+    <svg class={iconClass} viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+      <path d="M12.04 2.25A9.7 9.7 0 0 0 3.7 16.9L2.5 21.75l4.96-1.15a9.72 9.72 0 1 0 4.58-18.35zm0 17.65a7.9 7.9 0 0 1-4.03-1.1l-.29-.17-2.94.68.7-2.86-.19-.3a7.9 7.9 0 1 1 6.75 3.75zm4.47-5.93c-.25-.13-1.46-.72-1.69-.8-.23-.08-.4-.13-.56.13-.17.25-.65.8-.8.97-.14.17-.29.19-.54.06-.25-.13-1.05-.39-2-1.24-.74-.66-1.24-1.47-1.38-1.72-.15-.25-.02-.39.11-.52.12-.11.25-.29.38-.44.13-.15.17-.25.25-.42.08-.17.04-.32-.02-.44-.06-.13-.56-1.36-.77-1.86-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.32-.23.25-.88.86-.88 2.1s.9 2.43 1.03 2.6c.13.17 1.78 2.72 4.31 3.81.6.26 1.07.41 1.44.53.6.19 1.15.16 1.58.1.48-.07 1.46-.6 1.67-1.17.21-.57.21-1.07.15-1.17-.06-.11-.23-.17-.48-.3z"></path>
+    </svg>
   </a>
 
   <a
     href={`mailto:?subject=${mailSubject}&body=${mailBody}`}
-    class={`rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] transition-colors ${buttonClass}`}
+    class={iconButtonClass}
     aria-label={`Share ${cleanTitle} by email`}
+    title="Share by email"
   >
-    Email
+    <svg class={iconClass} viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+      <path d="m3 7 9 6 9-6"></path>
+    </svg>
   </a>
 
   <button
     type="button"
-    class={`rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] transition-colors ${buttonClass}`}
+    class={iconButtonClass}
     data-share-copy
     data-share-url={url}
+    aria-label={`Copy link to ${cleanTitle}`}
+    title="Copy link"
   >
-    Copy link
+    <svg class={iconClass} viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10 13a5 5 0 0 0 7.07 0l2.12-2.12a5 5 0 0 0-7.07-7.07L10.9 5.03"></path>
+      <path d="M14 11a5 5 0 0 0-7.07 0L4.81 13.12a5 5 0 0 0 7.07 7.07l1.22-1.22"></path>
+    </svg>
+    <span class="sr-only" data-share-button-label>Copy link</span>
   </button>
 </div>
 
@@ -120,10 +152,17 @@ const labelClass = variant === 'dark' ? 'text-white/60' : 'text-steel';
     };
 
     const setTemporaryLabel = (button, label) => {
-      const previous = button.textContent;
-      button.textContent = label;
+      const labelNode = button.querySelector("[data-share-button-label]");
+      const previousLabel = labelNode?.textContent || "";
+      const previousAria = button.getAttribute("aria-label");
+      const previousTitle = button.getAttribute("title");
+      if (labelNode) labelNode.textContent = label;
+      button.setAttribute("aria-label", label);
+      button.setAttribute("title", label);
       window.setTimeout(() => {
-        button.textContent = previous;
+        if (labelNode) labelNode.textContent = previousLabel;
+        if (previousAria) button.setAttribute("aria-label", previousAria);
+        if (previousTitle) button.setAttribute("title", previousTitle);
       }, 1800);
     };
 
