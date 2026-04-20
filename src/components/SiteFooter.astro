@@ -89,9 +89,23 @@ const links = [
               >
                 <form
                   id="home-contact-form"
+                  action="/api/leads/contact"
+                  method="POST"
+                  data-lead-form
+                  data-lead-endpoint="/api/leads/contact"
+                  data-status-target="home-contact-status"
                   class="grid gap-6 max-w-[520px]"
                   novalidate
                 >
+                  <input
+                    type="text"
+                    name="website"
+                    class="hidden"
+                    tabindex="-1"
+                    autocomplete="off"
+                    aria-hidden="true"
+                  />
+
                   <div class="grid gap-2">
                     <label for="home-name" class="text-base font-semibold text-ink/70"
                       >Name</label
@@ -229,47 +243,4 @@ const links = [
   </div>
 </footer>
 
-<script is:inline>
-  (() => {
-    const form = document.getElementById("home-contact-form");
-    const status = document.getElementById("home-contact-status");
-    if (!form) return;
-
-    const setStatus = (msg) => {
-      if (status) status.textContent = msg;
-    };
-
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      const fd = new FormData(form);
-      const name = String(fd.get("name") || "").trim();
-      const email = String(fd.get("email") || "").trim();
-      const topic = String(fd.get("topic") || "").trim();
-      const message = String(fd.get("message") || "").trim();
-
-      if (!name || !email || !topic || !message) {
-        setStatus("Please complete the required fields.");
-        return;
-      }
-
-      const subject = `Advanced Analytica briefing request: ${topic}`;
-      const body = [
-        `Name: ${name}`,
-        `Email: ${email}`,
-        `Topic: ${topic}`,
-        "",
-        "---",
-        "",
-        message,
-      ]
-        .filter(Boolean)
-        .join("\n");
-
-      const mailto = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-      setStatus("Opening email draft…");
-      window.location.href = mailto;
-    });
-  })();
-</script>
+<script src="/scripts/contact-leads.js" defer></script>

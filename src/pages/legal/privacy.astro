@@ -20,7 +20,7 @@ const page = {
     <div class="eyebrow">Legal</div>
     <h1 class="mt-4 text-4xl font-semibold text-ink">Privacy Policy</h1>
     <div class="prose mt-6">
-      <p><strong>Last updated: 17 April 2026.</strong></p>
+      <p><strong>Last updated: 20 April 2026.</strong></p>
 
       <p>
         This Privacy Policy explains how Advanced Analytica Ltd uses personal
@@ -73,20 +73,21 @@ const page = {
 
       <h2>How the contact forms work</h2>
       <p>
-        The contact forms currently available on this site do not submit your
-        details to a website database or application server operated by us.
-        They are designed to generate a pre-filled email draft on your device
-        using your local email application.
+        The contact forms currently available on this site are designed to
+        send your enquiry to Advanced Analytica by email. The site does not
+        store enquiry data in a website database operated by us.
       </p>
       <p>
-        As currently implemented, the information you type into those forms is
-        handled locally in your browser to build a <code>mailto:</code> link.
-        The site itself does not currently store that form data on the website.
+        As currently implemented, form submissions are sent to a small
+        serverless endpoint operated as part of our website infrastructure.
+        That endpoint validates the submission and passes it to our configured
+        email delivery provider so the enquiry can be delivered to Advanced
+        Analytica.
       </p>
       <p>
-        If you choose to send the generated email, the information will then be
-        processed by your email provider and by us as part of normal business
-        correspondence.
+        Information you submit through the forms will be processed by our
+        website hosting provider, relevant email delivery infrastructure, and
+        by us as part of normal business correspondence.
       </p>
 
       <h2>How we use personal data</h2>
@@ -162,8 +163,8 @@ const page = {
           receive technical data such as your IP address and browser details.
         </li>
         <li>
-          Your own email provider or email client, if you use the site’s
-          contact forms to generate and send an email.
+          Email delivery infrastructure used to route contact form submissions
+          and business correspondence.
         </li>
       </ul>
       <p>

@@ -1,9 +1,27 @@
 name: advancedanalytica-co-uk
 region: lon
+ingress:
+  rules:
+    - component:
+        name: lead-api
+      match:
+        path:
+          prefix: /api
+    - component:
+        name: web
+      match:
+        path:
+          prefix: /
 static_sites:
   - name: web
     git:
-      branch: main
+      branch: deploy-live
       repo_clone_url: https://github.com/JonathanBowker/advancedanalytica.co.uk.git
     build_command: pnpm build
     output_dir: dist
+functions:
+  - name: lead-api
+    git:
+      branch: deploy-live
+      repo_clone_url: https://github.com/JonathanBowker/advancedanalytica.co.uk.git
+    source_dir: functions/contact

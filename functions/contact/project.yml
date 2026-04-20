@@ -1,0 +1,10 @@
+packages:
+  - name: leads
+    environment:
+      RESEND_API_KEY: ${RESEND_API_KEY}
+      LEAD_EMAIL_TO: ${LEAD_EMAIL_TO}
+      LEAD_EMAIL_FROM: ${LEAD_EMAIL_FROM}
+    functions:
+      - name: contact
+        runtime: nodejs:22
+        web: raw
