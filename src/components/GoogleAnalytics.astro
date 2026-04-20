@@ -55,6 +55,200 @@ const isConfigured = /^G-[A-Z0-9]+$/i.test(measurementId);
       const STORAGE_KEY = "advanced_analytica_analytics_consent";
       const storedPreference = window.localStorage?.getItem(STORAGE_KEY);
 
+      const cleanText = (value) =>
+        String(value || "")
+          .replace(/\s+/g, " ")
+          .trim()
+          .slice(0, 120);
+
+      const getLinkPath = (link) => {
+        try {
+          const url = new URL(link.href, window.location.href);
+          return url.origin === window.location.origin ? `${url.pathname}${url.hash}` : url.href;
+        } catch {
+          return link.getAttribute("href") || "";
+        }
+      };
+
+      const getSectionTitle = (section) => {
+        const heading = section.querySelector("h1, h2, h3");
+        return cleanText(heading?.textContent || section.id || "Untitled section");
+      };
+
+      const getSectionId = (section, index) => {
+        if (section.id) return section.id;
+        return getSectionTitle(section)
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "_")
+          .replace(/^_+|_+$/g, "")
+          .slice(0, 48) || `section_${index + 1}`;
+      };
+
+      const sendEvent = (eventName, params = {}) => {
+        if (!window.__advancedAnalyticaGoogleAnalyticsLoaded) return;
+        if (typeof window.gtag !== "function") return;
+
+        window.gtag("event", eventName, {
+          page_path: window.location.pathname,
+          page_title: document.title,
+          ...params,
+        });
+      };
+
+      window.advancedAnalyticaTrack = sendEvent;
+
+      const registerSiteTracking = () => {
+        if (window.__advancedAnalyticaSiteTrackingReady) return;
+        window.__advancedAnalyticaSiteTrackingReady = true;
+
+        const sections = Array.from(document.querySelectorAll("main section"));
+        const seenSections = new Set();
+
+        if ("IntersectionObserver" in window && sections.length) {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (!entry.isIntersecting || entry.intersectionRatio < 0.45) return;
+
+                const section = entry.target;
+                const index = sections.indexOf(section);
+                const sectionId = getSectionId(section, index);
+                if (seenSections.has(sectionId)) return;
+                seenSections.add(sectionId);
+
+                sendEvent("section_view", {
+                  section_id: sectionId,
+                  section_title: getSectionTitle(section),
+                  section_index: index + 1,
+                });
+              });
+            },
+            {
+              threshold: [0.45, 0.7],
+            },
+          );
+
+          sections.forEach((section) => observer.observe(section));
+        }
+
+        document.addEventListener("click", (event) => {
+          const target = event.target;
+          if (!(target instanceof Element)) return;
+
+          const shareRoot = target.closest("[data-share-buttons]");
+          if (shareRoot) {
+            const shareControl = target.closest("a, button");
+            if (shareControl) {
+              const href = shareControl instanceof HTMLAnchorElement ? shareControl.href : "";
+              const method = shareControl.hasAttribute("data-share-native")
+                ? "native"
+                : shareControl.hasAttribute("data-share-copy")
+                  ? "copy"
+                  : href.includes("linkedin.com")
+                    ? "linkedin"
+                    : href.includes("twitter.com") || href.includes("x.com")
+                      ? "x"
+                      : href.includes("wa.me")
+                        ? "whatsapp"
+                        : href.startsWith("mailto:")
+                          ? "email"
+                          : "unknown";
+
+              sendEvent("share_click", {
+                share_method: method,
+                content_title: document.title,
+              });
+              return;
+            }
+          }
+
+          const searchToggle = target.closest("[data-search-toggle]");
+          if (searchToggle) {
+            sendEvent("search_open", { search_location: "site_header" });
+            return;
+          }
+
+          const searchClose = target.closest("[data-search-close]");
+          if (searchClose) {
+            sendEvent("search_close", { search_location: "site_header" });
+            return;
+          }
+
+          const link = target.closest("a");
+          if (link instanceof HTMLAnchorElement) {
+            const linkText = cleanText(link.textContent || link.getAttribute("aria-label") || link.href);
+            const linkPath = getLinkPath(link);
+            const isExternal = link.origin && link.origin !== window.location.origin;
+            const headerNav = link.closest("[data-main-nav]");
+            const isCta =
+              /get in touch|contact|book|talk to us|enquiry/i.test(linkText) ||
+              linkPath.includes("#get-in-touch") ||
+              linkPath.includes("/company/contact");
+
+            if (isCta) {
+              sendEvent("cta_click", {
+                cta_text: linkText,
+                link_url: linkPath,
+                cta_location: link.closest("[data-site-header]") ? "header" : "page",
+              });
+              return;
+            }
+
+            if (headerNav) {
+              sendEvent("nav_click", {
+                nav_label: linkText,
+                link_url: linkPath,
+              });
+              return;
+            }
+
+            if (linkPath.startsWith("/resources/")) {
+              sendEvent("resource_click", {
+                resource_title: linkText,
+                link_url: linkPath,
+              });
+              return;
+            }
+
+            if (linkPath.startsWith("/opinions/")) {
+              sendEvent("opinion_click", {
+                content_title: linkText,
+                link_url: linkPath,
+              });
+              return;
+            }
+
+            if (linkPath.startsWith("/use-cases/")) {
+              sendEvent("use_case_click", {
+                content_title: linkText,
+                link_url: linkPath,
+              });
+              return;
+            }
+
+            if (isExternal) {
+              sendEvent("outbound_link_click", {
+                link_text: linkText,
+                link_url: linkPath,
+              });
+            }
+          }
+        });
+
+        document.addEventListener("submit", (event) => {
+          const form = event.target;
+          if (!(form instanceof HTMLFormElement)) return;
+
+          if (form.matches('form[action="/search"], #search-form')) {
+            const query = String(new FormData(form).get("q") || "").trim();
+            sendEvent("search_submit", {
+              search_location: form.id === "search-form" ? "search_page" : "site_header",
+              query_length: query.length,
+            });
+          }
+        }, true);
+      };
+
       const loadGoogleAnalytics = () => {
         if (window.__advancedAnalyticaGoogleAnalyticsLoaded) return;
         window.__advancedAnalyticaGoogleAnalyticsLoaded = true;
@@ -72,6 +266,8 @@ const isConfigured = /^G-[A-Z0-9]+$/i.test(measurementId);
         script.async = true;
         script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(measurementId)}`;
         document.head.appendChild(script);
+
+        registerSiteTracking();
       };
 
       const hideBanner = () => {

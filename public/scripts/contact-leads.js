@@ -13,6 +13,19 @@
   const getValue = (form, name) =>
     String(new FormData(form).get(name) || "").trim();
 
+  const getFormContext = (form) => ({
+    form_id: form.id || "lead_form",
+    form_location: form.id === "home-contact-form" ? "footer" : "contact_page",
+  });
+
+  const track = (eventName, params = {}) => {
+    if (typeof window.advancedAnalyticaTrack !== "function") return;
+    window.advancedAnalyticaTrack(eventName, params);
+  };
+
+  const getCompletedFieldCount = (form) =>
+    ["name", "email", "company", "topic", "message"].filter((field) => getValue(form, field)).length;
+
   const buildPayload = (form) => {
     const fd = new FormData(form);
     return {
@@ -184,12 +197,28 @@
   };
 
   forms.forEach((form) => {
+    let hasStarted = false;
+    const markStarted = () => {
+      if (hasStarted) return;
+      hasStarted = true;
+      track("contact_start", getFormContext(form));
+    };
+
+    form.addEventListener("focusin", markStarted, { once: true });
+    form.addEventListener("input", markStarted, { once: true });
+
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
+      const context = getFormContext(form);
+      track("contact_attempt", {
+        ...context,
+        completed_fields: getCompletedFieldCount(form),
+      });
 
       if (!form.checkValidity()) {
         form.reportValidity();
         setStatus(form, "Please complete the required fields.");
+        track("contact_validation_error", context);
         return;
       }
 
@@ -214,8 +243,10 @@
         form.reset();
         setStatus(form, "");
         showSuccessCard();
+        track("contact_submit", context);
       } catch {
         setStatus(form, "We could not send your enquiry. Please try again in a moment.");
+        track("contact_error", context);
       }
     });
   });
