@@ -136,7 +136,7 @@ export async function main(event = {}) {
     process.env.LEAD_EMAIL_FROM ||
     "Advanced Analytica <onboarding@resend.dev>";
 
-  if (!apiKey || !to) {
+  if (!apiKey || apiKey === "not-configured" || !to) {
     console.error("Missing RESEND_API_KEY or LEAD_EMAIL_TO");
     return json(503, { ok: false, error: "email_not_configured" });
   }
