@@ -1,0 +1,170 @@
+---
+type Variant = 'dark' | 'light';
+
+const {
+  url,
+  title,
+  description = '',
+  variant = 'light',
+  label = 'Share'
+} = Astro.props as {
+  url: string;
+  title: string;
+  description?: string;
+  variant?: Variant;
+  label?: string;
+};
+
+const stripHtml = (value: string) => value.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+const cleanTitle = stripHtml(title);
+const cleanDescription = stripHtml(description);
+const encodedUrl = encodeURIComponent(url);
+const encodedTitle = encodeURIComponent(cleanTitle);
+const encodedText = encodeURIComponent(cleanDescription || cleanTitle);
+const mailSubject = encodeURIComponent(cleanTitle);
+const mailBody = encodeURIComponent(`${cleanDescription || cleanTitle}\n\n${url}`);
+
+const buttonClass =
+  variant === 'dark'
+    ? 'border-white/15 bg-white/5 text-white/85 hover:border-[#ef27f4] hover:bg-[#ef27f4] hover:text-white'
+    : 'border-fog bg-surface text-ink hover:border-[#ef27f4] hover:bg-[#ef27f4] hover:text-white';
+
+const labelClass = variant === 'dark' ? 'text-white/60' : 'text-steel';
+---
+
+<div class="flex flex-wrap items-center gap-2" data-share-buttons>
+  <span class={`mr-1 text-xs font-semibold uppercase tracking-[0.2em] ${labelClass}`}>
+    {label}
+  </span>
+
+  <button
+    type="button"
+    class={`rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] transition-colors ${buttonClass}`}
+    data-share-native
+    data-share-url={url}
+    data-share-title={cleanTitle}
+    data-share-text={cleanDescription}
+  >
+    Share
+  </button>
+
+  <a
+    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    class={`rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] transition-colors ${buttonClass}`}
+    aria-label={`Share ${cleanTitle} on LinkedIn`}
+  >
+    LinkedIn
+  </a>
+
+  <a
+    href={`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    class={`rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] transition-colors ${buttonClass}`}
+    aria-label={`Share ${cleanTitle} on X`}
+  >
+    X
+  </a>
+
+  <a
+    href={`https://wa.me/?text=${encodedTitle}%20${encodedUrl}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    class={`rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] transition-colors ${buttonClass}`}
+    aria-label={`Share ${cleanTitle} on WhatsApp`}
+  >
+    WhatsApp
+  </a>
+
+  <a
+    href={`mailto:?subject=${mailSubject}&body=${mailBody}`}
+    class={`rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] transition-colors ${buttonClass}`}
+    aria-label={`Share ${cleanTitle} by email`}
+  >
+    Email
+  </a>
+
+  <button
+    type="button"
+    class={`rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] transition-colors ${buttonClass}`}
+    data-share-copy
+    data-share-url={url}
+  >
+    Copy link
+  </button>
+</div>
+
+<script is:inline>
+  (() => {
+    if (window.__advancedAnalyticaShareButtonsReady) return;
+    window.__advancedAnalyticaShareButtonsReady = true;
+
+    const copyToClipboard = async (value) => {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(value);
+        return true;
+      }
+
+      const input = document.createElement("textarea");
+      input.value = value;
+      input.setAttribute("readonly", "");
+      input.style.position = "fixed";
+      input.style.opacity = "0";
+      document.body.appendChild(input);
+      input.select();
+      const copied = document.execCommand("copy");
+      input.remove();
+      return copied;
+    };
+
+    const setTemporaryLabel = (button, label) => {
+      const previous = button.textContent;
+      button.textContent = label;
+      window.setTimeout(() => {
+        button.textContent = previous;
+      }, 1800);
+    };
+
+    document.addEventListener("click", async (event) => {
+      const nativeButton = event.target?.closest?.("[data-share-native]");
+      if (nativeButton instanceof HTMLButtonElement) {
+        const shareUrl = nativeButton.getAttribute("data-share-url") || window.location.href;
+        const shareTitle = nativeButton.getAttribute("data-share-title") || document.title;
+        const shareText = nativeButton.getAttribute("data-share-text") || "";
+
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: shareTitle,
+              text: shareText,
+              url: shareUrl,
+            });
+            return;
+          } catch (error) {
+            if (error?.name === "AbortError") return;
+          }
+        }
+
+        try {
+          await copyToClipboard(shareUrl);
+          setTemporaryLabel(nativeButton, "Copied");
+        } catch {
+          setTemporaryLabel(nativeButton, "Copy failed");
+        }
+      }
+
+      const copyButton = event.target?.closest?.("[data-share-copy]");
+      if (copyButton instanceof HTMLButtonElement) {
+        const shareUrl = copyButton.getAttribute("data-share-url") || window.location.href;
+        try {
+          await copyToClipboard(shareUrl);
+          setTemporaryLabel(copyButton, "Copied");
+        } catch {
+          setTemporaryLabel(copyButton, "Copy failed");
+        }
+      }
+    });
+  })();
+</script>

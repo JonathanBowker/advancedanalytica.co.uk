@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ResourceCard from '../../components/ResourceCard.astro';
 import RssLink from '../../components/RssLink.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
 import { getCollection } from 'astro:content';
 import { SITE_URL } from '../../lib/seo/site';
 
@@ -35,8 +36,9 @@ const page = {
       <p class="mt-6 text-lg leading-relaxed text-steel md:text-xl">
         Practical resources for teams building policy-aware brand systems: patterns, checklists, and reference guides.
       </p>
-      <div class="mt-8">
+      <div class="mt-8 flex flex-col gap-5 sm:flex-row sm:flex-wrap sm:items-center">
         <RssLink href="/rss/resources.xml" label="Resources RSS" />
+        <ShareButtons url={page.url} title={title} description={description} />
       </div>
     </div>
   </section>

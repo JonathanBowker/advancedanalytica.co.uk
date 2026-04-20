@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TagPill from '../../components/TagPill.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
 import components from '../../lib/mdx/components';
 import { getCollection } from 'astro:content';
 import { SITE_URL } from '../../lib/seo/site';
@@ -103,6 +104,9 @@ const page = {
               {title}
             </h1>
             <div class="mt-6 text-sm text-white/70">{post.data.author}</div>
+            <div class="mt-6">
+              <ShareButtons url={url} title={title} description={description} variant="dark" />
+            </div>
           </div>
         </div>
 
