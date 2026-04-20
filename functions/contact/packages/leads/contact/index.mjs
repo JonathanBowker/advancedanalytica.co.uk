@@ -144,7 +144,7 @@ export async function main(event = {}) {
 
   if (isMissingProviderKey(apiKey) || !to) {
     console.error("Missing RESEND_API_KEY or LEAD_EMAIL_TO");
-    return json(503, { ok: false, error: "email_not_configured" });
+    return json(200, { ok: false, error: "email_not_configured" });
   }
 
   const email = buildEmail(payload);
@@ -170,7 +170,7 @@ export async function main(event = {}) {
   if (!response.ok) {
     const detail = await response.text();
     console.error(`Resend error ${response.status}: ${detail}`);
-    return json(502, { ok: false, error: "email_delivery_failed" });
+    return json(200, { ok: false, error: "email_delivery_failed" });
   }
 
   return json(200, { ok: true });

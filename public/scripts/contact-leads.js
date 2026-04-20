@@ -47,7 +47,10 @@
           body: JSON.stringify(buildPayload(form)),
         });
 
-        if (!response.ok) throw new Error(`Form endpoint returned ${response.status}`);
+        const result = await response.json().catch(() => null);
+        if (!response.ok || result?.ok === false) {
+          throw new Error(`Form endpoint returned ${response.status}`);
+        }
 
         form.reset();
         setStatus(form, "Thank you. Your enquiry has been sent.");
