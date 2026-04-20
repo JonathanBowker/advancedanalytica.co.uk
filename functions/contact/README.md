@@ -27,3 +27,8 @@ Use `AWS_ACCESS_KEY_ID=not-configured` and
 endpoint will return `email_not_configured` until real AWS SES credentials are
 set. If the SES account is still in sandbox mode, both sender and recipient
 addresses must be verified in SES.
+
+On successful submissions, the function sends two SES emails:
+
+- An internal lead notification to `LEAD_EMAIL_TO`, with reply-to set to the lead.
+- A confirmation email to the lead, with reply-to set to `LEAD_EMAIL_TO`.

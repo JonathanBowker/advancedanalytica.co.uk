@@ -68,7 +68,7 @@ const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 const isMissingSecret = (value) =>
   !value || value === "not-configured" || value.startsWith("EV[");
 
-const buildEmail = ({ name, email, company, topic, message, page }) => {
+const buildLeadNotificationEmail = ({ name, email, company, topic, message, page }) => {
   const rows = [
     ["Name", name],
     ["Email", email],
@@ -99,6 +99,38 @@ const buildEmail = ({ name, email, company, topic, message, page }) => {
       <table cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-bottom:20px;">${htmlRows}</table>
       <h2 style="font-size:16px;margin:0 0 8px;">Message</h2>
       <p style="white-space:pre-wrap;margin:0;">${escapeHtml(message)}</p>
+    </div>
+  `;
+
+  return { text, html };
+};
+
+const buildLeadConfirmationEmail = ({ name, topic }) => {
+  const firstName = name.split(" ")[0] || "there";
+  const text = [
+    `Hello ${firstName},`,
+    "",
+    "Thank you. Your enquiry has been sent.",
+    "",
+    `We have received your message about: ${topic}`,
+    "",
+    "We will review it and get back to you as soon as we can.",
+    "",
+    "If you need to add anything, reply to this email.",
+    "",
+    "Advanced Analytica",
+    "https://advancedanalytica.co.uk/",
+  ].join("\n");
+
+  const html = `
+    <div style="font-family:Arial,sans-serif;color:#111827;line-height:1.6;">
+      <h1 style="font-size:22px;margin:0 0 16px;">Thank you. Your enquiry has been sent.</h1>
+      <p style="margin:0 0 12px;">Hello ${escapeHtml(firstName)},</p>
+      <p style="margin:0 0 12px;">We have received your message about: <strong>${escapeHtml(topic)}</strong></p>
+      <p style="margin:0 0 12px;">We will review it and get back to you as soon as we can.</p>
+      <p style="margin:0 0 20px;">If you need to add anything, reply to this email.</p>
+      <p style="margin:0;font-weight:700;">Advanced Analytica</p>
+      <p style="margin:0;"><a href="https://advancedanalytica.co.uk/" style="color:#111827;">advancedanalytica.co.uk</a></p>
     </div>
   `;
 
@@ -187,7 +219,7 @@ const signSesRequest = ({
   };
 };
 
-const sendWithSes = async ({ payload, email, to, from }) => {
+const sendWithSes = async ({ email, to, from, replyTo, subject }) => {
   const region =
     process.env.AWS_SES_REGION || process.env.AWS_REGION || "eu-west-2";
   const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
@@ -211,11 +243,11 @@ const sendWithSes = async ({ payload, email, to, from }) => {
     Destination: {
       ToAddresses: [to],
     },
-    ReplyToAddresses: [payload.email],
+    ReplyToAddresses: replyTo ? [replyTo] : undefined,
     Content: {
       Simple: {
         Subject: {
-          Data: `Advanced Analytica enquiry: ${payload.topic}`,
+          Data: subject,
           Charset: "UTF-8",
         },
         Body: {
@@ -292,12 +324,31 @@ export async function main(event = {}) {
     process.env.LEAD_EMAIL_FROM ||
     "Advanced Analytica <jonny.bowker@advancedanalytica.co.uk>";
 
-  const email = buildEmail(payload);
-  const result = await sendWithSes({ payload, email, to, from });
+  const email = buildLeadNotificationEmail(payload);
+  const result = await sendWithSes({
+    email,
+    to,
+    from,
+    replyTo: payload.email,
+    subject: `Advanced Analytica enquiry: ${payload.topic}`,
+  });
 
   if (!result.ok) {
     return json(200, result);
   }
 
-  return json(200, { ok: true });
+  const confirmationEmail = buildLeadConfirmationEmail(payload);
+  const confirmation = await sendWithSes({
+    email: confirmationEmail,
+    to: payload.email,
+    from,
+    replyTo: to,
+    subject: "Thank you for contacting Advanced Analytica",
+  });
+
+  if (!confirmation.ok) {
+    console.error("Lead confirmation email failed after enquiry was received");
+  }
+
+  return json(200, { ok: true, confirmationSent: confirmation.ok });
 }
