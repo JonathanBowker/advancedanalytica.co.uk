@@ -63,6 +63,12 @@ const normalisePayload = (event) => {
 
 const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
+const isMissingProviderKey = (apiKey) =>
+  !apiKey ||
+  apiKey === "not-configured" ||
+  apiKey.startsWith("EV[") ||
+  !apiKey.startsWith("re_");
+
 const buildEmail = ({ name, email, company, topic, message, page }) => {
   const rows = [
     ["Name", name],
@@ -136,14 +142,17 @@ export async function main(event = {}) {
     process.env.LEAD_EMAIL_FROM ||
     "Advanced Analytica <onboarding@resend.dev>";
 
-  if (!apiKey || apiKey === "not-configured" || !to) {
+  if (isMissingProviderKey(apiKey) || !to) {
     console.error("Missing RESEND_API_KEY or LEAD_EMAIL_TO");
     return json(503, { ok: false, error: "email_not_configured" });
   }
 
   const email = buildEmail(payload);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000);
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
+    signal: controller.signal,
     headers: {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
@@ -156,7 +165,7 @@ export async function main(event = {}) {
       text: email.text,
       html: email.html,
     }),
-  });
+  }).finally(() => clearTimeout(timeout));
 
   if (!response.ok) {
     const detail = await response.text();
