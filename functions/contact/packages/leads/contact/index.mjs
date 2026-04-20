@@ -1,3 +1,5 @@
+import { createHash, createHmac } from "node:crypto";
+
 const MAX_LENGTHS = {
   name: 120,
   email: 180,
@@ -63,11 +65,8 @@ const normalisePayload = (event) => {
 
 const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-const isMissingProviderKey = (apiKey) =>
-  !apiKey ||
-  apiKey === "not-configured" ||
-  apiKey.startsWith("EV[") ||
-  !apiKey.startsWith("re_");
+const isMissingSecret = (value) =>
+  !value || value === "not-configured" || value.startsWith("EV[");
 
 const buildEmail = ({ name, email, company, topic, message, page }) => {
   const rows = [
@@ -106,6 +105,158 @@ const buildEmail = ({ name, email, company, topic, message, page }) => {
   return { text, html };
 };
 
+const hashHex = (value) =>
+  createHash("sha256").update(value, "utf8").digest("hex");
+
+const hmac = (key, value, encoding) =>
+  createHmac("sha256", key).update(value, "utf8").digest(encoding);
+
+const toAmzDate = (date) =>
+  date.toISOString().replace(/[:-]|\.\d{3}/g, "");
+
+const getSignatureKey = (secretAccessKey, dateStamp, region, service) => {
+  const kDate = hmac(`AWS4${secretAccessKey}`, dateStamp);
+  const kRegion = hmac(kDate, region);
+  const kService = hmac(kRegion, service);
+  return hmac(kService, "aws4_request");
+};
+
+const signSesRequest = ({
+  body,
+  region,
+  accessKeyId,
+  secretAccessKey,
+  sessionToken,
+}) => {
+  const service = "ses";
+  const now = new Date();
+  const amzDate = toAmzDate(now);
+  const dateStamp = amzDate.slice(0, 8);
+  const host = `email.${region}.amazonaws.com`;
+  const canonicalUri = "/v2/email/outbound-emails";
+  const payloadHash = hashHex(body);
+  const headers = {
+    "content-type": "application/json",
+    host,
+    "x-amz-content-sha256": payloadHash,
+    "x-amz-date": amzDate,
+  };
+
+  if (sessionToken && !isMissingSecret(sessionToken)) {
+    headers["x-amz-security-token"] = sessionToken;
+  }
+
+  const signedHeaders = Object.keys(headers).sort().join(";");
+  const canonicalHeaders = Object.keys(headers)
+    .sort()
+    .map((key) => `${key}:${headers[key]}\n`)
+    .join("");
+  const canonicalRequest = [
+    "POST",
+    canonicalUri,
+    "",
+    canonicalHeaders,
+    signedHeaders,
+    payloadHash,
+  ].join("\n");
+  const credentialScope = `${dateStamp}/${region}/${service}/aws4_request`;
+  const stringToSign = [
+    "AWS4-HMAC-SHA256",
+    amzDate,
+    credentialScope,
+    hashHex(canonicalRequest),
+  ].join("\n");
+  const signingKey = getSignatureKey(
+    secretAccessKey,
+    dateStamp,
+    region,
+    service
+  );
+  const signature = hmac(signingKey, stringToSign, "hex");
+
+  return {
+    endpoint: `https://${host}${canonicalUri}`,
+    headers: {
+      ...headers,
+      Authorization: [
+        `AWS4-HMAC-SHA256 Credential=${accessKeyId}/${credentialScope}`,
+        `SignedHeaders=${signedHeaders}`,
+        `Signature=${signature}`,
+      ].join(", "),
+    },
+  };
+};
+
+const sendWithSes = async ({ payload, email, to, from }) => {
+  const region =
+    process.env.AWS_SES_REGION || process.env.AWS_REGION || "eu-west-2";
+  const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
+  const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+  const sessionToken = process.env.AWS_SESSION_TOKEN;
+
+  if (
+    isMissingSecret(accessKeyId) ||
+    isMissingSecret(secretAccessKey) ||
+    !to ||
+    !from
+  ) {
+    console.error(
+      "Missing AWS SES credentials, LEAD_EMAIL_TO, or LEAD_EMAIL_FROM"
+    );
+    return { ok: false, error: "email_not_configured" };
+  }
+
+  const body = JSON.stringify({
+    FromEmailAddress: from,
+    Destination: {
+      ToAddresses: [to],
+    },
+    ReplyToAddresses: [payload.email],
+    Content: {
+      Simple: {
+        Subject: {
+          Data: `Advanced Analytica enquiry: ${payload.topic}`,
+          Charset: "UTF-8",
+        },
+        Body: {
+          Text: {
+            Data: email.text,
+            Charset: "UTF-8",
+          },
+          Html: {
+            Data: email.html,
+            Charset: "UTF-8",
+          },
+        },
+      },
+    },
+  });
+
+  const { endpoint, headers } = signSesRequest({
+    body,
+    region,
+    accessKeyId,
+    secretAccessKey,
+    sessionToken,
+  });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000);
+  const response = await fetch(endpoint, {
+    method: "POST",
+    signal: controller.signal,
+    headers,
+    body,
+  }).finally(() => clearTimeout(timeout));
+
+  if (!response.ok) {
+    const detail = await response.text();
+    console.error(`AWS SES error ${response.status}: ${detail}`);
+    return { ok: false, error: "email_delivery_failed" };
+  }
+
+  return { ok: true };
+};
+
 export async function main(event = {}) {
   const method = event.__ow_method ? String(event.__ow_method).toLowerCase() : "";
 
@@ -136,41 +287,16 @@ export async function main(event = {}) {
     return json(400, { ok: false, error: "invalid_email" });
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.LEAD_EMAIL_TO;
   const from =
     process.env.LEAD_EMAIL_FROM ||
-    "Advanced Analytica <onboarding@resend.dev>";
-
-  if (isMissingProviderKey(apiKey) || !to) {
-    console.error("Missing RESEND_API_KEY or LEAD_EMAIL_TO");
-    return json(200, { ok: false, error: "email_not_configured" });
-  }
+    "Advanced Analytica <jonny.bowker@advancedanalytica.co.uk>";
 
   const email = buildEmail(payload);
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 8000);
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    signal: controller.signal,
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from,
-      to: [to],
-      reply_to: payload.email,
-      subject: `Advanced Analytica enquiry: ${payload.topic}`,
-      text: email.text,
-      html: email.html,
-    }),
-  }).finally(() => clearTimeout(timeout));
+  const result = await sendWithSes({ payload, email, to, from });
 
-  if (!response.ok) {
-    const detail = await response.text();
-    console.error(`Resend error ${response.status}: ${detail}`);
-    return json(200, { ok: false, error: "email_delivery_failed" });
+  if (!result.ok) {
+    return json(200, result);
   }
 
   return json(200, { ok: true });

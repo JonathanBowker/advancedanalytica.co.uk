@@ -1,7 +1,10 @@
 packages:
   - name: leads
     environment:
-      RESEND_API_KEY: ${RESEND_API_KEY}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
+      AWS_SES_REGION: ${AWS_SES_REGION}
       LEAD_EMAIL_TO: ${LEAD_EMAIL_TO}
       LEAD_EMAIL_FROM: ${LEAD_EMAIL_FROM}
     functions:
