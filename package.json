@@ -6,11 +6,13 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "ga:report": "node scripts/ga4-report.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",
     "@astrojs/sitemap": "^3.7.0",
+    "@google-analytics/data": "^5.2.1",
     "@tailwindcss/vite": "^4.1.18",
     "astro": "^5.17.1",
     "d3": "^7.9.0",
