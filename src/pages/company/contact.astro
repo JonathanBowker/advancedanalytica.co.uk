@@ -19,9 +19,9 @@ const page = {
   ]
 };
 
-const labelClass = 'text-sm font-semibold tracking-[0.08em] uppercase text-paper/75';
+const labelClass = 'text-sm font-semibold tracking-[0.08em] uppercase text-ink';
 const fieldClass =
-  'w-full rounded-xl border border-paper/15 bg-black/35 px-4 py-3 text-base text-paper outline-none transition-colors placeholder:text-paper/35 focus:border-[#ef27f4] focus:ring-2 focus:ring-[#ef27f4]/25';
+  'w-full rounded-xl border border-fog bg-white px-4 py-3 text-base text-ink outline-none transition-colors placeholder:text-steel/55 focus:border-[#ef27f4] focus:ring-2 focus:ring-[#ef27f4]/20';
 
 const briefingPrompts = [
   'What you want AI or data systems to do better',
@@ -32,16 +32,16 @@ const briefingPrompts = [
 
 const deliveryNotes = [
   {
-    title: 'Secure delivery',
-    body: 'Your enquiry is submitted through a serverless contact endpoint and routed by AWS SES. Mailbox details and credentials are not exposed in the page.'
+    title: 'Your message is sent safely',
+    body: 'Use the form to share what you need help with. Your enquiry is sent directly to Advanced Analytica so we can review it properly.'
   },
   {
-    title: 'Confirmation email',
-    body: 'The form sends a confirmation email to the address provided, so the sender has a clear record that the enquiry was received.'
+    title: 'You get confirmation',
+    body: 'After the form is sent, you will receive a confirmation email at the address you provide, so you know your enquiry has reached us.'
   },
   {
-    title: 'Human review',
-    body: 'We review enquiries directly and use the context provided to decide the most useful next step.'
+    title: 'We come back with a next step',
+    body: 'We read each enquiry and respond with the most useful next step, whether that is a short call, a scoping conversation, or a more detailed briefing.'
   }
 ];
 ---
@@ -60,8 +60,9 @@ const deliveryNotes = [
       <div class="grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
         <div>
           <div class="eyebrow text-paper/70">Contact Advanced Analytica</div>
-          <h1 class="mt-5 max-w-[12ch] font-masthead text-[clamp(3rem,6vw,5.6rem)] font-normal leading-[1.02] tracking-tight text-paper">
-            Ready to put your knowledge to work?
+          <h1 class="mt-4 text-[clamp(2.2rem,4.6vw,3.75rem)] font-semibold leading-[1.05] tracking-tight text-paper">
+            <span class="block">Ready to put your</span>
+            <span class="block">knowledge to work?</span>
           </h1>
           <p class="mt-7 max-w-[72ch] text-lg leading-relaxed text-paper/80 md:text-xl">
             Tell us what you are trying to improve, what needs governing, and
@@ -89,15 +90,15 @@ const deliveryNotes = [
           </div>
         </div>
 
-        <div class="rounded-[1.75rem] border border-paper/15 bg-ink/55 p-6 shadow-outline backdrop-blur md:p-8">
+        <div class="rounded-[1.75rem] border border-fog bg-surface p-6 text-ink shadow-outline md:p-8">
           <div class="mb-7">
             <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#ff8c69]">
               Briefing request
             </div>
-            <h2 class="mt-3 text-2xl font-semibold tracking-tight text-paper">
+            <h2 class="mt-3 text-2xl font-semibold tracking-tight text-ink">
               Send us the outline
             </h2>
-            <p class="mt-3 text-sm leading-relaxed text-paper/65">
+            <p class="mt-3 text-sm leading-relaxed text-steel">
               The form is routed through our AWS SES-backed serverless endpoint
               and sends a confirmation email to the address you provide.
             </p>
@@ -192,7 +193,7 @@ const deliveryNotes = [
           </div>
 
           <div class="flex flex-wrap items-center justify-between gap-4 pt-3">
-            <div id="contact-status" class="text-sm text-paper/70" aria-live="polite"></div>
+            <div id="contact-status" class="text-sm text-steel" aria-live="polite"></div>
             <button
               type="submit"
               class="inline-flex items-center gap-2 rounded-md bg-[#ef27f4] px-7 py-3 text-xs font-semibold tracking-[0.14em] uppercase text-paper shadow-outline transition-colors hover:bg-[#d823dd]"
@@ -215,7 +216,7 @@ const deliveryNotes = [
           </div>
 
           <noscript>
-            <p class="text-base text-paper/70">
+            <p class="text-base text-steel">
               JavaScript is disabled. Submitting the form will still send your enquiry through the secure form endpoint.
             </p>
           </noscript>
