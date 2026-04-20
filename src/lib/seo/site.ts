@@ -1,7 +1,8 @@
 export const SITE_URL = 'https://advancedanalytica.co.uk';
 export const SITE_NAME = 'Advanced Analytica';
 export const SITE_TAGLINE = 'Make Brand Operable';
-export const DEFAULT_OG_IMAGE = `${SITE_URL}/images/partners/logo.png`;
+export const ORGANIZATION_LOGO = `${SITE_URL}/images/infrastructure/logo.png`;
+export const DEFAULT_OG_IMAGE = `${SITE_URL}/images/social/share-card.png`;
 
 export const toAbsoluteUrl = (value?: string) => {
   if (!value) return undefined;
@@ -25,5 +26,5 @@ export const ORGANIZATION = {
   name: SITE_NAME,
   url: SITE_URL,
   description: 'Brand meaning to executable systems.',
-  logo: DEFAULT_OG_IMAGE
+  logo: ORGANIZATION_LOGO
 };
