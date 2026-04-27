@@ -1,12 +1,5 @@
 import { createHash, createHmac } from "node:crypto";
 
-const DEFAULT_ALLOWED_ORIGINS = [
-  "https://advancedanalytica.co.uk",
-  "https://www.advancedanalytica.co.uk",
-  "http://localhost:4321",
-  "http://127.0.0.1:4321",
-];
-
 const MAX_LENGTHS = {
   name: 120,
   email: 180,
@@ -16,33 +9,11 @@ const MAX_LENGTHS = {
   page: 500,
 };
 
-const getHeader = (event = {}, name) => {
-  const headers = event.__ow_headers || event.headers || {};
-  const lowerName = name.toLowerCase();
-  const match = Object.keys(headers).find((key) => key.toLowerCase() === lowerName);
-  return match ? headers[match] : undefined;
-};
-
-const getAllowedOrigin = (event = {}) => {
-  const configured = String(process.env.LEAD_ALLOWED_ORIGINS || "")
-    .split(",")
-    .map((origin) => origin.trim())
-    .filter(Boolean);
-  const allowed = configured.length ? configured : DEFAULT_ALLOWED_ORIGINS;
-  const origin = String(getHeader(event, "origin") || "");
-
-  return allowed.includes(origin) ? origin : allowed[0];
-};
-
-const json = (statusCode, body, event) => ({
+const json = (statusCode, body) => ({
   statusCode,
   headers: {
     "Content-Type": "application/json; charset=utf-8",
     "Cache-Control": "no-store",
-    "Access-Control-Allow-Origin": getAllowedOrigin(event),
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Accept",
-    "Vary": "Origin",
   },
   body: typeof body === "string" ? body : JSON.stringify(body),
 });
@@ -350,18 +321,18 @@ export async function main(event = {}) {
   const method = event.__ow_method ? String(event.__ow_method).toLowerCase() : "";
 
   if (method === "options") {
-    return json(204, "", event);
+    return json(204, "");
   }
 
   if (method && method !== "post") {
-    return json(405, { ok: false, error: "method_not_allowed" }, event);
+    return json(405, { ok: false, error: "method_not_allowed" });
   }
 
   const payload = normalisePayload(event);
 
   // Honeypot: behave like success so bots do not learn the rule.
   if (payload.website) {
-    return json(200, { ok: true }, event);
+    return json(200, { ok: true });
   }
 
   const missing = ["name", "email", "topic", "message"].filter(
@@ -369,11 +340,11 @@ export async function main(event = {}) {
   );
 
   if (missing.length) {
-    return json(400, { ok: false, error: "missing_fields", fields: missing }, event);
+    return json(400, { ok: false, error: "missing_fields", fields: missing });
   }
 
   if (!isValidEmail(payload.email)) {
-    return json(400, { ok: false, error: "invalid_email" }, event);
+    return json(400, { ok: false, error: "invalid_email" });
   }
 
   const to = process.env.LEAD_EMAIL_TO;
@@ -391,7 +362,7 @@ export async function main(event = {}) {
   });
 
   if (!result.ok) {
-    return json(200, result, event);
+    return json(200, result);
   }
 
   const confirmationEmail = buildLeadConfirmationEmail(payload);
@@ -407,5 +378,5 @@ export async function main(event = {}) {
     console.error("Lead confirmation email failed after enquiry was received");
   }
 
-  return json(200, { ok: true, confirmationSent: confirmation.ok }, event);
+  return json(200, { ok: true, confirmationSent: confirmation.ok });
 }
