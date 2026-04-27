@@ -1,4 +1,4 @@
-import { createHash, createHmac } from "node:crypto";
+import { SendEmailCommand, SESv2Client } from "@aws-sdk/client-sesv2";
 
 const MAX_LENGTHS = {
   name: 120,
@@ -137,86 +137,25 @@ const buildLeadConfirmationEmail = ({ name, topic }) => {
   return { text, html };
 };
 
-const hashHex = (value) =>
-  createHash("sha256").update(value, "utf8").digest("hex");
+const getSesFailureReason = (error) => {
+  const code = String(error?.name || error?.Code || error?.code || "");
+  const message = String(error?.message || "");
+  const detail = `${code} ${message}`.toLowerCase();
 
-const hmac = (key, value, encoding) =>
-  createHmac("sha256", key).update(value, "utf8").digest(encoding);
-
-const toAmzDate = (date) =>
-  date.toISOString().replace(/[:-]|\.\d{3}/g, "");
-
-const getSignatureKey = (secretAccessKey, dateStamp, region, service) => {
-  const kDate = hmac(`AWS4${secretAccessKey}`, dateStamp);
-  const kRegion = hmac(kDate, region);
-  const kService = hmac(kRegion, service);
-  return hmac(kService, "aws4_request");
-};
-
-const signSesRequest = ({
-  body,
-  region,
-  accessKeyId,
-  secretAccessKey,
-  sessionToken,
-}) => {
-  const service = "ses";
-  const now = new Date();
-  const amzDate = toAmzDate(now);
-  const dateStamp = amzDate.slice(0, 8);
-  const host = `email.${region}.amazonaws.com`;
-  const canonicalUri = "/v2/email/outbound-emails";
-  const payloadHash = hashHex(body);
-  const headers = {
-    "content-type": "application/json",
-    host,
-    "x-amz-content-sha256": payloadHash,
-    "x-amz-date": amzDate,
-  };
-
-  if (sessionToken && !isMissingSecret(sessionToken)) {
-    headers["x-amz-security-token"] = sessionToken;
+  if (detail.includes("messagerejected")) return "ses_message_rejected";
+  if (detail.includes("accessdenied") || detail.includes("not authorized")) {
+    return "ses_access_denied";
+  }
+  if (
+    detail.includes("signature") ||
+    detail.includes("security token") ||
+    detail.includes("invalidclienttoken") ||
+    detail.includes("unrecognizedclient")
+  ) {
+    return "ses_credentials_invalid";
   }
 
-  const signedHeaders = Object.keys(headers).sort().join(";");
-  const canonicalHeaders = Object.keys(headers)
-    .sort()
-    .map((key) => `${key}:${headers[key]}\n`)
-    .join("");
-  const canonicalRequest = [
-    "POST",
-    canonicalUri,
-    "",
-    canonicalHeaders,
-    signedHeaders,
-    payloadHash,
-  ].join("\n");
-  const credentialScope = `${dateStamp}/${region}/${service}/aws4_request`;
-  const stringToSign = [
-    "AWS4-HMAC-SHA256",
-    amzDate,
-    credentialScope,
-    hashHex(canonicalRequest),
-  ].join("\n");
-  const signingKey = getSignatureKey(
-    secretAccessKey,
-    dateStamp,
-    region,
-    service
-  );
-  const signature = hmac(signingKey, stringToSign, "hex");
-
-  return {
-    endpoint: `https://${host}${canonicalUri}`,
-    headers: {
-      ...headers,
-      Authorization: [
-        `AWS4-HMAC-SHA256 Credential=${accessKeyId}/${credentialScope}`,
-        `SignedHeaders=${signedHeaders}`,
-        `Signature=${signature}`,
-      ].join(", "),
-    },
-  };
+  return "ses_delivery_failed";
 };
 
 const sendWithSes = async ({ email, to, from, replyTo, subject }) => {
@@ -238,83 +177,65 @@ const sendWithSes = async ({ email, to, from, replyTo, subject }) => {
     return { ok: false, error: "email_not_configured" };
   }
 
-  const body = JSON.stringify({
-    FromEmailAddress: from,
-    Destination: {
-      ToAddresses: [to],
-    },
-    ReplyToAddresses: replyTo ? [replyTo] : undefined,
-    Content: {
-      Simple: {
-        Subject: {
-          Data: subject,
-          Charset: "UTF-8",
-        },
-        Body: {
-          Text: {
-            Data: email.text,
-            Charset: "UTF-8",
-          },
-          Html: {
-            Data: email.html,
-            Charset: "UTF-8",
-          },
-        },
-      },
-    },
-  });
-
-  const { endpoint, headers } = signSesRequest({
-    body,
+  const client = new SESv2Client({
     region,
-    accessKeyId,
-    secretAccessKey,
-    sessionToken,
+    credentials: {
+      accessKeyId,
+      secretAccessKey,
+      ...(sessionToken && !isMissingSecret(sessionToken)
+        ? { sessionToken }
+        : {}),
+    },
   });
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 8000);
-  const response = await fetch(endpoint, {
-    method: "POST",
-    signal: controller.signal,
-    headers,
-    body,
-  }).finally(() => clearTimeout(timeout));
 
-  if (!response.ok) {
-    const detail = await response.text();
-    console.error(`AWS SES error ${response.status}: ${detail}`);
+  try {
+    await client.send(
+      new SendEmailCommand({
+        FromEmailAddress: from,
+        Destination: {
+          ToAddresses: [to],
+        },
+        ReplyToAddresses: replyTo ? [replyTo] : undefined,
+        Content: {
+          Simple: {
+            Subject: {
+              Data: subject,
+              Charset: "UTF-8",
+            },
+            Body: {
+              Text: {
+                Data: email.text,
+                Charset: "UTF-8",
+              },
+              Html: {
+                Data: email.html,
+                Charset: "UTF-8",
+              },
+            },
+          },
+        },
+      })
+    );
 
-    let providerError = "";
-    try {
-      const parsed = JSON.parse(detail);
-      providerError =
-        parsed.__type ||
-        parsed.code ||
-        parsed.Code ||
-        parsed.name ||
-        "";
-    } catch {
-      providerError = detail.slice(0, 120);
-    }
-
-    const normalisedError = providerError.toLowerCase();
-    const reason = normalisedError.includes("messagerejected")
-      ? "ses_message_rejected"
-      : normalisedError.includes("accessdenied")
-        ? "ses_access_denied"
-        : normalisedError.includes("signature")
-          ? "ses_signature_error"
-          : "ses_delivery_failed";
+    return { ok: true };
+  } catch (error) {
+    const status =
+      error?.$metadata?.httpStatusCode ||
+      error?.$response?.statusCode ||
+      500;
+    console.error(
+      `AWS SES error ${status}: ${error?.name || "UnknownError"} ${
+        error?.message || ""
+      }`
+    );
 
     return {
       ok: false,
       error: "email_delivery_failed",
-      reason,
-      providerStatus: response.status,
+      reason: getSesFailureReason(error),
+      providerStatus: status,
     };
   }
-
-  return { ok: true };
 };
 
 export async function main(event = {}) {

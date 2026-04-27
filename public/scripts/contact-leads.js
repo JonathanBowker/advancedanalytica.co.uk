@@ -35,6 +35,8 @@
         "The mail service rejected this enquiry. Please email jonny.bowker@advancedanalytica.co.uk directly.",
       ses_signature_error:
         "The mail service credentials need attention. Please email jonny.bowker@advancedanalytica.co.uk directly.",
+      ses_credentials_invalid:
+        "The mail service credentials need attention. Please email jonny.bowker@advancedanalytica.co.uk directly.",
       ses_delivery_failed:
         "The mail service could not send this enquiry. Please email jonny.bowker@advancedanalytica.co.uk directly.",
     };
