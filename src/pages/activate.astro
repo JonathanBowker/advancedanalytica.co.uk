@@ -1,0 +1,411 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import AiceGatewayCluster from "../components/AiceGatewayCluster.astro";
+import { SITE_URL } from "../lib/seo/site";
+
+const title = "Activate What You Own";
+const description =
+  "Advanced Analytica activates the knowledge you own without new software or vendor lock-in, making your data operational through governed AI infrastructure.";
+
+const activationSteps = [
+  {
+    eyebrow: "1. Connect",
+    heading: "Connect to the knowledge you own",
+    body: "Bring approved specifications, policies, materials, and operational rules into a retrieval-ready layer that AI systems can use without losing context.",
+  },
+  {
+    eyebrow: "2. Govern",
+    heading: "Codify your governance policies",
+    body: "Use the AICE to translate intent, apply policy, manage access, and decide what tools, data, and actions are available in each workflow.",
+  },
+  {
+    eyebrow: "3. Operate",
+    heading: "Deploy your intelligence at scale",
+    body: "Run agents, applications, and workflows against your own operating logic, with monitoring, evaluation, and revision built into the delivery model.",
+  },
+] as const;
+
+const outcomes = [
+  "A governed interface between AI and business systems",
+  "Reusable specifications that supervise live workflows",
+  "Clear policy boundaries for data, tools, and actions",
+  "Traceable behaviour that can be tested and improved",
+  "A practical path from proof of concept to production",
+  "A foundation that can extend across business functions",
+] as const;
+
+const rareExpertise = [
+  {
+    skill: "Listening until the structure appears",
+    body: "Most consultants take a brief and build from it. We ask questions, then question the answers, and keep digging until we can see the data structures hidden in the business. The brief emerges from that process; it isn't the starting point.",
+  },
+  {
+    skill: "Reading proprietary knowledge formats",
+    body: "Brand guidelines trapped in InDesign packages, compliance policies buried in PDFs, operational logic scattered across SharePoint — we extract the structured knowledge inside them and make it machine-readable without losing business context.",
+  },
+  {
+    skill: "Data architecture across complex integrations",
+    body: "We understand the complexity of API builds and integrations at a level most consultants avoid. We know which connections are stable, which are fragile, and how to design a data layer that won't break when systems change.",
+  },
+  {
+    skill: "Translating business logic into machine language",
+    body: "Rules, exceptions, permissions, and tacit judgment don't arrive in a clean format. We translate the messy reality of how organisations actually operate into governed, machine-readable specifications that AI systems can follow consistently.",
+  },
+  {
+    skill: "Writing briefs that AI can build from directly",
+    body: "We write highly contextual engineering briefs so specific that our supervised AI workforce can build solutions using advanced reasoning: no ambiguity, no back-and-forth, no costly re-work. That precision is what delivers proof of value in weeks, not months.",
+  },
+  {
+    skill: "Governance design that survives production",
+    body: "Building a working prototype is straightforward. Building a system that stays aligned, auditable, and trustworthy as it scales is not. We design governance into the architecture from the start — not retrofitted after the fact.",
+  },
+] as const;
+
+const activationAssets = [
+  {
+    label: "Policy",
+    heading: "Rules that can be enforced",
+    body: "Brand standards, compliance requirements, access rules, and approval logic become structured controls that can guide live AI behaviour.",
+  },
+  {
+    label: "Knowledge",
+    heading: "Sources AI can retrieve from",
+    body: "Documents, datasets, guidelines, and expert inputs are organised into retrieval-ready knowledge that systems can use with context.",
+  },
+  {
+    label: "Workflow",
+    heading: "Processes AI can participate in",
+    body: "Repeated decisions, handoffs, checks, and actions are mapped into workflows where agents and tools can operate under supervision.",
+  },
+  {
+    label: "Evidence",
+    heading: "Behaviour you can audit",
+    body: "Prompts, sources, decisions, outputs, and evaluations are made traceable so the system can be reviewed, tested, and improved.",
+  },
+] as const;
+
+const page = {
+  title,
+  description,
+  url: `${SITE_URL}/activate`,
+  breadcrumbs: [
+    { name: "Home", url: `${SITE_URL}/` },
+    { name: "Activate", url: `${SITE_URL}/activate` },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} page={page}>
+  <section
+    class="relative overflow-hidden bg-gradient-to-br from-black via-[#0b0e14] to-[#171b24] text-paper min-h-[calc(100vh-5rem)]"
+  >
+    <div
+      class="container-wide relative z-10 pt-[9.5rem] pb-[7rem] lg:pt-[10.5rem] lg:pb-[8rem]"
+    >
+      <div class="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+        <div>
+          <div class="eyebrow mb-10 text-base">
+            Your data. Made operational.
+          </div>
+
+          <h1
+            class="font-masthead text-[clamp(2.95rem,5.6vw,5.15rem)] font-semibold tracking-tight text-paper leading-[1.06] max-w-[54rem]"
+          >
+            <span class="block">Activate What</span>
+            <span class="block text-[#ef27f4]">You Own.</span>
+          </h1>
+
+          <p
+            class="mt-6 max-w-[48rem] text-[clamp(1.16rem,1.85vw,1.42rem)] font-light leading-relaxed text-paper/80 md:text-[1.36rem]"
+          >
+            We have the rare skills and expertise to activate the knowledge you
+            own.
+            <strong class="font-medium text-paper">
+              No new software. No vendor lock-in.</strong
+            >
+            Just your data, made operational.
+          </p>
+
+          <div class="mt-8 flex flex-wrap gap-4">
+            <a
+              href="#get-in-touch"
+              class="inline-flex max-w-full items-center justify-center gap-2 rounded-md bg-[#ef27f4] px-6 py-3 text-center text-xs font-semibold leading-snug tracking-[0.1em] uppercase text-paper shadow-outline transition-colors hover:bg-[#d823dd] sm:tracking-[0.14em]"
+            >
+              Get in Touch?
+              <svg
+                class="h-4 w-4"
+                viewBox="0 0 20 20"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M4 10h12"></path>
+                <path d="M12 6l4 4-4 4"></path>
+              </svg>
+            </a>
+            <a
+              href="#how"
+              class="inline-flex items-center justify-center gap-3 rounded-md border border-[#ff8c69] px-6 py-3 text-xs font-semibold tracking-[0.14em] uppercase text-[#ff8c69] transition-colors hover:bg-[#ff8c69] hover:text-paper"
+            >
+              <span>See how it works</span>
+              <svg
+                class="h-5 w-5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"
+                ></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="relative">
+          <div
+            class="rounded-2xl border border-paper/15 bg-ink/40 p-5 shadow-outline backdrop-blur"
+          >
+            <AiceGatewayCluster />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" class="bg-paper text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center">Activation Model</div>
+      <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+        <div>
+          <h2
+            class="text-[clamp(2.5rem,5vw,4.75rem)] font-semibold tracking-tight text-ink"
+          >
+            From engaged conversation to intelligent operations
+          </h2>
+        </div>
+
+        <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
+          <p>
+            We don't start with templates or methodologies. We listen. We ask questions, then question the answers, and continue to dig deeper until we can see the knowledge data structures hidden in your business.
+          </p>
+          <p class="mt-6">
+            Then we write highly contextual engineering briefs that our supervised AI workforce use to build solutions using advanced reasoning. No ambiguity. No back-and-forth. Proof of value in weeks, not months.
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-14 grid gap-5 lg:grid-cols-3">
+        {
+          activationSteps.map((step) => (
+            <div class="rounded-2xl border border-ink/10 bg-white p-8 shadow-outline">
+              <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#ef27f4]">
+                {step.eyebrow}
+              </div>
+              <h3 class="mt-4 text-2xl font-semibold tracking-tight text-ink">
+                {step.heading}
+              </h3>
+              <p class="mt-4 text-base leading-relaxed text-steel">
+                {step.body}
+              </p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-paper text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center">What Gets Activated</div>
+      <h2
+        class="mx-auto max-w-5xl text-center text-[clamp(2.5rem,5vw,4.75rem)] font-semibold tracking-tight text-ink"
+      >
+        Turning your business knowledge into operational infrastructure
+      </h2>
+
+      <div class="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        {
+          activationAssets.map((asset) => (
+            <div class="flex min-h-full flex-col rounded-2xl border border-ink/10 bg-surface p-6 shadow-outline">
+              <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#ef27f4]">
+                {asset.label}
+              </div>
+              <h3 class="mt-4 text-xl font-semibold tracking-tight text-ink">
+                {asset.heading}
+              </h3>
+              <p class="mt-4 text-base leading-relaxed text-steel">
+                {asset.body}
+              </p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-slate text-paper">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center">Rare Expertise</div>
+      <div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-stretch">
+        <div>
+          <h2
+            class="text-[clamp(2.5rem,5vw,4.75rem)] font-semibold tracking-tight text-paper"
+          >
+            Why this requires rare skills & expertise
+          </h2>
+        </div>
+
+        <div class="max-w-prose text-lg leading-relaxed text-paper md:text-xl">
+          <p>
+            Activating owned knowledge is not a software installation. It means
+            finding the decisions, rules, exceptions, permissions, source
+            materials, and tacit judgement that already shape how the
+            organisation works.
+          </p>
+          <p class="mt-6 text-paper/80">
+            The hard part is turning that messy institutional knowledge into
+            operating infrastructure that models, agents, tools, and people can
+            rely on. That takes technical architecture, governance design, and
+            enough domain sensitivity to preserve what matters instead of
+            reducing everything to generic prompts.
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-12 grid gap-5 md:grid-cols-2">
+        {
+          rareExpertise.map((item) => (
+            <div class="relative overflow-hidden rounded-2xl border border-paper/15 bg-ink/40 p-8 shadow-outline">
+              <h3 class="text-2xl font-semibold tracking-tight text-paper">
+                {item.skill}
+              </h3>
+              <p class="mt-4 text-base leading-relaxed text-paper/75">
+                {item.body}
+              </p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-slate text-paper">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-6 text-center opacity-80">
+        What Activation Delivers
+      </div>
+      <h2
+        class="text-center text-[clamp(2.5rem,5vw,4.75rem)] font-semibold tracking-tight text-paper"
+      >
+        A governed route from AI ambition to operational use
+      </h2>
+      <p
+        class="mx-auto mt-8 max-w-[86ch] text-center text-lg leading-relaxed text-paper/80 md:text-xl"
+      >
+        Activation gives your teams a practical control point for AI delivery:
+        one place to connect knowledge, enforce policy, supervise tools,
+        evaluate outputs, and improve the system over time.
+      </p>
+
+      <div class="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {
+          outcomes.map((outcome) => (
+            <div class="flex gap-4 rounded-2xl border border-paper/15 bg-black/25 p-6 shadow-outline backdrop-blur">
+              <span class="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#ef27f4]" />
+              <p class="text-base font-medium leading-relaxed text-paper/85">
+                {outcome}
+              </p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-paper text-ink">
+    <div class="container-wide py-20">
+      <div class="mx-auto max-w-5xl">
+        <div class="eyebrow mb-6 text-center">The Infrastructure</div>
+        <h2
+          class="text-center text-[clamp(2.2rem,4vw,3.5rem)] font-semibold tracking-tight leading-[1.1] text-ink"
+        >
+          The AICE is the activation layer for IBOM<sup
+            class="text-[0.45em] align-super">®</sup
+          >
+        </h2>
+        <p
+          class="mx-auto mt-6 max-w-4xl text-center text-xl font-light leading-relaxed text-steel"
+        >
+          IBOM<sup>®</sup> defines the operating logic. The AICE makes that logic
+          usable by AI systems, applying it at the point where users, data, models,
+          and tools meet.
+        </p>
+
+        <div class="mt-10 grid gap-5 sm:grid-cols-2">
+          <div class="rounded-2xl border border-ink/10 bg-white p-6">
+            <h3 class="text-lg font-semibold text-[#ef27f4]">
+              Translates intent
+            </h3>
+            <p class="mt-3 leading-relaxed text-steel">
+              Converts human requests into precise instructions shaped by
+              approved business logic and policy.
+            </p>
+          </div>
+          <div class="rounded-2xl border border-ink/10 bg-white p-6">
+            <h3 class="text-lg font-semibold text-[#ef27f4]">
+              Controls access
+            </h3>
+            <p class="mt-3 leading-relaxed text-steel">
+              Defines what information, systems, and actions are available for
+              each workflow and operating context.
+            </p>
+          </div>
+          <div class="rounded-2xl border border-ink/10 bg-white p-6">
+            <h3 class="text-lg font-semibold text-[#ef27f4]">
+              Coordinates tools
+            </h3>
+            <p class="mt-3 leading-relaxed text-steel">
+              Connects AI to documents, databases, applications, and operational
+              services through one governed gateway.
+            </p>
+          </div>
+          <div class="rounded-2xl border border-ink/10 bg-white p-6">
+            <h3 class="text-lg font-semibold text-[#ef27f4]">
+              Checks behaviour
+            </h3>
+            <p class="mt-3 leading-relaxed text-steel">
+              Tests outputs and actions against specification so teams can
+              monitor, correct, and improve live systems.
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-10 flex items-center justify-center">
+          <a
+            href="#get-in-touch"
+            class="inline-flex max-w-full items-center justify-center gap-2 rounded-md bg-[#ef27f4] px-8 py-4 text-center text-xs font-semibold leading-snug tracking-[0.1em] uppercase text-paper shadow-outline transition-colors hover:bg-[#d823dd] sm:tracking-[0.14em]"
+          >
+            Ready to put your knowledge to work?
+            <svg
+              class="h-4 w-4"
+              viewBox="0 0 20 20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M4 10h12"></path>
+              <path d="M12 6l4 4-4 4"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

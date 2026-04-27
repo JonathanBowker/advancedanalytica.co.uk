@@ -1,5 +1,12 @@
 import { createHash, createHmac } from "node:crypto";
 
+const DEFAULT_ALLOWED_ORIGINS = [
+  "https://advancedanalytica.co.uk",
+  "https://www.advancedanalytica.co.uk",
+  "http://localhost:4321",
+  "http://127.0.0.1:4321",
+];
+
 const MAX_LENGTHS = {
   name: 120,
   email: 180,
@@ -9,13 +16,35 @@ const MAX_LENGTHS = {
   page: 500,
 };
 
-const json = (statusCode, body) => ({
+const getHeader = (event = {}, name) => {
+  const headers = event.__ow_headers || event.headers || {};
+  const lowerName = name.toLowerCase();
+  const match = Object.keys(headers).find((key) => key.toLowerCase() === lowerName);
+  return match ? headers[match] : undefined;
+};
+
+const getAllowedOrigin = (event = {}) => {
+  const configured = String(process.env.LEAD_ALLOWED_ORIGINS || "")
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+  const allowed = configured.length ? configured : DEFAULT_ALLOWED_ORIGINS;
+  const origin = String(getHeader(event, "origin") || "");
+
+  return allowed.includes(origin) ? origin : allowed[0];
+};
+
+const json = (statusCode, body, event) => ({
   statusCode,
   headers: {
     "Content-Type": "application/json; charset=utf-8",
     "Cache-Control": "no-store",
+    "Access-Control-Allow-Origin": getAllowedOrigin(event),
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Accept",
+    "Vary": "Origin",
   },
-  body,
+  body: typeof body === "string" ? body : JSON.stringify(body),
 });
 
 const clean = (value, maxLength = 500) =>
@@ -283,7 +312,35 @@ const sendWithSes = async ({ email, to, from, replyTo, subject }) => {
   if (!response.ok) {
     const detail = await response.text();
     console.error(`AWS SES error ${response.status}: ${detail}`);
-    return { ok: false, error: "email_delivery_failed" };
+
+    let providerError = "";
+    try {
+      const parsed = JSON.parse(detail);
+      providerError =
+        parsed.__type ||
+        parsed.code ||
+        parsed.Code ||
+        parsed.name ||
+        "";
+    } catch {
+      providerError = detail.slice(0, 120);
+    }
+
+    const normalisedError = providerError.toLowerCase();
+    const reason = normalisedError.includes("messagerejected")
+      ? "ses_message_rejected"
+      : normalisedError.includes("accessdenied")
+        ? "ses_access_denied"
+        : normalisedError.includes("signature")
+          ? "ses_signature_error"
+          : "ses_delivery_failed";
+
+    return {
+      ok: false,
+      error: "email_delivery_failed",
+      reason,
+      providerStatus: response.status,
+    };
   }
 
   return { ok: true };
@@ -293,18 +350,18 @@ export async function main(event = {}) {
   const method = event.__ow_method ? String(event.__ow_method).toLowerCase() : "";
 
   if (method === "options") {
-    return json(204, "");
+    return json(204, "", event);
   }
 
   if (method && method !== "post") {
-    return json(405, { ok: false, error: "method_not_allowed" });
+    return json(405, { ok: false, error: "method_not_allowed" }, event);
   }
 
   const payload = normalisePayload(event);
 
   // Honeypot: behave like success so bots do not learn the rule.
   if (payload.website) {
-    return json(200, { ok: true });
+    return json(200, { ok: true }, event);
   }
 
   const missing = ["name", "email", "topic", "message"].filter(
@@ -312,11 +369,11 @@ export async function main(event = {}) {
   );
 
   if (missing.length) {
-    return json(400, { ok: false, error: "missing_fields", fields: missing });
+    return json(400, { ok: false, error: "missing_fields", fields: missing }, event);
   }
 
   if (!isValidEmail(payload.email)) {
-    return json(400, { ok: false, error: "invalid_email" });
+    return json(400, { ok: false, error: "invalid_email" }, event);
   }
 
   const to = process.env.LEAD_EMAIL_TO;
@@ -334,7 +391,7 @@ export async function main(event = {}) {
   });
 
   if (!result.ok) {
-    return json(200, result);
+    return json(200, result, event);
   }
 
   const confirmationEmail = buildLeadConfirmationEmail(payload);
@@ -350,5 +407,5 @@ export async function main(event = {}) {
     console.error("Lead confirmation email failed after enquiry was received");
   }
 
-  return json(200, { ok: true, confirmationSent: confirmation.ok });
+  return json(200, { ok: true, confirmationSent: confirmation.ok }, event);
 }

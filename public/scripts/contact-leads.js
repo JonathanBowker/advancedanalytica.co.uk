@@ -23,6 +23,28 @@
     window.advancedAnalyticaTrack(eventName, params);
   };
 
+  const getErrorMessage = (result) => {
+    if (result?.error !== "email_delivery_failed") {
+      return "We could not send your enquiry. Please try again in a moment.";
+    }
+
+    const reasonMessages = {
+      ses_access_denied:
+        "The mail service is not authorised to send this enquiry. Please email jonny.bowker@advancedanalytica.co.uk directly.",
+      ses_message_rejected:
+        "The mail service rejected this enquiry. Please email jonny.bowker@advancedanalytica.co.uk directly.",
+      ses_signature_error:
+        "The mail service credentials need attention. Please email jonny.bowker@advancedanalytica.co.uk directly.",
+      ses_delivery_failed:
+        "The mail service could not send this enquiry. Please email jonny.bowker@advancedanalytica.co.uk directly.",
+    };
+
+    return (
+      reasonMessages[result?.reason] ||
+      "The mail service could not send this enquiry. Please email jonny.bowker@advancedanalytica.co.uk directly."
+    );
+  };
+
   const getCompletedFieldCount = (form) =>
     ["name", "email", "company", "topic", "message"].filter((field) => getValue(form, field)).length;
 
@@ -237,16 +259,22 @@
 
         const result = await response.json().catch(() => null);
         if (!response.ok || result?.ok === false) {
-          throw new Error(`Form endpoint returned ${response.status}`);
+          const error = new Error(`Form endpoint returned ${response.status}`);
+          error.result = result;
+          throw error;
         }
 
         form.reset();
         setStatus(form, "");
         showSuccessCard();
         track("contact_submit", context);
-      } catch {
-        setStatus(form, "We could not send your enquiry. Please try again in a moment.");
-        track("contact_error", context);
+      } catch (error) {
+        setStatus(form, getErrorMessage(error?.result));
+        track("contact_error", {
+          ...context,
+          error: error?.result?.error || "request_failed",
+          reason: error?.result?.reason || "unknown",
+        });
       }
     });
   });
