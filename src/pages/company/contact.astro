@@ -116,6 +116,7 @@ const deliveryNotes = [
             autocomplete="off"
             aria-hidden="true"
           />
+          <input type="hidden" name="language" value="en" />
 
           <div class="grid gap-2">
             <label for="name" class={labelClass}>Name</label>
@@ -139,9 +140,12 @@ const deliveryNotes = [
               autocomplete="email"
               inputmode="email"
               required
-              placeholder="you@example.com"
+              placeholder="you@company.com"
               class={fieldClass}
             />
+            <p class="text-xs leading-relaxed text-steel">
+              This must be a business email address.
+            </p>
           </div>
 
           <div class="grid gap-5 md:grid-cols-2">

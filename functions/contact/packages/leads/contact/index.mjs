@@ -7,7 +7,43 @@ const MAX_LENGTHS = {
   topic: 160,
   message: 4000,
   page: 500,
+  language: 20,
 };
+
+const FREE_EMAIL_DOMAINS = new Set([
+  "aol.com",
+  "fastmail.com",
+  "gmail.com",
+  "googlemail.com",
+  "gmx.com",
+  "gmx.co.uk",
+  "hey.com",
+  "hotmail.co.uk",
+  "hotmail.com",
+  "icloud.com",
+  "live.co.uk",
+  "live.com",
+  "mac.com",
+  "mail.com",
+  "me.com",
+  "msn.com",
+  "outlook.com",
+  "pm.me",
+  "proton.me",
+  "protonmail.com",
+  "qq.com",
+  "tutanota.com",
+  "yahoo.co.uk",
+  "yahoo.com",
+  "yandex.com",
+  "yandex.ru",
+  "zoho.com",
+  "163.com",
+  "126.com",
+]);
+
+const NON_ENGLISH_SCRIPT_PATTERN =
+  /[\p{Script=Arabic}\p{Script=Armenian}\p{Script=Bengali}\p{Script=Bopomofo}\p{Script=Cyrillic}\p{Script=Devanagari}\p{Script=Ethiopic}\p{Script=Georgian}\p{Script=Greek}\p{Script=Gujarati}\p{Script=Gurmukhi}\p{Script=Han}\p{Script=Hangul}\p{Script=Hebrew}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Kannada}\p{Script=Khmer}\p{Script=Lao}\p{Script=Malayalam}\p{Script=Myanmar}\p{Script=Oriya}\p{Script=Sinhala}\p{Script=Tamil}\p{Script=Telugu}\p{Script=Thai}\p{Script=Tibetan}]/u;
 
 const json = (statusCode, body) => ({
   statusCode,
@@ -59,11 +95,28 @@ const normalisePayload = (event) => {
     topic: clean(body.topic, MAX_LENGTHS.topic),
     message: clean(body.message, MAX_LENGTHS.message),
     page: clean(body.page, MAX_LENGTHS.page),
+    language: clean(body.language, MAX_LENGTHS.language).toLowerCase() || "en",
     website: clean(body.website, 200),
   };
 };
 
 const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+const getEmailDomain = (email) => email.split("@").pop()?.toLowerCase() || "";
+
+const isBusinessEmail = (email) => {
+  const domain = getEmailDomain(email);
+  return Boolean(domain) && !FREE_EMAIL_DOMAINS.has(domain);
+};
+
+const isEnglishLanguageSubmission = ({ name, company, topic, message, language }) => {
+  if (language && !["en", "en-gb", "en-us"].includes(language)) return false;
+
+  const text = [name, company, topic, message].filter(Boolean).join(" ");
+  if (NON_ENGLISH_SCRIPT_PATTERN.test(text)) return false;
+
+  return /[a-z]{2,}/i.test(text);
+};
 
 const isMissingSecret = (value) =>
   !value || value === "not-configured" || value.startsWith("EV[");
@@ -266,6 +319,14 @@ export async function main(event = {}) {
 
   if (!isValidEmail(payload.email)) {
     return json(400, { ok: false, error: "invalid_email" });
+  }
+
+  if (!isBusinessEmail(payload.email)) {
+    return json(400, { ok: false, error: "business_email_required" });
+  }
+
+  if (!isEnglishLanguageSubmission(payload)) {
+    return json(400, { ok: false, error: "english_language_required" });
   }
 
   const to = process.env.LEAD_EMAIL_TO;

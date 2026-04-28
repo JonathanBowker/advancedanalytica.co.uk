@@ -3,6 +3,39 @@
   if (!forms.length) return;
 
   const successMessage = "Thank you. Your enquiry has been sent.";
+  const freeEmailDomains = new Set([
+    "aol.com",
+    "fastmail.com",
+    "gmail.com",
+    "googlemail.com",
+    "gmx.com",
+    "gmx.co.uk",
+    "hey.com",
+    "hotmail.co.uk",
+    "hotmail.com",
+    "icloud.com",
+    "live.co.uk",
+    "live.com",
+    "mac.com",
+    "mail.com",
+    "me.com",
+    "msn.com",
+    "outlook.com",
+    "pm.me",
+    "proton.me",
+    "protonmail.com",
+    "qq.com",
+    "tutanota.com",
+    "yahoo.co.uk",
+    "yahoo.com",
+    "yandex.com",
+    "yandex.ru",
+    "zoho.com",
+    "163.com",
+    "126.com",
+  ]);
+  const nonEnglishScriptPattern =
+    /[\p{Script=Arabic}\p{Script=Armenian}\p{Script=Bengali}\p{Script=Bopomofo}\p{Script=Cyrillic}\p{Script=Devanagari}\p{Script=Ethiopic}\p{Script=Georgian}\p{Script=Greek}\p{Script=Gujarati}\p{Script=Gurmukhi}\p{Script=Han}\p{Script=Hangul}\p{Script=Hebrew}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Kannada}\p{Script=Khmer}\p{Script=Lao}\p{Script=Malayalam}\p{Script=Myanmar}\p{Script=Oriya}\p{Script=Sinhala}\p{Script=Tamil}\p{Script=Telugu}\p{Script=Thai}\p{Script=Tibetan}]/u;
 
   const setStatus = (form, message) => {
     const targetId = form.getAttribute("data-status-target");
@@ -18,6 +51,30 @@
     form_location: form.id === "home-contact-form" ? "footer" : "contact_page",
   });
 
+  const getEmailDomain = (email) => email.split("@").pop()?.toLowerCase() || "";
+
+  const isBusinessEmail = (email) => {
+    const domain = getEmailDomain(email);
+    return Boolean(domain) && !freeEmailDomains.has(domain);
+  };
+
+  const isEnglishLanguageSubmission = (form) => {
+    const text = ["name", "company", "topic", "message"]
+      .map((field) => getValue(form, field))
+      .filter(Boolean)
+      .join(" ");
+    return /[a-z]{2,}/i.test(text) && !nonEnglishScriptPattern.test(text);
+  };
+
+  const setFieldError = (field, message) => {
+    if (!field) return;
+    field.setCustomValidity(message);
+    field.reportValidity();
+    field.addEventListener("input", () => field.setCustomValidity(""), {
+      once: true,
+    });
+  };
+
   const track = (eventName, params = {}) => {
     if (typeof window.advancedAnalyticaTrack !== "function") return;
     window.advancedAnalyticaTrack(eventName, params);
@@ -25,6 +82,14 @@
 
   const getErrorMessage = (result) => {
     if (result?.error !== "email_delivery_failed") {
+      if (result?.error === "business_email_required") {
+        return "Please use a business email address.";
+      }
+
+      if (result?.error === "english_language_required") {
+        return "Please write your enquiry in English.";
+      }
+
       return "We could not send your enquiry. Please try again in a moment.";
     }
 
@@ -59,6 +124,7 @@
       topic: getValue(form, "topic"),
       message: String(fd.get("message") || "").trim(),
       website: String(fd.get("website") || "").trim(),
+      language: String(fd.get("language") || "en").trim() || "en",
       page: window.location.href,
     };
   };
@@ -243,6 +309,29 @@
         form.reportValidity();
         setStatus(form, "Please complete the required fields.");
         track("contact_validation_error", context);
+        return;
+      }
+
+      const emailField = form.querySelector('[name="email"]');
+      const email = getValue(form, "email").toLowerCase();
+      if (!isBusinessEmail(email)) {
+        setFieldError(emailField, "Please use a business email address.");
+        setStatus(form, "Please use a business email address.");
+        track("contact_validation_error", {
+          ...context,
+          reason: "business_email_required",
+        });
+        return;
+      }
+
+      const messageField = form.querySelector('[name="message"]');
+      if (!isEnglishLanguageSubmission(form)) {
+        setFieldError(messageField, "Please write your enquiry in English.");
+        setStatus(form, "Please write your enquiry in English.");
+        track("contact_validation_error", {
+          ...context,
+          reason: "english_language_required",
+        });
         return;
       }
 
