@@ -46,12 +46,12 @@ const renderSvg = ({
   const plainTitle = stripHtml(title);
   const label = kind === 'opinion' ? 'OPINION' : kind === 'use-case' ? 'USE CASE' : 'RESOURCE';
   const accent =
-    kind === 'opinion' ? '#ef27f4' : kind === 'use-case' ? '#ff8c69' : '#94a3b8';
+    kind === 'opinion' ? '#14B8A6' : kind === 'use-case' ? '#ff8c69' : '#94a3b8';
   const labelFill =
     kind === 'resource' ? '#202733' : accent;
   const accentSoft =
     kind === 'opinion'
-      ? 'rgba(239,39,244,0.22)'
+      ? 'rgba(20,184,166,0.22)'
       : kind === 'use-case'
         ? 'rgba(255,140,105,0.22)'
         : 'rgba(148,163,184,0.24)';

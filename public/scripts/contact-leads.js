@@ -85,10 +85,10 @@
         position: relative;
         width: min(100%, 31rem);
         overflow: hidden;
-        border: 1px solid rgba(239, 39, 244, 0.36);
+        border: 1px solid rgba(20, 184, 166, 0.36);
         border-radius: 1.25rem;
         background:
-          radial-gradient(circle at 18% 0%, rgba(239, 39, 244, 0.24), transparent 34%),
+          radial-gradient(circle at 18% 0%, rgba(20, 184, 166, 0.24), transparent 34%),
           linear-gradient(145deg, #12161d 0%, #07090d 100%);
         color: #f8f3ea;
         padding: 2rem;
@@ -144,7 +144,7 @@
         margin-top: 1.5rem;
         border: 0;
         border-radius: 999px;
-        background: #ef27f4;
+        background: #14B8A6;
         color: #ffffff;
         cursor: pointer;
         font-size: 0.9rem;

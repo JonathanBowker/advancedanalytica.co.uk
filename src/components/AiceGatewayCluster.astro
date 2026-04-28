@@ -1,9 +1,90 @@
+---
+type ClusterNode = {
+  name: string;
+  children?: ClusterNode[];
+};
+
+const defaultLeftData: ClusterNode = {
+  name: 'Enterprise IT',
+  children: [
+    { name: 'Brand Agent' },
+    { name: 'Support Agent' },
+    { name: 'Marketing Agent' },
+    { name: 'Other Agents' }
+  ]
+};
+
+const defaultRightData: ClusterNode = {
+  name: 'Connected Systems',
+  children: [
+    {
+      name: 'Brand MCP',
+      children: [{ name: 'Standards' }, { name: 'Toolkits' }, { name: 'Assets' }]
+    },
+    {
+      name: 'Support MCP',
+      children: [{ name: 'Tickets' }, { name: 'Knowledge' }, { name: 'Escalations' }]
+    },
+    {
+      name: 'Marketing MCP',
+      children: [{ name: 'Campaigns' }, { name: 'Channels' }, { name: 'Content' }]
+    },
+    {
+      name: 'Other MCP',
+      children: [{ name: 'Systems' }, { name: 'Policies' }, { name: 'Workflows' }]
+    }
+  ]
+};
+
+const {
+  title = 'IBOM - Intelligent Business Operating Model',
+  leftData = defaultLeftData,
+  rightData = defaultRightData,
+  agentOrder = ['Brand Agent', 'Support Agent', 'Marketing Agent', 'Other Agents'],
+  agentToMcp = {
+    'Brand Agent': 'Brand MCP',
+    'Support Agent': 'Support MCP',
+    'Marketing Agent': 'Marketing MCP',
+    'Other Agents': 'Other MCP'
+  },
+  questionToTools = {},
+  controlLayer = 'IBOM CONTROL LAYER',
+  tagline = 'BRAND-FIRST COMMUNICATIONS',
+  leftColumnOffset = 0,
+  ariaLabel = 'AICE MCP Gateway architecture diagram'
+} = Astro.props as {
+  title?: string;
+  leftData?: ClusterNode;
+  rightData?: ClusterNode;
+  agentOrder?: string[];
+  agentToMcp?: Record<string, string>;
+  questionToTools?: Record<string, string[]>;
+  controlLayer?: string;
+  tagline?: string;
+  leftColumnOffset?: number;
+  ariaLabel?: string;
+};
+
+const diagramConfig = JSON.stringify({
+  title,
+  leftData,
+  rightData,
+  agentOrder,
+  agentToMcp,
+  questionToTools,
+  controlLayer,
+  tagline,
+  leftColumnOffset
+});
+---
+
 <div
   data-aice-gateway-cluster
+  data-aice-config={diagramConfig}
   class="relative overflow-hidden rounded-3xl border border-ink/10 bg-[#030508] shadow-outline"
 >
   <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(226,232,240,0.2),rgba(18,22,29,0.9)_42%,rgba(3,5,8,1)_74%)]"></div>
-  <svg class="relative block h-auto w-full" viewBox="0 0 1200 720" aria-label="AICE MCP Gateway architecture diagram"></svg>
+  <svg class="relative block h-auto w-full" viewBox="0 0 1200 720" aria-label={ariaLabel}></svg>
 </div>
 
 <style is:inline>
@@ -70,6 +151,14 @@
     const svg = host.querySelector('svg');
     if (!(svg instanceof SVGSVGElement)) return;
 
+    const config = (() => {
+      try {
+        return JSON.parse(host.getAttribute('data-aice-config') || '{}');
+      } catch {
+        return {};
+      }
+    })();
+
     const width = 1200;
     const height = 720;
     const gatewayWidth = 196;
@@ -80,37 +169,9 @@
     const rightSpan = 332;
     const gap = 28;
 
-    const leftData = {
-      name: 'Enterprise IT',
-      children: [
-        { name: 'Brand Agent' },
-        { name: 'Support Agent' },
-        { name: 'Marketing Agent' },
-        { name: 'Other Agents' }
-      ]
-    };
-
-    const rightData = {
-      name: 'Connected Systems',
-      children: [
-        {
-          name: 'Brand MCP',
-          children: [{ name: 'Standards' }, { name: 'Toolkits' }, { name: 'Assets' }]
-        },
-        {
-          name: 'Support MCP',
-          children: [{ name: 'Tickets' }, { name: 'Knowledge' }, { name: 'Escalations' }]
-        },
-        {
-          name: 'Marketing MCP',
-          children: [{ name: 'Campaigns' }, { name: 'Channels' }, { name: 'Content' }]
-        },
-        {
-          name: 'Other MCP',
-          children: [{ name: 'Systems' }, { name: 'Policies' }, { name: 'Workflows' }]
-        }
-      ]
-    };
+    const leftData = config.leftData;
+    const rightData = config.rightData;
+    const leftColumnOffset = Number(config.leftColumnOffset || 0);
 
     const leftRoot = d3.hierarchy(leftData);
     const rightRoot = d3.hierarchy(rightData);
@@ -120,7 +181,14 @@
 
     leftRoot.each((node) => {
       node.x += 70;
-      node.y = gatewayX - gap - node.y;
+      node.y = gatewayX - gap - node.y + (node.depth > 0 ? leftColumnOffset : 0);
+
+      if (node.depth > 1 && node.parent?.children) {
+        const siblingIndex = node.parent.children.indexOf(node);
+        const siblingOffset = siblingIndex - (node.parent.children.length - 1) / 2;
+        node.x = node.parent.x + 40 + siblingOffset * 16;
+        node.y = node.parent.y;
+      }
     });
 
     rightRoot.each((node) => {
@@ -137,6 +205,7 @@
     root.selectAll('*').remove();
 
     const defs = root.append('defs');
+    const questionFlow = root.append('g').attr('data-question-flow-layer', '');
 
     root
       .append('text')
@@ -146,7 +215,7 @@
       .attr('fill', '#ffffff')
       .attr('font-size', 26)
       .attr('font-weight', 700)
-      .text('IBOM - Intelligent Business Operating Model');
+      .text(config.title || 'IBOM - Intelligent Business Operating Model');
 
     const glow = defs
       .append('filter')
@@ -178,6 +247,7 @@
       Math.max(min, name.length * 9 + padding);
     const nodeTheme = (node, side = 'right') => {
       if (node.depth === 0) return 'root';
+      if (side === 'left' && node.depth > 1) return 'question';
       if (side === 'right' && node.children) return 'group';
       return 'leaf';
     };
@@ -215,9 +285,13 @@
     };
 
     const drawLinkSet = (selection, color, side, opacity = 0.9) => {
+      const linkData = side === 'left'
+        ? leftRoot.links().filter((d) => d.target.depth <= 1)
+        : rightRoot.links();
+
       links
         .selectAll(selection)
-        .data(side === 'left' ? leftRoot.links() : rightRoot.links())
+        .data(linkData)
         .join('path')
         .attr('class', selection.slice(1))
         .attr('d', (d) => clusterLinkPath(d, side))
@@ -288,7 +362,7 @@
       .attr('height', gatewayHeight)
       .attr('rx', 14)
       .attr('fill', 'none')
-      .attr('stroke', '#ef27f4')
+      .attr('stroke', '#14B8A6')
       .attr('stroke-width', 3.2)
       .attr('stroke-linecap', 'round')
       .attr('stroke-dasharray', '130 1220')
@@ -314,7 +388,7 @@
       .attr('y', -114)
       .attr('width', 48)
       .attr('height', 48)
-      .style('filter', 'brightness(0) saturate(100%) invert(27%) sepia(92%) saturate(3045%) hue-rotate(289deg) brightness(104%) contrast(95%) drop-shadow(0 0 12px rgba(239,39,244,0.85))');
+      .style('filter', 'brightness(0) saturate(100%) invert(57%) sepia(79%) saturate(481%) hue-rotate(127deg) brightness(91%) contrast(90%) drop-shadow(0 0 12px rgba(20,184,166,0.85))');
 
     gatewayLabel
       .append('text')
@@ -341,7 +415,7 @@
       .attr('fill', 'rgba(255,255,255,0.82)')
       .attr('font-size', 11)
       .attr('letter-spacing', '0.18em')
-      .text('IBOM CONTROL LAYER');
+      .text(config.controlLayer || 'IBOM CONTROL LAYER');
 
     gatewayLabel
       .append('text')
@@ -350,9 +424,23 @@
       .attr('fill', 'rgba(255,255,255,0.72)')
       .attr('font-size', 9)
       .attr('letter-spacing', '0.14em')
-      .text('BRAND-FIRST COMMUNICATIONS');
+      .text(config.tagline || 'BRAND-FIRST COMMUNICATIONS');
 
     const drawPill = (group, name, theme = 'leaf') => {
+      if (theme === 'question') {
+        group
+          .append('text')
+          .attr('data-question-text', '')
+          .attr('x', -78)
+          .attr('dominant-baseline', 'middle')
+          .attr('text-anchor', 'start')
+          .attr('fill', 'rgba(248,250,252,0.82)')
+          .attr('font-size', 11)
+          .attr('font-weight', 500)
+          .text(`Q: ${name}`);
+        return;
+      }
+
       const width = textFitWidth(name, theme === 'group' ? 144 : 124, theme === 'group' ? 40 : 32);
       const height = STANDARD_PILL_HEIGHT;
       group
@@ -383,38 +471,41 @@
       .attr('transform', (d) => `translate(${d.y},${d.x})`);
 
     leftGroup.each(function (d) {
+      d.__element = this;
       const group = d3.select(this);
       if (d.depth === 0) {
         return;
       } else {
-        drawPill(group, d.data.name);
+        drawPill(group, d.data.name, nodeTheme(d, 'left'));
       }
     });
 
     const defaultLeftStroke = 'rgba(226,232,240,0.72)';
     const defaultRightStroke = 'rgba(226,232,240,0.72)';
     const defaultBridgeStroke = 'rgba(226,232,240,0.72)';
-    const activeStroke = '#ef27f4';
-    const agentOrder = ['Brand Agent', 'Support Agent', 'Marketing Agent', 'Other Agents'];
+    const activeStroke = '#14B8A6';
+    const agentOrder = config.agentOrder || ['Brand Agent', 'Support Agent', 'Marketing Agent', 'Other Agents'];
     let rightGroup;
     let autoplayTimer = null;
     let autoplayIndex = 0;
     let isInView = false;
     let isManualHover = false;
-    const agentToMcp = {
+    const agentToMcp = config.agentToMcp || {
       'Brand Agent': 'Brand MCP',
       'Support Agent': 'Support MCP',
       'Marketing Agent': 'Marketing MCP',
       'Other Agents': 'Other MCP'
     };
+    const questionToTools = config.questionToTools || {};
 
-    const setLeftAgentState = (targetName, active) => {
+    const setLeftAgentState = (targetName, active, toolNames = []) => {
       const activeNode = leftRoot
         .descendants()
         .find((node) => node.depth === 1 && node.data.name === targetName);
       const activeMcpName = active ? agentToMcp[targetName] : '';
       const isActiveAgent = Boolean(activeNode && activeMcpName);
       const activeMcpNames = new Set();
+      const activeToolNames = new Set(toolNames);
 
       const activeKeys = new Set();
       const activeRightKeys = new Set();
@@ -422,11 +513,32 @@
 
       if (activeNode && isActiveAgent) {
         activeKeys.add(`${leftRoot.data.name}__${activeNode.data.name}`);
-        activeMcpNames.add(activeMcpName);
-        activeMcpNames.add('Brand MCP');
+
+        if (activeToolNames.size > 0) {
+          rightRoot
+            .descendants()
+            .filter((node) => node.depth === 1 && node.children)
+            .forEach((mcpNode) => {
+              const matchingChildren = mcpNode.children.filter((child) => activeToolNames.has(child.data.name));
+              if (matchingChildren.length === 0) return;
+
+              activeMcpNames.add(mcpNode.data.name);
+              activeRightKeys.add(`${rightRoot.data.name}__${mcpNode.data.name}`);
+
+              matchingChildren.forEach((child) => {
+                activeRightKeys.add(`${mcpNode.data.name}__${child.data.name}`);
+                activeRightChildren.push(child.data.name);
+              });
+            });
+        }
+
+        if (activeMcpNames.size === 0) {
+          activeMcpNames.add(activeMcpName);
+          activeMcpNames.add('Brand MCP');
+        }
 
         activeMcpNames.forEach((mcpName) => {
-          activeRightKeys.add(`Connected Systems__${mcpName}`);
+          activeRightKeys.add(`${rightRoot.data.name}__${mcpName}`);
 
           const activeMcpNode = rightRoot
             .descendants()
@@ -434,6 +546,7 @@
 
           if (activeMcpNode?.children) {
             activeMcpNode.children.forEach((child) => {
+              if (activeToolNames.size > 0 && !activeToolNames.has(child.data.name)) return;
               activeRightKeys.add(`${mcpName}__${child.data.name}`);
               activeRightChildren.push(child.data.name);
             });
@@ -495,7 +608,7 @@
           .select('rect')
           .attr('stroke', (d) =>
             isActiveAgent
-              ? 'rgba(239,39,244,0.95)'
+              ? 'rgba(20,184,166,0.95)'
               : d.depth === 1
                 ? 'rgba(226,232,240,0.45)'
                 : 'rgba(255,255,255,0.7)'
@@ -518,6 +631,31 @@
       gatewayActiveIcon.classed('is-active', isActiveAgent);
     };
 
+    const resetQuestionFlow = () => {
+      questionFlow.selectAll('*').remove();
+      leftGroup
+        .filter((d) => d.depth === 2)
+        .select('[data-question-text]')
+        .attr('fill', 'rgba(248,250,252,0.82)')
+        .attr('font-weight', 500);
+    };
+
+    const setQuestionState = (questionNode, active) => {
+      resetQuestionFlow();
+
+      if (!active || !questionNode?.parent) return;
+
+      const activeTools = questionToTools[questionNode.data.name] || [];
+
+      setLeftAgentState(questionNode.parent.data.name, true, activeTools);
+
+      d3.select(questionNode.__element)
+        .select('[data-question-text]')
+        .attr('fill', activeStroke)
+        .attr('font-weight', 700);
+
+    };
+
     const stopAutoplay = () => {
       if (autoplayTimer) {
         window.clearInterval(autoplayTimer);
@@ -533,7 +671,7 @@
         .filter((d) => d.depth === 1)
         .select('rect')
         .attr('stroke', (d) =>
-          d.data.name === agentName ? 'rgba(239,39,244,0.95)' : 'rgba(255,255,255,0.7)'
+          d.data.name === agentName ? 'rgba(20,184,166,0.95)' : 'rgba(255,255,255,0.7)'
         )
         .attr('stroke-width', (d) => (d.data.name === agentName ? 2.2 : 1.6));
 
@@ -553,13 +691,35 @@
         stopAutoplay();
         setLeftAgentState(d.data.name, true);
         d3.select(this).select('rect')
-          .attr('stroke', 'rgba(239,39,244,0.95)')
+          .attr('stroke', 'rgba(20,184,166,0.95)')
           .attr('stroke-width', 2.2);
       })
       .on('mouseleave', function () {
         isManualHover = false;
         setLeftAgentState('', false);
         d3.select(this).select('rect')
+          .attr('stroke', 'rgba(255,255,255,0.7)')
+          .attr('stroke-width', 1.6);
+
+        startAutoplay();
+      });
+
+    leftGroup
+      .filter((d) => d.depth === 2)
+      .style('cursor', 'pointer')
+      .on('mouseenter', function (event, d) {
+        isManualHover = true;
+        stopAutoplay();
+        setQuestionState(d, true);
+        d3.select(d.parent.__element).select('rect')
+          .attr('stroke', 'rgba(20,184,166,0.95)')
+          .attr('stroke-width', 2.2);
+      })
+      .on('mouseleave', function (event, d) {
+        isManualHover = false;
+        resetQuestionFlow();
+        setLeftAgentState('', false);
+        d3.select(d.parent.__element).select('rect')
           .attr('stroke', 'rgba(255,255,255,0.7)')
           .attr('stroke-width', 1.6);
 

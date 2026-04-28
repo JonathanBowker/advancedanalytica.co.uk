@@ -41,7 +41,7 @@ const page = {
     <a href="/personas/" class="text-xs font-semibold tracking-[0.2em] uppercase text-steel hover:text-ink">
       ← Back to personas
     </a>
-    <div class="mt-8 text-xs font-semibold tracking-[0.2em] uppercase text-[#ef27f4]">
+    <div class="mt-8 text-xs font-semibold tracking-[0.2em] uppercase text-[#14B8A6]">
       {entry?.eyebrow ?? persona.data.functionSlug}
     </div>
     <h1 class="mt-4 text-[clamp(2.2rem,4vw,3.6rem)] font-semibold tracking-tight text-ink">
@@ -59,7 +59,7 @@ const page = {
       {entry ? (
         <a
           href={getRolePath(entry.slug, persona.data.roleTitle)}
-          class="inline-flex items-center justify-center gap-2 rounded-md bg-[#ef27f4] px-5 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper transition-colors hover:bg-[#d823dd]"
+          class="inline-flex items-center justify-center gap-2 rounded-md bg-[#14B8A6] px-5 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper transition-colors hover:bg-[#0F766E]"
         >
           View role page
         </a>
@@ -67,7 +67,7 @@ const page = {
       {entry ? (
         <a
           href={`/functions/${entry.slug}/`}
-          class="inline-flex items-center justify-center gap-2 rounded-md border border-[#ef27f4] px-5 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-[#ef27f4] transition-colors hover:bg-[#ef27f4] hover:text-paper"
+          class="inline-flex items-center justify-center gap-2 rounded-md border border-[#14B8A6] px-5 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-[#14B8A6] transition-colors hover:bg-[#0F766E] hover:text-paper"
         >
           View function page
         </a>

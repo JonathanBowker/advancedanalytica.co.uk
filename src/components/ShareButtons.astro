@@ -26,11 +26,11 @@ const mailBody = encodeURIComponent(`${cleanDescription || cleanTitle}\n\n${url}
 
 const buttonClass =
   variant === 'dark'
-    ? 'border-white/15 bg-white/5 text-white/85 hover:border-[#ef27f4] hover:bg-[#ef27f4] hover:text-white'
-    : 'border-fog bg-surface text-ink hover:border-[#ef27f4] hover:bg-[#ef27f4] hover:text-white';
+    ? 'border-white/15 bg-white/5 text-white/85 hover:border-[#14B8A6] hover:bg-[#0F766E] hover:text-white'
+    : 'border-fog bg-surface text-ink hover:border-[#14B8A6] hover:bg-[#0F766E] hover:text-white';
 
 const labelClass = variant === 'dark' ? 'text-white/60' : 'text-steel';
-const iconButtonClass = `inline-flex h-10 w-10 items-center justify-center rounded-full border transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ef27f4] focus-visible:ring-offset-2 ${
+const iconButtonClass = `inline-flex h-10 w-10 items-center justify-center rounded-full border transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#14B8A6] focus-visible:ring-offset-2 ${
   variant === 'dark' ? 'focus-visible:ring-offset-ink' : 'focus-visible:ring-offset-paper'
 } ${buttonClass}`;
 const iconClass = 'h-4 w-4';
