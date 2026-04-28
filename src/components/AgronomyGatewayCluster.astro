@@ -1,0 +1,107 @@
+---
+import AiceGatewayCluster from './AiceGatewayCluster.astro';
+
+const leftData = {
+  name: 'Agronomy Teams',
+  children: [
+    {
+      name: 'Previous work',
+      children: [
+        { name: 'Have we done this work before?' },
+        { name: 'Summarise reports and past activity' }
+      ]
+    },
+    {
+      name: 'Pre-meeting info',
+      children: [
+        { name: 'What should I know before we meet?' },
+        { name: 'What is the useful background?' }
+      ]
+    },
+    {
+      name: 'Understanding clients',
+      children: [
+        { name: 'What do we do for this person?' },
+        { name: 'Who has interacted with them?' }
+      ]
+    },
+    {
+      name: 'Justifying charges',
+      children: [
+        { name: 'What work supports this charge?' },
+        { name: 'Who did the work and when?' }
+      ]
+    },
+    {
+      name: 'Building Mail Lists',
+      children: [
+        { name: 'Who in the area should we invite?' },
+        { name: 'Who is missing from the list?' }
+      ]
+    }
+  ]
+};
+
+const rightData = {
+  name: 'Agronomy Systems',
+  children: [
+    {
+      name: 'Accounts',
+      children: [{ name: 'Xero' }]
+    },
+    {
+      name: 'Operations',
+      children: [{ name: 'Ignite' }, { name: 'WorkflowMax' }]
+    },
+    {
+      name: 'Marketing',
+      children: [{ name: 'Hubspot' }]
+    },
+    {
+      name: 'General',
+      children: [{ name: 'Outlook' }, { name: 'Sharepoint' }]
+    }
+  ]
+};
+
+const agentOrder = [
+  'Previous work',
+  'Pre-meeting info',
+  'Understanding clients',
+  'Justifying charges',
+  'Building Mail Lists'
+];
+const agentToMcp = {
+  'Previous work': 'General',
+  'Pre-meeting info': 'Operations',
+  'Understanding clients': 'Operations',
+  'Justifying charges': 'Accounts',
+  'Building Mail Lists': 'Marketing'
+};
+
+const questionToTools = {
+  'Have we done this work before?': ['Sharepoint', 'Outlook', 'WorkflowMax'],
+  'Summarise reports and past activity': ['Sharepoint', 'Outlook'],
+  'What should I know before we meet?': ['Outlook', 'Sharepoint', 'Ignite'],
+  'What is the useful background?': ['Sharepoint', 'Outlook'],
+  'What do we do for this person?': ['Ignite', 'WorkflowMax', 'Hubspot'],
+  'Who has interacted with them?': ['Outlook', 'Hubspot'],
+  'What work supports this charge?': ['Xero', 'WorkflowMax'],
+  'Who did the work and when?': ['WorkflowMax', 'Ignite'],
+  'Who in the area should we invite?': ['Hubspot', 'Outlook'],
+  'Who is missing from the list?': ['Hubspot']
+};
+---
+
+<AiceGatewayCluster
+  title="Agronomy Intelligence Operating Model"
+  leftData={leftData}
+  rightData={rightData}
+  agentOrder={agentOrder}
+  agentToMcp={agentToMcp}
+  questionToTools={questionToTools}
+  controlLayer="DATA CONTROL LAYER"
+  tagline="FIELD-FIRST DECISION SUPPORT"
+  leftColumnOffset={-130}
+  ariaLabel="Agronomy intelligence operating model visualisation"
+/>

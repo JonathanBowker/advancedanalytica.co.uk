@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AgronomyGatewayCluster from '../components/AgronomyGatewayCluster.astro';
+import { SITE_URL } from '../lib/seo/site';
+
+const title = 'Agronomy Intelligence Operating Model';
+const description =
+  'A governed agronomy operating model visualising how advisors, crop knowledge, compliance controls, and operational systems can connect through AICE and MCP infrastructure.';
+
+const page = {
+  title,
+  description,
+  url: `${SITE_URL}/agronomy/`,
+  breadcrumbs: [
+    { name: 'Home', url: `${SITE_URL}/` },
+    { name: 'Agronomy', url: `${SITE_URL}/agronomy/` }
+  ]
+};
+---
+
+<BaseLayout title={title} description={description} page={page}>
+  <section class="relative overflow-hidden bg-gradient-to-br from-black via-[#0b0e14] to-[#171b24] text-paper">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(20,184,166,0.16),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(255,140,105,0.14),transparent_32%)]"></div>
+    <div class="container-wide relative z-10 py-20 md:py-28">
+      <div class="max-w-4xl">
+        <div class="eyebrow mb-8 text-[#ff8c69]">Agronomy</div>
+        <h1 class="text-[clamp(3rem,6vw,5.25rem)] font-semibold leading-[1.02] tracking-tight text-paper">
+          Agronomy knowledge, governed for AI-assisted operation.
+        </h1>
+        <p class="mt-6 max-w-3xl text-xl font-light leading-relaxed text-paper/78 md:text-2xl">
+          This duplicate visual gives the agronomy version its own node labels while preserving the homepage layout,
+          AICE gateway behaviour, hover states, and animated communication flow.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-paper py-16 md:py-20">
+    <div class="container-wide">
+      <div class="mb-8 max-w-4xl">
+        <div class="eyebrow mb-5">Agronomy Visual</div>
+        <h2 class="text-[clamp(2.25rem,4vw,3.75rem)] font-semibold leading-tight tracking-tight text-ink">
+          A separate operating-model graphic for agronomy use cases.
+        </h2>
+        <p class="mt-5 max-w-3xl text-lg leading-relaxed text-steel md:text-xl">
+          The labels are now controlled in the agronomy component, so advisor agents, crop systems,
+          compliance records, and operational workflows can be adjusted without changing the homepage graphic.
+        </p>
+      </div>
+
+      <AgronomyGatewayCluster />
+    </div>
+  </section>
+</BaseLayout>
