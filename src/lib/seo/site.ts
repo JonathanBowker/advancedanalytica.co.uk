@@ -14,7 +14,7 @@ export const toAbsoluteUrl = (value?: string) => {
 };
 
 // TODO: Replace with the verified public URL for the Brando Schema project.
-export const BRANDO_SCHEMA_URL = 'https://brandoschema.org';
+export const BRANDO_SCHEMA_URL = 'https://brandoschema.com';
 
 export const IBOM = {
   name: 'IBOM®',
