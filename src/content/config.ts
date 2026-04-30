@@ -48,6 +48,7 @@ const resources = defineCollection({
     title: plainTitle(),
     description: plainText('description'),
     coverImage: z.string().optional(),
+    downloadUrl: z.string().optional(),
     category: z.string().optional(),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false)

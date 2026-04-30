@@ -20,6 +20,7 @@ const related = allItems.filter((entry) => entry.slug !== item.slug).slice(0, 3)
 
 const title = item.data.title;
 const description = item.data.description;
+const downloadUrl = item.data.downloadUrl;
 const url = `${SITE_URL}/resources/${item.slug}`;
 const coverImage = getGeneratedCoverPath('resource', item.slug);
 const coverAlt = `${title} — ${description}`;
@@ -88,7 +89,15 @@ const page = {
               {title}
             </h1>
             <div class="mt-6 text-sm text-white/70">{item.data.category ?? 'Resource'}</div>
-            <div class="mt-6">
+            <div class="mt-6 flex flex-wrap items-center gap-4">
+              {downloadUrl ? (
+                <a
+                  href={downloadUrl}
+                  class="inline-flex items-center justify-center rounded-md bg-[#14B8A6] px-6 py-3 text-sm font-semibold tracking-[0.18em] uppercase text-paper shadow-outline transition-colors hover:bg-[#0F766E]"
+                >
+                  Download PDF
+                </a>
+              ) : null}
               <ShareButtons url={url} title={title} description={description} variant="dark" />
             </div>
           </div>

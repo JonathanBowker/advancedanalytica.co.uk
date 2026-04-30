@@ -216,10 +216,14 @@
   }
 
   .prose blockquote {
-    border-left: 3px solid var(--color-accent);
+    border-left: 3px solid #14B8A6;
     padding-left: 1rem;
-    color: var(--color-steel);
+    color: #14B8A6;
     margin: 1.5rem 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.5;
+    font-family: var(--font-display);
   }
 
   .callout {
@@ -248,7 +252,12 @@
   }
 
   .callout-insight {
-    border-left: 4px solid var(--color-accent);
+    border-left: 3px solid #14B8A6;
+    color: #14B8A6;
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.5;
+    font-family: var(--font-display);
   }
 }
 
