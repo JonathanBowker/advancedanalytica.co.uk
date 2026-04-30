@@ -38,8 +38,8 @@
       <stop offset="1" stop-color="#8b17ff"/>
     </linearGradient>
     <linearGradient id="linear-gradient-4" x1="587.15" y1="487.15" x2="587.15" y2="189.15" gradientTransform="translate(0 466.3) scale(1 -1)" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#ff8c69" stop-opacity="0"/>
-      <stop offset="1" stop-color="#ff8c69"/>
+      <stop offset="0" stop-color="#14B8A6" stop-opacity="0"/>
+      <stop offset="1" stop-color="#14B8A6"/>
     </linearGradient>
   </defs>
   <path class="cls-1" d="M111.15,464.65v-141.5c0-13.81,11.19-25,25-25h1049c55.23,0,100-44.77,100-100V56.65"/>

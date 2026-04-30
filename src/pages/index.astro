@@ -10,8 +10,6 @@ import usesSystemFramingImg from "../components/uses/frame.svg?url";
 import usesSpecificationDesignImg from "../components/uses/codification.svg?url";
 import usesValidationEvaluationImg from "../components/uses/evaluation.svg?url";
 import usesExecutionGenerationImg from "../components/uses/operation.svg?url";
-import usesDeploymentOperationalUseImg from "../components/uses/optimisation.svg?url";
-import usesRevisionGovernanceImg from "../components/uses/definition.svg?url";
 
 const title = "Intelligent Business Operating Model (IBOM)";
 const description =
@@ -19,88 +17,63 @@ const description =
 const usesTabs = [
   {
     key: "purpose_understanding",
-    label: "1. Purpose",
+    label: "1. Discover",
     stage: "Stage 1",
     phase: "Phase 1",
-    heading: "BUSINESS PURPOSE",
-    subheading: "Define business purpose, outcomes, and constraints.",
-    body: "Set the business purpose, strategic outcomes, success measures, and operating boundaries for the system. This phase makes sure the work is anchored to real organisational need from the start. By the end of it, everyone is clear on what the system is for, how success will be judged, and what constraints must always be respected.",
+    heading: "DISCOVER",
+    subheading: "Discover the client's problem and existing knowledge.",
+    body: "Understand the client's problem, the operating context, and the knowledge already present across teams, documents, systems, and workflows. This stage establishes what is actually known, where ambiguity lives, and what the system will need to account for before specification begins.",
     href: "#get-in-touch",
     cta: "Get in touch",
     image: usesPurposeUnderstandingImg,
   },
   {
     key: "system_framing",
-    label: "2. Mapping",
+    label: "2. Specify",
     stage: "Stage 2",
     phase: "Phase 1",
-    heading: "KNOWLEDGE MAPPING",
-    subheading: "Define the knowledge, sources, actors, and operating context.",
-    body: "Identify the business knowledge, source materials, rules, expertise, tools, and integrations that will shape the system. This phase establishes the trusted context the model will depend on. By the end of it, the relevant sources, actors, and operating environment are clear enough to move into structured specification.",
+    heading: "SPECIFY",
+    subheading: "Define what the system must know, do, and never do.",
+    body: "Turn the problem, rules, knowledge, constraints, and expectations into explicit specifications. This is where the organisation defines the system's responsibilities, boundaries, prohibited behaviours, and success criteria in a form that can govern execution.",
     href: "#get-in-touch",
     cta: "Get in touch",
     image: usesSystemFramingImg,
   },
   {
     key: "specification_design",
-    label: "3. Specify",
+    label: "3. Validate",
     stage: "Stage 3",
     phase: "Phase 1",
-    heading: "KNOWLEDGE SPECIFICATION",
-    subheading: "Turn business logic into machine-operable specifications.",
-    body: "Translate business rules, expert judgement, processes, and policies into structured specifications that systems can interpret and act on. At the heart of this is a domain definition language that uses dot syntax and snake_case to express business concepts, policies, controls, and instructions in a consistent machine-readable form. By the end of this phase, you have a specification layer that can drive build, assurance, and live operation.",
+    heading: "VALIDATE",
+    subheading: "Validate the specifications with the client before build begins.",
+    body: "Review, challenge, and confirm the specifications with the people who will own the outcome. This stage removes ambiguity before any system is built, so the approved specification becomes the governing contract for development rather than a loose reference point.",
     href: "#get-in-touch",
     cta: "Get in touch",
     image: usesSpecificationDesignImg,
   },
   {
     key: "execution_generation",
-    label: "4. Build",
+    label: "4. Develop",
     stage: "Stage 4",
     phase: "Phase 2",
-    heading: "SYSTEM BUILD",
-    subheading: "Design and build governed AI systems from specification.",
-    body: "Use the approved specifications to supervise the design and implementation of working systems. This phase turns the knowledge base into applications, agents, workflows, and tools that operate within clear governance boundaries. By the end of it, the system is built and ready to move through structured assurance.",
+    heading: "DEVELOP",
+    subheading: "Develop the system under expert supervision.",
+    body: "Build the governed system from the approved specifications under direct expert oversight. This stage turns validated intent into working applications, agents, workflows, and controls without losing traceability back to the specification.",
     href: "#get-in-touch",
     cta: "Get in touch",
     image: usesExecutionGenerationImg,
   },
   {
     key: "validation_evaluation",
-    label: "5. Evaluate",
+    label: "5. Operate",
     stage: "Stage 5",
     phase: "Phase 2",
-    heading: "ASSURANCE & EVALUATION",
-    subheading: "Test safety, accuracy, performance, and policy adherence.",
-    body: "Validate that the system performs as intended against business objectives, operational rules, and governance requirements. This includes testing for quality, safety, edge cases, compliance, and fidelity to specification before release. By the end of this phase, there is evidence that the system is ready for live use within agreed thresholds.",
+    heading: "OPERATE",
+    subheading: "Operate the deployed system with governance and controlled extension.",
+    body: "Run the deployed system through governed infrastructure with monitoring, operational control, and structured extension as needs evolve. This stage keeps the system trustworthy in live use while allowing capability to grow without losing discipline.",
     href: "#get-in-touch",
     cta: "Get in touch",
     image: usesValidationEvaluationImg,
-  },
-  {
-    key: "deployment_operational_use",
-    label: "6. Deploy",
-    stage: "Stage 6",
-    phase: "Phase 2",
-    heading: "AICE DEPLOYMENT & OPERATION",
-    subheading:
-      "Deploy the AICE with control, monitoring, and live governance.",
-    body: "Deploy the system into production through the AICE with clear controls, monitoring, and operational oversight. This phase ensures the system can be used confidently in live environments while maintaining transparency, traceability, and performance at scale. By the end of it, the system is running through governed infrastructure with the visibility needed for trustworthy ongoing use.",
-    href: "#get-in-touch",
-    cta: "Get in touch",
-    image: usesDeploymentOperationalUseImg,
-  },
-  {
-    key: "revision_governance",
-    label: "7. Govern",
-    stage: "Stage 7",
-    phase: "Phase 2",
-    heading: "REVISION & GOVERNANCE",
-    subheading: "Continuously refine the system as needs evolve.",
-    body: "Maintain the system through structured review, revision, and governance. As needs, risks, models, and environments change, specifications and implementations are updated in a controlled way so the operating model stays aligned and trustworthy. By the end of this phase, improvement is continuous and governance is part of how the system evolves over time.",
-    href: "#get-in-touch",
-    cta: "Get in touch",
-    image: usesRevisionGovernanceImg,
   },
 ] as const;
 const postFilterChips = [
@@ -331,9 +304,10 @@ const page = {
         <p
           class="mx-auto mt-6 max-w-[90ch] text-center text-lg leading-relaxed text-paper/80 md:text-xl"
         >
-          We deliver IBOM<sup>®</sup> in two connected phases. The first builds the
-          knowledge base. The second activates that knowledge through the AICE. Both
-          phases are structured by the same seven-stage operating model.
+          We deliver IBOM<sup>®</sup> in two connected phases. The first defines and
+          validates the knowledge and specifications. The second develops and operates
+          the system through governed infrastructure. Both phases are structured by the
+          same five-stage operating model.
         </p>
       </div>
 
@@ -560,9 +534,9 @@ const page = {
         class="mx-auto mt-6 max-w-4xl text-center text-lg font-light leading-relaxed text-steel md:text-xl"
       >
         IBOM<sup class="text-[0.45em] align-super">®</sup> is a brand-first operating
-        model. This seven-stage framework structures both delivery phases: from defining
-        purpose and mapping knowledge through to specification, evaluation, deployment,
-        and governance.
+        model. This five-stage framework structures both delivery phases: from
+        discovering the client's problem and specifying the system through to
+        validation, development, and governed operation.
       </p>
 
       <div class="mt-10">
