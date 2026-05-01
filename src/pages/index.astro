@@ -21,8 +21,8 @@ const usesTabs = [
     stage: "Stage 1",
     phase: "Phase 1",
     heading: "DISCOVER",
-    subheading: "Discover the client's problem and existing knowledge.",
-    body: "Understand the client's problem, the operating context, and the knowledge already present across teams, documents, systems, and workflows. This stage establishes what is actually known, where ambiguity lives, and what the system will need to account for before specification begins.",
+    subheading: "Understand the problem before you build anything.",
+    body: "We map your problem, your operating context, and the knowledge already present across your teams, documents, systems, and workflows. Most AI projects fail because they skip this stage. We don't. This is where we establish what's actually known, where ambiguity lives, and what the system needs to account for before a single specification is written.",
     href: "#get-in-touch",
     cta: "Get in touch",
     image: usesPurposeUnderstandingImg,
@@ -34,7 +34,7 @@ const usesTabs = [
     phase: "Phase 1",
     heading: "SPECIFY",
     subheading: "Define what the system must know, do, and never do.",
-    body: "Turn the problem, rules, knowledge, constraints, and expectations into explicit specifications. This is where the organisation defines the system's responsibilities, boundaries, prohibited behaviours, and success criteria in a form that can govern execution.",
+    body: "We turn your problem, rules, constraints, and expectations into explicit specifications. This is where your business defines the system's responsibilities, its boundaries, its prohibited behaviours, and its success criteria in a form that can actually govern execution. Not a requirements doc. A machine-readable governing contract.",
     href: "#get-in-touch",
     cta: "Get in touch",
     image: usesSystemFramingImg,
@@ -45,8 +45,8 @@ const usesTabs = [
     stage: "Stage 3",
     phase: "Phase 1",
     heading: "VALIDATE",
-    subheading: "Validate the specifications with the client before build begins.",
-    body: "Review, challenge, and confirm the specifications with the people who will own the outcome. This stage removes ambiguity before any system is built, so the approved specification becomes the governing contract for development rather than a loose reference point.",
+    subheading: "Remove ambiguity before a line of code is written.",
+    body: "We review, challenge, and confirm the specifications with the people who'll own the outcome. The Deloitte data is clear: most AI pilots stall because production realities weren't accounted for upfront. This stage exists to close that gap. The approved specification becomes the governing contract for development, not a loose reference point.",
     href: "#get-in-touch",
     cta: "Get in touch",
     image: usesSpecificationDesignImg,
@@ -57,8 +57,8 @@ const usesTabs = [
     stage: "Stage 4",
     phase: "Phase 2",
     heading: "DEVELOP",
-    subheading: "Develop the system under expert supervision.",
-    body: "Build the governed system from the approved specifications under direct expert oversight. This stage turns validated intent into working applications, agents, workflows, and controls without losing traceability back to the specification.",
+    subheading: "Build under expert supervision. Never lose the spec.",
+    body: "We build the governed system from the approved specifications under direct expert oversight. Every application, agent, workflow, and control is traceable back to the specification. You can see what was built, why it was built that way, and how it behaves. That traceability is what makes scaling possible.",
     href: "#get-in-touch",
     cta: "Get in touch",
     image: usesExecutionGenerationImg,
@@ -69,8 +69,8 @@ const usesTabs = [
     stage: "Stage 5",
     phase: "Phase 2",
     heading: "OPERATE",
-    subheading: "Operate the deployed system with governance and controlled extension.",
-    body: "Run the deployed system through governed infrastructure with monitoring, operational control, and structured extension as needs evolve. This stage keeps the system trustworthy in live use while allowing capability to grow without losing discipline.",
+    subheading: "Run with governance. Extend without losing control.",
+    body: "We operate the deployed system through governed infrastructure with monitoring, behavioural controls, and structured extension as your needs evolve. This is the stage most businesses never reach cleanly. We do. Your system stays trustworthy in live use whilst your capability grows without the drift, shadow AI, or ungoverned exceptions that create risk at scale.",
     href: "#get-in-touch",
     cta: "Get in touch",
     image: usesValidationEvaluationImg,
@@ -99,86 +99,104 @@ const page = {
 ---
 
 <BaseLayout title={title} description={description} page={page}>
-  <!-- 1. HERO -->
-  <section
-    class="relative overflow-hidden bg-gradient-to-br from-black via-[#0b0e14] to-[#171b24] text-paper min-h-[calc(100vh-5rem)]"
+ <!-- 1. HERO -->
+<section
+  class="relative overflow-hidden bg-gradient-to-br from-black via-[#0b0e14] to-[#171b24] text-paper min-h-[calc(100vh-5rem)]"
+>
+  <div
+    class="container-wide relative z-10 pt-[9.5rem] pb-[8.5rem] lg:pt-[10.5rem] lg:pb-[9.5rem]"
   >
-    <div
-      class="container-wide relative z-10 pt-[9.5rem] pb-[8.5rem] lg:pt-[10.5rem] lg:pb-[9.5rem]"
-    >
-      <div class="grid gap-12 lg:items-center">
-        <div>
-          <div class="eyebrow mb-12 text-base">
-            Expert-Led. Spec-Driven. AI-Operated.
-          </div>
+    <div class="grid gap-12 lg:grid-cols-[1fr_0.45fr] lg:items-center">
 
-          <h1
-            class="font-masthead text-[clamp(2.95rem,5.6vw,5.15rem)] font-semibold tracking-tight text-paper leading-[1.06] max-w-[52rem] md:max-w-[56rem]"
-          >
-            <span class="block">Stop Trusting AI.</span>
-            <span class="block text-[#14B8A6]">Start Governing It.</span>
-          </h1>
-          <h2
-            class="mt-6 max-w-[46rem] text-[clamp(1.3rem,2.3vw,2rem)] font-light leading-snug text-paper/100"
-          >
-            Ungoverned AI is not assistance. It is a liability.
-          </h2>
+      <!-- Left: headline + body + CTAs -->
+      <div>
+        <h1
+          class="font-masthead text-[clamp(2.95rem,5.6vw,5.15rem)] font-semibold tracking-tight text-paper leading-[1.06] max-w-[52rem] md:max-w-[56rem]"
+        >
+          <span class="block">Stop Trusting AI.</span>
+          <span class="block text-[#14B8A6]">Start Governing It.</span>
+        </h1>
+        <h2
+          class="mt-6 max-w-[46rem] text-[clamp(1.3rem,2.3vw,2rem)] font-light leading-snug text-paper/100"
+        >
+          Ungoverned AI isn't assistance. It's a liability.
+        </h2>
 
-          <p
-            class="mt-5 max-w-[46rem] text-[clamp(1.16rem,1.85vw,1.42rem)] font-light leading-relaxed text-paper/80 md:text-[1.36rem]"
-          >
-            Advanced Analytica provides the rare data skills, bespoke toolkits
-            and domain expertise needed to turn your organisation’s knowledge,
-            policies, and expert judgement into
-            <strong class="font-medium text-paper"
-              >machine-operable specifications</strong
-            > that make AI systems
-            <strong class="font-medium text-paper"
-              >consistent, trustworthy, and scalable.</strong
-            >
-          </p>
+        <p
+          class="mt-5 max-w-[46rem] text-[clamp(1.16rem,1.85vw,1.42rem)] font-light leading-relaxed text-paper/80 md:text-[1.36rem]"
+        >
+          Most businesses have AI. Few have governed it. We build the
+          knowledge infrastructure and runtime controls your business needs to
+          close that gap. We turn policy, expert judgement, and business logic
+          into
+          <strong class="font-medium text-paper">machine-operable controls</strong>.
+          Controls that make your AI
+          <strong class="font-medium text-paper">consistent, trustworthy, and scalable.</strong>
+        </p>
 
-          <div class="mt-8 flex flex-wrap gap-4">
-            <a
-              href="#get-in-touch"
-              class="inline-flex items-center justify-center gap-2 rounded-md bg-[#14B8A6] px-6 py-3 text-xs font-semibold leading-none tracking-[0.14em] uppercase text-paper shadow-outline transition-colors hover:bg-[#0F766E]"
+        <div class="mt-8 flex flex-wrap gap-4">
+          
+            <a href="#get-in-touch"
+            class="inline-flex items-center justify-center gap-2 rounded-md bg-[#14B8A6] px-6 py-3 text-xs font-semibold leading-none tracking-[0.14em] uppercase text-paper shadow-outline transition-colors hover:bg-[#0F766E]"
+          >
+            Get in touch
+            <svg
+              class="h-4 w-4"
+              viewBox="0 0 20 20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
             >
-              Get in touch
-              <svg
-                class="h-4 w-4"
-                viewBox="0 0 20 20"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M4 10h12"></path>
-                <path d="M12 6l4 4-4 4"></path>
-              </svg>
-            </a>
-            <a
-              href="#why"
-              class="inline-flex items-center justify-center gap-3 rounded-md border border-[#ff8c69] px-6 py-3 text-xs font-semibold tracking-[0.14em] uppercase text-[#ff8c69] transition-colors hover:bg-[#ff8c69] hover:text-paper"
+              <path d="M4 10h12"></path>
+              <path d="M12 6l4 4-4 4"></path>
+            </svg>
+          </a>
+          
+            <a href="#why"
+            class="inline-flex items-center justify-center gap-3 rounded-md border border-[#ff8c69] px-6 py-3 text-xs font-semibold tracking-[0.14em] uppercase text-[#ff8c69] transition-colors hover:bg-[#ff8c69] hover:text-paper"
+          >
+            <span>Keep Reading</span>
+            <svg
+              class="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
             >
-              <span>Keep Reading</span>
-              <svg
-                class="h-5 w-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"
-                ></path>
-              </svg>
-            </a>
-          </div>
+              <path
+                d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"
+              ></path>
+            </svg>
+          </a>
         </div>
       </div>
+
+      <!-- Right: stat block -->
+      <div class="rounded-2xl border border-paper/10 bg-paper/5 p-8 backdrop-blur">
+        <div class="text-[clamp(3.5rem,8vw,6rem)] font-semibold leading-none tracking-tight text-[#14B8A6]">
+          74%
+        </div>
+        <p class="mt-4 text-lg font-light leading-snug text-paper/80">
+          of businesses plan to deploy AI agents within two years.
+        </p>
+        <div class="mt-6 border-t border-paper/15 pt-6">
+          <div class="text-[clamp(3.5rem,8vw,6rem)] font-semibold leading-none tracking-tight text-[#ff8c69]">
+            21%
+          </div>
+          <p class="mt-4 text-lg font-light leading-snug text-paper/80">
+            have a mature governance model in place to control them.
+          </p>
+        </div>
+        <p class="mt-6 text-xs text-paper/40 leading-relaxed">
+          Source: Deloitte State of AI in the Enterprise, January 2026
+        </p>
+      </div>
+
     </div>
-  </section>
+  </div>
+</section>
 
   <!-- 2. Diagnosis -->
   <section id="why" class="bg-paper">
@@ -189,25 +207,24 @@ const page = {
           <h2
             class="text-[clamp(2.5rem,5vw,4.75rem)] font-semibold tracking-tight text-ink"
           >
-            From Expert Know-how to Controlled AI Knowledge
+            Your Best People Know Things Your AI Doesn't
           </h2>
         </div>
 
         <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
           <p>
-            For many businesses, business logic, brand guidelines, and
-            compliance procedures exist as tacit knowledge buried in the heads
-            of their best people, static documents, siloed SaaS tools, and
-            spreadsheets.
+            In most businesses, the logic that actually drives decisions lives
+            in the heads of your best people. Not in your systems. Not in your
+            AI. In documents nobody reads, spreadsheets nobody maintains, and
+            institutional knowledge that walks out the door.
           </p>
 
           <p class="mt-6">
-            The Intelligent Business Operating Model —
-            <b>IBOM<sup>®</sup></b> — bridges this gap as a
-            <b>brand-first operating model</b>, engineering control procedures
-            into a governance layer. By transforming your rules, examples, and
-            expert judgement into structured specifications, we establish your
-            AI communication protocol and move you beyond uncertainty.
+            IBOM<sup>®</sup> changes that. It's a brand-first operating model that
+            engineers your rules, expert judgement, and business logic into structured
+            specifications your AI can actually follow. We establish your AI communication
+            protocol. We give your systems the knowledge to behave consistently, at
+            scale, under governance.
             <b>We train your AI to govern your AI.</b>
           </p>
         </div>
@@ -242,17 +259,18 @@ const page = {
       <h2
         class="text-center text-[clamp(2.5rem,5vw,4.75rem)] font-semibold tracking-tight text-paper"
       >
-        Governance Engineering: The Lifecycle
+        From Dark Knowledge to Governed Intelligence
       </h2>
       <p
         class="mx-auto mt-10 max-w-[90ch] text-lg leading-relaxed text-paper/80 md:text-xl text-center"
       >
-        Our approach is a rigorous, three-stage pipeline designed to scale human
-        judgment without compromising control. We move your expertise from the <span
-          class="text-paper font-medium">"Dark Knowledge"</span
+        Most businesses can't scale what they can't codify. We move your
+        expertise from the <span class="text-paper font-medium"
+          >"Dark Knowledge"</span
         > space into a <span class="text-paper font-medium"
           >Governed Intelligence Layer</span
-        >.
+        >
+        in three stages. Your knowledge. Your rules. Under your control.
       </p>
 
       <div class="mt-14 grid gap-4 lg:grid-cols-3">
@@ -263,9 +281,9 @@ const page = {
             Knowledge Discovery
           </h4>
           <p class="mt-3 text-base leading-relaxed text-paper/75">
-            We systematically extract business logic, workflow nuances, and
-            "Dark Knowledge" to ensure the resulting system is architected
-            around the actual operational DNA of your organisation.
+            We extract the business logic, workflow nuances, and institutional
+            knowledge your best people carry. The system we build is architected
+            around your actual operational DNA. Not a generic template.
           </p>
         </div>
         <div
@@ -275,10 +293,10 @@ const page = {
             Spec Engineering
           </h4>
           <p class="mt-3 text-base leading-relaxed text-paper/75">
-            We codify requirements into machine language using a domain
-            definition language with dot syntax and snake_case, creating
-            expert-validated specifications and policies that AI agents can
-            interpret consistently and follow in practice.
+            We codify your requirements into machine language using a domain
+            definition language with dot syntax and snake_case. Your AI agents
+            can interpret these specifications consistently and follow them in
+            practice.
           </p>
         </div>
         <div
@@ -288,9 +306,9 @@ const page = {
             Intelligence Activation
           </h4>
           <p class="mt-3 text-base leading-relaxed text-paper/75">
-            We transition specifications into a production environment,
-            supervising the automated building, testing, remediation and
-            deployment of your intelligence at the speed of thought.
+            We take your specifications into production. Build, test, remediate,
+            and deploy under direct expert supervision. At the speed your
+            business needs.
           </p>
         </div>
       </div>
@@ -305,9 +323,9 @@ const page = {
           class="mx-auto mt-6 max-w-[90ch] text-center text-lg leading-relaxed text-paper/80 md:text-xl"
         >
           We deliver IBOM<sup>®</sup> in two connected phases. The first defines and
-          validates the knowledge and specifications. The second develops and operates
-          the system through governed infrastructure. Both phases are structured by the
-          same five-stage operating model.
+          validates your knowledge and specifications. The second develops and operates
+          the system through governed infrastructure. Both follow the same five-stage
+          model.
         </p>
       </div>
 
@@ -324,10 +342,9 @@ const page = {
             Knowledge Base Build
           </div>
           <p class="mt-4 text-paper/80">
-            We transform institutional wisdom into structured, machine-language
-            datasets that your organisation owns outright. <b
-              >No vendor lock-in</b
-            >, just portable, governed intelligence.
+            We transform institutional wisdom into structured, machine-readable
+            datasets your business owns outright. <b>No vendor lock-in.</b> Just portable,
+            governed intelligence.
           </p>
           <ul class="mt-6 space-y-4 text-paper/75">
             <li class="flex gap-3">
@@ -441,10 +458,10 @@ const page = {
         >
           If the IBOM<sup>®</sup> is the blueprint for your business, the <b
             >AI Communications Engine (AICE)</b
-          > is the engine that drives it. It is a secure, governed gateway that sits
-          between your people, your data, and your AI systems. It acts as a permanent
+          > is the engine that drives it. It is a secure, controlled gateway that
+          sits between your people, your data, and your AI systems. It acts as a permanent
           translator and governor for every AI interaction, turning business intent
-          into controlled machine action.
+          into controlled communications.
         </p>
 
         <div
@@ -458,39 +475,43 @@ const page = {
               Translates Intent into Action
             </h4>
             <p class="mt-3 text-steel leading-relaxed">
-              The AICE turns a simple request into precise instructions shaped
-              by your business logic, so AI follows engineered rules instead of
-              guessing.
+              AI agents don't guess what your business means. The AICE turns
+              every request into precise instructions shaped by your rules, your
+              logic, and your constraints. Your AI does what you actually
+              intend.
             </p>
           </div>
           <div class="rounded-2xl border border-ink/10 bg-fog p-6">
             <h4 class="text-lg font-semibold text-[#14B8A6]">
-              Acts as a Protective Shield
+              Controls What Agents Can Do
             </h4>
             <p class="mt-3 text-steel leading-relaxed">
-              It stands between AI and your internal systems, controlling what
-              data can be seen, what actions can be taken, and what must always
-              remain off limits.
+              Unlike traditional AI that recommends, agents act. They send
+              communications, make purchases, modify systems. The AICE defines
+              the boundaries. What data can be seen. What actions can be taken.
+              What must always stay off limits.
             </p>
           </div>
           <div class="rounded-2xl border border-ink/10 bg-fog p-6">
             <h4 class="text-lg font-semibold text-[#14B8A6]">
-              Coordinates Your Tools
+              One Governed Point of Control
             </h4>
             <p class="mt-3 text-steel leading-relaxed">
-              It connects AI to the systems your business already relies on,
-              from documents and databases to operational software, through one
-              governed point of control.
+              Your AI connects to documents, databases, and operational systems
+              through a single governed interface. No sprawl. No shadow AI
+              operating outside your visibility. Everything through one
+              controlled layer.
             </p>
           </div>
           <div class="rounded-2xl border border-ink/10 bg-fog p-6">
             <h4 class="text-lg font-semibold text-[#14B8A6]">
-              Enforces the Standard
+              Monitors, Audits, and Enforces
             </h4>
             <p class="mt-3 text-steel leading-relaxed">
-              If an output is off-brand, incorrect, or policy-breaking, the AICE
-              catches it before it reaches the user, turning AI from uncertain
-              to reliable.
+              The AICE tracks agent behaviour in real time. It catches policy
+              violations before they reach users. It maintains the audit trail
+              your governance framework depends on. You can see what your AI is
+              doing. And prove it.
             </p>
           </div>
         </div>
@@ -512,9 +533,10 @@ const page = {
             The Bottom Line
           </div>
           <p class="mt-3 text-lg leading-relaxed text-ink">
-            Without the AICE, you are interacting with a chatbot. With the AICE,
-            you are operating a brand-first enterprise-grade intelligence
-            system.
+            Without the AICE, you're interacting with a chatbot. With AICE,
+            you're operating a governed, brand-first intelligence system — with
+            the controls, visibility, and audit trail that enterprise AI
+            actually requires.
           </p>
         </div>
       </div>
@@ -533,10 +555,11 @@ const page = {
       <p
         class="mx-auto mt-6 max-w-4xl text-center text-lg font-light leading-relaxed text-steel md:text-xl"
       >
-        IBOM<sup class="text-[0.45em] align-super">®</sup> is a brand-first operating
-        model. This five-stage framework structures both delivery phases: from
-        discovering the client's problem and specifying the system through to
-        validation, development, and governed operation.
+        84% of businesses haven't defined how work gets done around AI. Most are
+        layering AI onto existing processes and wondering why it doesn't scale.
+        IBOM<sup class="text-[0.45em] align-super">®</sup> is built for the other
+        way. A five-stage framework that structures how we discover, specify, validate,
+        develop, and operate your governed AI system — from first brief to live deployment.
       </p>
 
       <div class="mt-10">
@@ -618,7 +641,7 @@ const page = {
                   data-scroll-target={
                     t.href.startsWith("#") ? t.href.slice(1) : undefined
                   }
-                  class="mt-12 inline-flex items-center gap-2 text-base font-semibold tracking-[0.14em] uppercase text-ink hover:text-accent transition-colors"
+                  class="mt-12 inline-flex items-center gap-2 text-base font-semibold tracking-[0.14em] uppercase text-ink hover:text-[#ff8c69] transition-colors"
                 >
                   {t.cta}
                   <svg
@@ -744,9 +767,10 @@ const page = {
       <p
         class="mx-auto mt-10 max-w-[80ch] text-center text-lg leading-relaxed text-paper/80 md:text-xl"
       >
-        Once IBOM<sup>®</sup> has structured your business knowledge and the AICE
-        has operationalised it, you have a governed foundation for AI systems that
-        can be built, deployed, and improved with confidence.
+        Most businesses feel strategically ready for AI. Their infrastructure
+        tells a different story. Once IBOM<sup>®</sup> has structured your knowledge
+        and the AICE has operationalised it, you have a governed foundation your AI
+        can actually build on, and your business can actually trust.
       </p>
 
       <div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -762,9 +786,10 @@ const page = {
             Business Knowledge You Can Keep
           </div>
           <p class="mt-4 text-base font-medium leading-relaxed text-paper/80">
-            Institutional knowledge is captured in specifications, structured
-            formats, and linked datasets that your organisation owns outright as
-            a reusable operating asset.
+            Your institutional knowledge is captured in specifications,
+            structured formats, and linked datasets your business owns outright.
+            It doesn't leave when your best people do. It doesn't live in a
+            vendor's platform. It's yours.
           </p>
         </div>
 
@@ -780,9 +805,11 @@ const page = {
             Knowledge AI Can Actually Use
           </div>
           <p class="mt-4 text-base font-medium leading-relaxed text-paper/80">
-            Rules, processes, source materials, and expert judgment are
-            translated into machine-usable specifications that can guide agents,
-            workflows, and operational systems consistently.
+            84% of businesses haven't defined work around AI capabilities. Most
+            are trying to use AI without giving it the structured knowledge to
+            act reliably. We fix that. Your rules, processes, and expert
+            judgement translated into specifications your AI agents can follow
+            consistently.
           </p>
         </div>
 
@@ -798,9 +825,10 @@ const page = {
             A Governed Intelligence Gateway
           </div>
           <p class="mt-4 text-base font-medium leading-relaxed text-paper/80">
-            The AICE gives you one governed control point between AI and your
-            systems, so access, behaviour, and execution can be managed with far
-            more discipline.
+            Only 21% of businesses have a mature governance model for autonomous
+            agents. The AICE gives you one governed control point between AI and
+            your systems. Access, behaviour, and execution, managed with the
+            discipline agentic AI actually requires.
           </p>
         </div>
 
@@ -816,10 +844,10 @@ const page = {
             One Shared Operating Logic
           </div>
           <p class="mt-4 text-base font-medium leading-relaxed text-paper/80">
-            Brand, operations, legal, product, and engineering can work from the
-            same specification base. We often start with brand because it spans
-            the whole organisation, then extend that operating logic into other
-            business functions.
+            Brand, operations, legal, product, and engineering working from the
+            same specification base. We start with brand because it spans the
+            whole business. Then we extend that operating logic into the
+            functions where governed AI matters most.
           </p>
         </div>
 
@@ -835,9 +863,10 @@ const page = {
             Testable, Traceable Systems
           </div>
           <p class="mt-4 text-base font-medium leading-relaxed text-paper/80">
-            Specifications, controls, and runtime behaviour can all be reviewed
-            together, making it easier to test quality, policy adherence, and
-            operational performance with confidence.
+            Some businesses are discovering AI models in production they didn't
+            know were running. No inventory. No oversight. No audit trail. With
+            IBOM<sup>®</sup> and the AICE, specifications, controls, and runtime behaviour
+            are all reviewable together. You can test it, trace it, and prove it.
           </p>
         </div>
 
@@ -853,9 +882,10 @@ const page = {
             Systems That Can Evolve Safely
           </div>
           <p class="mt-4 text-base font-medium leading-relaxed text-paper/80">
-            As business needs, risks, tools, and models change, you can revise
-            the knowledge base, the AICE layer, and the systems built on top of
-            them without losing alignment or trust.
+            AI is moving fast. Your governance layer needs to move with it. As
+            your needs, risks, tools, and models change, you can revise the
+            knowledge base, the AICE layer, and the systems built on top,
+            without losing alignment, control, or trust.
           </p>
         </div>
       </div>
@@ -943,14 +973,16 @@ const page = {
       <h2
         class="text-center text-[clamp(2.4rem,5vw,4.5rem)] font-semibold tracking-tight text-ink"
       >
-        Where does this fit in your business?
+        Governed AI Starts Somewhere. Start With What Spans Everything.
       </h2>
       <p
         class="mx-auto mt-4 max-w-[80ch] text-center text-lg leading-relaxed text-ink/70 md:text-xl"
       >
-        This model works across business functions. We typically start with
-        brand because it spans everything, then extend the same spec-driven
-        operating logic into the functions where governed AI matters most.
+        84% of businesses haven't defined how work gets done around AI. The ones
+        pulling ahead aren't starting everywhere at once. They're starting with
+        brand because it governs how every function communicates, decides, and
+        acts. Then extending the same spec-driven logic into the functions where
+        governed AI matters most.
       </p>
 
       <div class="mt-12 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
