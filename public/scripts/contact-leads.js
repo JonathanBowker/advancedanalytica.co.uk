@@ -179,9 +179,9 @@
 
     if (!grouped.size) return baseMessage;
 
-    const detailLines = Array.from(grouped.entries()).map(([name, values]) => {
+    const detailLines = Array.from(grouped.entries()).flatMap(([name, values]) => {
       const label = getFieldLabel(form, name);
-      return `${label}: ${values.join(", ")}`;
+      return [label, values.join(", "), ""];
     });
 
     return [baseMessage, "", "Assessment details:", ...detailLines]

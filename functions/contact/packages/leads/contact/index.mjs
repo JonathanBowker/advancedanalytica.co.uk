@@ -72,6 +72,17 @@ const clean = (value, maxLength = 500) =>
     .trim()
     .slice(0, maxLength);
 
+const cleanMultiline = (value, maxLength = 500) =>
+  String(value || "")
+    .replace(/\r\n?/g, "\n")
+    .replace(/[\u0000-\u0009\u000b-\u001f\u007f]/g, " ")
+    .split("\n")
+    .map((line) => line.replace(/[ \t]+/g, " ").trim())
+    .join("\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim()
+    .slice(0, maxLength);
+
 const escapeHtml = (value) =>
   String(value)
     .replace(/&/g, "&amp;")
@@ -104,7 +115,7 @@ const normalisePayload = (event) => {
     email: clean(body.email, MAX_LENGTHS.email).toLowerCase(),
     company: clean(body.company, MAX_LENGTHS.company),
     topic: clean(body.topic, MAX_LENGTHS.topic),
-    message: clean(body.message, MAX_LENGTHS.message),
+    message: cleanMultiline(body.message, MAX_LENGTHS.message),
     page: clean(body.page, MAX_LENGTHS.page),
     language: clean(body.language, MAX_LENGTHS.language).toLowerCase() || "en",
     leadType: clean(body.lead_type || body.form_type, MAX_LENGTHS.leadType),
