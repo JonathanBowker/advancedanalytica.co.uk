@@ -13,7 +13,8 @@ import usesExecutionGenerationImg from "../components/uses/operation.svg?url";
 
 const title = "Intelligent Business Operating Model (iBOM)";
 const description =
-  "Advanced Analytica helps organisations turn business logic into governed, executable infrastructure for AI systems, starting with brand governance.";
+  "We help businesses turn brand standards, business logic, and expert judgement into governed AI controls.";
+
 const usesTabs = [
   {
     key: "purpose_understanding",
@@ -21,10 +22,10 @@ const usesTabs = [
     stage: "Stage 1",
     phase: "Phase 1",
     heading: "DISCOVER",
-    subheading: "Understand the problem before you build anything.",
-    body: "We map your problem, your operating context, and the knowledge already present across your teams, documents, systems, and workflows. Most AI projects fail because they skip this stage. We don't. This is where we establish what's actually known, where ambiguity lives, and what the system needs to account for before a single specification is written.",
-    href: "#get-in-touch",
-    cta: "Get in touch",
+    subheading: "Understand the brand problem before you build anything.",
+    body: "We map your brand standards, business context, priority AI use cases, and the knowledge already present across your teams, documents, systems, and workflows. This shows what is clear, where ambiguity lives, and what your AI needs to account for before a single specification is written.",
+    href: "#brand-ai-readiness",
+    cta: "Assess readiness",
     image: usesPurposeUnderstandingImg,
   },
   {
@@ -33,10 +34,10 @@ const usesTabs = [
     stage: "Stage 2",
     phase: "Phase 1",
     heading: "SPECIFY",
-    subheading: "Define what the system must know, do, and never do.",
-    body: "We turn your problem, rules, constraints, and expectations into explicit specifications. This is where your business defines the system's responsibilities, its boundaries, its prohibited behaviours, and its success criteria in a form that can actually govern execution. Not a requirements doc. A machine-readable governing contract.",
-    href: "#get-in-touch",
-    cta: "Get in touch",
+    subheading: "Define what AI must know, do, and never do.",
+    body: "We turn your rules, constraints, approvals, tone standards, and escalation paths into explicit specifications. Not a loose requirements document. A machine-readable governing contract your AI systems can follow.",
+    href: "#brand-ai-readiness",
+    cta: "Assess readiness",
     image: usesSystemFramingImg,
   },
   {
@@ -45,10 +46,10 @@ const usesTabs = [
     stage: "Stage 3",
     phase: "Phase 1",
     heading: "VALIDATE",
-    subheading: "Remove ambiguity before a line of code is written.",
-    body: "We review, challenge, and confirm the specifications with the people who'll own the outcome. The Deloitte data is clear: most AI pilots stall because production realities weren't accounted for upfront. This stage exists to close that gap. The approved specification becomes the governing contract for development, not a loose reference point.",
-    href: "#get-in-touch",
-    cta: "Get in touch",
+    subheading: "Test ambiguity before AI acts on your behalf.",
+    body: "We challenge the specification against the roles, intents, and scenarios your AI will meet. This shows where the rules hold, where they conflict, and where stronger controls are needed before build starts.",
+    href: "#role-intent",
+    cta: "See testing method",
     image: usesSpecificationDesignImg,
   },
   {
@@ -57,10 +58,10 @@ const usesTabs = [
     stage: "Stage 4",
     phase: "Phase 2",
     heading: "DEVELOP",
-    subheading: "Build under expert supervision. Never lose the spec.",
-    body: "We build the governed system from the approved specifications under direct expert oversight. Every application, agent, workflow, and control is traceable back to the specification. You can see what was built, why it was built that way, and how it behaves. That traceability is what makes scaling possible.",
-    href: "#get-in-touch",
-    cta: "Get in touch",
+    subheading: "Build from the approved specification.",
+    body: "We build the governed system from the specification under expert oversight. Every workflow, agent behaviour, control, and escalation path traces back to the rules your business approved.",
+    href: "#engine",
+    cta: "See control layer",
     image: usesExecutionGenerationImg,
   },
   {
@@ -70,12 +71,13 @@ const usesTabs = [
     phase: "Phase 2",
     heading: "OPERATE",
     subheading: "Run with governance. Extend without losing control.",
-    body: "We operate the deployed system through governed infrastructure with monitoring, behavioural controls, and structured extension as your needs evolve. This is the stage most businesses never reach cleanly. We do. Your system stays trustworthy in live use whilst your capability grows without the drift, shadow AI, or ungoverned exceptions that create risk at scale.",
+    body: "We help you operate the deployed system with monitoring, behavioural controls, review paths, and structured extension. Your AI can grow without drifting away from the standards your brand depends on.",
     href: "#get-in-touch",
-    cta: "Get in touch",
+    cta: "Request assessment",
     image: usesValidationEvaluationImg,
   },
 ] as const;
+
 const postFilterChips = [
   "All",
   "Governance",
@@ -84,6 +86,7 @@ const postFilterChips = [
   "Operation",
   "MCP",
 ] as const;
+
 const defaultUsesKey = usesTabs[0].key;
 const latestPosts = (
   await getCollection("blog", ({ data }) => !data.draft)
@@ -101,19 +104,19 @@ const page = {
 <BaseLayout title={title} description={description} page={page}>
   <!-- 1. HERO -->
   <section
-    class="relative overflow-hidden bg-gradient-to-br from-black via-[#0b0e14] to-[#171b24] text-paper min-h-[calc(100vh-5rem)]"
+    class="relative min-h-[calc(100vh-5rem)] overflow-hidden bg-gradient-to-br from-black via-[#0b0e14] to-[#171b24] text-paper"
   >
     <div
       class="container-wide relative z-10 pt-[9.5rem] pb-[8.5rem] lg:pt-[10.5rem] lg:pb-[9.5rem]"
     >
       <div class="grid gap-12 lg:grid-cols-[1fr_0.45fr] lg:items-center">
-        <!-- Left: headline + body + CTAs -->
         <div>
           <div class="eyebrow mb-10 text-left">
             BRAND-FIRST. EXPERT-LED. AI-ENABLED.
           </div>
+
           <h1
-            class="font-masthead text-[clamp(2.95rem,5.6vw,5.15rem)] font-semibold tracking-tight text-paper leading-[1.06] max-w-[52rem] md:max-w-[56rem]"
+            class="font-masthead max-w-[52rem] text-[clamp(2.95rem,5.6vw,5.15rem)] font-semibold leading-[1.06] tracking-tight text-paper md:max-w-[56rem]"
           >
             <span class="block">
               The <span class="text-[#14B8A6]">brand-first</span>
@@ -125,25 +128,25 @@ const page = {
           <h2
             class="mt-6 max-w-[46rem] text-[clamp(1.3rem,2.3vw,2rem)] font-light leading-snug text-paper/100"
           >
-            Your brand guidelines weren’t built for AI agents.
+            Your brand guidelines were not built for AI agents.
           </h2>
 
           <p
             class="mt-5 max-w-[46rem] text-[clamp(1.16rem,1.85vw,1.42rem)] font-light leading-relaxed text-paper/80 md:text-[1.36rem]"
           >
-            iBOM<sup>®</sup> turns brand standards, business logic, and expert
-            judgement into machine-operable controls. We test those controls against
-            real roles and intents before AI acts on your behalf. You get governed
-            workflows, traceable decisions, and a clear control layer across your
-            brand, people, knowledge, and AI systems.
+            iBOM<sup>&reg;</sup> turns brand standards, business logic, and expert judgement
+            into machine-operable controls. We test those controls against real roles
+            and intents before AI acts on your behalf. You get governed workflows,
+            traceable decisions, and a clear control layer across your brand, people,
+            knowledge, and AI systems.
           </p>
 
           <div class="mt-8 flex flex-wrap gap-4">
             <a
-              href="/brand-ai-readiness-assessment"
+              href="/brand-ai-readiness-assessment/#assessment-form"
               class="inline-flex items-center justify-center gap-2 rounded-md bg-[#14B8A6] px-6 py-3 text-xs font-semibold leading-none tracking-[0.14em] uppercase text-paper shadow-outline transition-colors hover:bg-[#0F766E]"
             >
-              Assess your brand’s AI readiness
+              Assess your brand's AI readiness
               <svg
                 class="h-4 w-4"
                 viewBox="0 0 20 20"
@@ -178,10 +181,7 @@ const page = {
           </div>
         </div>
 
-        <!-- Right: stat block -->
-        <div
-          class="rounded-2xl border border-paper/10 bg-paper/5 p-8 backdrop-blur"
-        >
+        <div class="rounded-2xl border border-paper/10 bg-paper/5 p-8 backdrop-blur">
           <div
             class="text-[clamp(3.5rem,8vw,6rem)] font-semibold leading-none tracking-tight text-[#14B8A6]"
           >
@@ -190,6 +190,7 @@ const page = {
           <p class="mt-4 text-lg font-light leading-snug text-paper/80">
             of businesses plan to deploy AI agents within two years.
           </p>
+
           <div class="mt-6 border-t border-paper/15 pt-6">
             <div
               class="text-[clamp(3.5rem,8vw,6rem)] font-semibold leading-none tracking-tight text-[#ff8c69]"
@@ -200,7 +201,8 @@ const page = {
               have a mature governance model in place to control them.
             </p>
           </div>
-          <p class="mt-6 text-xs text-paper/40 leading-relaxed">
+
+          <p class="mt-6 text-xs leading-relaxed text-paper/40">
             Source: Deloitte State of AI in the Enterprise, January 2026
           </p>
         </div>
@@ -208,44 +210,53 @@ const page = {
     </div>
   </section>
 
-  <!-- 2. Diagnosis -->
+  <!-- 2. WHY IT MATTERS -->
   <section id="why" class="bg-paper">
     <div class="container-wide py-20">
       <div class="eyebrow mb-10 text-center">Why It Matters</div>
+
       <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
         <div>
           <h2
             class="text-[clamp(2.5rem,5vw,4.75rem)] font-semibold tracking-tight text-ink"
           >
-            Your Best People Know Things Your AI Doesn't
+            Your brand exists. AI can't operate it yet.
           </h2>
         </div>
 
         <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
           <p>
-            In most businesses, the logic that actually drives decisions lives
-            in the heads of your best people. Not in your systems. Not in your
-            AI. In documents nobody reads, spreadsheets nobody maintains, and
-            institutional knowledge that walks out the door.
+            Most businesses already have the raw material: brand standards,
+            toolkits, policies, approvals, content rules, and expert judgement.
           </p>
 
           <p class="mt-6">
-            iBOM<sup>®</sup> changes that. It's a brand-first operating model that
-            engineers your rules, expert judgement, and business logic into structured
-            specifications your AI can actually follow. We establish your AI communication
-            protocol. We give your systems the knowledge to behave consistently, at
-            scale, under governance.
-            <b>We teach your AI how to govern your AI.</b>
+            The problem is format. That knowledge was built for people. AI
+            agents need rules they can interpret, test, and apply without
+            guessing.
+          </p>
+
+          <p class="mt-6">
+            iBOM<sup>&reg;</sup> changes that. It turns your brand standards,
+            business logic, and expert judgement into machine-operable controls
+            your AI can follow.
+          </p>
+
+          <p class="mt-6">
+            We test those controls against the roles and intents your AI will
+            meet. You see what is ready, what creates ambiguity, and what needs
+            stronger governance first.
           </p>
         </div>
       </div>
+
       <div class="mt-12 flex items-center justify-center">
         <a
-          href="#concerns"
-          class="inline-flex items-center justify-center gap-3 rounded-md bg-[#ff8c69] px-8 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper shadow-outline hover:bg-[#e97d5d] transition-colors"
-          aria-label="Explore the next section"
+          href="#brand-ai-readiness"
+          class="inline-flex items-center justify-center gap-3 rounded-md bg-[#ff8c69] px-8 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper shadow-outline transition-colors hover:bg-[#e97d5d]"
+          aria-label="Assess your brand's AI readiness"
         >
-          <span>Keep Reading</span>
+          <span>Assess readiness</span>
           <svg
             class="h-6 w-6 text-paper"
             viewBox="0 0 20 20"
@@ -261,171 +272,265 @@ const page = {
     </div>
   </section>
 
-  <!-- 3. How we work -->
+  <!-- 3. DIAGNOSTIC OFFER -->
+  <section id="brand-ai-readiness" class="bg-gradient-to-br from-black via-[#0b0e14] to-[#171b24] text-paper">
+    <div class="container-wide py-20">
+      <div class="grid gap-12 lg:grid-cols-[7fr_5fr] lg:items-center">
+        <div>
+          <div class="eyebrow mb-6 text-[#14B8A6]">Diagnostic Offer</div>
+          <h2
+            class="max-w-[12ch] text-[clamp(2.7rem,5vw,5rem)] font-semibold leading-[1.02] tracking-tight text-paper"
+          >
+            Assess your brand's AI readiness.
+          </h2>
+          <p class="mt-8 max-w-[62ch] text-lg leading-relaxed text-paper/75 md:text-xl">
+            Before AI acts on your behalf, you need to know whether your brand
+            rules are clear enough to govern it.
+          </p>
+          <p class="mt-6 max-w-[62ch] text-lg leading-relaxed text-paper/75 md:text-xl">
+            Our Brand AI Readiness Assessment reviews your standards, toolkits,
+            approval rules, and priority AI use cases. You see where AI can
+            follow your brand, where ambiguity appears, and where stronger
+            controls are needed first.
+          </p>
 
+          <div class="mt-8 flex flex-wrap gap-4">
+            <a
+              href="/brand-ai-readiness-assessment/"
+              class="inline-flex items-center justify-center gap-2 rounded-md bg-[#14B8A6] px-6 py-3 text-xs font-semibold leading-none tracking-[0.14em] uppercase text-paper shadow-outline transition-colors hover:bg-[#0F766E]"
+            >
+              Request assessment
+              <svg
+                class="h-4 w-4"
+                viewBox="0 0 20 20"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M4 10h12"></path>
+                <path d="M12 6l4 4-4 4"></path>
+              </svg>
+            </a>
+            <a
+              href="#role-intent"
+              class="inline-flex items-center justify-center rounded-md border border-paper/20 px-6 py-3 text-xs font-semibold tracking-[0.14em] uppercase text-paper/80 transition-colors hover:border-[#ff8c69] hover:text-[#ff8c69]"
+            >
+              What we test
+            </a>
+          </div>
+        </div>
+
+        <div class="rounded-2xl border border-paper/10 bg-paper/5 p-8 shadow-outline backdrop-blur">
+          <div class="text-sm font-semibold tracking-[0.2em] uppercase text-[#ff8c69]">
+            You get
+          </div>
+          <ul class="mt-8 space-y-6 text-paper/80">
+            <li class="flex gap-4">
+              <span class="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#14B8A6]"></span>
+              <span>A structured review of your brand standards, toolkits, policies, and AI use cases.</span>
+            </li>
+            <li class="flex gap-4">
+              <span class="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#14B8A6]"></span>
+              <span>A readiness score across machine-readability, ambiguity, and AI control.</span>
+            </li>
+            <li class="flex gap-4">
+              <span class="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#14B8A6]"></span>
+              <span>A risk map showing where AI may misread, over-interpret, or ignore your brand rules.</span>
+            </li>
+            <li class="flex gap-4">
+              <span class="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#14B8A6]"></span>
+              <span>A practical action plan with Critical, High, Medium, and Low priorities.</span>
+            </li>
+            <li class="flex gap-4">
+              <span class="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#14B8A6]"></span>
+              <span>A short readout with recommended next steps into iBOM, Brando policy files, and governed workflows.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. ROLE-INTENT TESTING -->
+  <section id="role-intent" class="bg-paper text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-6 text-center">Role-Intent Testing</div>
+      <h2
+        class="mx-auto max-w-5xl text-center text-[clamp(2.4rem,5vw,4.5rem)] font-semibold tracking-tight text-ink"
+      >
+        We test your brand against the roles and intents your AI will meet in the real world.
+      </h2>
+      <p class="mx-auto mt-8 max-w-[82ch] text-center text-lg leading-relaxed text-ink/70 md:text-xl">
+        Your brand does not fail in theory. It fails in moments. A customer asks
+        for reassurance. A journalist asks for proof. A regulator expects
+        precision. A sales team pushes for conversion. An AI agent tries to
+        summarise, rewrite, compare, recommend, or respond.
+      </p>
+
+      <div class="mt-12 grid gap-6 md:grid-cols-2">
+        <div class="rounded-2xl border border-ink/10 bg-fog p-8">
+          <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#14B8A6]">
+            Roles
+          </div>
+          <h3 class="mt-4 text-2xl font-semibold tracking-tight text-ink">
+            Who is interacting with your brand?
+          </h3>
+          <p class="mt-4 text-base leading-relaxed text-steel">
+            Customers, employees, journalists, partners, regulators, agency
+            teams, sales teams, support agents, and AI agents.
+          </p>
+        </div>
+
+        <div class="rounded-2xl border border-ink/10 bg-fog p-8">
+          <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#14B8A6]">
+            Intents
+          </div>
+          <h3 class="mt-4 text-2xl font-semibold tracking-tight text-ink">
+            What are they trying to do?
+          </h3>
+          <p class="mt-4 text-base leading-relaxed text-steel">
+            Compare, complain, buy, escalate, summarise, localise, request
+            proof, push conversion, create content, or ask for an exception.
+          </p>
+        </div>
+      </div>
+
+      <p class="mx-auto mt-10 max-w-[72ch] text-center text-lg leading-relaxed text-ink/70">
+        You see which rules hold, where toolkits create ambiguity, and where
+        stronger controls are needed.
+      </p>
+
+      <div class="mt-12 flex items-center justify-center">
+        <a
+          href="#concerns"
+          class="inline-flex items-center justify-center gap-3 rounded-md bg-[#ff8c69] px-8 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper shadow-outline transition-colors hover:bg-[#e97d5d]"
+        >
+          <span>See how iBOM works</span>
+          <svg class="h-6 w-6 text-paper" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. HOW IBOM WORKS -->
   <section id="concerns" class="bg-slate text-paper">
     <div class="container-wide py-20">
-      <div class="eyebrow mb-6 text-center opacity-70">The Methodology</div>
+      <div class="eyebrow mb-6 text-center opacity-70">How iBOM Works</div>
       <h2
         class="text-center text-[clamp(2.5rem,5vw,4.75rem)] font-semibold tracking-tight text-paper"
       >
-        From Dark Knowledge to Governed Intelligence
+        From brand knowledge to governed AI behaviour
       </h2>
-      <p
-        class="mx-auto mt-10 max-w-[90ch] text-lg leading-relaxed text-paper/80 md:text-xl text-center"
-      >
-        Most businesses can't scale what they can't codify. We move your
-        expertise from the <span class="text-paper font-medium"
-          >"Dark Knowledge"</span
-        > space into a <span class="text-paper font-medium"
-          >Governed Intelligence Layer</span
-        >
-        in three stages. Your knowledge. Your rules. Under your control.
+      <p class="mx-auto mt-10 max-w-[90ch] text-center text-lg leading-relaxed text-paper/80 md:text-xl">
+        Most businesses cannot scale what they cannot codify. We move your
+        brand standards, expert judgement, and operating rules into a governed
+        intelligence layer. Your knowledge. Your rules. Under your control.
       </p>
 
       <div class="mt-14 grid gap-4 lg:grid-cols-3">
-        <div
-          class="rounded-2xl border border-paper/15 bg-ink/30 p-6 shadow-outline backdrop-blur"
-        >
+        <div class="rounded-2xl border border-paper/15 bg-ink/30 p-6 shadow-outline backdrop-blur">
           <h4 class="text-lg font-semibold tracking-tight text-paper">
-            Knowledge Discovery
+            Brand Knowledge Discovery
           </h4>
           <p class="mt-3 text-base leading-relaxed text-paper/75">
-            We extract the business logic, workflow nuances, and institutional
-            knowledge your best people carry. The system we build is architected
-            around your actual operational DNA. Not a generic template.
+            We identify the rules, approvals, exceptions, and judgement your
+            teams already use. The system starts with how your business really
+            works, not a generic template.
           </p>
         </div>
-        <div
-          class="rounded-2xl border border-paper/15 bg-ink/30 p-6 shadow-outline backdrop-blur"
-        >
+
+        <div class="rounded-2xl border border-paper/15 bg-ink/30 p-6 shadow-outline backdrop-blur">
           <h4 class="text-lg font-semibold tracking-tight text-paper">
-            Spec Engineering
+            Specification Design
           </h4>
           <p class="mt-3 text-base leading-relaxed text-paper/75">
-            We codify your requirements into machine language using a domain
-            definition language with dot syntax and snake_case. Your AI agents
-            can interpret these specifications consistently and follow them in
+            We turn brand and business logic into explicit specifications. Your
+            AI gets rules it can interpret consistently, test, and follow in
             practice.
           </p>
         </div>
-        <div
-          class="rounded-2xl border border-paper/15 bg-ink/30 p-6 shadow-outline backdrop-blur"
-        >
+
+        <div class="rounded-2xl border border-paper/15 bg-ink/30 p-6 shadow-outline backdrop-blur">
           <h4 class="text-lg font-semibold tracking-tight text-paper">
-            Intelligence Activation
+            Controlled Activation
           </h4>
           <p class="mt-3 text-base leading-relaxed text-paper/75">
-            We take your specifications into production. Build, test, remediate,
-            and deploy under direct expert supervision. At the speed your
-            business needs.
+            We take approved specifications into controlled workflows, review
+            paths, and agent behaviours. Build, test, improve, and deploy under
+            expert supervision.
           </p>
         </div>
       </div>
 
       <div class="mt-16 border-t border-paper/20 pt-16">
-        <h3
-          class="text-center text-3xl font-semibold tracking-tight text-paper md:text-4xl"
-        >
-          Knowledge Building & Intelligence Activation
+        <h3 class="text-center text-3xl font-semibold tracking-tight text-paper md:text-4xl">
+          Knowledge building and controlled activation
         </h3>
-        <p
-          class="mx-auto mt-6 max-w-[90ch] text-center text-lg leading-relaxed text-paper/80 md:text-xl"
-        >
-          We deliver iBOM<sup>®</sup> in two connected phases. The first defines and
-          validates your knowledge and specifications. The second develops and operates
-          the system through governed infrastructure. Both follow the same five-stage
-          model.
+        <p class="mx-auto mt-6 max-w-[90ch] text-center text-lg leading-relaxed text-paper/80 md:text-xl">
+          We deliver iBOM<sup>&reg;</sup> in two connected phases. The first defines
+          and validates your knowledge and specifications. The second turns them
+          into governed workflows, controls, and operating capability.
         </p>
       </div>
 
       <div class="mt-12 grid gap-10 lg:grid-cols-2">
-        <div
-          class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur"
-        >
-          <div
-            class="text-lg font-semibold tracking-[0.2em] uppercase text-[#14B8A6]"
-          >
+        <div class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur">
+          <div class="text-lg font-semibold tracking-[0.2em] uppercase text-[#14B8A6]">
             Phase 1
           </div>
           <div class="mt-4 text-2xl font-semibold tracking-tight text-paper">
-            Knowledge Base Build
+            Brand Knowledge Build
           </div>
           <p class="mt-4 text-paper/80">
-            We transform institutional wisdom into structured, machine-readable
-            datasets your business owns outright. <b>No vendor lock-in.</b> Just portable,
-            governed intelligence.
+            We transform standards, toolkits, approvals, and expert judgement
+            into structured knowledge your business owns. No vendor lock-in.
+            Just portable, governed intelligence.
           </p>
           <ul class="mt-6 space-y-4 text-paper/75">
             <li class="flex gap-3">
-              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"
-              ></span>
-              <span
-                ><b>Codify</b> specialist knowledge into high-fidelity structured
-                records.</span
-              >
+              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"></span>
+              <span><b>Codify</b> brand and business knowledge into high-fidelity structured records.</span>
             </li>
             <li class="flex gap-3">
-              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"
-              ></span>
-              <span
-                ><b>Construct</b> governed datasets and policy structures expressed
-                in a machine-readable domain language.</span
-              >
+              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"></span>
+              <span><b>Construct</b> policy structures, role-intent scenarios, and machine-readable rules.</span>
             </li>
             <li class="flex gap-3">
-              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"
-              ></span>
-              <span
-                ><b>Deliver</b> a retrieval-ready knowledge base optimised for secure
-                exchange.</span
-              >
+              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"></span>
+              <span><b>Validate</b> where the rules hold, conflict, or need stronger governance.</span>
             </li>
           </ul>
         </div>
 
-        <div
-          class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur"
-        >
-          <div
-            class="text-lg font-semibold tracking-[0.2em] uppercase text-[#14B8A6]"
-          >
+        <div class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur">
+          <div class="text-lg font-semibold tracking-[0.2em] uppercase text-[#14B8A6]">
             Phase 2
           </div>
           <div class="mt-4 text-2xl font-semibold tracking-tight text-paper">
-            Knowledge Base Gateway
+            Governed Workflow Activation
           </div>
           <p class="mt-4 text-paper/80">
-            We build the retrieval layer that makes your knowledge a live,
-            queryable service. <b
-              >Your expertise becomes accessible through the AI Communications
-              Engine (AICE).</b
-            >
+            We turn the approved knowledge base into controlled AI workflows,
+            with access rules, review paths, escalation triggers, and audit
+            visibility.
           </p>
           <ul class="mt-6 space-y-4 text-paper/75">
             <li class="flex gap-3">
-              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"
-              ></span>
-              <span
-                ><b>Design</b> retrieval systems for real-time accuracy at an enterprise
-                scale.</span
-              >
+              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"></span>
+              <span><b>Design</b> controlled interactions between people, knowledge, and AI systems.</span>
             </li>
             <li class="flex gap-3">
-              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"
-              ></span>
-              <span
-                ><b>Deploy</b> the AICE as a governed interface for universal AI tool
-                connection.</span
-              >
+              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"></span>
+              <span><b>Deploy</b> governed workflows that stay aligned to the approved specification.</span>
             </li>
             <li class="flex gap-3">
-              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"
-              ></span>
-              <span
-                ><b>Activate</b> live workflows with automated oversight and deterministic
-                controls.</span
-              >
+              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"></span>
+              <span><b>Operate</b> with monitoring, review, and controlled change as needs evolve.</span>
             </li>
           </ul>
         </div>
@@ -433,134 +538,30 @@ const page = {
 
       <div class="mt-12 flex items-center justify-center">
         <a
-          href="#engine"
-          class="inline-flex items-center justify-center gap-3 rounded-md bg-[#ff8c69] px-8 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper hover:bg-[#e97d5d] transition-colors"
+          href="#uses"
+          class="inline-flex items-center justify-center gap-3 rounded-md bg-[#ff8c69] px-8 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper transition-colors hover:bg-[#e97d5d]"
         >
-          <span>The Control Layer</span>
-          <svg class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-            <path
-              d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"
-            ></path>
+          <span>See the framework</span>
+          <svg class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"></path>
           </svg>
         </a>
       </div>
     </div>
   </section>
 
-  <!-- 4. The Control Layer -->
-  <section id="engine" class="bg-paper py-20 text-ink">
-    <div class="container-wide">
-      <div class="eyebrow mb-6 text-center">The Control Layer</div>
-
-      <div class="mx-auto max-w-5xl">
-        <h2
-          class="text-[clamp(2.2rem,4vw,3.5rem)] font-semibold tracking-tight leading-[1.1] text-center"
-        >
-          How governed AI becomes operational
-        </h2>
-        <div
-          class="mt-6 text-sm font-semibold tracking-[0.16em] uppercase text-[#14B8A6] text-center"
-        >
-          What it does
-        </div>
-        <p
-          class="mx-auto mt-3 max-w-4xl text-xl text-steel font-light leading-relaxed text-center"
-        >
-          AI only becomes useful when it understands your business, follows your rules, and acts within clear boundaries.
-          That is what the Advanced Analytica control layer does.
-          It gives your organisation a governed way to connect people, policies, knowledge, brand standards, workflows, and AI agents so every AI interaction is shaped by your business context, not left to chance.
-        </p>
-        <div class="mt-10 grid gap-5 sm:grid-cols-2">
-          <div class="rounded-2xl border border-ink/10 bg-fog p-6">
-            <h4 class="text-lg font-semibold text-[#14B8A6]">
-              Translates Intent into Action
-            </h4>
-            <p class="mt-3 text-steel leading-relaxed">
-              AI agents don't guess what your business means. The AICE turns
-              every request into precise instructions shaped by your rules, your
-              logic, and your constraints. Your AI does what you actually
-              intend.
-            </p>
-          </div>
-          <div class="rounded-2xl border border-ink/10 bg-fog p-6">
-            <h4 class="text-lg font-semibold text-[#14B8A6]">
-              Controls What Agents Can Do
-            </h4>
-            <p class="mt-3 text-steel leading-relaxed">
-              Unlike traditional AI that recommends, agents act. They send
-              communications, make purchases, modify systems. The AICE defines
-              the boundaries. What data can be seen. What actions can be taken.
-              What must always stay off limits.
-            </p>
-          </div>
-          <div class="rounded-2xl border border-ink/10 bg-fog p-6">
-            <h4 class="text-lg font-semibold text-[#14B8A6]">
-              One Governed Point of Control
-            </h4>
-            <p class="mt-3 text-steel leading-relaxed">
-              Your AI connects to documents, databases, and operational systems
-              through a single governed interface. No sprawl. No shadow AI
-              operating outside your visibility. Everything through one
-              controlled layer.
-            </p>
-          </div>
-          <div class="rounded-2xl border border-ink/10 bg-fog p-6">
-            <h4 class="text-lg font-semibold text-[#14B8A6]">
-              Monitors, Audits, and Enforces
-            </h4>
-            <p class="mt-3 text-steel leading-relaxed">
-              The AICE tracks agent behaviour in real time. It catches policy
-              violations before they reach users. It maintains the audit trail
-              your governance framework depends on. You can see what your AI is
-              doing. And prove it.
-            </p>
-          </div>
-        </div>
-
-        <div
-          id="iBOM-visual"
-          class="relative mt-10 w-full scroll-mt-28"
-          aria-label="iBOM Intelligent Business Operating Model visualisation"
-        >
-          <AiceGatewayCluster />
-        </div>
-
-        <div
-          class="mt-10 rounded-2xl border border-[#14B8A6]/20 bg-[#14B8A6]/5 p-6"
-        >
-          <div
-            class="text-sm font-semibold tracking-[0.16em] uppercase text-[#14B8A6]"
-          >
-            The Bottom Line
-          </div>
-          <p class="mt-3 text-lg leading-relaxed text-ink">
-            Without the AICE, you're interacting with a chatbot. With AICE,
-            you're operating a governed, brand-first intelligence system — with
-            the controls, visibility, and audit trail that enterprise AI
-            actually requires.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 4. iBOM Framework (tabs) -->
+  <!-- 6. IBOM FRAMEWORK -->
   <section id="uses" class="bg-paper">
     <div class="container-wide py-20">
       <div class="eyebrow mb-6 text-center">Framework</div>
-      <h2
-        class="text-center text-[clamp(2.5rem,5vw,4.75rem)] font-semibold tracking-tight text-ink"
-      >
-        iBOM<sup class="text-[0.45em] align-super">®</sup> Framework
+      <h2 class="text-center text-[clamp(2.5rem,5vw,4.75rem)] font-semibold tracking-tight text-ink">
+        iBOM<sup class="text-[0.45em] align-super">&reg;</sup> Framework
       </h2>
-      <p
-        class="mx-auto mt-6 max-w-4xl text-center text-lg font-light leading-relaxed text-steel md:text-xl"
-      >
-        79% of businesses haven't defined how work gets done around AI. Most are
-        layering AI onto existing processes and wondering why it doesn't scale.
-        iBOM<sup class="text-[0.45em] align-super">®</sup> is built for the other
-        way. A five-stage framework that structures how we discover, specify, validate,
-        develop, and operate your governed AI system — from first brief to live deployment.
+      <p class="mx-auto mt-6 max-w-4xl text-center text-lg font-light leading-relaxed text-steel md:text-xl">
+        Most AI programmes struggle because the operating model is undefined.
+        iBOM<sup class="text-[0.45em] align-super">&reg;</sup> gives you a five-stage
+        framework to discover, specify, validate, develop, and operate governed
+        AI systems from first brief to live use.
       </p>
 
       <div class="mt-10">
@@ -588,12 +589,8 @@ const page = {
         </div>
       </div>
 
-      <div
-        class="mt-14 grid gap-12 lg:gap-24 lg:grid-cols-[420px_1fr] lg:items-start"
-      >
-        <div
-          class="relative overflow-hidden rounded-2xl bg-slate shadow-outline"
-        >
+      <div class="mt-14 grid gap-12 lg:grid-cols-[420px_1fr] lg:items-start lg:gap-24">
+        <div class="relative overflow-hidden rounded-2xl bg-slate shadow-outline">
           <div class="aspect-square">
             {
               usesTabs.map((t) => (
@@ -622,15 +619,15 @@ const page = {
                 data-panel={t.key}
                 hidden={t.key === defaultUsesKey ? undefined : true}
               >
-                <div class="flex flex-wrap items-center gap-3 text-xs font-semibold tracking-[0.2em] uppercase text-steel">
+                <div class="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-steel">
                   <span>{t.stage}</span>
                   <span class="h-1 w-1 rounded-full bg-[#14B8A6]/50" />
                   <span>{t.phase}</span>
                 </div>
-                <div class="mt-4 text-2xl md:text-3xl font-semibold tracking-[0.08em] uppercase text-[#14B8A6]">
+                <div class="mt-4 text-2xl font-semibold uppercase tracking-[0.08em] text-[#14B8A6] md:text-3xl">
                   {t.heading}
                 </div>
-                <div class="mt-6 text-lg md:text-xl font-medium leading-snug text-ink">
+                <div class="mt-6 text-lg font-medium leading-snug text-ink md:text-xl">
                   {t.subheading}
                 </div>
                 <p class="mt-5 text-base leading-relaxed text-ink/80">
@@ -642,7 +639,7 @@ const page = {
                   data-scroll-target={
                     t.href.startsWith("#") ? t.href.slice(1) : undefined
                   }
-                  class="mt-12 inline-flex items-center gap-2 text-base font-semibold tracking-[0.14em] uppercase text-ink hover:text-[#ff8c69] transition-colors"
+                  class="mt-12 inline-flex items-center gap-2 text-base font-semibold uppercase tracking-[0.14em] text-ink transition-colors hover:text-[#ff8c69]"
                 >
                   {t.cta}
                   <svg
@@ -667,20 +664,13 @@ const page = {
 
       <div class="mt-12 flex items-center justify-center">
         <a
-          href="#for"
-          class="inline-flex items-center justify-center gap-3 rounded-md bg-[#ff8c69] px-8 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper shadow-outline hover:bg-[#e97d5d] transition-colors"
-          aria-label="Explore the next section"
+          href="#engine"
+          class="inline-flex items-center justify-center gap-3 rounded-md bg-[#ff8c69] px-8 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper shadow-outline transition-colors hover:bg-[#e97d5d]"
+          aria-label="See the control layer"
         >
-          <span>Keep Exploring</span>
-          <svg
-            class="h-6 w-6 text-paper"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"
-            ></path>
+          <span>See the control layer</span>
+          <svg class="h-6 w-6 text-paper" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"></path>
           </svg>
         </a>
       </div>
@@ -756,137 +746,175 @@ const page = {
     </script>
   </section>
 
-  <!-- 5. WHO iBOM IS FOR -->
+  <!-- 7. CONTROL LAYER -->
+  <section id="engine" class="bg-paper py-20 text-ink">
+    <div class="container-wide">
+      <div class="eyebrow mb-6 text-center">The Control Layer</div>
+
+      <div class="mx-auto max-w-5xl">
+        <h2 class="text-center text-[clamp(2.2rem,4vw,3.5rem)] font-semibold leading-[1.1] tracking-tight">
+          How governed AI becomes operational
+        </h2>
+        <p class="mx-auto mt-6 max-w-4xl text-center text-xl font-light leading-relaxed text-steel">
+          AI only becomes useful when it understands your business, follows your
+          rules, and acts within clear boundaries. Our control layer connects
+          people, policies, knowledge, brand standards, workflows, and AI agents
+          so every interaction is shaped by your business context.
+        </p>
+
+        <div class="mt-10 grid gap-5 sm:grid-cols-2">
+          <div class="rounded-2xl border border-ink/10 bg-fog p-6">
+            <h4 class="text-lg font-semibold text-[#14B8A6]">
+              Your AI understands intent
+            </h4>
+            <p class="mt-3 leading-relaxed text-steel">
+              Each request is translated into structured action shaped by your
+              rules, roles, permissions, and escalation paths.
+            </p>
+          </div>
+
+          <div class="rounded-2xl border border-ink/10 bg-fog p-6">
+            <h4 class="text-lg font-semibold text-[#14B8A6]">
+              Your agents stay within bounds
+            </h4>
+            <p class="mt-3 leading-relaxed text-steel">
+              The control layer defines what agents can see, what they can do,
+              when they must escalate, and what stays off limits.
+            </p>
+          </div>
+
+          <div class="rounded-2xl border border-ink/10 bg-fog p-6">
+            <h4 class="text-lg font-semibold text-[#14B8A6]">
+              Your knowledge becomes usable
+            </h4>
+            <p class="mt-3 leading-relaxed text-steel">
+              Standards, toolkits, assets, tickets, campaigns, policies, and
+              workflows are connected through one governed operating model.
+            </p>
+          </div>
+
+          <div class="rounded-2xl border border-ink/10 bg-fog p-6">
+            <h4 class="text-lg font-semibold text-[#14B8A6]">
+              Your business keeps visibility
+            </h4>
+            <p class="mt-3 leading-relaxed text-steel">
+              Interactions can be monitored, audited, and improved. You can see
+              where AI is aligned, where risk is emerging, and what needs to change.
+            </p>
+          </div>
+        </div>
+
+        <div
+          id="ibom-visual"
+          class="relative mt-10 w-full scroll-mt-28"
+          aria-label="iBOM Intelligent Business Operating Model visualisation"
+        >
+          <AiceGatewayCluster />
+        </div>
+
+        <div class="mt-10 rounded-2xl border border-[#14B8A6]/20 bg-[#14B8A6]/5 p-6">
+          <div class="text-sm font-semibold uppercase tracking-[0.16em] text-[#14B8A6]">
+            The Bottom Line
+          </div>
+          <p class="mt-3 text-lg leading-relaxed text-ink">
+            Without a control layer, AI remains a set of disconnected tools.
+            With one, it becomes a governed, brand-first operating capability
+            aligned to your business, your standards, and your responsibilities.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. WHAT IT DELIVERS -->
   <section id="for" class="bg-slate text-paper">
     <div class="container-wide py-20">
       <div class="eyebrow mb-6 text-center">What It Delivers</div>
-      <h2
-        class="text-center text-[clamp(2.5rem,5vw,4.75rem)] font-semibold tracking-tight text-paper"
-      >
-        From Dark Knowledge to Controlled Operation
+      <h2 class="text-center text-[clamp(2.5rem,5vw,4.75rem)] font-semibold tracking-tight text-paper">
+        From brand knowledge to controlled operation
       </h2>
-      <p
-        class="mx-auto mt-10 max-w-[80ch] text-center text-lg leading-relaxed text-paper/80 md:text-xl"
-      >
-        Most businesses feel strategically ready for AI. Their infrastructure
-        tells a different story. Once iBOM<sup>®</sup> has structured your knowledge
-        and the AICE has operationalised it, you have a governed foundation your AI
-        can actually build on, and your business can actually trust.
+      <p class="mx-auto mt-10 max-w-[80ch] text-center text-lg leading-relaxed text-paper/80 md:text-xl">
+        Once iBOM<sup>&reg;</sup> has structured your knowledge and the control layer
+        has made it operational, you have a governed foundation your AI can
+        build on and your business can trust.
       </p>
 
       <div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        <div
-          class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur"
-        >
-          <div
-            class="text-xs font-semibold tracking-[0.2em] uppercase text-[#14B8A6]"
-          >
+        <div class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur">
+          <div class="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]">
             Knowledge Asset
           </div>
           <div class="mt-4 text-2xl font-semibold tracking-tight text-paper">
-            Business Knowledge You Can Keep
+            Brand knowledge you can keep
           </div>
           <p class="mt-4 text-base font-medium leading-relaxed text-paper/80">
-            Your institutional knowledge is captured in specifications,
-            structured formats, and linked datasets your business owns outright.
-            It doesn't leave when your best people do. It doesn't live in a
-            vendor's platform. It's yours.
+            Your brand standards, rules, exceptions, and judgement are captured
+            in structured formats your business owns outright.
           </p>
         </div>
 
-        <div
-          class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur"
-        >
-          <div
-            class="text-xs font-semibold tracking-[0.2em] uppercase text-[#14B8A6]"
-          >
+        <div class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur">
+          <div class="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]">
             Structure
           </div>
           <div class="mt-4 text-2xl font-semibold tracking-tight text-paper">
-            Knowledge AI Can Actually Use
+            Rules AI can actually follow
           </div>
           <p class="mt-4 text-base font-medium leading-relaxed text-paper/80">
-            79% of businesses haven't defined work around AI capabilities. Most
-            are trying to use AI without giving it the structured knowledge to
-            act reliably. We fix that. Your rules, processes, and expert
-            judgement translated into specifications your AI agents can follow
-            consistently.
+            Your standards, approvals, and escalation paths become specifications
+            AI agents can interpret consistently.
           </p>
         </div>
 
-        <div
-          class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur"
-        >
-          <div
-            class="text-xs font-semibold tracking-[0.2em] uppercase text-[#14B8A6]"
-          >
+        <div class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur">
+          <div class="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]">
             Control
           </div>
           <div class="mt-4 text-2xl font-semibold tracking-tight text-paper">
-            A Governed Intelligence Gateway
+            A governed control layer
           </div>
           <p class="mt-4 text-base font-medium leading-relaxed text-paper/80">
-            Only 21% of businesses have a mature governance model for autonomous
-            agents. The AICE gives you one governed control point between AI and
-            your systems. Access, behaviour, and execution, managed with the
-            discipline agentic AI actually requires.
+            Access, behaviour, and execution are managed through one controlled
+            layer between your people, knowledge, systems, and AI agents.
           </p>
         </div>
 
-        <div
-          class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur"
-        >
-          <div
-            class="text-xs font-semibold tracking-[0.2em] uppercase text-[#14B8A6]"
-          >
+        <div class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur">
+          <div class="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]">
             Alignment
           </div>
           <div class="mt-4 text-2xl font-semibold tracking-tight text-paper">
-            One Shared Operating Logic
+            One shared operating logic
           </div>
           <p class="mt-4 text-base font-medium leading-relaxed text-paper/80">
-            Brand, operations, legal, product, and engineering working from the
-            same specification base. We start with brand because it spans the
-            whole business. Then we extend that operating logic into the
-            functions where governed AI matters most.
+            Brand, operations, legal, product, and engineering can work from the
+            same governed specification base.
           </p>
         </div>
 
-        <div
-          class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur"
-        >
-          <div
-            class="text-xs font-semibold tracking-[0.2em] uppercase text-[#14B8A6]"
-          >
+        <div class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur">
+          <div class="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]">
             Assurance
           </div>
           <div class="mt-4 text-2xl font-semibold tracking-tight text-paper">
-            Testable, Traceable Systems
+            Testable, traceable systems
           </div>
           <p class="mt-4 text-base font-medium leading-relaxed text-paper/80">
-            Some businesses are discovering AI models in production they didn't
-            know were running. No inventory. No oversight. No audit trail. With
-            iBOM<sup>®</sup> and the AICE, specifications, controls, and runtime behaviour
-            are all reviewable together. You can test it, trace it, and prove it.
+            Specifications, controls, and runtime behaviour are reviewable
+            together. You can test the system, trace decisions, and prove alignment.
           </p>
         </div>
 
-        <div
-          class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur"
-        >
-          <div
-            class="text-xs font-semibold tracking-[0.2em] uppercase text-[#14B8A6]"
-          >
+        <div class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur">
+          <div class="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]">
             Continuity
           </div>
           <div class="mt-4 text-2xl font-semibold tracking-tight text-paper">
-            Systems That Can Evolve Safely
+            Systems that can evolve safely
           </div>
           <p class="mt-4 text-base font-medium leading-relaxed text-paper/80">
-            AI is moving fast. Your governance layer needs to move with it. As
-            your needs, risks, tools, and models change, you can revise the
-            knowledge base, the AICE layer, and the systems built on top,
-            without losing alignment, control, or trust.
+            As your needs, risks, tools, and models change, you can revise the
+            knowledge base and controls without losing alignment.
           </p>
         </div>
       </div>
@@ -894,101 +922,38 @@ const page = {
       <div class="mt-12 flex items-center justify-center">
         <a
           href="#leaders"
-          class="inline-flex items-center justify-center gap-3 rounded-md bg-[#ff8c69] px-8 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper shadow-outline hover:bg-[#e97d5d] transition-colors"
-          aria-label="Explore the next section"
+          class="inline-flex items-center justify-center gap-3 rounded-md bg-[#ff8c69] px-8 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper shadow-outline transition-colors hover:bg-[#e97d5d]"
+          aria-label="Explore business entry points"
         >
-          <span>Keep Reading</span>
-          <svg
-            class="h-6 w-6 text-paper"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"
-            ></path>
+          <span>Explore entry points</span>
+          <svg class="h-6 w-6 text-paper" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"></path>
           </svg>
         </a>
       </div>
     </div>
   </section>
 
-  <!-- 6. CUSTOMERS
-  <section id="customers" class="bg-paper">
-    <div class="container-wide py-20">
-      <h2
-        class="text-center text-[clamp(2.2rem,4.5vw,4rem)] font-semibold tracking-tight text-ink"
-      >
-        Customers
-      </h2>
-
-      <div class="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-        {[
-          "Universal Music Group",
-          "Warner Music Group",
-          "WM",
-          "Disney Music Group",
-          "Downtown",
-          "BET",
-          "Algoriddim",
-          "Gabb",
-          "WB Post Production",
-          "AONA",
-          "Peer Music",
-          "Deluxe"
-        ].map((name) => (
-          <div class="flex items-center justify-center">
-            <div class="flex h-36 w-36 items-center justify-center rounded-full bg-fog/60 text-center text-xs font-semibold tracking-wide text-ink/70">
-              {name}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div class="mt-12 flex items-center justify-center">
-        <a
-          href="#leaders"
-          class="inline-flex items-center justify-center gap-3 text-lg font-semibold text-[#ff8c69] hover:text-[#e97d5d] transition-colors"
-          aria-label="Explore the next section"
-        >
-          <span>Keep Reading</span>
-          <svg
-            class="h-7 w-7 text-[#ff8c69]"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"
-            ></path>
-          </svg>
-        </a>
-      </div>
-    </div>
-  </section> -->
-
-  <!-- 7. WHY INDUSTRY LEADERS -->
+  <!-- 9. BUSINESS ENTRY POINTS AND LATEST THINKING -->
   <section id="leaders" class="bg-paper text-ink">
     <div class="container-wide py-20">
       <div class="eyebrow mb-6 text-center">Start Here</div>
-      <h2
-        class="text-center text-[clamp(2.4rem,5vw,4.5rem)] font-semibold tracking-tight text-ink"
-      >
-       Start with brand. It governs everything.
+      <h2 class="text-center text-[clamp(2.4rem,5vw,4.5rem)] font-semibold tracking-tight text-ink">
+        Start with brand. Extend governance everywhere.
       </h2>
-      <p
-        class="mx-auto mt-4 max-w-[80ch] text-center text-lg leading-relaxed text-ink/70 md:text-xl"
-      >
-
-      Most businesses are layering AI onto existing processes. That's not transformation. That's delay. <strong>The businesses pulling ahead are starting with brand.</strong> It spans every function, every decision, every communication. Govern that and you have a foundation you can extend. We build that foundation, then take the same spec-driven logic into every function where governed AI matters most.
-        
+      <p class="mx-auto mt-4 max-w-[80ch] text-center text-lg leading-relaxed text-ink/70 md:text-xl">
+        Most businesses are adding AI to existing processes and hoping control
+        will follow. It will not. We start with brand because brand spans the
+        business. It shapes language, decisions, risk, trust, and customer
+        experience. Govern brand first, and you have an operating model you can
+        extend into every function where AI needs control.
       </p>
 
       <div class="mt-12 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
         {
           businessFunctions.map((role) => (
             <div class="rounded-2xl border border-ink/10 bg-fog p-8 shadow-outline">
-              <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#14B8A6]">
+              <div class="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]">
                 {role.eyebrow}
               </div>
               <h3 class="mt-4 text-2xl font-semibold tracking-tight text-ink">
@@ -1000,9 +965,9 @@ const page = {
               <div class="mt-8 flex flex-wrap gap-4">
                 <a
                   href={`/functions/${role.slug}/`}
-                  class="inline-flex items-center justify-center gap-2 rounded-md border border-[#14B8A6] px-5 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-[#14B8A6] transition-colors hover:bg-[#0F766E] hover:text-paper"
+                  class="inline-flex items-center justify-center gap-2 rounded-md border border-[#14B8A6] px-5 py-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#14B8A6] transition-colors hover:bg-[#0F766E] hover:text-paper"
                 >
-                  Begin the journey
+                  Explore this area
                 </a>
               </div>
             </div>
@@ -1012,12 +977,10 @@ const page = {
 
       <div class="mt-20 border-t border-ink/10 pt-20">
         <div class="eyebrow mb-6 text-center">Latest Thinking</div>
-        <h2
-          class="text-center text-[clamp(2.4rem,5vw,4.5rem)] font-semibold tracking-tight text-ink"
-        >
+        <h2 class="text-center text-[clamp(2.4rem,5vw,4.5rem)] font-semibold tracking-tight text-ink">
           Latest Posts
         </h2>
-        <p class="text-center mt-4 text-lg text-ink/70 md:text-xl">
+        <p class="mt-4 text-center text-lg text-ink/70 md:text-xl">
           The latest thinking on governed AI systems, operational control, and
           knowledge-first delivery.
         </p>
@@ -1056,7 +1019,7 @@ const page = {
               type="button"
               data-post-filter={tag.toLowerCase()}
               aria-pressed={tag === "All" ? "true" : "false"}
-              class="home-post-filter inline-flex items-center justify-center rounded-full border border-[#14B8A6] px-4 py-2 text-xs font-semibold tracking-[0.14em] uppercase text-[#14B8A6] transition-colors hover:bg-[#0F766E] hover:text-paper"
+              class="home-post-filter inline-flex items-center justify-center rounded-full border border-[#14B8A6] px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#14B8A6] transition-colors hover:bg-[#0F766E] hover:text-paper"
             >
               {tag}
             </button>
@@ -1084,7 +1047,7 @@ const page = {
         <button
           id="home-posts-load-more"
           type="button"
-          class="inline-flex items-center justify-center gap-3 rounded-md bg-[#ff8c69] px-8 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper shadow-outline hover:bg-[#e97d5d] transition-colors"
+          class="inline-flex items-center justify-center gap-3 rounded-md bg-[#ff8c69] px-8 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper shadow-outline transition-colors hover:bg-[#e97d5d]"
           data-initial-count={String(HOME_POST_INITIAL_COUNT)}
           data-batch-size={String(HOME_POST_BATCH_SIZE)}
           aria-controls="home-posts-grid"
@@ -1094,15 +1057,8 @@ const page = {
             : "display:none;"}
         >
           <span>Load More</span>
-          <svg
-            class="h-6 w-6 text-paper"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"
-            ></path>
+          <svg class="h-6 w-6 text-paper" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"></path>
           </svg>
         </button>
       </div>
