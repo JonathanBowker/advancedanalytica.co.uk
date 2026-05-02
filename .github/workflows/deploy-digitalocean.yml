@@ -1,0 +1,36 @@
+name: Deploy to DigitalOcean
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: digitalocean-deploy
+  cancel-in-progress: true
+
+env:
+  DIGITALOCEAN_APP_ID: be8a36e2-3af3-470c-b72a-7e567c73096f
+
+jobs:
+  deploy:
+    name: Force DigitalOcean rebuild
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Create DigitalOcean deployment
+        run: |
+          doctl apps create-deployment "$DIGITALOCEAN_APP_ID" --force-rebuild --wait
+
+      - name: Show latest deployment status
+        run: |
+          doctl apps list-deployments "$DIGITALOCEAN_APP_ID" --format ID,Phase,Progress,Cause,Created,Updated --no-header | head -n 5
