@@ -41,7 +41,7 @@ stakeholders:
 proofNeeds:
   - "Examples of one function becoming the launch point for wider operating capability."
   - "Evidence that governance and delivery discipline create leverage rather than friction."
-  - "Clear explanation of how IBOM and AICE support scale, not just pilots."
+  - "Clear explanation of how iBOM and AICE support scale, not just pilots."
 contentStages:
   - "Awareness: why tool purchases do not create durable operating capability."
   - "Evaluation: how to choose the right business entry point and sequence delivery."
@@ -50,7 +50,7 @@ contentStages:
 contentNeeds:
   - "Commercial narratives that connect AI investment to operating capability."
   - "Examples of phased rollout from one function into wider adoption."
-  - "Clear explanation of how IBOM and AICE work together at programme level."
+  - "Clear explanation of how iBOM and AICE work together at programme level."
 messagingNotes:
   - "Responds to coherence, leverage, and strategic reuse."
   - "Needs confidence that governance and speed can reinforce each other."
@@ -60,7 +60,7 @@ sourceFeeds:
   - "Operating model, transformation, and enterprise architecture feeds."
   - "Market signals on AI adoption, governance, and business capability building."
 referenceContent:
-  - "Past content on what-is-IBOM, operating model themes, and multi-function governance."
+  - "Past content on what-is-iBOM, operating model themes, and multi-function governance."
   - "Use cases that show one function leading into a broader rollout path."
   - "Articles and pages that convert well for strategic readers."
 topPerformingTopics:
@@ -149,7 +149,7 @@ Choose an entry point that creates reusable business value rather than isolated 
 
 - Examples of one function becoming the launch point for wider operating capability.
 - Evidence that governance and delivery discipline create leverage rather than friction.
-- Clear explanation of how IBOM and AICE support scale, not just pilots.
+- Clear explanation of how iBOM and AICE support scale, not just pilots.
 
 ## Content That Helps At Each Stage
 
@@ -166,7 +166,7 @@ Choose an entry point that creates reusable business value rather than isolated 
 
 ## Reference Content To Reuse
 
-- Past content on what-is-IBOM, operating model themes, and multi-function governance.
+- Past content on what-is-iBOM, operating model themes, and multi-function governance.
 - Use cases that show one function leading into a broader rollout path.
 - Articles and pages that convert well for strategic readers.
 
@@ -224,7 +224,7 @@ Review weekly for strategic AI and transformation signals, and monthly for which
 
 - Commercial narratives that connect AI investment to operating capability.
 - Examples of phased rollout from one function into wider adoption.
-- Clear explanation of how IBOM and AICE work together at programme level.
+- Clear explanation of how iBOM and AICE work together at programme level.
 
 ## Messaging Notes
 

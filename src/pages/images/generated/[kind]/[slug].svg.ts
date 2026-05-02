@@ -103,7 +103,7 @@ const renderSvg = ({
   </g>
 
   <text x="600" y="900" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="21" font-weight="600" letter-spacing="0.22em" fill="rgba(255,255,255,0.72)">ADVANCED ANALYTICA</text>
-  <text x="600" y="946" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="500" letter-spacing="0.18em" fill="rgba(255,255,255,0.56)">${escapeXml(tagLine || (kind === 'opinion' ? 'IBOM · GOVERNANCE · SYSTEMS' : kind === 'use-case' ? 'IBOM · POLICY · DELIVERY' : 'IBOM · GUIDES · RESOURCES'))}</text>
+  <text x="600" y="946" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="500" letter-spacing="0.18em" fill="rgba(255,255,255,0.56)">${escapeXml(tagLine || (kind === 'opinion' ? 'iBOM · GOVERNANCE · SYSTEMS' : kind === 'use-case' ? 'iBOM · POLICY · DELIVERY' : 'iBOM · GUIDES · RESOURCES'))}</text>
 </svg>`;
 };
 

@@ -6,7 +6,7 @@ roleSlug: "brand-leaders"
 roleTitle: "Brand leaders"
 seniority: "Head of Brand"
 organisationContext: "Works inside a multi-channel organisation trying to scale brand consistency across internal teams, agencies, approval owners, and AI-assisted content workflows."
-summary: "Use IBOM to turn brand standards, language, and approval logic into governed operating assets that teams and AI systems can both use."
+summary: "Use iBOM to turn brand standards, language, and approval logic into governed operating assets that teams and AI systems can both use."
 goals:
   - "Turn brand guidance into reusable operating assets rather than static documents."
   - "Make approvals, review logic, and execution standards easier to scale."
@@ -86,7 +86,7 @@ editorialVoice:
 contentObjectives:
   - "Help readers recognise brand as an operating system problem, not just a guidelines problem."
   - "Move readers from abstract AI interest toward structured brand governance."
-  - "Create trust that IBOM and AICE can improve both speed and control."
+  - "Create trust that iBOM and AICE can improve both speed and control."
 ctaPatterns:
   - "Begin with a governance or approval pain point, then move to structure and runtime control."
   - "Use concrete examples before introducing terminology."
@@ -101,7 +101,7 @@ draft: false
 
 # Amelia Hart
 
-Use IBOM to turn brand standards, language, and approval logic into governed operating assets that teams and AI systems can both use. This makes it easier to move from static guidance to a reusable brand intelligence layer that can shape approvals, content operations, and AI-assisted execution across the organisation.
+Use iBOM to turn brand standards, language, and approval logic into governed operating assets that teams and AI systems can both use. This makes it easier to move from static guidance to a reusable brand intelligence layer that can shape approvals, content operations, and AI-assisted execution across the organisation.
 
 ## What This Persona Is Trying To Achieve
 
@@ -202,7 +202,7 @@ Use IBOM to turn brand standards, language, and approval logic into governed ope
 
 - Help readers recognise brand as an operating system problem, not just a guidelines problem.
 - Move readers from abstract AI interest toward structured brand governance.
-- Create trust that IBOM and AICE can improve both speed and control.
+- Create trust that iBOM and AICE can improve both speed and control.
 
 ## CTA Patterns
 

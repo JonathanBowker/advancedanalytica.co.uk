@@ -1,4 +1,4 @@
-import { BRANDO_SCHEMA_URL, DEFAULT_OG_IMAGE, IBOM, ORGANIZATION, SITE_NAME, SITE_URL, toAbsoluteUrl } from './site';
+import { BRANDO_SCHEMA_URL, DEFAULT_OG_IMAGE, iBOM, ORGANIZATION, SITE_NAME, SITE_URL, toAbsoluteUrl } from './site';
 
 type Breadcrumb = {
   name: string;
@@ -67,7 +67,7 @@ export const buildGraph = (page: PageMeta) => {
 
   const organisationId = `${SITE_URL}#organisation`;
   const websiteId = `${SITE_URL}#website`;
-  const serviceId = `${IBOM.url}#service`;
+  const serviceId = `${iBOM.url}#service`;
   const brandoId = `${BRANDO_SCHEMA_URL}#project`;
   const pageId = `${page.url}#webpage`;
   const pageSchemaType = page.schemaType ?? 'WebPage';
@@ -114,9 +114,9 @@ export const buildGraph = (page: PageMeta) => {
     {
       '@type': 'Service',
       '@id': serviceId,
-      name: IBOM.name,
-      description: IBOM.description,
-      url: IBOM.url,
+      name: iBOM.name,
+      description: iBOM.description,
+      url: iBOM.url,
       provider: { '@id': organisationId },
       subjectOf: { '@id': brandoId }
     },

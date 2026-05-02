@@ -42,12 +42,12 @@ export const businessFunctions: BusinessFunction[] = [
     eyebrow: "Brand & Marketing",
     heading: "Shape a governed brand intelligence layer.",
     homeBody:
-      "We often start with brand because it spans the whole organisation. See how IBOM turns identity, standards, and approvals into a usable operating asset for AI.",
+      "We often start with brand because it spans the whole organisation. See how iBOM turns identity, standards, and approvals into a usable operating asset for AI.",
     title: "Brand & Marketing",
     description:
       "Build a governed brand intelligence layer that turns standards, approvals, and identity into machine-usable operating assets.",
     intro:
-      "Brand is often the first place we begin because it crosses the whole organisation. IBOM turns brand standards, approval logic, and institutional knowledge into structured assets that teams, tools, and AI systems can all work from consistently.",
+      "Brand is often the first place we begin because it crosses the whole organisation. iBOM turns brand standards, approval logic, and institutional knowledge into structured assets that teams, tools, and AI systems can all work from consistently.",
     startingPoint:
       "This function is where organisations most clearly feel the gap between written guidance and machine behaviour. By structuring brand knowledge first, you create an operating logic that can later be extended into other business functions.",
     focusAreas: [
@@ -119,9 +119,9 @@ export const businessFunctions: BusinessFunction[] = [
       "Apply the same operating logic across service, delivery, and internal operations so teams and systems work from governed instructions instead of local workarounds.",
     title: "Sales, Operations & Service",
     description:
-      "Use IBOM and the AICE to bring governed AI into live workflows across sales, operations, and service teams.",
+      "Use iBOM and the AICE to bring governed AI into live workflows across sales, operations, and service teams.",
     intro:
-      "Sales, operational, and service teams need AI to work inside live workflows, not beside them. IBOM structures the knowledge these functions rely on, and the AICE turns that knowledge into governed behaviour across day-to-day systems and decisions.",
+      "Sales, operational, and service teams need AI to work inside live workflows, not beside them. iBOM structures the knowledge these functions rely on, and the AICE turns that knowledge into governed behaviour across day-to-day systems and decisions.",
     startingPoint:
       "This function benefits when playbooks, service logic, workflow rules, and operational exceptions are captured once and reused consistently across teams, channels, and tools.",
     focusAreas: [
@@ -195,7 +195,7 @@ export const businessFunctions: BusinessFunction[] = [
     description:
       "Move from business logic to governed production systems through structured specifications, controlled runtime behaviour, and the AICE.",
     intro:
-      "Product and engineering teams need business logic that can be used directly in system design, delivery, and runtime control. IBOM gives these teams a structured specification base, while the AICE provides the governed interface for deployment and operation.",
+      "Product and engineering teams need business logic that can be used directly in system design, delivery, and runtime control. iBOM gives these teams a structured specification base, while the AICE provides the governed interface for deployment and operation.",
     startingPoint:
       "When product and engineering teams inherit vague requirements, AI builds drift quickly. When they inherit structured specifications, delivery becomes faster, clearer, and easier to assure.",
     focusAreas: [
@@ -240,7 +240,7 @@ export const businessFunctions: BusinessFunction[] = [
         answer: "No. It gives engineering teams a clearer governed foundation for building and operating systems, while the AICE provides a controlled runtime layer for connected tools and models.",
       },
       {
-        question: "Why bring IBOM into product delivery?",
+        question: "Why bring iBOM into product delivery?",
         answer: "Because it reduces ambiguity. When product and engineering teams work from the same specification base, delivery becomes easier to control, test, and evolve.",
       },
       {
@@ -269,7 +269,7 @@ export const businessFunctions: BusinessFunction[] = [
     description:
       "Translate specialist knowledge, domain insight, and experimental work into structured assets and governed AI systems.",
     intro:
-      "Research and development teams often sit on high-value specialist knowledge that is difficult to operationalise. IBOM structures that domain insight into reusable knowledge assets, and the AICE helps turn it into controlled, testable systems.",
+      "Research and development teams often sit on high-value specialist knowledge that is difficult to operationalise. iBOM structures that domain insight into reusable knowledge assets, and the AICE helps turn it into controlled, testable systems.",
     startingPoint:
       "This function works best when experimentation is connected to structured knowledge, clear evaluation, and a path into operational deployment rather than isolated prototypes.",
     focusAreas: [
@@ -303,7 +303,7 @@ export const businessFunctions: BusinessFunction[] = [
     useCasesHref: "/use-cases/tag/Knowledge/",
     opinionsHref: "/opinions/tag/Schema/",
     useCaseTags: ["Knowledge", "Regulation", "RAG"],
-    opinionTags: ["Schema", "Semantics", "IBOM"],
+    opinionTags: ["Schema", "Semantics", "iBOM"],
     faqs: [
       {
         question: "How does this help research teams move beyond prototypes?",
@@ -343,7 +343,7 @@ export const businessFunctions: BusinessFunction[] = [
     description:
       "Turn policy, controls, and risk requirements into enforceable AI operating logic through structured specification and the AICE.",
     intro:
-      "Legal, risk, and compliance teams need more than policies on paper. IBOM helps convert policy into structured operating logic, and the AICE helps enforce that logic at runtime across systems, agents, and AI-assisted workflows.",
+      "Legal, risk, and compliance teams need more than policies on paper. iBOM helps convert policy into structured operating logic, and the AICE helps enforce that logic at runtime across systems, agents, and AI-assisted workflows.",
     startingPoint:
       "This function becomes much stronger when policy is not simply documented but translated into testable, traceable rules that can shape behaviour before problems reach production.",
     focusAreas: [
@@ -412,12 +412,12 @@ export const businessFunctions: BusinessFunction[] = [
     eyebrow: "Leadership",
     heading: "Start with the right business entry point.",
     homeBody:
-      "If you are shaping the wider operating model, see how IBOM connects knowledge assets, governed infrastructure, and phased delivery into one commercial programme.",
+      "If you are shaping the wider operating model, see how iBOM connects knowledge assets, governed infrastructure, and phased delivery into one commercial programme.",
     title: "Leadership",
     description:
-      "See how IBOM and the AICE connect business knowledge, governed infrastructure, and phased delivery into one operating model for AI.",
+      "See how iBOM and the AICE connect business knowledge, governed infrastructure, and phased delivery into one operating model for AI.",
     intro:
-      "Leadership teams need a way to move beyond disconnected pilots and tool purchases. IBOM gives you a structured operating model for knowledge capture, system delivery, and governed runtime control, while the AICE provides the infrastructure that makes it operational.",
+      "Leadership teams need a way to move beyond disconnected pilots and tool purchases. iBOM gives you a structured operating model for knowledge capture, system delivery, and governed runtime control, while the AICE provides the infrastructure that makes it operational.",
     startingPoint:
       "This is about choosing where to begin, how to sequence delivery, and how to turn business knowledge into a long-term operating asset rather than a short-lived experiment.",
     focusAreas: [
@@ -441,17 +441,17 @@ export const businessFunctions: BusinessFunction[] = [
       },
       {
         title: "Build the shared operating model",
-        body: "Use IBOM to structure knowledge and deploy the AICE so delivery and runtime control work from the same foundation.",
+        body: "Use iBOM to structure knowledge and deploy the AICE so delivery and runtime control work from the same foundation.",
       },
       {
         title: "Scale across functions",
         body: "Extend the same operating logic into more teams, systems, and use cases as confidence and capability grow.",
       },
     ],
-    useCasesHref: "/use-cases/tag/IBOM/",
+    useCasesHref: "/use-cases/tag/iBOM/",
     opinionsHref: "/opinions/tag/Operating%20Model/",
-    useCaseTags: ["IBOM", "Governance", "Brand"],
-    opinionTags: ["Operating Model", "IBOM", "Governance"],
+    useCaseTags: ["iBOM", "Governance", "Brand"],
+    opinionTags: ["Operating Model", "iBOM", "Governance"],
     faqs: [
       {
         question: "Where should we start?",
@@ -459,7 +459,7 @@ export const businessFunctions: BusinessFunction[] = [
       },
       {
         question: "How does this differ from buying AI tools?",
-        answer: "Tools alone do not create an operating model. IBOM creates the structured knowledge layer, and the AICE provides the governed infrastructure needed to turn that knowledge into reliable capability.",
+        answer: "Tools alone do not create an operating model. iBOM creates the structured knowledge layer, and the AICE provides the governed infrastructure needed to turn that knowledge into reliable capability.",
       },
       {
         question: "Can this scale across multiple functions?",

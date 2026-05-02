@@ -86,7 +86,7 @@ editorialVoice:
 contentObjectives:
   - "Help readers recognise brand as an operating system problem, not just a guidelines problem."
   - "Move readers from abstract AI interest toward structured brand governance."
-  - "Create trust that IBOM and AICE can improve both speed and control."
+  - "Create trust that iBOM and AICE can improve both speed and control."
 ctaPatterns:
   - "Begin with a governance or approval pain point, then move to structure and runtime control."
   - "Use concrete examples before introducing terminology."
@@ -202,7 +202,7 @@ Reduce friction in review, approval, and reuse by structuring workflows and rule
 
 - Help readers recognise brand as an operating system problem, not just a guidelines problem.
 - Move readers from abstract AI interest toward structured brand governance.
-- Create trust that IBOM and AICE can improve both speed and control.
+- Create trust that iBOM and AICE can improve both speed and control.
 
 ## CTA Patterns
 

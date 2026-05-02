@@ -50,7 +50,7 @@ contentStages:
 contentNeeds:
   - "Technical examples that connect specification, architecture, and runtime control."
   - "Patterns for governed tool access, evaluation, and operational traceability."
-  - "Clear explanations of how IBOM and AICE reduce build ambiguity."
+  - "Clear explanations of how iBOM and AICE reduce build ambiguity."
 messagingNotes:
   - "Responds to architectural clarity and delivery discipline more than marketing language."
   - "Needs to see how runtime control improves engineering quality rather than constrains it."
@@ -60,7 +60,7 @@ sourceFeeds:
   - "Developer posts on evaluation, agents, tool calling, and runtime governance."
   - "Security and architecture newsletters relevant to production AI systems."
 referenceContent:
-  - "Past articles on MCP servers governance, integrating IBOM into CI/CD, and schema vs semantics."
+  - "Past articles on MCP servers governance, integrating iBOM into CI/CD, and schema vs semantics."
   - "Use cases covering systems, MCP, and governed technical delivery."
   - "Technical content with strong engagement from developers and engineering readers."
 topPerformingTopics:
@@ -84,7 +84,7 @@ editorialVoice:
   - "Confident about design tradeoffs and operational realities."
   - "Minimal fluff."
 contentObjectives:
-  - "Position IBOM and AICE as credible parts of system design, not marketing abstractions."
+  - "Position iBOM and AICE as credible parts of system design, not marketing abstractions."
   - "Help engineering readers see how structured knowledge reduces build ambiguity."
   - "Create a content bridge from technical curiosity into product and role pages."
 ctaPatterns:
@@ -166,7 +166,7 @@ Use the AICE as a controlled interface for models, tools, and internal systems i
 
 ## Reference Content To Reuse
 
-- Past articles on MCP servers governance, integrating IBOM into CI/CD, and schema vs semantics.
+- Past articles on MCP servers governance, integrating iBOM into CI/CD, and schema vs semantics.
 - Use cases covering systems, MCP, and governed technical delivery.
 - Technical content with strong engagement from developers and engineering readers.
 
@@ -200,7 +200,7 @@ Use the AICE as a controlled interface for models, tools, and internal systems i
 
 ## Content Objectives
 
-- Position IBOM and AICE as credible parts of system design, not marketing abstractions.
+- Position iBOM and AICE as credible parts of system design, not marketing abstractions.
 - Help engineering readers see how structured knowledge reduces build ambiguity.
 - Create a content bridge from technical curiosity into product and role pages.
 
@@ -224,7 +224,7 @@ Review weekly against technical RSS and monthly against engineering-reader engag
 
 - Technical examples that connect specification, architecture, and runtime control.
 - Patterns for governed tool access, evaluation, and operational traceability.
-- Clear explanations of how IBOM and AICE reduce build ambiguity.
+- Clear explanations of how iBOM and AICE reduce build ambiguity.
 
 ## Messaging Notes
 

@@ -60,7 +60,7 @@ sourceFeeds:
   - "Specialist domain and regulated-industry feeds where relevant."
   - "Evaluation, RAG, and knowledge-graph oriented newsletters."
 referenceContent:
-  - "Past content on schema vs semantics, policy-as-graph, and what-is-IBOM."
+  - "Past content on schema vs semantics, policy-as-graph, and what-is-iBOM."
   - "Use cases involving knowledge capture, regulation, and specialist lookup systems."
   - "Articles that resonated with readers looking for depth and domain credibility."
 topPerformingTopics:
@@ -166,7 +166,7 @@ Capture expert reasoning, evidence, and edge cases in a form that can be used di
 
 ## Reference Content To Reuse
 
-- Past content on schema vs semantics, policy-as-graph, and what-is-IBOM.
+- Past content on schema vs semantics, policy-as-graph, and what-is-iBOM.
 - Use cases involving knowledge capture, regulation, and specialist lookup systems.
 - Articles that resonated with readers looking for depth and domain credibility.
 

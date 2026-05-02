@@ -29,14 +29,14 @@ export async function GET() {
   const staticPages = [
     {
       title: 'Home',
-      description: 'Advanced Analytica overview and IBOM introduction.',
+      description: 'Advanced Analytica overview and iBOM introduction.',
       url: '/',
       type: 'Page',
       snippet:
         'Advanced Analytica helps organisations turn knowledge, policy, and operational logic into governed systems that AI can use safely and consistently.'
       ,
       searchText:
-        'Advanced Analytica governed systems knowledge policy operational logic AI safely consistently IBOM'
+        'Advanced Analytica governed systems knowledge policy operational logic AI safely consistently iBOM'
     },
     {
       title: 'Services',
@@ -50,26 +50,26 @@ export async function GET() {
         'services operational brand systems frameworks governed AI systems policy aware delivery models controls workflows'
     },
     {
-      title: 'IBOM<sup>®</sup>',
+      title: 'iBOM<sup>®</sup>',
       description: 'Intelligent Brand Operating Model overview.',
-      url: '/services/ibom',
+      url: '/services/iBOM',
       type: 'Page',
       snippet:
         'Overview of the Intelligent Brand Operating Model, designed to turn brand rules and policy into operational systems that AI can execute and teams can govern.'
       ,
       searchText:
-        'IBOM Intelligent Brand Operating Model overview brand rules policy operational systems AI teams govern'
+        'iBOM Intelligent Brand Operating Model overview brand rules policy operational systems AI teams govern'
     },
     {
       title: 'Enterprise',
-      description: 'Enterprise governance and deployment for IBOM.',
+      description: 'Enterprise governance and deployment for iBOM.',
       url: '/enterprise',
       type: 'Page',
       snippet:
         'Enterprise governance, deployment, and control patterns for organisations that need auditable, scalable AI operations.'
       ,
       searchText:
-        'enterprise governance deployment IBOM auditable scalable AI operations control patterns'
+        'enterprise governance deployment iBOM auditable scalable AI operations control patterns'
     },
     {
       title: 'Developers',
@@ -95,18 +95,18 @@ export async function GET() {
     },
     {
       title: 'Quickstart',
-      description: 'Get started with IBOM integration.',
+      description: 'Get started with iBOM integration.',
       url: '/developers/quickstart',
       type: 'Page',
       snippet:
-        'Quickstart guidance for implementing IBOM-oriented integration patterns in development and delivery workflows.'
+        'Quickstart guidance for implementing iBOM-oriented integration patterns in development and delivery workflows.'
       ,
       searchText:
-        'quickstart IBOM integration development delivery workflows implementation guidance'
+        'quickstart iBOM integration development delivery workflows implementation guidance'
     },
     {
       title: 'Use Cases',
-      description: 'Real-world examples of IBOM<sup>®</sup> in action.',
+      description: 'Real-world examples of iBOM<sup>®</sup> in action.',
       url: '/use-cases',
       type: 'Page',
       snippet:
@@ -121,10 +121,10 @@ export async function GET() {
       url: '/opinions',
       type: 'Page',
       snippet:
-        'Essays and perspectives on policy-aware systems, governance, MCP, IBOM, runtime controls, and AI operations.'
+        'Essays and perspectives on policy-aware systems, governance, MCP, iBOM, runtime controls, and AI operations.'
       ,
       searchText:
-        'opinions essays policy aware systems governance MCP IBOM runtime controls AI operations'
+        'opinions essays policy aware systems governance MCP iBOM runtime controls AI operations'
     },
     {
       title: 'Resources',
@@ -158,6 +158,26 @@ export async function GET() {
       ,
       searchText:
         'contact Advanced Analytica governed AI systems operating models MCP infrastructure implementation'
+    },
+    {
+      title: 'Get in Touch',
+      description: 'Contact form for general enquiries and project discussions.',
+      url: '/company/contact',
+      type: 'Form',
+      snippet:
+        'Use the contact form to start a conversation about governed AI systems, operating models, MCP infrastructure, and implementation support.',
+      searchText:
+        'get in touch contact form general enquiries project discussions governed AI systems operating models MCP infrastructure implementation support'
+    },
+    {
+      title: 'Brand AI Readiness Assessment',
+      description: 'Assessment form for diagnosing brand AI readiness.',
+      url: '/brand-ai-readiness-assessment',
+      type: 'Form',
+      snippet:
+        'Request the Brand AI Readiness Assessment to review your brand guidance, current materials, and where AI is already touching your business.',
+      searchText:
+        'brand ai readiness assessment assessment form diagnose readiness brand guidance current materials ai touching business'
     },
     {
       title: 'Security',

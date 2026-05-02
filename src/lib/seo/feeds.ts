@@ -1,4 +1,4 @@
-import { IBOM, ORGANIZATION, SITE_NAME, SITE_URL } from './site';
+import { iBOM, ORGANIZATION, SITE_NAME, SITE_URL } from './site';
 
 type FeedItem = {
   url: string;
@@ -34,7 +34,7 @@ export const buildDataFeed = ({ feedUrl, name, description, items }: DataFeedOpt
 
   const organisationId = `${SITE_URL}#organisation`;
   const websiteId = `${SITE_URL}#website`;
-  const serviceId = `${IBOM.url}#service`;
+  const serviceId = `${iBOM.url}#service`;
   const feedId = `${feedUrl}#datafeed`;
 
   const sortedByDate = items

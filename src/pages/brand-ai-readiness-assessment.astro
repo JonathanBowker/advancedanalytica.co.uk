@@ -1,0 +1,1248 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE_URL } from "../lib/seo/site";
+
+const title = "Brand AI Readiness Assessment";
+const description =
+  "Request a structured diagnostic of your brand guidance, standards, and AI use cases across machine-readability, ambiguity, and AI control level.";
+const leadEndpoint =
+  "https://advancedanalytica-co-uk-omj3v.ondigitalocean.app/api/leads/contact";
+
+const page = {
+  title,
+  description,
+  url: `${SITE_URL}/brand-ai-readiness-assessment`,
+  breadcrumbs: [
+    { name: "Home", url: `${SITE_URL}/` },
+    { name: title, url: `${SITE_URL}/brand-ai-readiness-assessment` },
+  ],
+};
+
+const labelClass =
+  "text-sm font-semibold tracking-[0.08em] uppercase text-ink";
+const fieldClass =
+  "w-full rounded-xl border border-fog bg-white px-4 py-3 text-base text-ink outline-none transition-colors placeholder:text-steel/55 focus:border-[#14B8A6] focus:ring-2 focus:ring-[#14B8A6]/20";
+const optionCardClass =
+  "flex items-start gap-3 rounded-2xl border border-fog bg-white px-4 py-4 text-sm leading-relaxed text-steel transition-colors hover:border-[#14B8A6]/40";
+const ghostButtonClass =
+  "inline-flex items-center justify-center rounded-md border border-fog bg-white px-5 py-3 text-xs font-semibold tracking-[0.14em] uppercase text-ink transition-colors hover:border-ink/30 hover:bg-surface";
+const primaryButtonClass =
+  "inline-flex items-center justify-center gap-2 rounded-md bg-[#14B8A6] px-7 py-3 text-xs font-semibold tracking-[0.14em] uppercase text-paper shadow-outline transition-colors hover:bg-[#0F766E]";
+
+const assessmentAreas = [
+  {
+    title: "Machine-readability",
+    body: "We check whether your brand guidance can be read as a usable specification. If AI has to infer meaning, the output will drift. We look for structure, clarity, and language that a system can follow consistently.",
+  },
+  {
+    title: "Ambiguity",
+    body: "We look for rules that depend on memory, local interpretation, or hidden exceptions. Ambiguity is where brand risk starts, because different people and different systems will fill the gap differently.",
+  },
+  {
+    title: "AI control level",
+    body: "We assess which parts of your brand can already be enforced, tested, or logged, and which parts still rely on review after the fact. That tells us what is ready for AI now and what needs governance first.",
+  },
+];
+
+const assessmentOutputs = [
+  "A structured review of your brand guidelines, standards, and priority AI use cases",
+  "A readiness score across machine-readability, ambiguity, and AI control",
+  "A risk map showing where AI may misread, over-interpret, or ignore your brand rules",
+  "A practical remediation plan with Critical, High, Medium, and Low priorities",
+  "A short readout session with recommended next steps",
+  "An optional path into iBOM, Brando policy files, and governed AI workflows",
+];
+
+const offerLevels = [
+  {
+    title: "Readiness Triage",
+    body: "A lighter diagnostic for teams that need to understand the problem shape quickly before scoping deeper work.",
+  },
+  {
+    title: "Brand AI Readiness Assessment",
+    body: "The main assessment offer for businesses with real brand systems and real AI exposure across content, service, product, or operations.",
+  },
+  {
+    title: "Machine-Readable Brand Policy Build",
+    body: "The conversion path for teams ready to turn guidance into governed policy files, sidecars, and runtime-ready structures.",
+  },
+];
+
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  page={page}
+  hideFooterContactCta={true}
+>
+  <section class="relative overflow-hidden bg-gradient-to-br from-black via-[#0b0e14] to-[#171b24] text-paper">
+    <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/50" aria-hidden="true"></div>
+    <div class="absolute -left-24 top-16 h-80 w-80 rounded-full bg-[#14B8A6]/12 blur-3xl" aria-hidden="true"></div>
+    <div class="absolute right-0 top-10 h-80 w-80 rounded-full bg-[#ff8c69]/10 blur-3xl" aria-hidden="true"></div>
+
+    <div class="container-wide relative z-10 py-24">
+      <div class="grid gap-12 lg:grid-cols-[7fr_5fr] lg:items-stretch">
+        <div>
+          <div class="eyebrow text-[#14B8A6]">Diagnostic offer</div>
+          <h1 class="mt-4 text-[clamp(2.4rem,4.8vw,4rem)] font-semibold leading-[1.05] tracking-tight text-paper">
+            Request a Brand AI Readiness Assessment
+          </h1>
+          <p class="mt-7 max-w-[72ch] text-lg leading-relaxed text-paper/80 md:text-xl">
+            Your AI can only follow the rules your business has made clear.
+            This assessment reviews your brand guidance, standards, and priority
+            AI use cases against machine-readability, ambiguity, and AI control
+            level, so you can see where the brand is ready, where it creates
+            risk, and what needs to be governed first.
+          </p>
+          <p class="mt-5 max-w-[72ch] text-base leading-relaxed text-paper/70 md:text-lg">
+            Start with a focused diagnostic. Leave with a clear action plan.
+          </p>
+
+          <div class="mt-8 flex flex-wrap gap-4">
+            <a
+              href="#assessment-form"
+              class="inline-flex items-center justify-center gap-2 rounded-md bg-[#14B8A6] px-6 py-3 text-xs font-semibold tracking-[0.14em] uppercase text-paper shadow-outline transition-colors hover:bg-[#0F766E]"
+            >
+              Request assessment
+            </a>
+            <a
+              href="#role-intent-testing"
+              class="inline-flex items-center justify-center gap-3 rounded-md border border-[#ff8c69] px-6 py-3 text-xs font-semibold tracking-[0.14em] uppercase text-[#ff8c69] transition-colors hover:bg-[#ff8c69] hover:text-paper"
+            >
+              What we test
+            </a>
+          </div>
+        </div>
+
+        <div class="flex h-full flex-col rounded-[1.75rem] border border-paper/15 bg-paper/8 p-7 shadow-outline backdrop-blur md:p-8">
+          <div class="flex items-center gap-4">
+            <div class="flex h-12 w-12 items-center justify-center rounded-full border border-[#ff8c69]/70 text-[#ff8c69]">
+              <svg
+                class="h-5 w-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M12 3l2.2 5.4L20 11l-5.8 2.6L12 19l-2.2-5.4L4 11l5.8-2.6L12 3z" />
+              </svg>
+            </div>
+            <div>
+              <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#ff8c69]">
+                You get
+              </div>
+              <div class="mt-1 text-xs text-paper/55">
+                A structured outcome, not a loose conversation.
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-5 border-t border-paper/15 pt-4">
+            <ul class="grid gap-0 text-sm leading-relaxed text-paper/80 md:text-sm">
+              {assessmentOutputs.map((item) => (
+                <li class="flex gap-3 border-b border-paper/10 py-3 last:border-b-0 last:pb-0">
+                  <span class="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]" aria-hidden="true"></span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="role-intent-testing" class="bg-paper text-ink">
+  <div class="container-wide py-20">
+    <div class="eyebrow mb-6 text-center text-[#14B8A6]">Role-Intent Testing</div>
+
+    <h2 class="text-center text-[clamp(2.4rem,5vw,4.5rem)] font-semibold tracking-tight text-ink">
+    We test your brand against the roles and intents your AI will meet in the real world.   </h2>
+
+    <p class="mx-auto mt-8 max-w-[82ch] text-center text-lg leading-relaxed text-ink/70 md:text-xl">
+      Your brand does not fail in theory. It fails in moments. A customer asks for reassurance. A journalist asks for proof. A regulator expects precision. A sales team pushes for conversion. An AI agent tries to summarise, rewrite, compare, recommend, or respond.
+    </p>
+
+    <p class="mx-auto mt-6 max-w-[82ch] text-center text-lg leading-relaxed text-ink/70 md:text-xl">
+      We build role-intent scenarios that reflect those moments. Then we run your brand through them before your AI goes live.
+    </p>
+
+    <div class="mt-12 grid gap-6 md:grid-cols-2">
+      <div class="rounded-2xl border border-ink/10 bg-fog p-8">
+        <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#14B8A6]">
+          Roles
+        </div>
+        <h3 class="mt-4 text-2xl font-semibold tracking-tight text-ink">
+          Who is interacting with your brand?
+        </h3>
+        <p class="mt-4 text-base leading-relaxed text-steel">
+          Customers, employees, journalists, partners, regulators, agency teams, sales teams, support agents, and AI agents.
+        </p>
+      </div>
+
+      <div class="rounded-2xl border border-ink/10 bg-fog p-8">
+        <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#14B8A6]">
+          Intents
+        </div>
+        <h3 class="mt-4 text-2xl font-semibold tracking-tight text-ink">
+          What are they trying to do?
+        </h3>
+        <p class="mt-4 text-base leading-relaxed text-steel">
+          Compare, complain, buy, escalate, summarise, localise, request proof, push conversion, create content, or ask for an exception.
+        </p>
+      </div>
+    </div>
+
+    <p class="mx-auto mt-10 max-w-[72ch] text-center text-lg leading-relaxed text-ink/70">
+     You see which rules and toolkits hold, where ambiguity appears, and where stronger controls are needed. </p>
+  </div>
+</section>
+
+  <section id="what-we-assess" class="bg-slate text-paper">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-6 text-center text-[#14B8A6]">What We Assess</div>
+      <h2 class="text-center text-[clamp(2.5rem,5vw,4.75rem)] font-semibold tracking-tight text-paper">
+        Three criteria that show whether your brand is ready for AI
+      </h2>
+      <p class="mx-auto mt-10 max-w-[90ch] text-center text-lg leading-relaxed text-paper/80 md:text-xl">
+        We do not look at brand guidance as static copy. We assess whether it can be read,
+        interpreted, and enforced by AI without guesswork.
+      </p>
+
+      <div class="mt-14 grid gap-4 lg:grid-cols-3">
+        {assessmentAreas.map((item, index) => (
+          <article class="group rounded-2xl border border-paper/15 bg-ink/30 p-6 shadow-outline backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-[#14B8A6]/40 hover:bg-ink/40">
+            <div class="text-lg font-semibold tracking-[0.2em] uppercase text-[#14B8A6]">
+              0{index + 1}
+            </div>
+            <h3 class="mt-4 text-2xl font-semibold tracking-tight text-paper">{item.title}</h3>
+            <p class="mt-4 text-base leading-relaxed text-paper/75">{item.body}</p>
+          </article>
+        ))}
+      </div>
+
+      <div class="mt-16 border-t border-paper/15 pt-10">
+        <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+          <div class="max-w-3xl">
+            <h3 class="text-2xl font-semibold tracking-tight text-paper">
+              Want the full diagnostic?
+            </h3>
+            <p class="mt-3 text-base leading-relaxed text-paper/75">
+              Request the assessment and we’ll show you where your brand is ready for AI, where it still relies on interpretation, and what should be governed first.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <a
+              href="#assessment-form"
+              class="inline-flex items-center justify-center gap-2 rounded-md bg-[#14B8A6] px-6 py-3 text-xs font-semibold tracking-[0.14em] uppercase text-paper shadow-outline transition-colors hover:bg-[#0F766E]"
+            >
+              Request assessment
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section
+    id="assessment-form"
+    class="relative overflow-hidden bg-[url('/images/get-in-touch/bgimage.webp')] bg-cover bg-center"
+  >
+    <div class="absolute inset-0 bg-gradient-to-br from-black/60 via-black/45 to-black/60" aria-hidden="true"></div>
+    <style is:inline>
+      .assessment-flow {
+        position: relative;
+      }
+
+      .assessment-viewport {
+        position: relative;
+        overflow: hidden;
+        transition: height 520ms cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .assessment-track {
+        display: flex;
+        align-items: flex-start;
+        transform: translate3d(0, 0, 0);
+        transition: transform 680ms cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .assessment-step {
+        flex: 0 0 100%;
+        min-width: 0;
+        opacity: 0.68;
+        transform: scale(0.992);
+        transition: opacity 480ms ease, transform 480ms ease;
+      }
+
+      .assessment-step.is-active {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .assessment-step:not(.is-active) {
+        pointer-events: none;
+        filter: saturate(0.95);
+      }
+
+      .assessment-meta-card {
+        transition: transform 240ms ease, border-color 240ms ease, box-shadow 240ms ease;
+      }
+
+      .assessment-meta-card:hover {
+        transform: translateY(-2px);
+        border-color: rgba(20, 184, 166, 0.25);
+      }
+
+      .assessment-progress-dot {
+        cursor: pointer;
+        transition: background-color 220ms ease, color 220ms ease, border-color 220ms ease, transform 220ms ease;
+      }
+
+      .assessment-progress-dot:focus-visible {
+        outline: 3px solid rgba(255, 140, 105, 0.34);
+        outline-offset: 3px;
+      }
+
+      .assessment-progress-dot.is-current {
+        background: #14B8A6;
+        border-color: #14B8A6;
+        color: #ffffff;
+        transform: scale(1.04);
+      }
+
+      .assessment-progress-dot.is-complete {
+        background: rgba(20, 184, 166, 0.12);
+        border-color: rgba(20, 184, 166, 0.35);
+        color: #0b0e14;
+      }
+
+      .assessment-progress-bar {
+        transform-origin: left center;
+        transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .assessment-option {
+        cursor: pointer;
+        transition: transform 220ms ease, border-color 220ms ease, background-color 220ms ease, box-shadow 220ms ease;
+      }
+
+      .assessment-option:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 16px 28px rgba(8, 15, 25, 0.06);
+      }
+
+      .assessment-option:has(input:checked) {
+        border-color: rgba(20, 184, 166, 0.45);
+        background: rgba(20, 184, 166, 0.05);
+        box-shadow: 0 18px 34px rgba(20, 184, 166, 0.08);
+      }
+
+      .assessment-option:has(input:focus-visible) {
+        outline: 3px solid rgba(20, 184, 166, 0.22);
+        outline-offset: 2px;
+      }
+
+      .assessment-option input:checked + span {
+        color: var(--color-ink);
+        font-weight: 600;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .assessment-step,
+        .assessment-track,
+        .assessment-viewport,
+        .assessment-progress-dot,
+        .assessment-progress-bar,
+        .assessment-option,
+        .assessment-meta-card {
+          transition: none !important;
+        }
+      }
+    </style>
+    <div class="container-wide relative z-10 py-20">
+      <div class="mx-auto grid max-w-[1180px] gap-8">
+        <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <div class="max-w-[52rem]">
+            <div class="eyebrow text-[#14B8A6]">Assessment request</div>
+            <h2 class="mt-4 text-[clamp(2rem,4vw,3.2rem)] font-semibold tracking-tight text-paper">
+              Tell us where AI is already touching your brand
+            </h2>
+            <p class="mt-6 text-lg leading-relaxed text-paper/80">
+              Keep this focused. We need enough context to see the likely risk,
+              the current materials, and the right assessment path.
+            </p>
+          </div>
+
+          <div class="grid gap-2 rounded-xl border border-paper/20 bg-white/10 px-5 py-4 text-sm text-paper/90 shadow-outline backdrop-blur">
+            <span class="text-xs font-semibold uppercase tracking-[0.18em] text-[#14B8A6]">
+              Takes around 3 minutes
+            </span>
+            <span class="text-paper/85">No file upload needed at this stage.</span>
+          </div>
+        </div>
+
+        <div class="overflow-hidden rounded-[1.25rem] border border-paper/15 bg-paper/96 text-ink shadow-outline backdrop-blur">
+          <form
+            id="assessment-form-main"
+            action={leadEndpoint}
+            method="POST"
+            data-lead-form
+            data-form-location="assessment_page"
+            data-lead-endpoint={leadEndpoint}
+            data-status-target="assessment-status"
+            data-success-message="Thanks. Your assessment request has been sent."
+            data-success-copy="We will review your context and come back with the right assessment path."
+            class="assessment-flow grid gap-6 p-5 md:p-7 lg:p-8"
+            data-assessment-flow
+            novalidate
+          >
+            <input
+              type="text"
+              name="website"
+              class="hidden"
+              tabindex="-1"
+              autocomplete="off"
+              aria-hidden="true"
+            />
+            <input type="hidden" name="language" value="en" />
+            <input
+              type="hidden"
+              name="topic"
+              value="Brand AI Readiness Assessment"
+            />
+
+            <div class="rounded-2xl border border-fog bg-paper p-5 shadow-outline">
+              <div class="min-w-0">
+                <div class="relative h-1 rounded-full bg-fog">
+                  <div
+                    class="assessment-progress-bar absolute inset-y-0 left-0 rounded-full bg-[#14B8A6]"
+                    data-progress-bar
+                    style="width: 100%; transform: scaleX(0.25);"
+                  ></div>
+                </div>
+
+                <div class="mt-4 grid grid-cols-4 gap-3 text-center text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-steel">
+                  <div class="flex flex-col items-center gap-2">
+                    <button
+                      type="button"
+                      class="assessment-progress-dot is-current flex h-9 w-9 items-center justify-center rounded-full border border-fog bg-white"
+                      data-progress-dot="0"
+                      aria-label="Go to context step"
+                    >
+                      1
+                    </button>
+                    <span>Context</span>
+                  </div>
+                  <div class="flex flex-col items-center gap-2">
+                    <button
+                      type="button"
+                      class="assessment-progress-dot flex h-9 w-9 items-center justify-center rounded-full border border-fog bg-white"
+                      data-progress-dot="1"
+                      aria-label="Go to assets step"
+                    >
+                      2
+                    </button>
+                    <span>Assets</span>
+                  </div>
+                  <div class="flex flex-col items-center gap-2">
+                    <button
+                      type="button"
+                      class="assessment-progress-dot flex h-9 w-9 items-center justify-center rounded-full border border-fog bg-white"
+                      data-progress-dot="2"
+                      aria-label="Go to touchpoints step"
+                    >
+                      3
+                    </button>
+                    <span>Touchpoints</span>
+                  </div>
+                  <div class="flex flex-col items-center gap-2">
+                    <button
+                      type="button"
+                      class="assessment-progress-dot flex h-9 w-9 items-center justify-center rounded-full border border-fog bg-white"
+                      data-progress-dot="3"
+                      aria-label="Go to risk step"
+                    >
+                      4
+                    </button>
+                    <span>Risk</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="assessment-viewport" data-step-viewport>
+            <div class="assessment-track" data-step-track>
+            <div data-step-panel="0" class="assessment-step is-active grid gap-6 pr-1">
+              <div class="rounded-2xl border border-fog bg-paper p-6 shadow-outline">
+                <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#14B8A6]">
+                  Step 1
+                </div>
+                <h3 class="mt-3 text-2xl font-semibold tracking-tight text-ink">
+                  Tell us the operating context
+                </h3>
+                <p class="mt-3 text-base leading-relaxed text-steel">
+                  Start with the essentials. We need to understand who you are,
+                  where the brand sits, and what you want AI to do before we
+                  assess risk properly.
+                </p>
+              </div>
+
+              <div class="grid gap-6 md:grid-cols-2">
+                <div class="grid gap-2">
+                  <label for="assessment-name" class={labelClass}>Name*</label>
+                  <input
+                    id="assessment-name"
+                    name="name"
+                    type="text"
+                    autocomplete="name"
+                    required
+                    placeholder="Your name"
+                    class={fieldClass}
+                  />
+                </div>
+                <div class="grid gap-2">
+                  <label for="assessment-email" class={labelClass}>Work email*</label>
+                  <input
+                    id="assessment-email"
+                    name="email"
+                    type="email"
+                    autocomplete="email"
+                    inputmode="email"
+                    required
+                    placeholder="you@company.com"
+                    class={fieldClass}
+                  />
+                </div>
+              </div>
+
+              <div class="grid gap-6 md:grid-cols-2">
+                <div class="grid gap-2">
+                  <label for="assessment-company" class={labelClass}>Company*</label>
+                  <input
+                    id="assessment-company"
+                    name="company"
+                    type="text"
+                    autocomplete="organization"
+                    required
+                    placeholder="Company name"
+                    class={fieldClass}
+                  />
+                </div>
+                <div class="grid gap-2">
+                  <label for="assessment-role" class={labelClass}>Role*</label>
+                  <input
+                    id="assessment-role"
+                    name="role"
+                    type="text"
+                    required
+                    placeholder="Your role"
+                    class={fieldClass}
+                  />
+                </div>
+              </div>
+
+              <div class="grid gap-2">
+                <div class="flex items-center justify-between gap-3">
+                  <label for="assessment-message" class={labelClass}>
+                    Tell us what you would like AI to do with your brand?*
+                  </label>
+                  <button
+                    type="button"
+                    class="inline-flex items-center gap-2 rounded-full border border-paper/15 bg-ink px-3.5 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-paper shadow-outline transition-colors hover:border-[#14B8A6]/50 hover:bg-[#111826]"
+                    data-voice-input-toggle
+                    aria-pressed="false"
+                    aria-controls="assessment-message"
+                  >
+                    <span class="relative flex h-4 w-4 items-center justify-center" aria-hidden="true">
+                      <svg
+                        class="h-4 w-4 data-[recording=true]:opacity-0"
+                        data-voice-icon="idle"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.9"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M12 14a3 3 0 0 0 3-3V7a3 3 0 1 0-6 0v4a3 3 0 0 0 3 3Z" />
+                        <path d="M7 11a5 5 0 0 0 10 0" />
+                        <path d="M12 16v3" />
+                        <path d="M9 19h6" />
+                      </svg>
+                      <span
+                        class="absolute h-4 w-4 rounded-full border border-[#ff4d4d]/90 bg-[#ff4d4d]/50 opacity-0 transition-transform duration-200 shadow-[0_0_0_0_rgba(255,77,77,0.55)]"
+                        data-voice-icon="active"
+                      ></span>
+                    </span>
+                    <span data-voice-label>Use voice</span>
+                  </button>
+                </div>
+                <textarea
+                  id="assessment-message"
+                  name="message"
+                  rows="5"
+                  required
+                  placeholder="Describe the workflows, outputs, or decisions you want AI to support."
+                  class={`${fieldClass} min-h-40 resize-y`}
+                ></textarea>
+                <p class="text-xs leading-relaxed text-steel" data-voice-input-status>
+                  Voice input is available in supported browsers.
+                </p>
+              </div>
+            </div>
+
+            <div data-step-panel="1" class="assessment-step grid gap-6 px-1" aria-hidden="true">
+              <div class="rounded-2xl border border-fog bg-paper p-6 shadow-outline">
+                <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#14B8A6]">
+                  Step 2
+                </div>
+                <h3 class="mt-3 text-2xl font-semibold tracking-tight text-ink">
+                  Tell us about the current assets
+                </h3>
+                <p class="mt-3 text-base leading-relaxed text-steel">
+                  This is where we locate the source material that already shapes
+                  how your brand behaves.
+                </p>
+              </div>
+
+              <fieldset class="grid gap-4" data-required-group="materials">
+                <legend class={labelClass}>Which materials do you already have?</legend>
+                <div class="grid gap-3 md:grid-cols-2">
+                  <label class={`${optionCardClass} assessment-option`}>
+                    <input type="checkbox" name="materials" value="Brand guidelines" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
+                    <span>Brand guidelines</span>
+                  </label>
+                  <label class={`${optionCardClass} assessment-option`}>
+                    <input type="checkbox" name="materials" value="Tone of voice" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
+                    <span>Tone of voice</span>
+                  </label>
+                  <label class={`${optionCardClass} assessment-option`}>
+                    <input type="checkbox" name="materials" value="Design system" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
+                    <span>Design system</span>
+                  </label>
+                  <label class={`${optionCardClass} assessment-option`}>
+                    <input type="checkbox" name="materials" value="Content standards" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
+                    <span>Content standards</span>
+                  </label>
+                   <label class={`${optionCardClass} assessment-option`}>
+                    <input type="checkbox" name="materials" value="Content toolkits" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
+                    <span>Content toolkits</span>
+                  </label>
+                  <label class={`${optionCardClass} assessment-option`}>
+                    <input type="checkbox" name="materials" value="Claims or compliance guidance" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
+                    <span>Claims or compliance guidance</span>
+                  </label>
+                  <label class={`${optionCardClass} assessment-option md:col-span-2`}>
+                    <input type="checkbox" name="materials" value="Other" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
+                    <span>Other</span>
+                  </label>
+                </div>
+                <p class="mt-1 text-sm text-steel" data-materials-count>
+                  Select the materials that already shape brand decisions.
+                </p>
+              </fieldset>
+            </div>
+
+            <div data-step-panel="2" class="assessment-step grid gap-6 px-1" aria-hidden="true">
+              <div class="rounded-2xl border border-fog bg-paper p-6 shadow-outline">
+                <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#14B8A6]">
+                  Step 3
+                </div>
+                <h3 class="mt-3 text-2xl font-semibold tracking-tight text-ink">
+                  Show us the AI touchpoints
+                </h3>
+                <p class="mt-3 text-base leading-relaxed text-steel">
+                  This is where we map the workflows where AI is already creating exposure or shaping output.
+                </p>
+              </div>
+
+              <fieldset class="grid gap-4" data-required-group="ai_touchpoints">
+                <legend class={labelClass}>Where is AI already touching your brand?</legend>
+                <div class="grid gap-3 md:grid-cols-2">
+                  <label class={`${optionCardClass} assessment-option`}>
+                    <input type="checkbox" name="ai_touchpoints" value="Brand portal" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
+                    <span>Brand portal</span>
+                  </label>
+                  <label class={`${optionCardClass} assessment-option`}>
+                    <input type="checkbox" name="ai_touchpoints" value="Content creation" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
+                    <span>Content creation</span>
+                  </label>
+                  <label class={`${optionCardClass} assessment-option`}>
+                    <input type="checkbox" name="ai_touchpoints" value="Content approval" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
+                    <span>Content approval</span>
+                  </label>
+                  <label class={`${optionCardClass} assessment-option`}>
+                    <input type="checkbox" name="ai_touchpoints" value="Customer service" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
+                    <span>Customer service</span>
+                  </label>
+                  <label class={`${optionCardClass} assessment-option`}>
+                    <input type="checkbox" name="ai_touchpoints" value="Sales enablement" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
+                    <span>Sales enablement</span>
+                  </label>
+                  <label class={`${optionCardClass} assessment-option`}>
+                    <input type="checkbox" name="ai_touchpoints" value="Internal knowledge" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
+                    <span>Internal knowledge</span>
+                  </label>
+                  <label class={`${optionCardClass} assessment-option`}>
+                    <input type="checkbox" name="ai_touchpoints" value="Product experience" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
+                    <span>Product experience</span>
+                  </label>
+                  <label class={`${optionCardClass} assessment-option`}>
+                    <input type="checkbox" name="ai_touchpoints" value="Agency workflows" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
+                    <span>Agency workflows</span>
+                  </label>
+                  <label class={`${optionCardClass} assessment-option md:col-span-2`}>
+                    <input type="checkbox" name="ai_touchpoints" value="Not sure yet" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
+                    <span>Not sure yet</span>
+                  </label>
+                </div>
+                <p class="mt-1 text-sm text-steel" data-touchpoints-count>
+                  Choose the workflows where brand risk may already be active.
+                </p>
+              </fieldset>
+            </div>
+
+            <div data-step-panel="3" class="assessment-step grid gap-6 pl-1" aria-hidden="true">
+              <div class="rounded-2xl border border-fog bg-paper p-6 shadow-outline">
+                <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#14B8A6]">
+                  Step 4
+                </div>
+                <h3 class="mt-3 text-2xl font-semibold tracking-tight text-ink">
+                  Clarify the risk and the preferred next step
+                </h3>
+                <p class="mt-3 text-base leading-relaxed text-steel">
+                  This final step helps us shape the right assessment path and
+                  the right first conversation.
+                </p>
+              </div>
+
+              <fieldset class="grid gap-3">
+                <legend class={labelClass}>What’s your biggest concern?</legend>
+                <div class="grid gap-3">
+                  <label class={`${optionCardClass} assessment-option`}>
+                    <input type="radio" name="biggest_concern" value="Off-brand output" required class="mt-1 h-4 w-4 accent-[#14B8A6]" />
+                    <span>Off-brand output</span>
+                  </label>
+                  <label class={`${optionCardClass} assessment-option`}>
+                    <input type="radio" name="biggest_concern" value="Legal or compliance risk" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
+                    <span>Legal or compliance risk</span>
+                  </label>
+                  <label class={`${optionCardClass} assessment-option`}>
+                    <input type="radio" name="biggest_concern" value="Inconsistent guidance" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
+                    <span>Inconsistent guidance</span>
+                  </label>
+                  <label class={`${optionCardClass} assessment-option`}>
+                    <input type="radio" name="biggest_concern" value="Lack of audit trail" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
+                    <span>Lack of audit trail</span>
+                  </label>
+                  <label class={`${optionCardClass} assessment-option`}>
+                    <input type="radio" name="biggest_concern" value="Agent autonomy" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
+                    <span>Agent autonomy</span>
+                  </label>
+                  <label class={`${optionCardClass} assessment-option`}>
+                    <input type="radio" name="biggest_concern" value="Internal adoption" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
+                    <span>Internal adoption</span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <fieldset class="grid gap-3">
+                <legend class={labelClass}>Preferred next step</legend>
+                <div class="grid gap-3 md:grid-cols-3">
+                  <label class={`${optionCardClass} assessment-option`}>
+                    <input type="radio" name="preferred_next_step" value="Intro call" required class="mt-1 h-4 w-4 accent-[#14B8A6]" />
+                    <span>Intro call</span>
+                  </label>
+                  <label class={`${optionCardClass} assessment-option`}>
+                    <input type="radio" name="preferred_next_step" value="Assessment scoping" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
+                    <span>Assessment scoping</span>
+                  </label>
+                  <label class={`${optionCardClass} assessment-option`}>
+                    <input type="radio" name="preferred_next_step" value="Send more detail" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
+                    <span>Send more detail</span>
+                  </label>
+                </div>
+              </fieldset>
+            </div>
+            </div>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-fog bg-paper p-5 shadow-outline">
+              <div class="flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  class={ghostButtonClass}
+                  data-step-back
+                  disabled
+                >
+                  Back
+                </button>
+                <button
+                  type="button"
+                  class={primaryButtonClass}
+                  data-step-next
+                >
+                  Continue
+                </button>
+              </div>
+
+              <div id="assessment-status" class="text-sm text-steel" aria-live="polite"></div>
+              <button
+                type="submit"
+                class={primaryButtonClass}
+                data-step-submit
+                hidden
+              >
+                Request assessment
+              </button>
+            </div>
+
+            <noscript>
+              <p class="text-base text-steel">
+                JavaScript is disabled. Submitting the form will still send your request through the secure form endpoint.
+              </p>
+            </noscript>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script is:inline>
+    (() => {
+      const form = document.querySelector("[data-assessment-flow]");
+      if (!(form instanceof HTMLFormElement)) return;
+
+      const panels = Array.from(form.querySelectorAll("[data-step-panel]"));
+      const dots = Array.from(form.querySelectorAll("[data-progress-dot]"));
+      const progressBar = form.querySelector("[data-progress-bar]");
+      const stepTitle = form.querySelector("[data-step-title]");
+      const stepSummary = form.querySelector("[data-step-summary]");
+      const viewport = form.querySelector("[data-step-viewport]");
+      const track = form.querySelector("[data-step-track]");
+      const materialsCount = form.querySelector("[data-materials-count]");
+      const touchpointsCount = form.querySelector("[data-touchpoints-count]");
+      const voiceToggle = form.querySelector("[data-voice-input-toggle]");
+      const voiceStatus = form.querySelector("[data-voice-input-status]");
+      const voiceLabel = form.querySelector("[data-voice-label]");
+      const voiceIconIdle = form.querySelector('[data-voice-icon="idle"]');
+      const voiceIconActive = form.querySelector('[data-voice-icon="active"]');
+      const messageField = form.querySelector("#assessment-message");
+      const requiredCheckboxGroups = ["materials", "ai_touchpoints"];
+      const nextButton = form.querySelector("[data-step-next]");
+      const backButton = form.querySelector("[data-step-back]");
+      const submitButton = form.querySelector("[data-step-submit]");
+      if (!(nextButton instanceof HTMLButtonElement)) return;
+      if (!(backButton instanceof HTMLButtonElement)) return;
+      if (!(submitButton instanceof HTMLButtonElement)) return;
+      if (!(viewport instanceof HTMLElement)) return;
+      if (!(track instanceof HTMLElement)) return;
+      if (!panels.length) return;
+
+      const SpeechRecognitionCtor =
+        window.SpeechRecognition || window.webkitSpeechRecognition || null;
+      const supportsVoiceInput =
+        typeof SpeechRecognitionCtor === "function" &&
+        voiceToggle instanceof HTMLButtonElement &&
+        messageField instanceof HTMLTextAreaElement;
+
+      let recognition = null;
+      let listening = false;
+
+      let current = 0;
+
+      const stepTitles = [
+        "Tell us about your context",
+        "Tell us about the current assets",
+        "Show us your touchpoints",
+        "Tell us your biggest risk and next step",
+      ];
+      const stepSummaries = [
+        "Start with who you are, what your brand supports, and what you want AI to do.",
+        "Show us the source material that already shapes brand decisions.",
+        "Show us the workflows where AI is already creating exposure.",
+        "Finish with the biggest risk and the next step you want us to shape.",
+      ];
+      const freeEmailDomains = new Set([
+        "aol.com",
+        "fastmail.com",
+        "gmail.com",
+        "googlemail.com",
+        "gmx.com",
+        "gmx.co.uk",
+        "hey.com",
+        "hotmail.co.uk",
+        "hotmail.com",
+        "icloud.com",
+        "live.co.uk",
+        "live.com",
+        "mac.com",
+        "mail.com",
+        "me.com",
+        "msn.com",
+        "outlook.com",
+        "pm.me",
+        "proton.me",
+        "protonmail.com",
+        "qq.com",
+        "tutanota.com",
+        "yahoo.co.uk",
+        "yahoo.com",
+        "yandex.com",
+        "yandex.ru",
+        "zoho.com",
+        "163.com",
+        "126.com",
+      ]);
+
+      const updateSelectionCount = (fieldName, target, emptyCopy, singularLabel, pluralLabel) => {
+        if (!(target instanceof HTMLElement)) return;
+        const count = form.querySelectorAll(`input[name="${fieldName}"]:checked`).length;
+        target.textContent =
+          count > 0
+            ? `${count} ${count === 1 ? singularLabel : pluralLabel}`
+            : emptyCopy;
+      };
+
+      const updateMeta = () => {
+        if (stepTitle instanceof HTMLElement) {
+          stepTitle.textContent =
+            stepTitles[current] || `Step ${current + 1} of ${panels.length}`;
+        }
+
+        if (stepSummary instanceof HTMLElement) {
+          stepSummary.textContent = stepSummaries[current] || "";
+        }
+
+        updateSelectionCount(
+          "materials",
+          materialsCount,
+          "Select the materials that already shape brand decisions.",
+          "material selected",
+          "materials selected"
+        );
+        updateSelectionCount(
+          "ai_touchpoints",
+          touchpointsCount,
+          "Choose the workflows where brand risk may already be active.",
+          "touchpoint selected",
+          "touchpoints selected"
+        );
+      };
+
+      const updateViewportHeight = () => {
+        const activePanel = panels[current];
+        if (!(activePanel instanceof HTMLElement)) return;
+        viewport.style.height = `${activePanel.offsetHeight}px`;
+      };
+
+      const setVoiceStatus = (text, isError = false) => {
+        if (!(voiceStatus instanceof HTMLElement)) return;
+        voiceStatus.textContent = text;
+        voiceStatus.classList.toggle("text-[#ff8c69]", isError);
+        voiceStatus.classList.toggle("text-steel", !isError);
+      };
+
+      const cleanDictatedText = (text) => {
+        const normalized = text
+          .replace(/\s+/g, " ")
+          .replace(/\s+([,.!?;:])/g, "$1")
+          .trim();
+
+        if (!normalized) return "";
+
+        const withSentenceBreaks = normalized
+          .replace(/\b(and|but|so|because|then|also)\b/gi, " $1 ")
+          .replace(/\s+/g, " ")
+          .trim();
+
+        const sentences = withSentenceBreaks
+          .split(/(?<=[.!?])\s+/)
+          .map((sentence) => sentence.trim())
+          .filter(Boolean)
+          .map((sentence) => {
+            const capped = sentence.charAt(0).toUpperCase() + sentence.slice(1);
+            return /[.!?]$/.test(capped) ? capped : `${capped}.`;
+          });
+
+        return sentences.join(" ");
+      };
+
+      const updateVoiceToggle = () => {
+        if (!(voiceToggle instanceof HTMLButtonElement)) return;
+        voiceToggle.setAttribute("aria-pressed", String(listening));
+        if (voiceLabel instanceof HTMLElement) {
+          voiceLabel.textContent = listening ? "Stop dictating" : "Use voice";
+        }
+        if (voiceIconIdle instanceof SVGElement) {
+          voiceIconIdle.classList.toggle("opacity-0", listening);
+        }
+        if (voiceIconActive instanceof HTMLElement) {
+          voiceIconActive.classList.toggle("opacity-0", !listening);
+          voiceIconActive.classList.toggle("animate-pulse", listening);
+          voiceIconActive.classList.toggle("scale-110", listening);
+          voiceIconActive.classList.toggle("bg-[#ff4d4d]/60", listening);
+        }
+        voiceToggle.classList.toggle("bg-[#111826]", listening);
+        voiceToggle.classList.toggle("border-[#ff4d4d]/80", listening);
+      };
+
+      if (supportsVoiceInput) {
+        recognition = new SpeechRecognitionCtor();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = "en-GB";
+
+        recognition.onstart = () => {
+          listening = true;
+          updateVoiceToggle();
+          setVoiceStatus("Listening. Speak naturally and we’ll add it to the field.");
+        };
+
+        recognition.onresult = (event) => {
+          if (!(messageField instanceof HTMLTextAreaElement)) return;
+
+          let transcript = "";
+          for (let i = event.resultIndex; i < event.results.length; i += 1) {
+            const result = event.results[i];
+            if (!result.isFinal) continue;
+            transcript += result[0].transcript;
+          }
+
+          transcript = transcript.trim();
+          if (!transcript) return;
+
+          transcript = cleanDictatedText(transcript);
+          if (!transcript) return;
+
+          const existing = messageField.value.trim();
+          messageField.value = existing ? `${existing} ${transcript}` : transcript;
+          messageField.dispatchEvent(new Event("input", { bubbles: true }));
+        };
+
+        recognition.onerror = (event) => {
+          listening = false;
+          updateVoiceToggle();
+          setVoiceStatus(
+            event.error === "not-allowed"
+              ? "Microphone access was blocked."
+              : "Voice input stopped.",
+            true
+          );
+        };
+
+        recognition.onend = () => {
+          listening = false;
+          updateVoiceToggle();
+          if (voiceStatus instanceof HTMLElement && !voiceStatus.textContent?.includes("blocked")) {
+            setVoiceStatus("Voice input stopped.");
+          }
+        };
+
+        if (voiceToggle instanceof HTMLButtonElement) {
+          voiceToggle.addEventListener("click", () => {
+            if (!recognition) return;
+            if (listening) {
+              recognition.stop();
+              return;
+            }
+            recognition.start();
+          });
+          updateVoiceToggle();
+        }
+      } else if (voiceToggle instanceof HTMLButtonElement) {
+        voiceToggle.disabled = true;
+        voiceToggle.classList.add("opacity-50", "cursor-not-allowed");
+        setVoiceStatus("Voice input is not supported in this browser.");
+      }
+
+      const validateBusinessEmailField = (emailField) => {
+        if (!(emailField instanceof HTMLInputElement)) return true;
+
+        const email = emailField.value.trim().toLowerCase();
+        if (!email) {
+          emailField.setCustomValidity("");
+          return true;
+        }
+
+        const domain = email.split("@").pop()?.toLowerCase() || "";
+        if (!domain || freeEmailDomains.has(domain)) {
+          emailField.setCustomValidity("Please use a business email address.");
+          return false;
+        }
+
+        emailField.setCustomValidity("");
+        return true;
+      };
+
+      const syncRequiredCheckboxGroup = (panel, groupName) => {
+        if (!(panel instanceof HTMLElement)) return true;
+
+        const fields = Array.from(
+          panel.querySelectorAll(`input[type="checkbox"][name="${CSS.escape(groupName)}"]`)
+        );
+        if (!fields.length) return true;
+
+        const primaryField = fields[0];
+        const isValid = fields.some((field) => field.checked);
+        primaryField.setCustomValidity(
+          isValid ? "" : "Select at least one option."
+        );
+        return isValid;
+      };
+
+      const syncRequiredCheckboxGroups = (panel) => {
+        requiredCheckboxGroups.forEach((groupName) => {
+          syncRequiredCheckboxGroup(panel, groupName);
+        });
+      };
+
+      const validateCurrentStep = () => {
+        const panel = panels[current];
+        if (!(panel instanceof HTMLElement)) return true;
+
+        const emailField = panel.querySelector('[name="email"]');
+        if (!validateBusinessEmailField(emailField)) {
+          if (emailField instanceof HTMLInputElement) {
+            emailField.reportValidity();
+          }
+          return false;
+        }
+
+        syncRequiredCheckboxGroups(panel);
+
+        const fields = Array.from(
+          panel.querySelectorAll("input, textarea, select")
+        ).filter((field) => field instanceof HTMLElement && !field.hasAttribute("disabled"));
+
+        const radioNames = new Set();
+
+        for (const field of fields) {
+          if (!(field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement || field instanceof HTMLSelectElement)) {
+            continue;
+          }
+
+          if (field instanceof HTMLInputElement && field.type === "radio") {
+            if (!field.required || radioNames.has(field.name)) continue;
+            radioNames.add(field.name);
+            const checked = panel.querySelector(`input[name="${CSS.escape(field.name)}"]:checked`);
+            if (!checked) {
+              field.reportValidity();
+              return false;
+            }
+            continue;
+          }
+
+          if (!field.checkValidity()) {
+            field.reportValidity();
+            return false;
+          }
+        }
+
+        return true;
+      };
+
+      const showStep = (nextIndex) => {
+        if (nextIndex < 0 || nextIndex >= panels.length || nextIndex === current) return;
+
+        current = nextIndex;
+
+        track.style.transform = `translate3d(-${current * 100}%, 0, 0)`;
+
+      panels.forEach((panel, index) => {
+        if (!(panel instanceof HTMLElement)) return;
+        panel.style.minWidth = "100%";
+        panel.classList.toggle("is-active", index === current);
+        panel.setAttribute("aria-hidden", index === current ? "false" : "true");
+      });
+
+        dots.forEach((dot, index) => {
+          dot.classList.toggle("is-current", index === current);
+          dot.classList.toggle("is-complete", index < current);
+          if (dot instanceof HTMLButtonElement) {
+            dot.setAttribute("aria-current", index === current ? "step" : "false");
+          }
+        });
+
+        if (progressBar instanceof HTMLElement) {
+          progressBar.style.transform = `scaleX(${(current + 1) / panels.length})`;
+        }
+
+        updateMeta();
+
+        backButton.disabled = current === 0;
+        nextButton.hidden = current === panels.length - 1;
+        submitButton.hidden = current !== panels.length - 1;
+
+        requestAnimationFrame(updateViewportHeight);
+
+        const activePanel = panels[current];
+        const focusTarget =
+          activePanel instanceof HTMLElement
+            ? activePanel.querySelector("input, textarea, select, button")
+            : null;
+        if (focusTarget instanceof HTMLElement) {
+          focusTarget.focus({ preventScroll: true });
+        }
+
+        form.scrollIntoView({ block: "start", behavior: "smooth" });
+      };
+
+      nextButton.addEventListener("click", () => {
+        if (!validateCurrentStep()) return;
+        showStep(current + 1);
+      });
+
+      backButton.addEventListener("click", () => {
+        showStep(current - 1);
+      });
+
+      dots.forEach((dot, index) => {
+        dot.addEventListener("click", () => {
+          if (index > current && !validateCurrentStep()) return;
+          showStep(index);
+        });
+      });
+
+      form.addEventListener("change", (event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLInputElement)) return;
+        if (target.name === "materials" || target.name === "ai_touchpoints") {
+          const panel = target.closest("[data-step-panel]");
+          if (panel instanceof HTMLElement) {
+            syncRequiredCheckboxGroups(panel);
+          }
+          updateMeta();
+        }
+      });
+
+      form.addEventListener("input", (event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLInputElement)) return;
+        if (target.name !== "email") return;
+        validateBusinessEmailField(target);
+      });
+
+      updateMeta();
+      panels.forEach((panel) => {
+        syncRequiredCheckboxGroups(panel);
+      });
+      panels.forEach((panel, index) => {
+        if (!(panel instanceof HTMLElement)) return;
+        panel.setAttribute("aria-hidden", index === current ? "false" : "true");
+      });
+      dots.forEach((dot, index) => {
+        if (dot instanceof HTMLButtonElement) {
+          dot.setAttribute("aria-current", index === current ? "step" : "false");
+        }
+      });
+      requestAnimationFrame(updateViewportHeight);
+      window.addEventListener("resize", updateViewportHeight);
+    })();
+  </script>
+</BaseLayout>

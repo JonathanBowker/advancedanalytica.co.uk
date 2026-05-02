@@ -21,7 +21,7 @@ export async function GET() {
       description:
         'Advanced Analytica helps organisations turn business logic into governed, executable infrastructure for AI systems, starting with brand governance.',
       itemType: 'WebPage',
-      tags: ['Homepage', 'IBOM', 'AICE']
+      tags: ['Homepage', 'iBOM', 'AICE']
     },
     {
       url: `${SITE_URL}/company/about/`,
@@ -35,7 +35,7 @@ export async function GET() {
       url: `${SITE_URL}/company/contact/`,
       title: 'Contact Advanced Analytica',
       description:
-        'Contact Advanced Analytica to discuss governed AI systems, IBOM, AICE, and practical next steps.',
+        'Contact Advanced Analytica to discuss governed AI systems, iBOM, AICE, and practical next steps.',
       itemType: 'ContactPage',
       tags: ['Contact']
     },
@@ -48,12 +48,12 @@ export async function GET() {
       tags: ['Security', 'Governance']
     },
     {
-      url: `${SITE_URL}/services/ibom/`,
-      title: 'IBOM®',
+      url: `${SITE_URL}/services/iBOM/`,
+      title: 'iBOM®',
       description:
         'The Intelligent Business Operating Model for turning brand meaning, policy, and operational logic into executable systems.',
       itemType: 'Service',
-      tags: ['IBOM', 'Service']
+      tags: ['iBOM', 'Service']
     },
     {
       url: `${SITE_URL}/opinions/`,
@@ -67,7 +67,7 @@ export async function GET() {
       url: `${SITE_URL}/use-cases/`,
       title: 'Use Cases',
       description:
-        'Use cases showing how organisations deploy IBOM® to govern brand meaning, policy, and execution across AI systems.',
+        'Use cases showing how organisations deploy iBOM® to govern brand meaning, policy, and execution across AI systems.',
       itemType: 'CollectionPage',
       tags: ['Use Cases']
     },
@@ -75,7 +75,7 @@ export async function GET() {
       url: `${SITE_URL}/resources/`,
       title: 'Resources',
       description:
-        'Guides, checklists, and reference materials for governed AI systems, policy-aware delivery, and IBOM®.',
+        'Guides, checklists, and reference materials for governed AI systems, policy-aware delivery, and iBOM®.',
       itemType: 'CollectionPage',
       tags: ['Resources']
     }

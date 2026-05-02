@@ -1,0 +1,48 @@
+---
+title: 'Agentic AI Brand Risk Checklist'
+description: 'Define agent boundaries before they act for your brand.'
+category: 'Guides'
+tags: ['AI Agents', 'Guide']
+draft: false
+---
+
+# Agentic AI Brand Risk Checklist
+
+Define agent boundaries before they act for your brand.
+
+As soon as an AI system becomes agentic, the brand risk profile changes. The system is no longer only generating outputs. It may be retrieving context, selecting tools, routing tasks, escalating decisions, or triggering downstream actions. That means the familiar brand question of “does this sound right?” becomes a broader governance question: “is this system allowed to behave this way at all?”
+
+This checklist is designed to help you answer that question before the workflow is live. It is not a theoretical exercise. It is a practical control tool for leaders, governance owners, and delivery teams who need to define boundaries before agents begin acting on behalf of the business.
+
+## Agent inventory
+
+Start by documenting what the agent actually is and where it sits in the workflow. Name the agent clearly, define the business process it supports, list the tools it can access, and record the outputs it is allowed to create. This first step sounds basic, but it usually exposes the first gap. Many organisations know what the agent is supposed to help with, but not exactly what operational surface area it has been given.
+
+You should also document which business owner is accountable for the workflow and which technical owner is accountable for the implementation. If those roles are unclear, risk ownership is already weak before the system runs.
+
+## Boundary checks
+
+The core control question is authority. Can the agent draft? Can it send? Can it approve? Can it make claims? Can it choose an audience? Can it override policy? These are not minor feature questions. They define the difference between a low-risk assistant and a higher-risk actor.
+
+The safest approach is to define permissions by level. What may the agent do alone? What may it recommend but not execute? What must always be escalated? What must always be blocked? A system that is allowed to summarise guidance is not automatically safe to publish customer-facing output. A system that can route work is not automatically safe to decide who should receive it.
+
+## Escalation
+
+Every agent needs a clear escalation model. Define the high-risk categories that require human review, the approvals that must happen before action, the blocked actions that the system may never take, and the way exceptions are logged and reviewed.
+
+This is where many deployments fail quietly. The workflow appears controlled because the agent usually behaves well, but nobody has defined what happens when it encounters conflicting guidance, outdated policy, or a request that falls outside its authority. A strong escalation model turns those cases into governed decisions rather than improvised behaviour.
+
+## Testing
+
+Test the edges before you trust the centre. That means outdated guidance, conflicting rules, sensitive topics, high-risk claims, and role changes that affect permission boundaries. You are not only testing whether the model produces a sensible answer. You are testing whether the operating model still holds when the context gets messy.
+
+Review the logs after every test run. Which context was retrieved? Which rules were applied? Which actions were attempted? Where did the system escalate, and where did it proceed alone? Those answers matter more than whether the draft looked superficially competent.
+
+## Ready to move?
+
+<a
+  href="/company/contact/"
+  class="inline-flex items-center justify-center rounded-md bg-[#14B8A6] px-6 py-3 text-sm font-semibold tracking-[0.18em] uppercase text-paper shadow-outline transition-colors hover:bg-[#0F766E]"
+>
+  Get in touch
+</a>

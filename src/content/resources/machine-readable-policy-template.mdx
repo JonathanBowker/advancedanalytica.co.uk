@@ -1,0 +1,48 @@
+---
+title: 'Machine-Readable Brand Policy Template'
+description: 'A working outline for policy files that people and AI can use.'
+category: 'Guides'
+tags: ['Policy', 'Guide']
+draft: false
+---
+
+# Machine-Readable Brand Policy Template
+
+A working outline for policy files that people and AI can use.
+
+Most brand policy fails in AI workflows for the same reason many enterprise specifications fail: the document sounds sensible to people, but it does not tell the system enough about what the rule is, where it applies, what overrides it, and how success should be checked.
+
+This template is designed to close that gap. It gives you a practical structure for policy files that remain readable to people while also becoming usable by systems. The aim is not to create documentation for its own sake. The aim is to reduce interpretation cost during execution.
+
+## File structure
+
+Use YAML front matter for metadata, Markdown for the human-readable policy body, and a machine-readable sidecar when the retrieval or validation layer needs one. This separation works well because it allows the same policy to operate at multiple levels: readable to people, referenceable by systems, and portable across workflows.
+
+The structure matters because a good policy file has to do two jobs at once. It has to communicate intent clearly and it has to support execution predictably.
+
+## Required metadata
+
+The minimum metadata should include a policy identifier, owner, scope, authority level, priority, rule type, dependencies, version, and review date. Those fields are not administrative clutter. They are part of how the system determines whether the rule is applicable, current, and authoritative in a given context.
+
+Without that metadata, even a well-written rule may still be difficult to govern because the system has no dependable way to understand where the rule fits inside the wider control model.
+
+## Rule body
+
+The rule body should begin with the intent, then state the rule clearly, define what is prohibited, declare any exceptions, add examples, and specify how validation should work. This order helps keep the logic legible. It explains why the rule exists, what the system must do, where the boundaries are, and how anyone will know whether the output passed.
+
+That is the difference between descriptive guidance and operational policy. A descriptive document explains. An operational document instructs and proves.
+
+## Validation
+
+Validation should be based on realistic tasks, not only idealised examples. Test the policy against prompts or workflows that resemble live use, record where models disagree, and repair the rule until interpretation becomes more consistent. If the system still produces materially different answers from the same policy, the rule is not yet precise enough.
+
+Validation is not a final stage bolted on at the end. It is part of the authoring discipline itself.
+
+## Ready to move?
+
+<a
+  href="/company/contact/"
+  class="inline-flex items-center justify-center rounded-md bg-[#14B8A6] px-6 py-3 text-sm font-semibold tracking-[0.18em] uppercase text-paper shadow-outline transition-colors hover:bg-[#0F766E]"
+>
+  Get in touch
+</a>

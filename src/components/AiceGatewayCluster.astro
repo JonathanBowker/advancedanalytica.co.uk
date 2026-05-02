@@ -37,7 +37,7 @@ const defaultRightData: ClusterNode = {
 };
 
 const {
-  title = 'IBOM - Intelligent Business Operating Model',
+  title = 'iBOM - Intelligent Business Operating Model',
   leftData = defaultLeftData,
   rightData = defaultRightData,
   agentOrder = ['Brand Agent', 'Support Agent', 'Marketing Agent', 'Other Agents'],
@@ -48,7 +48,7 @@ const {
     'Other Agents': 'Other MCP'
   },
   questionToTools = {},
-  controlLayer = 'IBOM CONTROL LAYER',
+  controlLayer = 'iBOM CONTROL LAYER',
   tagline = 'BRAND-FIRST COMMUNICATIONS',
   leftColumnOffset = 0,
   ariaLabel = 'AICE MCP Gateway architecture diagram'
@@ -215,7 +215,7 @@ const diagramConfig = JSON.stringify({
       .attr('fill', '#ffffff')
       .attr('font-size', 26)
       .attr('font-weight', 700)
-      .text(config.title || 'IBOM - Intelligent Business Operating Model');
+      .text(config.title || 'iBOM - Intelligent Business Operating Model');
 
     const glow = defs
       .append('filter')
@@ -415,7 +415,7 @@ const diagramConfig = JSON.stringify({
       .attr('fill', 'rgba(255,255,255,0.82)')
       .attr('font-size', 11)
       .attr('letter-spacing', '0.18em')
-      .text(config.controlLayer || 'IBOM CONTROL LAYER');
+      .text(config.controlLayer || 'iBOM CONTROL LAYER');
 
     gatewayLabel
       .append('text')

@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { SITE_URL } from '../../lib/seo/site';
 
 const title = 'Developer Quickstart';
-const description = 'A minimal workflow for integrating IBOM<sup>®</sup> into product systems.';
+const description = 'A minimal workflow for integrating iBOM<sup>®</sup> into product systems.';
 
 const page = {
   title,
@@ -21,7 +21,7 @@ const page = {
     <div class="eyebrow">Developers</div>
     <h1 class="mt-4 text-4xl font-semibold text-ink">Quickstart</h1>
     <p class="mt-4 text-base text-steel">
-      Use IBOM<sup>®</sup> as a policy layer between brand intent and execution. Model the brand as structured schemas (meaning,
+      Use iBOM<sup>®</sup> as a policy layer between brand intent and execution. Model the brand as structured schemas (meaning,
       terminology, tone, accessibility, approvals), then encode those expectations as checks that run in CI before changes
       ship. Once that’s stable, expose the same policy to runtime workflows via MCP for consistent enforcement across tools.
     </p>
@@ -57,7 +57,7 @@ import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 
-// Replace these with your real IBOM loader + rules engine.
+// Replace these with your real iBOM loader + rules engine.
 const loadPolicy = async () => ({ rules: ["tone.systems", "accessibility.altText"] });
 const validate = async (text: string, policy: { rules: string[] }) => ({
   ok: true,
@@ -66,12 +66,12 @@ const validate = async (text: string, policy: { rules: string[] }) => ({
 });
 
 const server = new Server(
-  { name: "ibom-policy", version: "0.1.0" },
+  { name: "iBOM-policy", version: "0.1.0" },
   { capabilities: { tools: {} } }
 );
 
 server.tool(
-  "ibom.validate",
+  "iBOM.validate",
   { text: z.string() },
   async ({ text }) => validate(text, await loadPolicy())
 );
