@@ -193,6 +193,40 @@ const isValidSenderIdentity = (value) =>
 const getLeadLabel = ({ leadName, leadType, formId }) =>
   leadName || leadType || formId || "Website Lead Form";
 
+const formatMessageHtml = (message) => {
+  const lines = String(message || "").split("\n");
+  const blocks = [];
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index].trim();
+    if (!line) {
+      blocks.push('<div style="height:12px;"></div>');
+      continue;
+    }
+
+    const nextLine = lines
+      .slice(index + 1)
+      .find((candidate) => candidate.trim());
+    const isHeading =
+      !line.endsWith(".") &&
+      !line.endsWith("?") &&
+      !line.endsWith("!") &&
+      Boolean(nextLine);
+
+    if (isHeading) {
+      blocks.push(
+        `<div style="margin:14px 0 4px;font-weight:700;">${escapeHtml(line)}</div>`
+      );
+      continue;
+    }
+
+    blocks.push(
+      `<div style="margin:0 0 8px;">${escapeHtml(line)}</div>`
+    );
+  }
+
+  return blocks.join("");
+};
+
 const buildLeadNotificationEmail = ({
   name,
   email,
@@ -237,7 +271,7 @@ const buildLeadNotificationEmail = ({
       <h1 style="font-size:20px;margin:0 0 16px;">New Advanced Analytica lead: ${escapeHtml(getLeadLabel({ leadName, leadType, formId }))}</h1>
       <table cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-bottom:20px;">${htmlRows}</table>
       <h2 style="font-size:16px;margin:0 0 8px;">Message</h2>
-      <p style="white-space:pre-wrap;margin:0;">${escapeHtml(message)}</p>
+      <div>${formatMessageHtml(message)}</div>
     </div>
   `;
 
