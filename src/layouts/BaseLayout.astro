@@ -14,6 +14,7 @@ const { title, description, page } = Astro.props as {
   page: PageMeta;
   bodyClass?: string;
   hideFooterContactCta?: boolean;
+  headerContactHref?: string;
 };
 
 const fullTitle = `${title} | Advanced Analytica`;
@@ -51,7 +52,7 @@ const socialType = page.isArticle ? 'article' : 'website';
     <JsonLd page={page} />
   </head>
   <body class={`bg-background text-ink ${Astro.props.bodyClass ?? ""}`.trim()}>
-    <SiteHeader />
+    <SiteHeader contactHref={Astro.props.headerContactHref ?? "#get-in-touch"} />
     <main class="pt-20">
       <slot />
     </main>
