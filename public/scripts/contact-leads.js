@@ -43,12 +43,43 @@
     if (status) status.textContent = message;
   };
 
+  const getFieldLabel = (form, fieldName) => {
+    const field = form.querySelector(`[name="${fieldName}"]`);
+    if (!field) return fieldName;
+    const explicit = field.getAttribute("data-summary-label");
+    if (explicit) return explicit;
+    const id = field.getAttribute("id");
+    if (!id) return fieldName;
+    const label = form.querySelector(`label[for="${id}"]`);
+    return label?.textContent?.trim() || fieldName;
+  };
+
   const getValue = (form, name) =>
     String(new FormData(form).get(name) || "").trim();
 
+  const getLeadType = (form) => {
+    const explicit = form.getAttribute("data-lead-type");
+    if (explicit) return explicit;
+    if (form.id === "assessment-form-main") return "brand_ai_readiness_assessment";
+    if (form.id === "home-contact-form") return "get_in_touch";
+    return form.id || "lead_form";
+  };
+
+  const getLeadName = (form) => {
+    const explicit = form.getAttribute("data-lead-name");
+    if (explicit) return explicit;
+    if (form.id === "assessment-form-main") return "Brand AI Readiness Assessment";
+    if (form.id === "home-contact-form") return "Get in Touch";
+    return "Website Lead Form";
+  };
+
   const getFormContext = (form) => ({
+    lead_type: getLeadType(form),
+    lead_name: getLeadName(form),
     form_id: form.id || "lead_form",
-    form_location: form.id === "home-contact-form" ? "footer" : "contact_page",
+    form_location:
+      form.getAttribute("data-form-location") ||
+      (form.id === "home-contact-form" ? "footer" : "contact_page"),
   });
 
   const getEmailDomain = (email) => email.split("@").pop()?.toLowerCase() || "";
@@ -59,8 +90,9 @@
   };
 
   const isEnglishLanguageSubmission = (form) => {
-    const text = ["name", "company", "topic", "message"]
-      .map((field) => getValue(form, field))
+    const text = Array.from(new FormData(form).entries())
+      .filter(([name]) => name !== "website")
+      .map(([, value]) => String(value).trim())
       .filter(Boolean)
       .join(" ");
     return /[a-z]{2,}/i.test(text) && !nonEnglishScriptPattern.test(text);
@@ -81,6 +113,14 @@
   };
 
   const getErrorMessage = (result) => {
+    if (result?.error === "email_not_configured") {
+      if (result?.reason === "invalid_from_identity") {
+        return "The mail sender is not configured correctly. Please contact jonny.bowker@advancedanalytica.co.uk directly.";
+      }
+
+      return "The mail service is not configured correctly. Please contact jonny.bowker@advancedanalytica.co.uk directly.";
+    }
+
     if (result?.error !== "email_delivery_failed") {
       if (result?.error === "business_email_required") {
         return "Please use a business email address.";
@@ -113,16 +153,52 @@
   };
 
   const getCompletedFieldCount = (form) =>
-    ["name", "email", "company", "topic", "message"].filter((field) => getValue(form, field)).length;
+    Array.from(new FormData(form).entries()).filter(
+      ([name, value]) => name !== "website" && String(value).trim()
+    ).length;
+
+  const buildExtendedMessage = (form, baseMessage) => {
+    const reservedFields = new Set([
+      "name",
+      "email",
+      "company",
+      "topic",
+      "message",
+      "website",
+      "language",
+    ]);
+
+    const grouped = new Map();
+    for (const [name, rawValue] of new FormData(form).entries()) {
+      if (reservedFields.has(name)) continue;
+      const value = String(rawValue).trim();
+      if (!value) continue;
+      if (!grouped.has(name)) grouped.set(name, []);
+      grouped.get(name).push(value);
+    }
+
+    if (!grouped.size) return baseMessage;
+
+    const detailLines = Array.from(grouped.entries()).map(([name, values]) => {
+      const label = getFieldLabel(form, name);
+      return `${label}: ${values.join(", ")}`;
+    });
+
+    return [baseMessage, "", "Assessment details:", ...detailLines]
+      .filter(Boolean)
+      .join("\n");
+  };
 
   const buildPayload = (form) => {
     const fd = new FormData(form);
+    const baseMessage = String(fd.get("message") || "").trim();
     return {
+      ...getFormContext(form),
       name: getValue(form, "name"),
       email: getValue(form, "email"),
       company: getValue(form, "company"),
       topic: getValue(form, "topic"),
-      message: String(fd.get("message") || "").trim(),
+      message: buildExtendedMessage(form, baseMessage),
       website: String(fd.get("website") || "").trim(),
       language: String(fd.get("language") || "en").trim() || "en",
       page: window.location.href,
@@ -239,10 +315,16 @@
     document.head.append(style);
   };
 
-  const showSuccessCard = () => {
+  const showSuccessCard = (form) => {
     ensureSuccessCardStyles();
 
     document.querySelector("[data-lead-success-card]")?.remove();
+
+    const successMessage =
+      form?.getAttribute("data-success-message") || "Thank you. Your enquiry has been sent.";
+    const successCopy =
+      form?.getAttribute("data-success-copy") ||
+      "We will review it and get back to you as soon as we can.";
 
     const overlay = document.createElement("div");
     overlay.className = "lead-success-overlay";
@@ -259,7 +341,7 @@
         <button class="lead-success-close" type="button" data-lead-success-close aria-label="Close message">&times;</button>
         <div class="lead-success-kicker">Enquiry sent</div>
         <h2 class="lead-success-title" id="lead-success-title">${successMessage}</h2>
-        <p class="lead-success-copy" id="lead-success-copy">We will review it and get back to you as soon as we can.</p>
+        <p class="lead-success-copy" id="lead-success-copy">${successCopy}</p>
         <button class="lead-success-action" type="button" data-lead-success-close>Close</button>
       </section>
     `;
@@ -357,7 +439,7 @@
 
         form.reset();
         setStatus(form, "");
-        showSuccessCard();
+        showSuccessCard(form);
         track("contact_submit", context);
       } catch (error) {
         setStatus(form, getErrorMessage(error?.result));

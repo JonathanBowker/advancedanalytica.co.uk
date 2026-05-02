@@ -1,4 +1,5 @@
 import { SendEmailCommand, SESv2Client } from "@aws-sdk/client-sesv2";
+import { promises as dns } from "node:dns";
 
 const MAX_LENGTHS = {
   name: 120,
@@ -8,6 +9,10 @@ const MAX_LENGTHS = {
   message: 4000,
   page: 500,
   language: 20,
+  leadType: 120,
+  leadName: 160,
+  formId: 120,
+  formLocation: 120,
 };
 
 const FREE_EMAIL_DOMAINS = new Set([
@@ -41,6 +46,12 @@ const FREE_EMAIL_DOMAINS = new Set([
   "163.com",
   "126.com",
 ]);
+
+const splitDomains = (value) =>
+  String(value || "")
+    .split(",")
+    .map((entry) => entry.trim().toLowerCase())
+    .filter(Boolean);
 
 const NON_ENGLISH_SCRIPT_PATTERN =
   /[\p{Script=Arabic}\p{Script=Armenian}\p{Script=Bengali}\p{Script=Bopomofo}\p{Script=Cyrillic}\p{Script=Devanagari}\p{Script=Ethiopic}\p{Script=Georgian}\p{Script=Greek}\p{Script=Gujarati}\p{Script=Gurmukhi}\p{Script=Han}\p{Script=Hangul}\p{Script=Hebrew}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Kannada}\p{Script=Khmer}\p{Script=Lao}\p{Script=Malayalam}\p{Script=Myanmar}\p{Script=Oriya}\p{Script=Sinhala}\p{Script=Tamil}\p{Script=Telugu}\p{Script=Thai}\p{Script=Tibetan}]/u;
@@ -96,6 +107,10 @@ const normalisePayload = (event) => {
     message: clean(body.message, MAX_LENGTHS.message),
     page: clean(body.page, MAX_LENGTHS.page),
     language: clean(body.language, MAX_LENGTHS.language).toLowerCase() || "en",
+    leadType: clean(body.lead_type || body.form_type, MAX_LENGTHS.leadType),
+    leadName: clean(body.lead_name || body.form_name, MAX_LENGTHS.leadName),
+    formId: clean(body.form_id, MAX_LENGTHS.formId),
+    formLocation: clean(body.form_location, MAX_LENGTHS.formLocation),
     website: clean(body.website, 200),
   };
 };
@@ -104,9 +119,43 @@ const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
 const getEmailDomain = (email) => email.split("@").pop()?.toLowerCase() || "";
 
-const isBusinessEmail = (email) => {
+const isAllowedEmailDomain = async (email) => {
   const domain = getEmailDomain(email);
-  return Boolean(domain) && !FREE_EMAIL_DOMAINS.has(domain);
+  if (!domain) {
+    return { ok: false, reason: "missing_domain" };
+  }
+
+  const deniedDomains = new Set([
+    ...FREE_EMAIL_DOMAINS,
+    ...splitDomains(process.env.LEAD_EMAIL_DENIED_DOMAINS),
+  ]);
+  if (deniedDomains.has(domain)) {
+    return { ok: false, reason: "denied_domain" };
+  }
+
+  const allowedDomains = splitDomains(process.env.LEAD_EMAIL_ALLOWED_DOMAINS);
+  if (allowedDomains.length > 0) {
+    const allowed = allowedDomains.some(
+      (allowedDomain) =>
+        domain === allowedDomain || domain.endsWith(`.${allowedDomain}`)
+    );
+    if (!allowed) {
+      return { ok: false, reason: "not_in_allowlist" };
+    }
+
+    return { ok: true };
+  }
+
+  try {
+    const records = await dns.resolveMx(domain);
+    if (!records.length) {
+      return { ok: false, reason: "no_mx_records" };
+    }
+
+    return { ok: true };
+  } catch {
+    return { ok: false, reason: "mx_lookup_failed" };
+  }
 };
 
 const isEnglishLanguageSubmission = ({ name, company, topic, message, language }) => {
@@ -119,10 +168,36 @@ const isEnglishLanguageSubmission = ({ name, company, topic, message, language }
 };
 
 const isMissingSecret = (value) =>
-  !value || value === "not-configured" || value.startsWith("EV[");
+  !value || value === "not-configured";
 
-const buildLeadNotificationEmail = ({ name, email, company, topic, message, page }) => {
+const getSenderEmailAddress = (value) => {
+  const sender = String(value || "").trim();
+  const displayNameMatch = sender.match(/<([^<>]+)>$/);
+  return (displayNameMatch ? displayNameMatch[1] : sender).trim().toLowerCase();
+};
+
+const isValidSenderIdentity = (value) =>
+  Boolean(value) && isValidEmail(getSenderEmailAddress(value));
+
+const getLeadLabel = ({ leadName, leadType, formId }) =>
+  leadName || leadType || formId || "Website Lead Form";
+
+const buildLeadNotificationEmail = ({
+  name,
+  email,
+  company,
+  topic,
+  message,
+  page,
+  leadName,
+  leadType,
+  formId,
+  formLocation,
+}) => {
   const rows = [
+    ["Lead source", getLeadLabel({ leadName, leadType, formId })],
+    ["Lead type", leadType || "Not provided"],
+    ["Form location", formLocation || "Not provided"],
     ["Name", name],
     ["Email", email],
     ["Company", company || "Not provided"],
@@ -131,7 +206,7 @@ const buildLeadNotificationEmail = ({ name, email, company, topic, message, page
   ];
 
   const text = [
-    "New Advanced Analytica enquiry",
+    `New Advanced Analytica lead: ${getLeadLabel({ leadName, leadType, formId })}`,
     "",
     ...rows.map(([label, value]) => `${label}: ${value}`),
     "",
@@ -148,42 +223,10 @@ const buildLeadNotificationEmail = ({ name, email, company, topic, message, page
 
   const html = `
     <div style="font-family:Arial,sans-serif;color:#111827;line-height:1.5;">
-      <h1 style="font-size:20px;margin:0 0 16px;">New Advanced Analytica enquiry</h1>
+      <h1 style="font-size:20px;margin:0 0 16px;">New Advanced Analytica lead: ${escapeHtml(getLeadLabel({ leadName, leadType, formId }))}</h1>
       <table cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-bottom:20px;">${htmlRows}</table>
       <h2 style="font-size:16px;margin:0 0 8px;">Message</h2>
       <p style="white-space:pre-wrap;margin:0;">${escapeHtml(message)}</p>
-    </div>
-  `;
-
-  return { text, html };
-};
-
-const buildLeadConfirmationEmail = ({ name, topic }) => {
-  const firstName = name.split(" ")[0] || "there";
-  const text = [
-    `Hello ${firstName},`,
-    "",
-    "Thank you. Your enquiry has been sent.",
-    "",
-    `We have received your message about: ${topic}`,
-    "",
-    "We will review it and get back to you as soon as we can.",
-    "",
-    "If you need to add anything, reply to this email.",
-    "",
-    "Advanced Analytica",
-    "https://advancedanalytica.co.uk/",
-  ].join("\n");
-
-  const html = `
-    <div style="font-family:Arial,sans-serif;color:#111827;line-height:1.6;">
-      <h1 style="font-size:22px;margin:0 0 16px;">Thank you. Your enquiry has been sent.</h1>
-      <p style="margin:0 0 12px;">Hello ${escapeHtml(firstName)},</p>
-      <p style="margin:0 0 12px;">We have received your message about: <strong>${escapeHtml(topic)}</strong></p>
-      <p style="margin:0 0 12px;">We will review it and get back to you as soon as we can.</p>
-      <p style="margin:0 0 20px;">If you need to add anything, reply to this email.</p>
-      <p style="margin:0;font-weight:700;">Advanced Analytica</p>
-      <p style="margin:0;"><a href="https://advancedanalytica.co.uk/" style="color:#111827;">advancedanalytica.co.uk</a></p>
     </div>
   `;
 
@@ -228,6 +271,11 @@ const sendWithSes = async ({ email, to, from, replyTo, subject }) => {
       "Missing AWS SES credentials, LEAD_EMAIL_TO, or LEAD_EMAIL_FROM"
     );
     return { ok: false, error: "email_not_configured" };
+  }
+
+  if (!isValidSenderIdentity(from)) {
+    console.error("LEAD_EMAIL_FROM is not a valid sender identity");
+    return { ok: false, error: "email_not_configured", reason: "invalid_from_identity" };
   }
 
   const client = new SESv2Client({
@@ -321,8 +369,13 @@ export async function main(event = {}) {
     return json(400, { ok: false, error: "invalid_email" });
   }
 
-  if (!isBusinessEmail(payload.email)) {
-    return json(400, { ok: false, error: "business_email_required" });
+  const emailPolicy = await isAllowedEmailDomain(payload.email);
+  if (!emailPolicy.ok) {
+    return json(400, {
+      ok: false,
+      error: "business_email_required",
+      reason: emailPolicy.reason,
+    });
   }
 
   if (!isEnglishLanguageSubmission(payload)) {
@@ -331,8 +384,7 @@ export async function main(event = {}) {
 
   const to = process.env.LEAD_EMAIL_TO;
   const from =
-    process.env.LEAD_EMAIL_FROM ||
-    "Advanced Analytica <jonny.bowker@advancedanalytica.co.uk>";
+    process.env.LEAD_EMAIL_FROM || "";
 
   const email = buildLeadNotificationEmail(payload);
   const result = await sendWithSes({
@@ -340,25 +392,12 @@ export async function main(event = {}) {
     to,
     from,
     replyTo: payload.email,
-    subject: `Advanced Analytica enquiry: ${payload.topic}`,
+    subject: `Advanced Analytica lead: ${getLeadLabel(payload)} - ${payload.topic}`,
   });
 
   if (!result.ok) {
     return json(200, result);
   }
 
-  const confirmationEmail = buildLeadConfirmationEmail(payload);
-  const confirmation = await sendWithSes({
-    email: confirmationEmail,
-    to: payload.email,
-    from,
-    replyTo: to,
-    subject: "Thank you for contacting Advanced Analytica",
-  });
-
-  if (!confirmation.ok) {
-    console.error("Lead confirmation email failed after enquiry was received");
-  }
-
-  return json(200, { ok: true, confirmationSent: confirmation.ok });
+  return json(200, { ok: true });
 }
