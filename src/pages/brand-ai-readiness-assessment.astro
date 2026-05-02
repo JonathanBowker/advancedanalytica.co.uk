@@ -610,8 +610,10 @@ const offerLevels = [
                 </p>
               </div>
 
-              <fieldset class="grid gap-4" data-required-group="materials">
-                <legend class={labelClass}>Which materials do you already have?</legend>
+              <fieldset class="grid gap-5" data-required-group="materials">
+                <legend class={`${labelClass} mb-2`}>
+                  Which materials do you already have?*
+                </legend>
                 <div class="grid gap-3 md:grid-cols-2">
                   <label class={`${optionCardClass} assessment-option`}>
                     <input type="checkbox" name="materials" value="Brand guidelines" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
@@ -661,8 +663,10 @@ const offerLevels = [
                 </p>
               </div>
 
-              <fieldset class="grid gap-4" data-required-group="ai_touchpoints">
-                <legend class={labelClass}>Where is AI already touching your brand?</legend>
+              <fieldset class="grid gap-5" data-required-group="ai_touchpoints">
+                <legend class={`${labelClass} mb-2`}>
+                  Where is AI already touching your brand?*
+                </legend>
                 <div class="grid gap-3 md:grid-cols-2">
                   <label class={`${optionCardClass} assessment-option`}>
                     <input type="checkbox" name="ai_touchpoints" value="Brand portal" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
@@ -721,8 +725,10 @@ const offerLevels = [
                 </p>
               </div>
 
-              <fieldset class="grid gap-3">
-                <legend class={labelClass}>What’s your biggest concern?</legend>
+              <fieldset class="grid gap-5">
+                <legend class={`${labelClass} mb-2`}>
+                  What’s your biggest concern?*
+                </legend>
                 <div class="grid gap-3">
                   <label class={`${optionCardClass} assessment-option`}>
                     <input type="radio" name="biggest_concern" value="Off-brand output" required class="mt-1 h-4 w-4 accent-[#14B8A6]" />
@@ -751,8 +757,10 @@ const offerLevels = [
                 </div>
               </fieldset>
 
-              <fieldset class="grid gap-3">
-                <legend class={labelClass}>Preferred next step</legend>
+              <fieldset class="grid gap-5">
+                <legend class={`${labelClass} mb-2`}>
+                  Preferred next step?*
+                </legend>
                 <div class="grid gap-3 md:grid-cols-3">
                   <label class={`${optionCardClass} assessment-option`}>
                     <input type="radio" name="preferred_next_step" value="Intro call" required class="mt-1 h-4 w-4 accent-[#14B8A6]" />

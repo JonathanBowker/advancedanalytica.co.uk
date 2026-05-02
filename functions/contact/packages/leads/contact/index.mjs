@@ -5,6 +5,7 @@ const MAX_LENGTHS = {
   name: 120,
   email: 180,
   company: 160,
+  role: 120,
   topic: 160,
   message: 4000,
   page: 500,
@@ -13,6 +14,10 @@ const MAX_LENGTHS = {
   leadName: 160,
   formId: 120,
   formLocation: 120,
+  materials: 500,
+  aiTouchpoints: 500,
+  biggestConcern: 120,
+  preferredNextStep: 120,
 };
 
 const FREE_EMAIL_DOMAINS = new Set([
@@ -114,6 +119,7 @@ const normalisePayload = (event) => {
     name: clean(body.name, MAX_LENGTHS.name),
     email: clean(body.email, MAX_LENGTHS.email).toLowerCase(),
     company: clean(body.company, MAX_LENGTHS.company),
+    role: clean(body.role, MAX_LENGTHS.role),
     topic: clean(body.topic, MAX_LENGTHS.topic),
     message: cleanMultiline(body.message, MAX_LENGTHS.message),
     page: clean(body.page, MAX_LENGTHS.page),
@@ -122,6 +128,13 @@ const normalisePayload = (event) => {
     leadName: clean(body.lead_name || body.form_name, MAX_LENGTHS.leadName),
     formId: clean(body.form_id, MAX_LENGTHS.formId),
     formLocation: clean(body.form_location, MAX_LENGTHS.formLocation),
+    materials: clean(body.materials, MAX_LENGTHS.materials),
+    aiTouchpoints: clean(body.ai_touchpoints, MAX_LENGTHS.aiTouchpoints),
+    biggestConcern: clean(body.biggest_concern, MAX_LENGTHS.biggestConcern),
+    preferredNextStep: clean(
+      body.preferred_next_step,
+      MAX_LENGTHS.preferredNextStep
+    ),
     website: clean(body.website, 200),
   };
 };
@@ -193,6 +206,11 @@ const isValidSenderIdentity = (value) =>
 const getLeadLabel = ({ leadName, leadType, formId }) =>
   leadName || leadType || formId || "Website Lead Form";
 
+const isAssessmentSubmission = (payload) =>
+  payload.formId === "assessment-form-main" ||
+  payload.leadType === "brand_ai_readiness_assessment" ||
+  payload.topic === "Brand AI Readiness Assessment";
+
 const formatMessageHtml = (message) => {
   const lines = String(message || "").split("\n");
   const blocks = [];
@@ -231,6 +249,7 @@ const buildLeadNotificationEmail = ({
   name,
   email,
   company,
+  role,
   topic,
   message,
   page,
@@ -238,6 +257,10 @@ const buildLeadNotificationEmail = ({
   leadType,
   formId,
   formLocation,
+  materials,
+  aiTouchpoints,
+  biggestConcern,
+  preferredNextStep,
 }) => {
   const rows = [
     ["Lead source", getLeadLabel({ leadName, leadType, formId })],
@@ -246,7 +269,12 @@ const buildLeadNotificationEmail = ({
     ["Name", name],
     ["Email", email],
     ["Company", company || "Not provided"],
+    ["Role", role || "Not provided"],
     ["Topic", topic],
+    ["Materials", materials || "Not provided"],
+    ["AI touchpoints", aiTouchpoints || "Not provided"],
+    ["Biggest concern", biggestConcern || "Not provided"],
+    ["Preferred next step", preferredNextStep || "Not provided"],
     ["Page", page || "Not provided"],
   ];
 
@@ -406,8 +434,17 @@ export async function main(event = {}) {
     (field) => !payload[field]
   );
 
+  if (isAssessmentSubmission(payload)) {
+    missing.push(
+      ...["company", "role", "materials", "aiTouchpoints", "biggestConcern", "preferredNextStep"].filter(
+        (field) => !payload[field]
+      )
+    );
+  }
+
   if (missing.length) {
-    return json(400, { ok: false, error: "missing_fields", fields: missing });
+    const uniqueMissing = [...new Set(missing)];
+    return json(400, { ok: false, error: "missing_fields", fields: uniqueMissing });
   }
 
   if (!isValidEmail(payload.email)) {

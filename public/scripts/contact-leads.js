@@ -162,10 +162,15 @@
       "name",
       "email",
       "company",
+      "role",
       "topic",
       "message",
       "website",
       "language",
+      "materials",
+      "ai_touchpoints",
+      "biggest_concern",
+      "preferred_next_step",
     ]);
 
     const grouped = new Map();
@@ -192,16 +197,29 @@
   const buildPayload = (form) => {
     const fd = new FormData(form);
     const baseMessage = String(fd.get("message") || "").trim();
+    const materials = fd
+      .getAll("materials")
+      .map((value) => String(value).trim())
+      .filter(Boolean);
+    const aiTouchpoints = fd
+      .getAll("ai_touchpoints")
+      .map((value) => String(value).trim())
+      .filter(Boolean);
     return {
       ...getFormContext(form),
       name: getValue(form, "name"),
       email: getValue(form, "email"),
       company: getValue(form, "company"),
       topic: getValue(form, "topic"),
+      role: getValue(form, "role"),
       message: buildExtendedMessage(form, baseMessage),
       website: String(fd.get("website") || "").trim(),
       language: String(fd.get("language") || "en").trim() || "en",
       page: window.location.href,
+      materials,
+      ai_touchpoints: aiTouchpoints,
+      biggest_concern: getValue(form, "biggest_concern"),
+      preferred_next_step: getValue(form, "preferred_next_step"),
     };
   };
 
