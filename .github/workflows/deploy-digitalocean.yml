@@ -11,6 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
   DIGITALOCEAN_APP_ID: be8a36e2-3af3-470c-b72a-7e567c73096f
 
 jobs:
@@ -19,9 +20,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
