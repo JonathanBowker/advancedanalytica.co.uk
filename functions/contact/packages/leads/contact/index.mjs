@@ -138,6 +138,30 @@ const parseBody = (event = {}) => {
   return event;
 };
 
+const getQueryParams = (event = {}) => {
+  const candidates = [
+    event.__ow_query,
+    event.query,
+    event.queryStringParameters,
+  ];
+
+  for (const candidate of candidates) {
+    if (!candidate) continue;
+
+    if (typeof candidate === "string") {
+      return Object.fromEntries(new URLSearchParams(candidate));
+    }
+
+    if (typeof candidate === "object") {
+      return Object.fromEntries(
+        Object.entries(candidate).map(([key, value]) => [key, String(value ?? "")])
+      );
+    }
+  }
+
+  return {};
+};
+
 const normalisePayload = (event) => {
   const body = parseBody(event);
 
@@ -701,7 +725,10 @@ export async function main(event = {}) {
   const method = event.__ow_method ? String(event.__ow_method).toLowerCase() : "";
 
   if (method === "get") {
-    const request = parseBody(event);
+    const request = {
+      ...getQueryParams(event),
+      ...parseBody(event),
+    };
     const payload = {
       formId: clean(request.form_id, MAX_LENGTHS.formId),
       page: clean(request.page, MAX_LENGTHS.page),
