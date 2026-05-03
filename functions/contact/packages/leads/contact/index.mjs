@@ -1,4 +1,5 @@
 import { SendEmailCommand, SESv2Client } from "@aws-sdk/client-sesv2";
+import { createHmac, timingSafeEqual } from "node:crypto";
 import { promises as dns } from "node:dns";
 
 const MIN_SUBMIT_MS = 2_000;
@@ -8,7 +9,11 @@ const MAX_FIELD_LENGTH = 4_000;
 const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
 const RATE_LIMIT_MAX_ATTEMPTS = 6;
 const RATE_LIMIT_MIN_INTERVAL_MS = 30 * 1000;
+const FORM_TOKEN_TTL_MS = 10 * 60 * 1000;
 const TURNSTILE_SECRET = String(process.env.TURNSTILE_SECRET_KEY || "").trim();
+const FORM_TOKEN_SECRET = String(
+  process.env.LEAD_FORM_TOKEN_SECRET || TURNSTILE_SECRET || ""
+).trim();
 
 const MAX_LENGTHS = {
   name: 120,
@@ -29,6 +34,7 @@ const MAX_LENGTHS = {
   preferredNextStep: 120,
   startedAt: 32,
   fingerprint: 128,
+  formToken: 2048,
   turnstileToken: 2048,
 };
 
@@ -157,6 +163,7 @@ const normalisePayload = (event) => {
     ),
     startedAt: clean(body._started_at, MAX_LENGTHS.startedAt),
     fingerprint: clean(body._fingerprint, MAX_LENGTHS.fingerprint),
+    formToken: clean(body._form_token, MAX_LENGTHS.formToken),
     turnstileToken: clean(body._turnstile_token, MAX_LENGTHS.turnstileToken),
     website: clean(body.website, 200),
   };
@@ -324,6 +331,27 @@ const getHeaders = (event = {}) => {
   );
 };
 
+const toBase64Url = (value) =>
+  Buffer.from(value)
+    .toString("base64")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/g, "");
+
+const fromBase64Url = (value) => {
+  const normalised = String(value || "").replace(/-/g, "+").replace(/_/g, "/");
+  const padding = normalised.length % 4;
+  const suffix = padding ? "=".repeat(4 - padding) : "";
+  return Buffer.from(`${normalised}${suffix}`, "base64");
+};
+
+const getRequestOrigin = (event = {}, payload = {}) => {
+  const headers = getHeaders(event);
+  return String(headers.origin || headers.referer || payload.page || "")
+    .trim()
+    .toLowerCase();
+};
+
 const getClientIp = (event = {}) => {
   const headers = getHeaders(event);
   return (
@@ -392,9 +420,51 @@ const isAllowedOrigin = (event = {}, payload = {}) => {
   const allowedOrigins = splitDomains(process.env.LEAD_ALLOWED_ORIGINS);
   if (!allowedOrigins.length) return true;
 
-  const headers = getHeaders(event);
-  const origin = String(headers.origin || headers.referer || payload.page || "").toLowerCase();
+  const origin = getRequestOrigin(event, payload);
   return allowedOrigins.some((allowedOrigin) => origin.startsWith(allowedOrigin));
+};
+
+const signTokenPayload = (payload) =>
+  createHmac("sha256", FORM_TOKEN_SECRET).update(payload).digest();
+
+const buildFormToken = ({ formId, origin, fingerprint }) => {
+  if (!FORM_TOKEN_SECRET) return "";
+
+  const payload = JSON.stringify({
+    exp: Date.now() + FORM_TOKEN_TTL_MS,
+    formId: clean(formId, MAX_LENGTHS.formId) || "lead_form",
+    origin: clean(origin, MAX_LENGTHS.page).toLowerCase(),
+    fingerprint: clean(fingerprint, MAX_LENGTHS.fingerprint),
+  });
+
+  const encodedPayload = toBase64Url(payload);
+  const signature = toBase64Url(signTokenPayload(encodedPayload));
+  return `${encodedPayload}.${signature}`;
+};
+
+const verifyFormToken = ({ token, formId, origin, fingerprint }) => {
+  if (!FORM_TOKEN_SECRET) return true;
+  if (!token) return false;
+
+  const [encodedPayload, encodedSignature] = String(token).split(".");
+  if (!encodedPayload || !encodedSignature) return false;
+
+  const expectedSignature = signTokenPayload(encodedPayload);
+  const actualSignature = fromBase64Url(encodedSignature);
+
+  if (expectedSignature.length !== actualSignature.length) return false;
+  if (!timingSafeEqual(expectedSignature, actualSignature)) return false;
+
+  try {
+    const decoded = JSON.parse(fromBase64Url(encodedPayload).toString("utf8"));
+    if (!decoded?.exp || Date.now() > Number(decoded.exp)) return false;
+    if ((decoded.formId || "lead_form") !== (formId || "lead_form")) return false;
+    if ((decoded.origin || "") !== String(origin || "").toLowerCase()) return false;
+    if ((decoded.fingerprint || "") !== String(fingerprint || "")) return false;
+    return true;
+  } catch {
+    return false;
+  }
 };
 
 const verifyTurnstile = async (token, remoteIp) => {
@@ -630,6 +700,29 @@ const sendWithSes = async ({ email, to, from, replyTo, subject }) => {
 export async function main(event = {}) {
   const method = event.__ow_method ? String(event.__ow_method).toLowerCase() : "";
 
+  if (method === "get") {
+    const request = parseBody(event);
+    const payload = {
+      formId: clean(request.form_id, MAX_LENGTHS.formId),
+      page: clean(request.page, MAX_LENGTHS.page),
+      fingerprint: clean(request.fingerprint, MAX_LENGTHS.fingerprint),
+    };
+
+    if (!isAllowedOrigin(event, payload)) {
+      return json(403, { ok: false, error: "origin_not_allowed" });
+    }
+
+    return json(200, {
+      ok: true,
+      token: buildFormToken({
+        formId: payload.formId,
+        origin: getRequestOrigin(event, payload),
+        fingerprint: payload.fingerprint,
+      }),
+      expires_in_ms: FORM_TOKEN_TTL_MS,
+    });
+  }
+
   if (method === "options") {
     return json(204, "");
   }
@@ -712,6 +805,17 @@ export async function main(event = {}) {
 
   if (!(await verifyTurnstile(payload.turnstileToken, clientIp))) {
     return json(400, { ok: false, error: "turnstile_failed" });
+  }
+
+  if (
+    !verifyFormToken({
+      token: payload.formToken,
+      formId: payload.formId,
+      origin: getRequestOrigin(event, payload),
+      fingerprint: payload.fingerprint,
+    })
+  ) {
+    return json(400, { ok: false, error: "form_token_invalid" });
   }
 
   const to = process.env.LEAD_EMAIL_TO;
