@@ -1,6 +1,15 @@
 import { SendEmailCommand, SESv2Client } from "@aws-sdk/client-sesv2";
 import { promises as dns } from "node:dns";
 
+const MIN_SUBMIT_MS = 2_000;
+const MAX_URL_COUNT = 1;
+const MIN_MSG_LENGTH = 15;
+const MAX_FIELD_LENGTH = 4_000;
+const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
+const RATE_LIMIT_MAX_ATTEMPTS = 6;
+const RATE_LIMIT_MIN_INTERVAL_MS = 30 * 1000;
+const TURNSTILE_SECRET = String(process.env.TURNSTILE_SECRET_KEY || "").trim();
+
 const MAX_LENGTHS = {
   name: 120,
   email: 180,
@@ -18,7 +27,12 @@ const MAX_LENGTHS = {
   aiTouchpoints: 500,
   biggestConcern: 120,
   preferredNextStep: 120,
+  startedAt: 32,
+  fingerprint: 128,
+  turnstileToken: 2048,
 };
+
+const submissionAttempts = new Map();
 
 const FREE_EMAIL_DOMAINS = new Set([
   "aol.com",
@@ -60,6 +74,12 @@ const splitDomains = (value) =>
 
 const NON_ENGLISH_SCRIPT_PATTERN =
   /[\p{Script=Arabic}\p{Script=Armenian}\p{Script=Bengali}\p{Script=Bopomofo}\p{Script=Cyrillic}\p{Script=Devanagari}\p{Script=Ethiopic}\p{Script=Georgian}\p{Script=Greek}\p{Script=Gujarati}\p{Script=Gurmukhi}\p{Script=Han}\p{Script=Hangul}\p{Script=Hebrew}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Kannada}\p{Script=Khmer}\p{Script=Lao}\p{Script=Malayalam}\p{Script=Myanmar}\p{Script=Oriya}\p{Script=Sinhala}\p{Script=Tamil}\p{Script=Telugu}\p{Script=Thai}\p{Script=Tibetan}]/u;
+const NON_ENGLISH_LATIN_DIACRITICS =
+  /[àáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿāăąćĉčďđēĕėęěĝğġģĥħĩīĭįıĵķĺļľłńņňŋōŏőœŕŗřśŝşšţťŧũūŭůűųŵŷźżžƀƁƂƃƄƅƆƇƈƉƊƋƌƍƎƏ]/gi;
+const URL_PATTERN = /(?:https?:\/\/|ftp:\/\/|www\.)\S+/gi;
+const REPETITION_PATTERN = /\b(\w{3,})\b(?:[\s,;.!?]+\1\b){4,}/i;
+const SPAM_PHRASE_PATTERN =
+  /\b(?:seo\b|search engine optim|rank(?:ing)? on google|backlink|link.?build|digital marketing agency|guaranteed (?:results?|traffic|rankings?|leads?)|buy (?:traffic|followers|backlinks?|reviews?)|(?:casino|poker|slot machine|sports? betting|online gambling)|(?:crypto(?:currency)?|bitcoin|forex|binary options?) invest|(?:viagra|cialis|levitra|sildenafil|online pharmacy)|(?:loan|mortgage|credit(?: card)?) (?:offer|approv)|urgent (?:business|investment) (?:proposal|opportunity)|work from home|make money online)\b/i;
 
 const json = (statusCode, body) => ({
   statusCode,
@@ -135,6 +155,9 @@ const normalisePayload = (event) => {
       body.preferred_next_step,
       MAX_LENGTHS.preferredNextStep
     ),
+    startedAt: clean(body._started_at, MAX_LENGTHS.startedAt),
+    fingerprint: clean(body._fingerprint, MAX_LENGTHS.fingerprint),
+    turnstileToken: clean(body._turnstile_token, MAX_LENGTHS.turnstileToken),
     website: clean(body.website, 200),
   };
 };
@@ -142,6 +165,13 @@ const normalisePayload = (event) => {
 const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
 const getEmailDomain = (email) => email.split("@").pop()?.toLowerCase() || "";
+
+const hasSignificantNonEnglishLatin = (text) => {
+  const diacriticCount = (text.match(NON_ENGLISH_LATIN_DIACRITICS) || []).length;
+  const letterCount = (text.match(/[a-zA-Z\u00C0-\u024F]/g) || []).length;
+  if (letterCount < 8) return false;
+  return diacriticCount / letterCount > 0.06;
+};
 
 const isAllowedEmailDomain = async (email) => {
   const domain = getEmailDomain(email);
@@ -187,8 +217,88 @@ const isEnglishLanguageSubmission = ({ name, company, topic, message, language }
 
   const text = [name, company, topic, message].filter(Boolean).join(" ");
   if (NON_ENGLISH_SCRIPT_PATTERN.test(text)) return false;
+  if (hasSignificantNonEnglishLatin(text)) return false;
 
   return /[a-z]{2,}/i.test(text);
+};
+
+const hasTooManyUrls = (payload) => {
+  const text = [
+    payload.name,
+    payload.company,
+    payload.role,
+    payload.topic,
+    payload.message,
+    payload.materials,
+    payload.aiTouchpoints,
+    payload.biggestConcern,
+    payload.preferredNextStep,
+  ]
+    .filter(Boolean)
+    .join(" ");
+  const matches = text.match(URL_PATTERN);
+  return (matches?.length ?? 0) > MAX_URL_COUNT;
+};
+
+const getInvalidContentReason = (payload) => {
+  if (payload.message && payload.message.length < MIN_MSG_LENGTH) {
+    return "too_short";
+  }
+
+  for (const value of [
+    payload.name,
+    payload.email,
+    payload.company,
+    payload.role,
+    payload.topic,
+    payload.message,
+    payload.page,
+    payload.materials,
+    payload.aiTouchpoints,
+    payload.biggestConcern,
+    payload.preferredNextStep,
+  ]) {
+    if (String(value || "").length > MAX_FIELD_LENGTH) {
+      return "too_long";
+    }
+  }
+
+  const combined = [
+    payload.name,
+    payload.company,
+    payload.role,
+    payload.topic,
+    payload.message,
+    payload.materials,
+    payload.aiTouchpoints,
+    payload.biggestConcern,
+    payload.preferredNextStep,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  if (REPETITION_PATTERN.test(combined)) {
+    return "repetitive";
+  }
+
+  return null;
+};
+
+const hasSpamPhrases = (payload) => {
+  const text = [
+    payload.name,
+    payload.company,
+    payload.role,
+    payload.topic,
+    payload.message,
+    payload.materials,
+    payload.aiTouchpoints,
+    payload.biggestConcern,
+    payload.preferredNextStep,
+  ]
+    .filter(Boolean)
+    .join(" ");
+  return SPAM_PHRASE_PATTERN.test(text);
 };
 
 const isMissingSecret = (value) =>
@@ -205,6 +315,111 @@ const isValidSenderIdentity = (value) =>
 
 const getLeadLabel = ({ leadName, leadType, formId }) =>
   leadName || leadType || formId || "Website Lead Form";
+
+const getHeaders = (event = {}) => {
+  const headers = event.__ow_headers;
+  if (!headers || typeof headers !== "object") return {};
+  return Object.fromEntries(
+    Object.entries(headers).map(([key, value]) => [String(key).toLowerCase(), String(value)])
+  );
+};
+
+const getClientIp = (event = {}) => {
+  const headers = getHeaders(event);
+  return (
+    headers["cf-connecting-ip"] ||
+    headers["x-forwarded-for"]?.split(",")[0]?.trim() ||
+    headers["x-real-ip"] ||
+    ""
+  );
+};
+
+const getRecentAttempts = (key) => {
+  const now = Date.now();
+  return (submissionAttempts.get(key) || []).filter(
+    (timestamp) => now - timestamp < RATE_LIMIT_WINDOW_MS
+  );
+};
+
+const canRegisterSubmissionAttempt = (key) => {
+  if (!key) return true;
+
+  const now = Date.now();
+  const recentAttempts = getRecentAttempts(key);
+
+  const lastAttempt = recentAttempts[recentAttempts.length - 1];
+  if (lastAttempt && now - lastAttempt < RATE_LIMIT_MIN_INTERVAL_MS) {
+    return false;
+  }
+
+  if (recentAttempts.length >= RATE_LIMIT_MAX_ATTEMPTS) {
+    return false;
+  }
+
+  return true;
+};
+
+const recordSubmissionAttempt = (key) => {
+  if (!key) return;
+
+  const now = Date.now();
+  const recentAttempts = getRecentAttempts(key);
+  recentAttempts.push(now);
+  submissionAttempts.set(key, recentAttempts);
+};
+
+const registerSubmissionAttempts = (keys = []) => {
+  const uniqueKeys = [...new Set(keys.filter(Boolean))];
+  if (!uniqueKeys.every(canRegisterSubmissionAttempt)) {
+    return false;
+  }
+
+  uniqueKeys.forEach(recordSubmissionAttempt);
+  return true;
+};
+
+const getRateLimitKeys = (payload, clientIp) => {
+  const keys = [];
+
+  if (clientIp) keys.push(`ip:${clientIp}`);
+  if (payload.fingerprint) keys.push(`fp:${payload.fingerprint}`);
+  if (payload.email) keys.push(`email:${payload.email}`);
+
+  return keys;
+};
+
+const isAllowedOrigin = (event = {}, payload = {}) => {
+  const allowedOrigins = splitDomains(process.env.LEAD_ALLOWED_ORIGINS);
+  if (!allowedOrigins.length) return true;
+
+  const headers = getHeaders(event);
+  const origin = String(headers.origin || headers.referer || payload.page || "").toLowerCase();
+  return allowedOrigins.some((allowedOrigin) => origin.startsWith(allowedOrigin));
+};
+
+const verifyTurnstile = async (token, remoteIp) => {
+  if (!TURNSTILE_SECRET) return true;
+  if (!token) return false;
+
+  try {
+    const response = await fetch(
+      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          secret: TURNSTILE_SECRET,
+          response: token,
+          remoteip: remoteIp || undefined,
+        }),
+      }
+    );
+    const result = await response.json();
+    return result.success === true;
+  } catch {
+    return false;
+  }
+};
 
 const isAssessmentSubmission = (payload) =>
   payload.formId === "assessment-form-main" ||
@@ -424,10 +639,19 @@ export async function main(event = {}) {
   }
 
   const payload = normalisePayload(event);
+  const clientIp = getClientIp(event);
 
   // Honeypot: behave like success so bots do not learn the rule.
   if (payload.website) {
     return json(200, { ok: true });
+  }
+
+  if (!isAllowedOrigin(event, payload)) {
+    return json(403, { ok: false, error: "origin_not_allowed" });
+  }
+
+  if (!registerSubmissionAttempts(getRateLimitKeys(payload, clientIp))) {
+    return json(429, { ok: false, error: "rate_limited", reason: "too_many_attempts" });
   }
 
   const missing = ["name", "email", "topic", "message"].filter(
@@ -451,6 +675,11 @@ export async function main(event = {}) {
     return json(400, { ok: false, error: "invalid_email" });
   }
 
+  const startedAt = Number.parseInt(payload.startedAt, 10);
+  if (Number.isFinite(startedAt) && Date.now() - startedAt < MIN_SUBMIT_MS) {
+    return json(400, { ok: false, error: "submitted_too_fast" });
+  }
+
   const emailPolicy = await isAllowedEmailDomain(payload.email);
   if (!emailPolicy.ok) {
     return json(400, {
@@ -462,6 +691,27 @@ export async function main(event = {}) {
 
   if (!isEnglishLanguageSubmission(payload)) {
     return json(400, { ok: false, error: "english_language_required" });
+  }
+
+  if (hasTooManyUrls(payload)) {
+    return json(400, { ok: false, error: "url_spam" });
+  }
+
+  const invalidContentReason = getInvalidContentReason(payload);
+  if (invalidContentReason) {
+    return json(400, {
+      ok: false,
+      error: "invalid_content",
+      reason: invalidContentReason,
+    });
+  }
+
+  if (hasSpamPhrases(payload)) {
+    return json(400, { ok: false, error: "spam_detected" });
+  }
+
+  if (!(await verifyTurnstile(payload.turnstileToken, clientIp))) {
+    return json(400, { ok: false, error: "turnstile_failed" });
   }
 
   const to = process.env.LEAD_EMAIL_TO;

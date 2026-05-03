@@ -3,6 +3,13 @@
   if (!forms.length) return;
 
   const successMessage = "Thank you. Your enquiry has been sent.";
+  const RATE_LIMIT_KEY = "aa_lead_last_submit";
+  const RATE_LIMIT_MS = 60_000;
+  const MIN_SUBMIT_MS = 2_500;
+  const MAX_URL_COUNT = 1;
+  const MIN_MSG_LENGTH = 15;
+  const MAX_FIELD_LENGTH = 4_000;
+  const turnstileSiteKey = document.documentElement.dataset.turnstileSiteKey?.trim() || "";
   const freeEmailDomains = new Set([
     "aol.com",
     "fastmail.com",
@@ -36,6 +43,19 @@
   ]);
   const nonEnglishScriptPattern =
     /[\p{Script=Arabic}\p{Script=Armenian}\p{Script=Bengali}\p{Script=Bopomofo}\p{Script=Cyrillic}\p{Script=Devanagari}\p{Script=Ethiopic}\p{Script=Georgian}\p{Script=Greek}\p{Script=Gujarati}\p{Script=Gurmukhi}\p{Script=Han}\p{Script=Hangul}\p{Script=Hebrew}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Kannada}\p{Script=Khmer}\p{Script=Lao}\p{Script=Malayalam}\p{Script=Myanmar}\p{Script=Oriya}\p{Script=Sinhala}\p{Script=Tamil}\p{Script=Telugu}\p{Script=Thai}\p{Script=Tibetan}]/u;
+  const nonEnglishLatinDiacritics =
+    /[àáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿāăąćĉčďđēĕėęěĝğġģĥħĩīĭįıĵķĺļľłńņňŋōŏőœŕŗřśŝşšţťŧũūŭůűųŵŷźżžƀƁƂƃƄƅƆƇƈƉƊƋƌƍƎƏ]/gi;
+  const urlPattern = /(?:https?:\/\/|ftp:\/\/|www\.)\S+/gi;
+  const repetitionPattern = /\b(\w{3,})\b(?:[\s,;.!?]+\1\b){4,}/i;
+  const spamPhrasePattern =
+    /\b(?:seo\b|search engine optim|rank(?:ing)? on google|backlink|link.?build|digital marketing agency|guaranteed (?:results?|traffic|rankings?|leads?)|buy (?:traffic|followers|backlinks?|reviews?)|(?:casino|poker|slot machine|sports? betting|online gambling)|(?:crypto(?:currency)?|bitcoin|forex|binary options?) invest|(?:viagra|cialis|levitra|sildenafil|online pharmacy)|(?:loan|mortgage|credit(?: card)?) (?:offer|approv)|urgent (?:business|investment) (?:proposal|opportunity)|work from home|make money online)\b/i;
+  const formStartedAt = new WeakMap();
+  const turnstileWidgets = new WeakMap();
+  const FINGERPRINT_JS_SRC = "https://openfpcdn.io/fingerprintjs/v4/iife.min.js";
+  const FINGERPRINT_JS_GLOBAL = "FingerprintJS";
+  let turnstileScriptPromise = null;
+  let fingerprintScriptPromise = null;
+  let fingerprintAgentPromise = null;
 
   const setStatus = (form, message) => {
     const targetId = form.getAttribute("data-status-target");
@@ -56,6 +76,28 @@
 
   const getValue = (form, name) =>
     String(new FormData(form).get(name) || "").trim();
+
+  const hasSignificantNonEnglishLatin = (text) => {
+    const diacriticCount = (text.match(nonEnglishLatinDiacritics) || []).length;
+    const letterCount = (text.match(/[a-zA-Z\u00C0-\u024F]/g) || []).length;
+    if (letterCount < 8) return false;
+    return diacriticCount / letterCount > 0.06;
+  };
+
+  const isHeadlessBrowser = () => {
+    if (navigator.webdriver) return true;
+    if (window._phantom || window.callPhantom) return true;
+    if (/Chrome\//.test(navigator.userAgent) && !window.chrome) return true;
+    if (window.outerWidth === 0 && window.outerHeight === 0) return true;
+    if (
+      navigator.plugins?.length === 0 &&
+      navigator.mimeTypes?.length === 0 &&
+      !/Firefox/.test(navigator.userAgent)
+    ) {
+      return true;
+    }
+    return false;
+  };
 
   const getLeadType = (form) => {
     const explicit = form.getAttribute("data-lead-type");
@@ -95,7 +137,165 @@
       .map(([, value]) => String(value).trim())
       .filter(Boolean)
       .join(" ");
-    return /[a-z]{2,}/i.test(text) && !nonEnglishScriptPattern.test(text);
+    return (
+      /[a-z]{2,}/i.test(text) &&
+      !nonEnglishScriptPattern.test(text) &&
+      !hasSignificantNonEnglishLatin(text)
+    );
+  };
+
+  const hasTooManyUrls = (form) => {
+    const text = Array.from(new FormData(form).entries())
+      .filter(([name]) => !["website", "language"].includes(name))
+      .map(([, value]) => String(value))
+      .join(" ");
+    const matches = text.match(urlPattern);
+    return (matches?.length ?? 0) > MAX_URL_COUNT;
+  };
+
+  const hasInvalidContent = (form) => {
+    const fd = new FormData(form);
+    const message = String(fd.get("message") || "").trim();
+    if (message && message.length < MIN_MSG_LENGTH) return "too_short";
+    for (const [name, rawValue] of fd.entries()) {
+      if (name === "website") continue;
+      if (String(rawValue).length > MAX_FIELD_LENGTH) return "too_long";
+    }
+    const allText = Array.from(fd.entries())
+      .filter(([name]) => name !== "website")
+      .map(([, value]) => String(value))
+      .join(" ");
+    if (repetitionPattern.test(allText)) return "repetitive";
+    return null;
+  };
+
+  const hasSpamPhrases = (form) => {
+    const text = Array.from(new FormData(form).entries())
+      .filter(([name]) => !["website", "language"].includes(name))
+      .map(([, value]) => String(value))
+      .join(" ");
+    return spamPhrasePattern.test(text);
+  };
+
+  const isRateLimited = () => {
+    const last = sessionStorage.getItem(RATE_LIMIT_KEY);
+    if (!last) return false;
+    return Date.now() - Number(last) < RATE_LIMIT_MS;
+  };
+
+  const recordSubmission = () => {
+    sessionStorage.setItem(RATE_LIMIT_KEY, String(Date.now()));
+  };
+
+  const loadFingerprintScript = () => {
+    if (fingerprintScriptPromise) return fingerprintScriptPromise;
+    fingerprintScriptPromise = new Promise((resolve) => {
+      if (window[FINGERPRINT_JS_GLOBAL]?.load) {
+        resolve();
+        return;
+      }
+
+      const existing = document.querySelector(`script[src="${FINGERPRINT_JS_SRC}"]`);
+      if (existing) {
+        existing.addEventListener("load", () => resolve(), { once: true });
+        existing.addEventListener("error", () => resolve(), { once: true });
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.src = FINGERPRINT_JS_SRC;
+      script.async = true;
+      script.defer = true;
+      script.onload = () => resolve();
+      script.onerror = () => resolve();
+      document.head.append(script);
+    });
+    return fingerprintScriptPromise;
+  };
+
+  const getFingerprintAgent = async () => {
+    if (fingerprintAgentPromise) return fingerprintAgentPromise;
+    fingerprintAgentPromise = (async () => {
+      await loadFingerprintScript();
+      const loader = window[FINGERPRINT_JS_GLOBAL];
+      if (!loader?.load) return null;
+
+      try {
+        return await loader.load();
+      } catch {
+        return null;
+      }
+    })();
+    return fingerprintAgentPromise;
+  };
+
+  const getBrowserFingerprint = async () => {
+    const agent = await getFingerprintAgent();
+    if (!agent?.get) return "";
+
+    try {
+      const result = await agent.get();
+      return result?.visitorId || "";
+    } catch {
+      return "";
+    }
+  };
+
+  const loadTurnstileScript = () => {
+    if (turnstileScriptPromise) return turnstileScriptPromise;
+    turnstileScriptPromise = new Promise((resolve) => {
+      if (!turnstileSiteKey || window.turnstile) {
+        resolve();
+        return;
+      }
+      const script = document.createElement("script");
+      script.src =
+        "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+      script.async = true;
+      script.defer = true;
+      script.onload = () => resolve();
+      script.onerror = () => resolve();
+      document.head.append(script);
+    });
+    return turnstileScriptPromise;
+  };
+
+  const getTurnstileToken = async (form) => {
+    if (!turnstileSiteKey) return "";
+    await loadTurnstileScript();
+    if (!window.turnstile) return "";
+
+    return new Promise((resolve) => {
+      let container = form.querySelector("[data-turnstile-widget]");
+      if (!(container instanceof HTMLElement)) {
+        container = document.createElement("div");
+        container.setAttribute("data-turnstile-widget", "");
+        container.style.cssText = "position:absolute;visibility:hidden;";
+        form.append(container);
+      }
+
+      let widgetId = turnstileWidgets.get(form);
+      if (widgetId == null) {
+        widgetId = window.turnstile.render(container, {
+          sitekey: turnstileSiteKey,
+          size: "invisible",
+          callback: (token) => resolve(token || ""),
+          "error-callback": () => resolve(""),
+          "expired-callback": () => resolve(""),
+        });
+        turnstileWidgets.set(form, widgetId);
+      } else {
+        try {
+          window.turnstile.reset(widgetId);
+        } catch {}
+      }
+
+      try {
+        window.turnstile.execute(widgetId);
+      } catch {
+        resolve("");
+      }
+    });
   };
 
   const setFieldError = (field, message) => {
@@ -128,6 +328,37 @@
 
       if (result?.error === "english_language_required") {
         return "Please write your enquiry in English.";
+      }
+
+      if (result?.error === "rate_limited") {
+        return "Please wait a minute before sending another enquiry.";
+      }
+
+      if (result?.error === "submitted_too_fast") {
+        return "Please take a moment to complete the form.";
+      }
+
+      if (result?.error === "url_spam") {
+        return "Please remove extra links and try again.";
+      }
+
+      if (result?.error === "invalid_content") {
+        if (result?.reason === "too_short") {
+          return "Please add a little more detail.";
+        }
+        return "Please revise the content and try again.";
+      }
+
+      if (result?.error === "spam_detected") {
+        return "We could not verify this enquiry.";
+      }
+
+      if (result?.error === "turnstile_failed") {
+        return "Please retry the form verification and send again.";
+      }
+
+      if (result?.error === "origin_not_allowed") {
+        return "Please submit the form from the website.";
       }
 
       return "We could not send your enquiry. Please try again in a moment.";
@@ -194,7 +425,7 @@
       .join("\n");
   };
 
-  const buildPayload = (form) => {
+  const buildPayload = async (form) => {
     const fd = new FormData(form);
     const baseMessage = String(fd.get("message") || "").trim();
     const materials = fd
@@ -205,6 +436,8 @@
       .getAll("ai_touchpoints")
       .map((value) => String(value).trim())
       .filter(Boolean);
+    const turnstileToken = await getTurnstileToken(form);
+    const fingerprint = await getBrowserFingerprint();
     return {
       ...getFormContext(form),
       name: getValue(form, "name"),
@@ -216,6 +449,9 @@
       website: String(fd.get("website") || "").trim(),
       language: String(fd.get("language") || "en").trim() || "en",
       page: window.location.href,
+      _started_at: formStartedAt.get(form) || Date.now(),
+      _fingerprint: fingerprint,
+      _turnstile_token: turnstileToken,
       materials,
       ai_touchpoints: aiTouchpoints,
       biggest_concern: getValue(form, "biggest_concern"),
@@ -388,6 +624,7 @@
 
   forms.forEach((form) => {
     let hasStarted = false;
+    formStartedAt.set(form, Date.now());
     const markStarted = () => {
       if (hasStarted) return;
       hasStarted = true;
@@ -409,6 +646,33 @@
         form.reportValidity();
         setStatus(form, "Please complete the required fields.");
         track("contact_validation_error", context);
+        return;
+      }
+
+      if (isHeadlessBrowser()) {
+        setStatus(form, "We could not verify this browser session.");
+        track("contact_validation_error", {
+          ...context,
+          reason: "headless_browser_detected",
+        });
+        return;
+      }
+
+      if (Date.now() - (formStartedAt.get(form) || Date.now()) < MIN_SUBMIT_MS) {
+        setStatus(form, "Please take a moment to complete the form.");
+        track("contact_validation_error", {
+          ...context,
+          reason: "submitted_too_fast",
+        });
+        return;
+      }
+
+      if (isRateLimited()) {
+        setStatus(form, "Please wait a minute before sending another enquiry.");
+        track("contact_validation_error", {
+          ...context,
+          reason: "rate_limited",
+        });
         return;
       }
 
@@ -435,17 +699,51 @@
         return;
       }
 
+      if (hasTooManyUrls(form)) {
+        setStatus(form, "Please remove extra links and try again.");
+        track("contact_validation_error", {
+          ...context,
+          reason: "url_spam",
+        });
+        return;
+      }
+
+      const contentIssue = hasInvalidContent(form);
+      if (contentIssue) {
+        setStatus(
+          form,
+          contentIssue === "too_short"
+            ? "Please add a little more detail."
+            : "Please revise the content and try again."
+        );
+        track("contact_validation_error", {
+          ...context,
+          reason: `invalid_content:${contentIssue}`,
+        });
+        return;
+      }
+
+      if (hasSpamPhrases(form)) {
+        setStatus(form, "We could not verify this enquiry.");
+        track("contact_validation_error", {
+          ...context,
+          reason: "spam_detected",
+        });
+        return;
+      }
+
       setStatus(form, "Sending enquiry...");
 
       try {
         const endpoint = form.getAttribute("data-lead-endpoint") || form.action;
+        const payload = await buildPayload(form);
         const response = await fetch(endpoint, {
           method: "POST",
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(buildPayload(form)),
+          body: JSON.stringify(payload),
         });
 
         const result = await response.json().catch(() => null);
@@ -456,6 +754,8 @@
         }
 
         form.reset();
+        formStartedAt.set(form, Date.now());
+        recordSubmission();
         setStatus(form, "");
         showSuccessCard(form);
         track("contact_submit", context);
