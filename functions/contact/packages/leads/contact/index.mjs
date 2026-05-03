@@ -712,13 +712,16 @@ export async function main(event = {}) {
       return json(403, { ok: false, error: "origin_not_allowed" });
     }
 
+    const formToken = buildFormToken({
+      formId: payload.formId,
+      origin: getRequestOrigin(event, payload),
+      fingerprint: payload.fingerprint,
+    });
+
     return json(200, {
       ok: true,
-      token: buildFormToken({
-        formId: payload.formId,
-        origin: getRequestOrigin(event, payload),
-        fingerprint: payload.fingerprint,
-      }),
+      form_token: formToken,
+      token: formToken,
       expires_in_ms: FORM_TOKEN_TTL_MS,
     });
   }

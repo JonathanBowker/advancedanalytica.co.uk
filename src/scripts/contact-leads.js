@@ -324,7 +324,7 @@
         },
       });
       const result = await response.json().catch(() => null);
-      const token = String(result?.form_token || "").trim();
+      const token = String(result?.form_token || result?.token || "").trim();
       if (!response.ok || !token) return "";
       formTokenCache.set(form, {
         token,
