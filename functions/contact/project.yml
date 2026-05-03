@@ -7,7 +7,6 @@ packages:
       LEAD_EMAIL_TO: ${LEAD_EMAIL_TO}
       LEAD_EMAIL_FROM: ${LEAD_EMAIL_FROM}
       LEAD_FORM_TOKEN_SECRET: ${LEAD_FORM_TOKEN_SECRET}
-      TURNSTILE_SECRET_KEY: ${TURNSTILE_SECRET_KEY}
     functions:
       - name: contact
         runtime: nodejs:22
