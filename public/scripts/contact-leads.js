@@ -53,9 +53,11 @@
   const turnstileWidgets = new WeakMap();
   const FINGERPRINT_JS_SRC = "https://openfpcdn.io/fingerprintjs/v4/iife.min.js";
   const FINGERPRINT_JS_GLOBAL = "FingerprintJS";
+  const FORM_TOKEN_TTL_MS = 9 * 60 * 1000;
   let turnstileScriptPromise = null;
   let fingerprintScriptPromise = null;
   let fingerprintAgentPromise = null;
+  const formTokenCache = new WeakMap();
 
   const setStatus = (form, message) => {
     const targetId = form.getAttribute("data-status-target");
@@ -241,6 +243,43 @@
     }
   };
 
+  const getFormToken = async (form, fingerprint) => {
+    const cached = formTokenCache.get(form);
+    if (
+      cached?.token &&
+      cached.fingerprint === fingerprint &&
+      Date.now() - cached.issuedAt < FORM_TOKEN_TTL_MS
+    ) {
+      return cached.token;
+    }
+
+    const endpoint = form.getAttribute("data-lead-endpoint") || form.action;
+    const url = new URL(endpoint, window.location.href);
+    url.searchParams.set("form_id", form.id || "lead_form");
+    url.searchParams.set("page", window.location.href);
+    url.searchParams.set("fingerprint", fingerprint);
+
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+        },
+      });
+      const result = await response.json().catch(() => null);
+      if (!response.ok || !result?.ok || !result?.token) return "";
+
+      formTokenCache.set(form, {
+        token: String(result.token),
+        fingerprint,
+        issuedAt: Date.now(),
+      });
+      return String(result.token);
+    } catch {
+      return "";
+    }
+  };
+
   const loadTurnstileScript = () => {
     if (turnstileScriptPromise) return turnstileScriptPromise;
     turnstileScriptPromise = new Promise((resolve) => {
@@ -357,6 +396,10 @@
         return "Please retry the form verification and send again.";
       }
 
+      if (result?.error === "form_token_invalid") {
+        return "Please refresh the page and try again.";
+      }
+
       if (result?.error === "origin_not_allowed") {
         return "Please submit the form from the website.";
       }
@@ -438,6 +481,7 @@
       .filter(Boolean);
     const turnstileToken = await getTurnstileToken(form);
     const fingerprint = await getBrowserFingerprint();
+    const formToken = await getFormToken(form, fingerprint);
     return {
       ...getFormContext(form),
       name: getValue(form, "name"),
@@ -451,6 +495,7 @@
       page: window.location.href,
       _started_at: formStartedAt.get(form) || Date.now(),
       _fingerprint: fingerprint,
+      _form_token: formToken,
       _turnstile_token: turnstileToken,
       materials,
       ai_touchpoints: aiTouchpoints,
