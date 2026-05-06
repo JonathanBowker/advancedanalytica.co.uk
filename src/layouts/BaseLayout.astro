@@ -7,6 +7,7 @@ import SiteFooter from '../components/SiteFooter.astro';
 import GoogleAnalytics from '../components/GoogleAnalytics.astro';
 import type { PageMeta } from '../lib/seo/buildGraph';
 import { DEFAULT_OG_IMAGE, SITE_NAME } from '../lib/seo/site';
+import { toSentenceCaseTitle } from '../lib/titleFormat';
 
 const { title, description, page } = Astro.props as {
   title: string;
@@ -17,7 +18,22 @@ const { title, description, page } = Astro.props as {
   headerContactHref?: string;
 };
 
-const fullTitle = `${title} | Advanced Analytica`;
+const displayTitle = toSentenceCaseTitle(title);
+const normalizedPage = {
+  ...page,
+  title: toSentenceCaseTitle(page.title),
+  breadcrumbs: page.breadcrumbs?.map((item) => ({
+    ...item,
+    name: toSentenceCaseTitle(item.name)
+  })),
+  article: page.article
+    ? {
+        ...page.article,
+        title: toSentenceCaseTitle(page.article.title)
+      }
+    : undefined
+};
+const fullTitle = `${displayTitle} | Advanced Analytica`;
 const socialImage = DEFAULT_OG_IMAGE;
 const socialImageAlt = `${SITE_NAME}: ${description}`;
 const socialType = page.isArticle ? 'article' : 'website';
@@ -53,7 +69,7 @@ const signedIn = Boolean(Astro.locals.user);
     <link rel="alternate icon" href="/favicon.svg" sizes="any" />
     <slot name="head" />
     <ThemeVars />
-    <JsonLd page={page} />
+    <JsonLd page={normalizedPage} />
   </head>
   <body class={`bg-background text-ink ${Astro.props.bodyClass ?? ""}`.trim()}>
     <SiteHeader contactHref={Astro.props.headerContactHref ?? "#get-in-touch"} signedIn={signedIn} />

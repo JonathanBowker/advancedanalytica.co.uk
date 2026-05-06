@@ -3,6 +3,7 @@ import BaseLayout from "../../../../layouts/BaseLayout.astro";
 import PostCard from "../../../../components/PostCard.astro";
 import { getCollection, type CollectionEntry } from "astro:content";
 import { SITE_URL } from "../../../../lib/seo/site";
+import { toSentenceCaseTitle } from "../../../../lib/titleFormat";
 import {
   businessFunctions,
   getRolePath,
@@ -88,7 +89,7 @@ const roleFaqs = [
   },
 ];
 
-const title = `${role.data.title} | ${entry.title}`;
+const title = `${toSentenceCaseTitle(role.data.title)} | ${toSentenceCaseTitle(entry.title)}`;
 const description = `${role.data.summary} ${role.data.detail}`;
 
 const page = {
@@ -97,8 +98,8 @@ const page = {
   url: `${SITE_URL}${getRolePath(entry.slug, role.data.title)}`,
   breadcrumbs: [
     { name: "Home", url: `${SITE_URL}/` },
-    { name: entry.title, url: `${SITE_URL}/functions/${entry.slug}/` },
-    { name: role.data.title, url: `${SITE_URL}${getRolePath(entry.slug, role.data.title)}` },
+    { name: toSentenceCaseTitle(entry.title), url: `${SITE_URL}/functions/${entry.slug}/` },
+    { name: toSentenceCaseTitle(role.data.title), url: `${SITE_URL}${getRolePath(entry.slug, role.data.title)}` },
   ],
 };
 ---
@@ -113,7 +114,7 @@ const page = {
             Role page
           </div>
           <h1 class="mt-5 text-[clamp(2.8rem,5vw,4.85rem)] font-semibold tracking-tight leading-[1.05] text-paper">
-            {role.data.title}
+            {toSentenceCaseTitle(role.data.title)}
           </h1>
           <p class="mt-5 max-w-[72ch] text-[clamp(1.35rem,2.2vw,2rem)] font-light leading-[1.2] text-[#14B8A6]">
             Role path within {entry.title}
@@ -181,7 +182,7 @@ const page = {
                     : "border-paper/20 text-paper/70 hover:border-[#14B8A6] hover:text-paper",
                 ]}
               >
-                {item.data.title}
+                {toSentenceCaseTitle(item.data.title)}
               </a>
             ))
           }

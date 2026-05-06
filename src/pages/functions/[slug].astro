@@ -3,6 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import PostCard from "../../components/PostCard.astro";
 import { getCollection } from "astro:content";
 import { SITE_URL } from "../../lib/seo/site";
+import { toSentenceCaseTitle } from "../../lib/titleFormat";
 import {
   businessFunctions,
   getRolePath,
@@ -34,15 +35,16 @@ const functionRoles = (await getCollection("roles", ({ data }) =>
   .sort((a, b) => a.data.order - b.data.order);
 
 const title = entry.title;
+const displayTitle = toSentenceCaseTitle(title);
 const description = entry.description;
 
 const page = {
-  title,
+  title: displayTitle,
   description,
   url: `${SITE_URL}/functions/${entry.slug}/`,
   breadcrumbs: [
     { name: "Home", url: `${SITE_URL}/` },
-    { name: title, url: `${SITE_URL}/functions/${entry.slug}/` },
+    { name: displayTitle, url: `${SITE_URL}/functions/${entry.slug}/` },
   ],
 };
 
@@ -66,14 +68,14 @@ const journeySteps = [
 ];
 ---
 
-<BaseLayout title={title} description={description} page={page}>
+<BaseLayout title={displayTitle} description={description} page={page}>
   <section class="bg-gradient-to-br from-black via-[#0b0e14] to-[#171b24] text-paper">
     <div class="container-wide py-16 md:py-20">
       <div class="grid gap-10 lg:grid-cols-[1.18fr_0.82fr] lg:items-start">
         <div>
           <div class="eyebrow text-paper/70">{entry.eyebrow}</div>
           <h1 class="mt-5 text-[clamp(2.8rem,5vw,4.85rem)] font-semibold tracking-tight leading-[1.05] text-paper">
-            {entry.title}
+            {displayTitle}
           </h1>
           <p class="mt-5 max-w-[24ch] text-[clamp(1.45rem,2.4vw,2.2rem)] font-light leading-[1.2] text-[#14B8A6]">
             {entry.heading}
@@ -121,7 +123,7 @@ const journeySteps = [
                     data-role-target={`role-path-${index}`}
                     class="inline-flex items-center rounded-full border border-paper/15 bg-black/10 px-4 py-2 text-sm font-medium text-paper/80 transition-colors hover:border-[#14B8A6] hover:text-paper"
                   >
-                    {role.data.title}
+                    {toSentenceCaseTitle(role.data.title)}
                   </button>
                 ))
               }
@@ -205,7 +207,7 @@ const journeySteps = [
             aria-pressed={index === 0 ? "true" : "false"}
             class="function-role-card scroll-mt-28 rounded-2xl border border-fog bg-surface p-8 text-left shadow-outline transition-colors hover:border-[#14B8A6]"
           >
-            <div class="text-xl font-semibold tracking-tight text-ink">{role.data.title}</div>
+            <div class="text-xl font-semibold tracking-tight text-ink">{toSentenceCaseTitle(role.data.title)}</div>
             <p class="mt-4 text-base leading-relaxed text-steel">{role.data.summary}</p>
           </button>
         ))
@@ -220,7 +222,7 @@ const journeySteps = [
               Selected role
             </div>
             <h3 class="mt-4 text-[clamp(1.8rem,3vw,2.7rem)] font-semibold tracking-tight text-ink">
-              {role.data.title}
+              {toSentenceCaseTitle(role.data.title)}
             </h3>
             <p class="mt-5 max-w-[70ch] text-lg leading-relaxed text-steel md:text-xl">
               {role.data.detail}
