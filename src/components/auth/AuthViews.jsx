@@ -4,6 +4,7 @@ import { isSupabaseConfigured, supabase } from '../../lib/supabaseClient';
 import './login.css';
 
 const resendCooldownMs = 60_000;
+const defaultPortalPath = '/portal';
 
 const shellClass =
   'min-h-screen w-screen bg-slate-100';
@@ -22,10 +23,84 @@ const lightInputClass =
 const lightSubtleButtonClass =
   'inline-flex items-center justify-center rounded-md border border-ink/12 px-4 py-2 text-sm font-semibold text-ink transition hover:border-ink/30';
 
+function slugifyRole(value) {
+  return String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_+|_+$/g, '');
+}
+
+function normalizeRoleValues(value) {
+  if (!value) return [];
+
+  if (Array.isArray(value)) {
+    return value.map(slugifyRole).filter(Boolean);
+  }
+
+  if (typeof value === 'string') {
+    return value
+      .split(/[,\s]+/)
+      .map(slugifyRole)
+      .filter(Boolean);
+  }
+
+  return [];
+}
+
+function getPortalAccess(user) {
+  const email = (user?.email || '').toLowerCase();
+  const appMetadata = user?.app_metadata || {};
+  const userMetadata = user?.user_metadata || {};
+
+  const roles = Array.from(
+    new Set([
+      ...normalizeRoleValues(appMetadata.roles),
+      ...normalizeRoleValues(appMetadata.role),
+      ...normalizeRoleValues(userMetadata.roles),
+      ...normalizeRoleValues(userMetadata.role),
+    ]),
+  );
+
+  if (email.endsWith('@advancedanalytica.co.uk')) {
+    roles.push('operator');
+  }
+
+  if (roles.includes('admin')) {
+    roles.push('operator', 'developer', 'client');
+  }
+
+  const uniqueRoles = Array.from(new Set(roles));
+  const isOperator = uniqueRoles.includes('operator');
+  const isDeveloper = uniqueRoles.includes('developer');
+  const isClient = uniqueRoles.includes('client') || uniqueRoles.length === 0;
+
+  const audienceLabel = isOperator
+    ? 'Operator access'
+    : isDeveloper
+      ? 'Developer access'
+      : 'Client access';
+
+  return {
+    roles: uniqueRoles,
+    isOperator,
+    isDeveloper,
+    isClient,
+    audienceLabel,
+  };
+}
+
 function getCallbackUrlFor(nextPath) {
   const url = new URL('/auth/callback', window.location.origin);
-  url.searchParams.set('next', nextPath);
+  url.searchParams.set('next', nextPath || defaultPortalPath);
   return url.toString();
+}
+
+function getNextUrl() {
+  if (typeof window === 'undefined') return defaultPortalPath;
+
+  const requestedNext = new URLSearchParams(window.location.search).get('next');
+  return requestedNext?.startsWith('/') ? requestedNext : defaultPortalPath;
 }
 
 function getPasswordErrorMessage(err) {
@@ -87,6 +162,29 @@ function getEmailFlowErrorMessage(err, fallback) {
   return { message: rawMessage, isRateLimit: false };
 }
 
+function getLoginErrorMessage(errorCode, errorDescription) {
+  const normalizedCode = (errorCode || '').toLowerCase();
+  const normalizedDescription = (errorDescription || '').toLowerCase();
+
+  if (normalizedCode === 'otp_expired') {
+    return 'That magic link has expired or was already used. Request a fresh sign-in link and open the newest email only once.';
+  }
+
+  if (normalizedCode === 'access_denied' && normalizedDescription.includes('expired')) {
+    return 'That sign-in link has expired. Request a fresh magic link and try again.';
+  }
+
+  if (normalizedCode === 'callback') {
+    return 'The sign-in link could not be completed. Request a new magic link and try again.';
+  }
+
+  if (normalizedCode === 'config') {
+    return 'Authentication is not configured correctly for this environment.';
+  }
+
+  return '';
+}
+
 function AuthFrame({ title, intro, children, aside, cardToneClass = '' }) {
   return (
     <section className={shellClass}>
@@ -135,16 +233,26 @@ function LoginInner() {
   const [cooldownUntil, setCooldownUntil] = useState(0);
   const [now, setNow] = useState(() => Date.now());
 
-  const nextUrl =
-    typeof window !== 'undefined'
-      ? new URLSearchParams(window.location.search).get('next') || '/portal'
-      : '/portal';
+  const nextUrl = getNextUrl();
   const cooldownSeconds = Math.max(0, Math.ceil((cooldownUntil - now) / 1000));
   const inCooldown = cooldownSeconds > 0;
 
   useEffect(() => {
     if (session) window.location.replace(nextUrl);
   }, [session, nextUrl]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const params = new URLSearchParams(window.location.search);
+    const errorCode = params.get('error');
+    const errorDescription = params.get('error_description');
+    const message = getLoginErrorMessage(errorCode, errorDescription);
+
+    if (message) {
+      setStatus({ state: 'error', message });
+    }
+  }, []);
 
   useEffect(() => {
     if (!inCooldown) return undefined;
@@ -531,18 +639,85 @@ function PortalInner() {
   }
 
   const user = session.user;
+  const access = getPortalAccess(user);
+  const serviceCards = [
+    {
+      audiences: ['client', 'operator'],
+      eyebrow: 'Strategy',
+      title: 'AI readiness assessment',
+      href: '/brand-ai-readiness-assessment',
+      description:
+        'Review organisational readiness, identify the right next moves, and frame the commercial case for governed AI adoption.',
+      accent: 'from-[#14B8A6]/22 to-transparent',
+      cta: 'Open assessment',
+    },
+    {
+      audiences: ['client', 'operator'],
+      eyebrow: 'Platform',
+      title: 'iBOM services',
+      href: '/services/ibom',
+      description:
+        'Explore the intelligent brand object model service layer that connects brand governance to operational systems and agents.',
+      accent: 'from-[#ff8c69]/22 to-transparent',
+      cta: 'View iBOM service',
+    },
+    {
+      audiences: ['developer', 'operator'],
+      eyebrow: 'Developers',
+      title: 'MCP server access',
+      href: '/developers/mcp-servers',
+      description:
+        'Go straight to the governed MCP tooling and implementation guidance for connected applications and agent workflows.',
+      accent: 'from-[#59b3e4]/24 to-transparent',
+      cta: 'Open developer access',
+    },
+    {
+      audiences: ['operator'],
+      eyebrow: 'Implementation',
+      title: 'Enterprise rollout',
+      href: '/enterprise',
+      description:
+        'Move into implementation planning, governance rollout, and enterprise operating model design for larger programmes.',
+      accent: 'from-[#ceced0]/24 to-transparent',
+      cta: 'Open rollout path',
+    },
+    {
+      audiences: ['operator'],
+      eyebrow: 'Products',
+      title: 'iBOM product pages',
+      href: '/products/ibom',
+      description:
+        'Review the current product positioning, narrative, and service packaging that supports protected operator workflows.',
+      accent: 'from-[#fa26a0]/22 to-transparent',
+      cta: 'Open product view',
+    },
+    {
+      audiences: ['client', 'operator'],
+      eyebrow: 'Engagement',
+      title: 'Advisory and contact',
+      href: '/company/contact',
+      description:
+        'Start a scoped conversation about implementation, governance design, enterprise rollout, or managed support.',
+      accent: 'from-[#f8d210]/24 to-transparent',
+      cta: 'Contact Advanced Analytica',
+    },
+  ];
+  const visibleCards = serviceCards.filter((card) =>
+    card.audiences.some((audience) => access.roles.includes(audience) || (audience === 'client' && access.isClient)),
+  );
 
   return (
     <AuthFrame
-      title="Governed access, same domain."
-      intro="The protected portal now lives inside advancedanalytica.co.uk, with the browser session managed directly by Supabase."
+      title="Choose a service."
+      intro="This portal is the signed-in entry point for protected Advanced Analytica services, implementation routes, and governed tooling."
       aside={
         <>
           <div className="rounded-3xl border border-white/10 bg-white/6 p-5">
-            Access is now blocked on the server. Unauthenticated requests are redirected before the portal page is rendered.
+            Signed in as <span className="font-semibold text-paper">{user.email}</span>
           </div>
           <div className="rounded-3xl border border-white/10 bg-white/6 p-5">
-            Current user: <span className="font-semibold text-paper">{user.email}</span>
+            <span className="font-semibold text-paper">{access.audienceLabel}</span>
+            {access.roles.length ? ` • ${access.roles.join(', ')}` : ' • default client view'}
           </div>
         </>
       }
@@ -550,9 +725,9 @@ function PortalInner() {
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">Protected portal</div>
-          <h2 className="mt-2 text-3xl font-semibold tracking-tight text-paper">Signed in</h2>
+          <h2 className="mt-2 text-3xl font-semibold tracking-tight text-paper">Services dashboard</h2>
           <p className="mt-3 max-w-[34rem] text-sm leading-relaxed text-paper/68">
-            The session is active on the main site domain. This page is the right place to start moving protected tools and account-specific features.
+            Start from one of the service cards below. The set shown here now changes by audience, so clients, developers, and operators do not all see the same entry points.
           </p>
         </div>
         <button className={buttonClass} type="button" onClick={signOut} disabled={signingOut}>
@@ -560,25 +735,50 @@ function PortalInner() {
         </button>
       </div>
 
-      <div className="mt-8 grid gap-4 md:grid-cols-3">
-        <section className="rounded-[1.5rem] border border-white/10 bg-white/6 p-5">
-          <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[#14B8A6]">Account</div>
-          <div className="mt-4 grid gap-2 text-sm text-paper/70">
+      <div className="mt-8 grid gap-4 lg:grid-cols-[1.35fr_0.8fr]">
+        <div className="grid gap-4 md:grid-cols-2">
+          {visibleCards.map((card) => (
+            <a
+              key={card.href}
+              href={card.href}
+              className="group relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/6 p-6 transition duration-200 hover:-translate-y-1 hover:border-white/18 hover:bg-white/8"
+            >
+              <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${card.accent}`} />
+              <div className="relative">
+                <div className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">
+                  {card.eyebrow}
+                </div>
+                <h3 className="mt-3 text-2xl font-semibold tracking-tight text-paper">{card.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-paper/68">{card.description}</p>
+                <div className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-paper">
+                  {card.cta}
+                  <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <section className="rounded-[1.75rem] border border-white/10 bg-white/6 p-6">
+          <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[#14B8A6]">Session</div>
+          <div className="mt-5 grid gap-3 text-sm text-paper/70">
             <div><span className="font-semibold text-paper">Email:</span> {user.email}</div>
             <div><span className="font-semibold text-paper">User ID:</span> {user.id}</div>
-          </div>
-        </section>
-        <section className="rounded-[1.5rem] border border-white/10 bg-white/6 p-5">
-          <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[#14B8A6]">Auth status</div>
-          <div className="mt-4 grid gap-2 text-sm text-paper/70">
+            <div><span className="font-semibold text-paper">Audience:</span> {access.audienceLabel}</div>
+            <div><span className="font-semibold text-paper">Roles:</span> {access.roles.length ? access.roles.join(', ') : 'client'}</div>
             <div><span className="font-semibold text-paper">Session:</span> active</div>
             <div><span className="font-semibold text-paper">Access token:</span> {session.access_token ? 'present' : 'missing'}</div>
           </div>
-        </section>
-        <section className="rounded-[1.5rem] border border-white/10 bg-white/6 p-5">
-          <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[#14B8A6]">Next move</div>
-          <div className="mt-4 text-sm leading-relaxed text-paper/70">
-            Start replacing this placeholder with the actual customer or operator tools that need protected access.
+
+          <div className="mt-6 rounded-[1.25rem] border border-white/10 bg-[#0c1420] p-4 text-sm leading-relaxed text-paper/68">
+            This panel is now reading roles from Supabase metadata first, with an internal-domain fallback for operator accounts.
+          </div>
+
+          <div className="mt-6 flex flex-wrap gap-3">
+            <a href="/" className={subtleButtonClass}>Back to site</a>
+            <button className={buttonClass} type="button" onClick={signOut} disabled={signingOut}>
+              {signingOut ? 'Signing out…' : 'Sign out'}
+            </button>
           </div>
         </section>
       </div>
