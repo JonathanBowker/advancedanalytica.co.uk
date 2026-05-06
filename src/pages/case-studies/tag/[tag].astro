@@ -1,11 +1,13 @@
 ---
+export const prerender = true;
+
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { SITE_URL } from '../../../lib/seo/site';
 export async function getStaticPaths() {
   const posts = await getCollection('caseStudies', ({ data }) => !data.draft);
   const tags = Array.from(new Set(posts.flatMap((p) => p.data.tags ?? [])));
-  return tags.map((tag) => ({ params: { tag: encodeURIComponent(tag) }, props: { tag } }));
+  return tags.map((tag) => ({ params: { tag }, props: { tag } }));
 }
 const { tag } = Astro.props as { tag: string };
 const title = `Use Cases: ${tag}`;

@@ -23,6 +23,7 @@ export const toSentenceCaseTitle = (value: string) => {
   if (!value.trim()) return value;
 
   let firstWordSeen = false;
+  let capitalizeNextWord = false;
 
   return value
     .split(/(\s+)/)
@@ -33,12 +34,15 @@ export const toSentenceCaseTitle = (value: string) => {
       if (!core) return token;
 
       let formattedCore = preserveCoreToken(core) ? core : core.toLowerCase();
-      if (!firstWordSeen) {
+      if (!firstWordSeen || capitalizeNextWord) {
         formattedCore = preserveCoreToken(formattedCore)
           ? capitalizeFirstLetter(formattedCore)
           : capitalizeFirstLetter(formattedCore.toLowerCase());
         firstWordSeen = true;
+        capitalizeNextWord = false;
       }
+
+      if (suffix.includes(":")) capitalizeNextWord = true;
 
       return `${prefix}${formattedCore}${suffix}`;
     })

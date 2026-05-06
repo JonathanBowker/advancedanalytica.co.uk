@@ -17,6 +17,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return next();
   }
 
+  if (context.isPrerendered) {
+    context.locals.user = null;
+    return next();
+  }
+
   const supabase = createSupabaseServerClient({
     request: context.request,
     cookies: context.cookies,
