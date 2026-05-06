@@ -24,6 +24,9 @@ services:
     build_command: pnpm build
     run_command: node ./dist/server/entry.mjs
     envs:
+      - key: HOST
+        value: 0.0.0.0
+        scope: RUN_TIME
       - key: PUBLIC_GA_MEASUREMENT_ID
         value: G-J6XQFZQSSR
         scope: BUILD_TIME
