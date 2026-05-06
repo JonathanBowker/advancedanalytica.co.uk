@@ -8,8 +8,8 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const { pathname, search } = new URL(context.request.url);
 
   if (pathname === '/index.html') {
-    const redirectTarget = search ? `/${search}` : '/';
-    return context.redirect(redirectTarget, 301);
+    const rewriteTarget = search ? `/${search}` : '/';
+    return context.rewrite(rewriteTarget);
   }
 
   if (!isSupabaseConfigured) {
