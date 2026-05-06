@@ -5,6 +5,13 @@ const protectedPaths = ['/portal'];
 const authPages = ['/login'];
 
 export const onRequest = defineMiddleware(async (context, next) => {
+  const { pathname, search } = new URL(context.request.url);
+
+  if (pathname === '/index.html') {
+    const redirectTarget = search ? `/${search}` : '/';
+    return context.redirect(redirectTarget, 301);
+  }
+
   if (!isSupabaseConfigured) {
     context.locals.user = null;
     return next();
@@ -20,8 +27,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
   } = await supabase.auth.getUser();
 
   context.locals.user = user ?? null;
-
-  const { pathname, search } = new URL(context.request.url);
 
   if (protectedPaths.some((path) => pathname === path || pathname.startsWith(`${path}/`))) {
     if (!user) {
