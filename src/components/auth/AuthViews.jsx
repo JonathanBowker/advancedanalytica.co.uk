@@ -642,6 +642,7 @@ function PortalInner() {
   const access = getPortalAccess(user);
   const serviceCards = [
     {
+      type: 'service',
       audiences: ['client', 'operator'],
       eyebrow: 'Strategy',
       title: 'AI readiness assessment',
@@ -652,6 +653,7 @@ function PortalInner() {
       cta: 'Open assessment',
     },
     {
+      type: 'service',
       audiences: ['client', 'operator'],
       eyebrow: 'Platform',
       title: 'iBOM services',
@@ -662,6 +664,7 @@ function PortalInner() {
       cta: 'View iBOM service',
     },
     {
+      type: 'service',
       audiences: ['developer', 'operator'],
       eyebrow: 'Developers',
       title: 'MCP server access',
@@ -672,6 +675,7 @@ function PortalInner() {
       cta: 'Open developer access',
     },
     {
+      type: 'service',
       audiences: ['operator'],
       eyebrow: 'Implementation',
       title: 'Enterprise rollout',
@@ -682,6 +686,7 @@ function PortalInner() {
       cta: 'Open rollout path',
     },
     {
+      type: 'service',
       audiences: ['operator'],
       eyebrow: 'Products',
       title: 'iBOM product pages',
@@ -692,6 +697,7 @@ function PortalInner() {
       cta: 'Open product view',
     },
     {
+      type: 'service',
       audiences: ['client', 'operator'],
       eyebrow: 'Engagement',
       title: 'Advisory and contact',
@@ -702,87 +708,109 @@ function PortalInner() {
       cta: 'Contact Advanced Analytica',
     },
   ];
-  const visibleCards = serviceCards.filter((card) =>
+  const visibleServiceCards = serviceCards.filter((card) =>
     card.audiences.some((audience) => access.roles.includes(audience) || (audience === 'client' && access.isClient)),
   );
+  const utilityCards = [
+    {
+      type: 'meta',
+      eyebrow: 'Account',
+      title: 'Signed-in account',
+      description: user.email,
+      body: `Audience: ${access.audienceLabel}`,
+    },
+    {
+      type: 'meta',
+      eyebrow: 'Roles',
+      title: access.roles.length ? access.roles.join(', ') : 'client',
+      description: 'Resolved from Supabase metadata and internal account fallback.',
+      body: `User ID: ${user.id}`,
+    },
+    {
+      type: 'action',
+      eyebrow: 'Session',
+      title: 'Manage access',
+      description: 'Protected access is enforced on the server before this page renders.',
+      body: session.access_token ? 'Access token present.' : 'Access token missing.',
+    },
+  ];
+  const portalCards = [...visibleServiceCards, ...utilityCards].slice(0, 6);
 
   return (
-    <AuthFrame
-      title="Choose a service."
-      intro="This portal is the signed-in entry point for protected Advanced Analytica services, implementation routes, and governed tooling."
-      aside={
-        <>
-          <div className="rounded-3xl border border-white/10 bg-white/6 p-5">
-            Signed in as <span className="font-semibold text-paper">{user.email}</span>
-          </div>
-          <div className="rounded-3xl border border-white/10 bg-white/6 p-5">
-            <span className="font-semibold text-paper">{access.audienceLabel}</span>
-            {access.roles.length ? ` • ${access.roles.join(', ')}` : ' • default client view'}
-          </div>
-        </>
-      }
-    >
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">Protected portal</div>
-          <h2 className="mt-2 text-3xl font-semibold tracking-tight text-paper">Services dashboard</h2>
-          <p className="mt-3 max-w-[34rem] text-sm leading-relaxed text-paper/68">
-            Start from one of the service cards below. The set shown here now changes by audience, so clients, developers, and operators do not all see the same entry points.
-          </p>
-        </div>
-        <button className={buttonClass} type="button" onClick={signOut} disabled={signingOut}>
-          {signingOut ? 'Signing out…' : 'Sign out'}
-        </button>
-      </div>
-
-      <div className="mt-8 grid gap-4 lg:grid-cols-[1.35fr_0.8fr]">
-        <div className="grid gap-4 md:grid-cols-2">
-          {visibleCards.map((card) => (
-            <a
-              key={card.href}
-              href={card.href}
-              className="group relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/6 p-6 transition duration-200 hover:-translate-y-1 hover:border-white/18 hover:bg-white/8"
-            >
-              <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${card.accent}`} />
-              <div className="relative">
-                <div className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">
-                  {card.eyebrow}
-                </div>
-                <h3 className="mt-3 text-2xl font-semibold tracking-tight text-paper">{card.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-paper/68">{card.description}</p>
-                <div className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-paper">
-                  {card.cta}
-                  <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
-                </div>
-              </div>
-            </a>
-          ))}
-        </div>
-
-        <section className="rounded-[1.75rem] border border-white/10 bg-white/6 p-6">
-          <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[#14B8A6]">Session</div>
-          <div className="mt-5 grid gap-3 text-sm text-paper/70">
-            <div><span className="font-semibold text-paper">Email:</span> {user.email}</div>
-            <div><span className="font-semibold text-paper">User ID:</span> {user.id}</div>
-            <div><span className="font-semibold text-paper">Audience:</span> {access.audienceLabel}</div>
-            <div><span className="font-semibold text-paper">Roles:</span> {access.roles.length ? access.roles.join(', ') : 'client'}</div>
-            <div><span className="font-semibold text-paper">Session:</span> active</div>
-            <div><span className="font-semibold text-paper">Access token:</span> {session.access_token ? 'present' : 'missing'}</div>
-          </div>
-
-          <div className="mt-6 rounded-[1.25rem] border border-white/10 bg-[#0c1420] p-4 text-sm leading-relaxed text-paper/68">
-            This panel is now reading roles from Supabase metadata first, with an internal-domain fallback for operator accounts.
-          </div>
-
-          <div className="mt-6 flex flex-wrap gap-3">
-            <a href="/" className={subtleButtonClass}>Back to site</a>
+    <section className="min-h-screen bg-slate-100">
+      <div className="container-wide py-12 lg:py-16">
+        <div className="rounded-[2rem] border border-[#d7dde5] bg-[#111927] p-8 text-paper shadow-[0_30px_90px_rgba(0,0,0,0.24)] md:p-10">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div className="max-w-[48rem]">
+              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">Protected portal</div>
+              <h1 className="mt-2 text-3xl font-semibold tracking-tight text-paper md:text-4xl">Services dashboard</h1>
+              <p className="mt-3 text-sm leading-relaxed text-paper/68 md:text-base">
+                Start from one of the service cards below. The set shown here changes by audience, so clients, developers, and operators do not all see the same entry points.
+              </p>
+            </div>
             <button className={buttonClass} type="button" onClick={signOut} disabled={signingOut}>
               {signingOut ? 'Signing out…' : 'Sign out'}
             </button>
           </div>
-        </section>
+
+          <div className="mt-6 flex flex-wrap gap-3 text-sm">
+            <div className="rounded-full border border-white/10 bg-white/6 px-4 py-2 text-paper/78">
+              Signed in as <span className="font-semibold text-paper">{user.email}</span>
+            </div>
+            <div className="rounded-full border border-white/10 bg-white/6 px-4 py-2 text-paper/78">
+              <span className="font-semibold text-paper">{access.audienceLabel}</span>
+              {access.roles.length ? ` • ${access.roles.join(', ')}` : ' • default client view'}
+            </div>
+          </div>
+
+          <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {portalCards.map((card, index) =>
+              card.type === 'service' ? (
+                <a
+                  key={`${card.type}-${card.href}-${index}`}
+                  href={card.href}
+                  className="group relative min-h-[18rem] overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/6 p-6 transition duration-200 hover:-translate-y-1 hover:border-white/18 hover:bg-white/8"
+                >
+                  <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${card.accent}`} />
+                  <div className="relative flex h-full flex-col">
+                    <div className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">
+                      {card.eyebrow}
+                    </div>
+                    <h3 className="mt-3 text-2xl font-semibold tracking-tight text-paper">{card.title}</h3>
+                    <p className="mt-3 text-sm leading-relaxed text-paper/68">{card.description}</p>
+                    <div className="mt-auto inline-flex items-center gap-2 pt-6 text-sm font-semibold text-paper">
+                      {card.cta}
+                      <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+                    </div>
+                  </div>
+                </a>
+              ) : (
+                <section
+                  key={`${card.type}-${card.title}-${index}`}
+                  className="min-h-[18rem] rounded-[1.75rem] border border-white/10 bg-white/6 p-6"
+                >
+                  <div className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">
+                    {card.eyebrow}
+                  </div>
+                  <h3 className="mt-3 text-2xl font-semibold tracking-tight text-paper">{card.title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-paper/68">{card.description}</p>
+                  <div className="mt-6 text-sm leading-relaxed text-paper/60">{card.body}</div>
+
+                  {card.type === 'action' ? (
+                    <div className="mt-6 flex flex-wrap gap-3">
+                      <a href="/" className={subtleButtonClass}>Back to site</a>
+                      <button className={buttonClass} type="button" onClick={signOut} disabled={signingOut}>
+                        {signingOut ? 'Signing out…' : 'Sign out'}
+                      </button>
+                    </div>
+                  ) : null}
+                </section>
+              ),
+            )}
+          </div>
+        </div>
       </div>
-    </AuthFrame>
+    </section>
   );
 }
 
