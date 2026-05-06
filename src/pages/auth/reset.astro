@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE_URL } from '../../lib/seo/site';
+import { ResetPasswordApp } from '../../components/auth/AuthViews.jsx';
+
+const title = 'Reset Password';
+const description = 'Reset an Advanced Analytica portal password on the production domain.';
+const page = {
+  title,
+  description,
+  url: `${SITE_URL}/auth/reset`,
+  schemaType: 'WebPage',
+  breadcrumbs: [
+    { name: 'Home', url: `${SITE_URL}/` },
+    { name: 'Login', url: `${SITE_URL}/login` },
+    { name: 'Reset Password', url: `${SITE_URL}/auth/reset` },
+  ],
+};
+---
+<BaseLayout title={title} description={description} page={page} hideFooterContactCta={true}>
+  <ResetPasswordApp client:only="react" />
+</BaseLayout>

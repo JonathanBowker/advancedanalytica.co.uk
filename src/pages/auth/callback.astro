@@ -1,0 +1,38 @@
+---
+import type { EmailOtpType } from '@supabase/supabase-js';
+import { createSupabaseServerClient, isSupabaseConfigured } from '../../lib/supabaseServer';
+
+if (!isSupabaseConfigured) {
+  return Astro.redirect('/login?error=config');
+}
+
+const supabase = createSupabaseServerClient({
+  request: Astro.request,
+  cookies: Astro.cookies,
+});
+
+const requestUrl = new URL(Astro.request.url);
+const authCode = requestUrl.searchParams.get('code');
+const tokenHash = requestUrl.searchParams.get('token_hash');
+const type = requestUrl.searchParams.get('type') as EmailOtpType | null;
+const nextPath = requestUrl.searchParams.get('next') || '/portal';
+
+let success = false;
+
+if (authCode) {
+  const { error } = await supabase.auth.exchangeCodeForSession(authCode);
+  success = !error;
+} else if (tokenHash && type) {
+  const { error } = await supabase.auth.verifyOtp({
+    token_hash: tokenHash,
+    type,
+  });
+  success = !error;
+}
+
+if (success) {
+  return Astro.redirect(nextPath);
+}
+
+return Astro.redirect('/login?error=callback');
+---

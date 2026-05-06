@@ -1,0 +1,21 @@
+---
+import '../styles/global.css';
+import { LoginApp } from '../components/auth/AuthViews.jsx';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login | Advanced Analytica</title>
+    <meta
+      name="description"
+      content="Access the Advanced Analytica portal on the main production domain."
+    />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate icon" href="/favicon.svg" sizes="any" />
+  </head>
+  <body class="bg-background text-ink font-[ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,'Segoe_UI',sans-serif]">
+    <LoginApp client:only="react" />
+  </body>
+</html>

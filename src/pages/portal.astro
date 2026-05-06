@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE_URL } from '../lib/seo/site';
+import { PortalApp } from '../components/auth/AuthViews.jsx';
+
+const title = 'Portal';
+const description = 'Protected portal access for authenticated Advanced Analytica users.';
+const page = {
+  title,
+  description,
+  url: `${SITE_URL}/portal`,
+  schemaType: 'WebPage',
+  breadcrumbs: [
+    { name: 'Home', url: `${SITE_URL}/` },
+    { name: 'Portal', url: `${SITE_URL}/portal` },
+  ],
+};
+---
+<BaseLayout title={title} description={description} page={page} hideFooterContactCta={true}>
+  <PortalApp client:only="react" />
+</BaseLayout>
