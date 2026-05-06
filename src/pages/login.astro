@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE_URL } from '../lib/seo/site';
+import { LoginApp } from '../components/auth/AuthViews.jsx';
+
+const title = 'Login';
+const description = 'Access the Advanced Analytica portal on the main production domain.';
+const page = {
+  title,
+  description,
+  url: `${SITE_URL}/login`,
+  schemaType: 'WebPage',
+  breadcrumbs: [
+    { name: 'Home', url: `${SITE_URL}/` },
+    { name: 'Login', url: `${SITE_URL}/login` },
+  ],
+};
+---
+<BaseLayout title={title} description={description} page={page} hideFooterContactCta={true}>
+  <LoginApp client:only="react" />
+</BaseLayout>

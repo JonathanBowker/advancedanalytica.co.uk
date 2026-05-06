@@ -12,13 +12,17 @@ ingress:
       match:
         path:
           prefix: /
-static_sites:
+services:
   - name: web
+    environment_slug: node-js
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    http_port: 8080
     git:
       branch: deploy-live
       repo_clone_url: https://github.com/JonathanBowker/advancedanalytica.co.uk.git
     build_command: pnpm build
-    output_dir: dist
+    run_command: node ./dist/server/entry.mjs
     envs:
       - key: PUBLIC_GA_MEASUREMENT_ID
         value: G-J6XQFZQSSR
