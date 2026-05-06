@@ -42,7 +42,7 @@ export const toSentenceCaseTitle = (value: string) => {
         capitalizeNextWord = false;
       }
 
-      if (suffix.includes(":")) capitalizeNextWord = true;
+      if (suffix.includes(":") || suffix.includes(".")) capitalizeNextWord = true;
 
       return `${prefix}${formattedCore}${suffix}`;
     })
