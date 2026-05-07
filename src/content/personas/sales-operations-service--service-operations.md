@@ -45,7 +45,7 @@ proofNeeds:
 contentStages:
   - "Awareness: why disconnected AI assistance does not fix workflow problems."
   - "Evaluation: where operational knowledge should be captured first."
-  - "Implementation: connecting systems, rules, and AICE controls."
+  - "Implementation: connecting systems, rules, and implementation layer controls."
   - "Scale: monitoring quality and expanding governed automation across workflows."
 contentNeeds:
   - "Operational examples that show AI working inside governed workflows."
@@ -85,7 +85,7 @@ editorialVoice:
   - "Useful for teams managing live service pressure."
 contentObjectives:
   - "Help readers see why operational AI needs structure and runtime control."
-  - "Show that AICE is relevant to systems and workflows, not just models."
+  - "Show that the implementation layer is relevant to systems and workflows, not just models."
   - "Drive readers from pain recognition into function and role journey pages."
 ctaPatterns:
   - "Open with a service or workflow failure pattern."
@@ -155,7 +155,7 @@ Capture escalation rules, service standards, and workflow controls so AI-assiste
 
 - Awareness: why disconnected AI assistance does not fix workflow problems.
 - Evaluation: where operational knowledge should be captured first.
-- Implementation: connecting systems, rules, and AICE controls.
+- Implementation: connecting systems, rules, and implementation layer controls.
 - Scale: monitoring quality and expanding governed automation across workflows.
 
 ## Source Feeds To Watch
@@ -201,7 +201,7 @@ Capture escalation rules, service standards, and workflow controls so AI-assiste
 ## Content Objectives
 
 - Help readers see why operational AI needs structure and runtime control.
-- Show that AICE is relevant to systems and workflows, not just models.
+- Show that the implementation layer is relevant to systems and workflows, not just models.
 - Drive readers from pain recognition into function and role journey pages.
 
 ## CTA Patterns

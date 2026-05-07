@@ -6,7 +6,7 @@ import { getGeneratedCoverPath } from '../../lib/contentCover';
 export const prerender = true;
 
 export async function GET() {
-  const posts = (await getCollection('caseStudies', ({ data }) => !data.draft)).sort(
+  const posts = (await getCollection('use-cases', ({ data }) => !data.draft)).sort(
     (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf()
   );
 

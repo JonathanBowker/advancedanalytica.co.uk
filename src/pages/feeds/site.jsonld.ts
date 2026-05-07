@@ -8,7 +8,7 @@ export const prerender = true;
 export async function GET() {
   const [opinions, useCases, resources] = await Promise.all([
     getCollection('blog', ({ data }) => !data.draft),
-    getCollection('caseStudies', ({ data }) => !data.draft),
+    getCollection('use-cases', ({ data }) => !data.draft),
     getCollection('resources', ({ data }) => !data.draft)
   ]);
 

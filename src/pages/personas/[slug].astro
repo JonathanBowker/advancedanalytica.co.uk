@@ -1,4 +1,6 @@
 ---
+export const prerender = true;
+
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import components from "../../lib/mdx/components";
 import { getCollection } from "astro:content";
@@ -28,6 +30,7 @@ const page = {
   title,
   description,
   url,
+  noindex: true,
   breadcrumbs: [
     { name: "Home", url: `${SITE_URL}/` },
     { name: "Synthetic Personas", url: `${SITE_URL}/personas/` },

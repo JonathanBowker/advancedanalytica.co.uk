@@ -45,12 +45,12 @@ proofNeeds:
 contentStages:
   - "Awareness: why high-value knowledge gets trapped in documents and pilots."
   - "Evaluation: what to capture, structure, and test first."
-  - "Implementation: building the knowledge layer and connecting AICE safely."
+  - "Implementation: building the knowledge layer and connecting the implementation layer safely."
   - "Scale: continuous evaluation, refinement, and reuse of domain assets."
 contentNeeds:
   - "Examples of specialist knowledge becoming governed systems."
   - "Guidance on evidence capture, structured formats, and linked datasets."
-  - "Practical explanations of how AICE supports safe operationalisation."
+  - "Practical explanations of how the implementation layer supports safe operationalisation."
 messagingNotes:
   - "Responds to depth, credibility, and domain fidelity."
   - "Needs reassurance that structure will not flatten specialist expertise."
@@ -60,7 +60,7 @@ sourceFeeds:
   - "Specialist domain and regulated-industry feeds where relevant."
   - "Evaluation, RAG, and knowledge-graph oriented newsletters."
 referenceContent:
-  - "Past content on schema vs semantics, policy-as-graph, and what-is-iBOM."
+  - "Past content on schema vs semantics, policy-as-graph, and Brando foundations."
   - "Use cases involving knowledge capture, regulation, and specialist lookup systems."
   - "Articles that resonated with readers looking for depth and domain credibility."
 topPerformingTopics:
@@ -155,7 +155,7 @@ Turn knowledge-rich prototypes into practical systems through structured assets,
 
 - Awareness: why high-value knowledge gets trapped in documents and pilots.
 - Evaluation: what to capture, structure, and test first.
-- Implementation: building the knowledge layer and connecting AICE safely.
+- Implementation: building the knowledge layer and connecting the implementation layer safely.
 - Scale: continuous evaluation, refinement, and reuse of domain assets.
 
 ## Source Feeds To Watch
@@ -166,7 +166,7 @@ Turn knowledge-rich prototypes into practical systems through structured assets,
 
 ## Reference Content To Reuse
 
-- Past content on schema vs semantics, policy-as-graph, and what-is-iBOM.
+- Past content on schema vs semantics, policy-as-graph, and Brando foundations.
 - Use cases involving knowledge capture, regulation, and specialist lookup systems.
 - Articles that resonated with readers looking for depth and domain credibility.
 
@@ -224,7 +224,7 @@ Review weekly for relevant domain signals and monthly for which depth-oriented t
 
 - Examples of specialist knowledge becoming governed systems.
 - Guidance on evidence capture, structured formats, and linked datasets.
-- Practical explanations of how AICE supports safe operationalisation.
+- Practical explanations of how the implementation layer supports safe operationalisation.
 
 ## Messaging Notes
 

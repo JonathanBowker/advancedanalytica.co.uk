@@ -1,30 +1,106 @@
 import { useEffect, useState } from 'react';
 import { AuthProvider, useAuth } from './AuthProvider';
 import { isSupabaseConfigured, supabase } from '../../lib/supabaseClient';
+import './login.css';
 
 const resendCooldownMs = 60_000;
+const defaultPortalPath = '/portal';
 
 const shellClass =
-  'min-h-[calc(100svh-5rem)] bg-[radial-gradient(circle_at_top_left,_rgba(20,184,166,0.16),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(255,140,105,0.14),_transparent_26%),linear-gradient(180deg,#081018_0%,#0d1520_45%,#101927_100%)]';
+  'min-h-screen w-screen bg-slate-100';
 const cardClass =
   'w-full max-w-xl rounded-[2rem] border border-white/10 bg-[#111927]/92 p-8 text-paper shadow-[0_30px_90px_rgba(0,0,0,0.42)] backdrop-blur md:p-10';
 const inputClass =
   'w-full rounded-2xl border border-white/12 bg-white/6 px-4 py-3 text-base text-paper outline-none transition placeholder:text-paper/35 focus:border-[#14B8A6]';
 const buttonClass =
-  'inline-flex items-center justify-center rounded-full bg-ink px-5 py-3 text-sm font-semibold text-paper transition hover:bg-[#122033] disabled:cursor-not-allowed disabled:opacity-60';
+  'inline-flex items-center justify-center rounded-md bg-ink px-5 py-3 text-sm font-semibold text-paper transition hover:bg-[#122033] disabled:cursor-not-allowed disabled:opacity-60';
 const subtleButtonClass =
-  'inline-flex items-center justify-center rounded-full border border-white/14 px-4 py-2 text-sm font-semibold text-paper transition hover:border-white/28';
+  'inline-flex items-center justify-center rounded-md border border-white/14 px-4 py-2 text-sm font-semibold text-paper transition hover:border-white/28';
 const lightCardClass =
   'border border-white/12 bg-white/94 text-ink shadow-[0_30px_90px_rgba(0,0,0,0.26)]';
 const lightInputClass =
   'w-full rounded-2xl border border-[#d8dbde] bg-white px-4 py-3 text-base text-ink outline-none transition placeholder:text-slate-400 focus:border-[#14B8A6]';
 const lightSubtleButtonClass =
-  'inline-flex items-center justify-center rounded-full border border-ink/12 px-4 py-2 text-sm font-semibold text-ink transition hover:border-ink/30';
+  'inline-flex items-center justify-center rounded-md border border-ink/12 px-4 py-2 text-sm font-semibold text-ink transition hover:border-ink/30';
+
+function slugifyRole(value) {
+  return String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_+|_+$/g, '');
+}
+
+function normalizeRoleValues(value) {
+  if (!value) return [];
+
+  if (Array.isArray(value)) {
+    return value.map(slugifyRole).filter(Boolean);
+  }
+
+  if (typeof value === 'string') {
+    return value
+      .split(/[,\s]+/)
+      .map(slugifyRole)
+      .filter(Boolean);
+  }
+
+  return [];
+}
+
+function getPortalAccess(user) {
+  const email = (user?.email || '').toLowerCase();
+  const appMetadata = user?.app_metadata || {};
+  const userMetadata = user?.user_metadata || {};
+
+  const roles = Array.from(
+    new Set([
+      ...normalizeRoleValues(appMetadata.roles),
+      ...normalizeRoleValues(appMetadata.role),
+      ...normalizeRoleValues(userMetadata.roles),
+      ...normalizeRoleValues(userMetadata.role),
+    ]),
+  );
+
+  if (email.endsWith('@advancedanalytica.co.uk')) {
+    roles.push('operator');
+  }
+
+  if (roles.includes('admin')) {
+    roles.push('operator', 'developer', 'client');
+  }
+
+  const uniqueRoles = Array.from(new Set(roles));
+  const isOperator = uniqueRoles.includes('operator');
+  const isDeveloper = uniqueRoles.includes('developer');
+  const isClient = uniqueRoles.includes('client') || uniqueRoles.length === 0;
+
+  const audienceLabel = isOperator
+    ? 'Operator access'
+    : isDeveloper
+      ? 'Developer access'
+      : 'Client access';
+
+  return {
+    roles: uniqueRoles,
+    isOperator,
+    isDeveloper,
+    isClient,
+    audienceLabel,
+  };
+}
 
 function getCallbackUrlFor(nextPath) {
   const url = new URL('/auth/callback', window.location.origin);
-  url.searchParams.set('next', nextPath);
+  url.searchParams.set('next', nextPath || defaultPortalPath);
   return url.toString();
+}
+
+function getNextUrl() {
+  if (typeof window === 'undefined') return defaultPortalPath;
+
+  const requestedNext = new URLSearchParams(window.location.search).get('next');
+  return requestedNext?.startsWith('/') ? requestedNext : defaultPortalPath;
 }
 
 function getPasswordErrorMessage(err) {
@@ -55,7 +131,25 @@ function getEmailFlowErrorMessage(err, fallback) {
 
   if (lower.includes('user not found')) {
     return {
-      message: 'No account exists for that email. Ask an admin to invite you first.',
+      message: 'No account exists for that email. Use Sign up to request access.',
+      isRateLimit: false,
+    };
+  }
+
+  if (
+    lower.includes('signups not allowed for otp') ||
+    lower.includes('signups not allowed') ||
+    lower.includes('otp signups are disabled')
+  ) {
+    return {
+      message: 'No account exists for that email. Use Sign up to request access.',
+      isRateLimit: false,
+    };
+  }
+
+  if (lower.includes('user already registered') || lower.includes('already been registered')) {
+    return {
+      message: 'An account already exists for that email. Use Password or Magic link to sign in.',
       isRateLimit: false,
     };
   }
@@ -84,6 +178,29 @@ function getEmailFlowErrorMessage(err, fallback) {
   }
 
   return { message: rawMessage, isRateLimit: false };
+}
+
+function getLoginErrorMessage(errorCode, errorDescription) {
+  const normalizedCode = (errorCode || '').toLowerCase();
+  const normalizedDescription = (errorDescription || '').toLowerCase();
+
+  if (normalizedCode === 'otp_expired') {
+    return 'That magic link has expired or was already used. Request a fresh sign-in link and open the newest email only once.';
+  }
+
+  if (normalizedCode === 'access_denied' && normalizedDescription.includes('expired')) {
+    return 'That sign-in link has expired. Request a fresh magic link and try again.';
+  }
+
+  if (normalizedCode === 'callback') {
+    return 'The sign-in link could not be completed. Request a new magic link and try again.';
+  }
+
+  if (normalizedCode === 'config') {
+    return 'Authentication is not configured correctly for this environment.';
+  }
+
+  return '';
 }
 
 function AuthFrame({ title, intro, children, aside, cardToneClass = '' }) {
@@ -117,10 +234,10 @@ function StatusBanner({ status }) {
     status.state === 'error'
       ? 'border-[#fca5a5] bg-[#fff1f2] text-[#9f1239]'
       : status.state === 'sent'
-        ? 'border-[#99f6e4] bg-[#f0fdfa] text-[#115e59]'
+        ? 'border-[#86efac] bg-[#f0fdf4] text-[#166534]'
         : 'border-[#bfdbfe] bg-[#eff6ff] text-[#1d4ed8]';
 
-  return <div className={`rounded-2xl border px-4 py-3 text-sm ${tone}`}>{status.message}</div>;
+  return <div className={`rounded-[10px] border px-4 py-3 text-sm ${tone}`}>{status.message}</div>;
 }
 
 function LoginInner() {
@@ -128,15 +245,13 @@ function LoginInner() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [method, setMethod] = useState('password');
+  const [showPassword, setShowPassword] = useState(false);
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState({ state: 'idle', message: '' });
   const [cooldownUntil, setCooldownUntil] = useState(0);
   const [now, setNow] = useState(() => Date.now());
 
-  const nextUrl =
-    typeof window !== 'undefined'
-      ? new URLSearchParams(window.location.search).get('next') || '/portal'
-      : '/portal';
+  const nextUrl = getNextUrl();
   const cooldownSeconds = Math.max(0, Math.ceil((cooldownUntil - now) / 1000));
   const inCooldown = cooldownSeconds > 0;
 
@@ -145,12 +260,25 @@ function LoginInner() {
   }, [session, nextUrl]);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const params = new URLSearchParams(window.location.search);
+    const errorCode = params.get('error');
+    const errorDescription = params.get('error_description');
+    const message = getLoginErrorMessage(errorCode, errorDescription);
+
+    if (message) {
+      setStatus({ state: 'error', message });
+    }
+  }, []);
+
+  useEffect(() => {
     if (!inCooldown) return undefined;
     const intervalId = window.setInterval(() => setNow(Date.now()), 250);
     return () => window.clearInterval(intervalId);
   }, [inCooldown]);
 
-  async function signIn(event) {
+  async function signIn(event, requestedMethod = method) {
     event.preventDefault();
     setStatus({ state: 'idle', message: '' });
 
@@ -170,7 +298,7 @@ function LoginInner() {
     setBusy(true);
 
     try {
-      if (method === 'magic_link') {
+      if (requestedMethod === 'magic_link') {
         if (inCooldown) {
           setStatus({
             state: 'error',
@@ -194,6 +322,33 @@ function LoginInner() {
         return;
       }
 
+      if (requestedMethod === 'request_access') {
+        if (inCooldown) {
+          setStatus({
+            state: 'error',
+            message: `Please wait ${cooldownSeconds}s before trying again.`,
+          });
+          return;
+        }
+
+        const { error } = await supabase.auth.signInWithOtp({
+          email: email.trim(),
+          options: {
+            emailRedirectTo: getCallbackUrlFor(nextUrl),
+            shouldCreateUser: true,
+          },
+        });
+
+        if (error) throw error;
+
+        setCooldownUntil(Date.now() + resendCooldownMs);
+        setStatus({
+          state: 'sent',
+          message: 'Check your email to complete registration and sign in.',
+        });
+        return;
+      }
+
       if (!password) {
         setStatus({ state: 'error', message: 'Enter a password.' });
         return;
@@ -208,7 +363,7 @@ function LoginInner() {
       window.location.replace(nextUrl);
     } catch (err) {
       const { message, isRateLimit } =
-        method === 'magic_link'
+        requestedMethod === 'magic_link' || requestedMethod === 'request_access'
           ? getEmailFlowErrorMessage(err, 'Failed to send magic link.')
           : { message: getPasswordErrorMessage(err), isRateLimit: false };
 
@@ -251,93 +406,283 @@ function LoginInner() {
     }
   }
 
+  async function signInWithGitHub() {
+    setStatus({ state: 'idle', message: '' });
+
+    if (!isSupabaseConfigured || !supabase) {
+      setStatus({
+        state: 'error',
+        message: 'Supabase is not configured. Set PUBLIC_SUPABASE_URL and PUBLIC_SUPABASE_ANON_KEY.',
+      });
+      return;
+    }
+
+    setBusy(true);
+
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'github',
+        options: {
+          redirectTo: getCallbackUrlFor(nextUrl),
+        },
+      });
+
+      if (error) throw error;
+    } catch (err) {
+      const { message } = getEmailFlowErrorMessage(err, 'Failed to start GitHub sign-in.');
+      setStatus({ state: 'error', message });
+      setBusy(false);
+    }
+  }
+
   return (
-    <AuthFrame
-      title="Bring governed access into the same site."
-      intro="This portal now runs inside advancedanalytica.co.uk. Use password sign-in or an email link, then continue into the protected workspace."
-      cardToneClass={lightCardClass}
-      aside={
-        <>
-          <div className="rounded-3xl border border-white/10 bg-white/6 p-5">
-            Keep the redirect URLs in Supabase aligned with this domain, including the callback and reset paths.
+    <section className={shellClass}>
+      <div className="grid min-h-screen w-full grid-cols-1 lg:grid-cols-12">
+        <div className="flex justify-center bg-slate-100 px-6 py-10 text-slate-900 lg:col-span-5">
+          <div className="w-full max-w-md lg:w-3/5 lg:max-w-none lg:translate-x-20">
+            <div className="relative mb-2">
+              <a
+                href="/"
+                className="inline-flex h-10 w-10 items-center justify-center text-slate-400 hover:text-slate-600 lg:absolute lg:-left-16 lg:top-1/2 lg:-translate-y-1/2"
+                aria-label="Back"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.25"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-9 w-9"
+                >
+                  <path d="M15 18l-6-6 6-6" />
+                </svg>
+              </a>
+              <h1 className="text-3xl font-semibold tracking-tight text-slate-900">Sign in</h1>
+            </div>
+
+            <div className="space-y-4 auth-card pt-0">
+              <div className="space-y-2">
+                <div className="tabs">
+                  <button
+                    type="button"
+                    onClick={() => setMethod('password')}
+                    disabled={busy || loading}
+                    className={`flex-1 rounded-[10px] border px-4 py-2 text-sm font-medium transition ${method === 'password' ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-200 bg-white text-slate-900 hover:bg-slate-50'}`}
+                  >
+                    Password
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setMethod('magic_link')}
+                    disabled={busy || loading}
+                    className={`flex-1 rounded-[10px] border px-4 py-2 text-sm font-medium transition ${method === 'magic_link' ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-200 bg-white text-slate-900 hover:bg-slate-50'}`}
+                  >
+                    Magic link
+                  </button>
+                </div>
+                <p className="text-sm text-slate-500">
+                  {method === 'password'
+                    ? 'Sign in with your email and password.'
+                    : method === 'request_access'
+                      ? 'We’ll email you a sign-in link and create your portal account if one does not exist yet.'
+                      : method === 'magic_link'
+                      ? 'We’ll email you a one-time sign-in link for an existing account.'
+                      : 'Sign in with your email and password.'}
+                </p>
+              </div>
+
+              <form onSubmit={(event) => signIn(event, method)} className="form">
+                <label className="label text-sm font-medium text-slate-700">
+                  <span>
+                    Email <span className="text-pink-600">*</span>
+                  </span>
+                  <input
+                    className="input text-base text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#14B8A6]"
+                    type="email"
+                    autoComplete="email"
+                    inputMode="email"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    disabled={busy || loading}
+                    placeholder="you@company.com"
+                    required
+                  />
+                </label>
+
+                {method === 'password' ? (
+                  <div className="space-y-1.5">
+                    <div className="flex items-baseline justify-between gap-4">
+                      <label className="text-sm font-medium text-slate-700">
+                        Password <span className="text-pink-600">*</span>
+                      </label>
+                      <button
+                        className="text-sm text-slate-500 underline decoration-slate-300 underline-offset-4 hover:text-slate-700"
+                        type="button"
+                        onClick={forgotPassword}
+                        disabled={busy || loading}
+                      >
+                        Forgot password?
+                      </button>
+                    </div>
+                    <div className="relative">
+                      <input
+                        className="input pr-10 text-base text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#14B8A6]"
+                        type={showPassword ? 'text' : 'password'}
+                        autoComplete="current-password"
+                        value={password}
+                        onChange={(event) => setPassword(event.target.value)}
+                        disabled={busy || loading}
+                        placeholder="••••••••"
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword((value) => !value)}
+                        disabled={busy || loading}
+                        className="absolute inset-y-0 right-0 inline-flex items-center px-3 text-slate-400 hover:text-slate-600"
+                        aria-label={showPassword ? 'Hide password' : 'Show password'}
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="h-4 w-4"
+                        >
+                          {showPassword ? (
+                            <>
+                              <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+                              <circle cx="12" cy="12" r="3" />
+                            </>
+                          ) : (
+                            <>
+                              <path d="M10.3 5.2A9.8 9.8 0 0 1 12 5c6.5 0 10 7 10 7a17.2 17.2 0 0 1-3.2 4.3" />
+                              <path d="M6.6 6.6A16 16 0 0 0 2 12s3.5 7 10 7c1.1 0 2.1-.2 3.1-.5" />
+                              <path d="M14.1 14.1A3 3 0 0 1 9.9 9.9" />
+                              <path d="M3 3l18 18" />
+                            </>
+                          )}
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                ) : null}
+
+                <StatusBanner status={status} />
+
+                <div className="pt-2">
+                  <button
+                    className="w-full rounded-[10px] bg-[#14B8A6] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0F766E] disabled:cursor-not-allowed disabled:opacity-60"
+                    type="submit"
+                    disabled={busy || loading || (method === 'magic_link' && inCooldown)}
+                  >
+                    {busy
+                      ? 'Working…'
+                      : method === 'magic_link' || method === 'request_access'
+                        ? inCooldown
+                          ? `Try again in ${cooldownSeconds}s`
+                          : method === 'request_access'
+                            ? 'Request access link'
+                            : 'Send magic link'
+                        : 'Sign in'}
+                  </button>
+                </div>
+
+                <div>
+                  <button
+                    type="button"
+                    onClick={(event) => {
+                      setMethod('request_access');
+                      signIn(event, 'request_access');
+                    }}
+                    className="w-full rounded-[10px] border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
+                    disabled={busy || loading || inCooldown}
+                  >
+                    {busy && method === 'request_access'
+                      ? 'Working…'
+                      : inCooldown && method === 'request_access'
+                        ? `Try again in ${cooldownSeconds}s`
+                        : 'Sign up'}
+                  </button>
+                </div>
+              </form>
+
+              {!isSupabaseConfigured ? (
+                <div className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
+                  Supabase not configured. Set <code>PUBLIC_SUPABASE_URL</code> and <code>PUBLIC_SUPABASE_ANON_KEY</code>.
+                </div>
+              ) : null}
+
+              <div className="flex items-center gap-3 py-2">
+                <div className="h-px flex-1 bg-slate-200" />
+                <div className="text-xs uppercase tracking-wider text-slate-400">or</div>
+                <div className="h-px flex-1 bg-slate-200" />
+              </div>
+
+              <div className="space-y-3">
+                <button
+                  type="button"
+                  onClick={signInWithGitHub}
+                  disabled={busy || loading}
+                  className="flex w-full items-center justify-center gap-2 rounded-[10px] border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
+                  title="Continue with GitHub"
+                >
+                  <span className="inline-flex h-5 w-5 items-center justify-center text-slate-900">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-current">
+                      <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.17c-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.05-.71.08-.7.08-.7 1.16.08 1.78 1.19 1.78 1.19 1.03 1.76 2.69 1.25 3.35.96.1-.75.4-1.25.72-1.54-2.55-.29-5.23-1.28-5.23-5.69 0-1.26.45-2.3 1.18-3.11-.12-.29-.51-1.47.11-3.07 0 0 .96-.31 3.14 1.19a10.9 10.9 0 0 1 5.72 0c2.18-1.5 3.14-1.19 3.14-1.19.62 1.6.23 2.78.11 3.07.74.81 1.18 1.85 1.18 3.11 0 4.42-2.69 5.39-5.25 5.67.41.35.77 1.03.77 2.08v3.08c0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z" />
+                    </svg>
+                  </span>
+                  {busy ? 'Working…' : 'Continue with GitHub'}
+                </button>
+
+              </div>
+
+              <div className="pt-2 text-center text-sm text-slate-500">
+                Don&apos;t have an account? <span className="text-slate-400">Use the Sign up button above.</span>
+              </div>
+            </div>
           </div>
-          <div className="rounded-3xl border border-white/10 bg-white/6 p-5">
-            Existing-user-only access remains enabled. Users must already exist in Supabase Auth before a magic link will be sent.
+        </div>
+
+        <div className="relative hidden overflow-hidden lg:col-span-7 lg:block">
+          <div className="absolute inset-0 bg-gradient-to-br from-black via-[#0b0e14] to-[#171b24]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/50" />
+          <div className="absolute -left-24 top-16 h-72 w-72 rounded-full bg-[#14B8A6]/10 blur-3xl" />
+          <div className="absolute right-0 top-10 h-80 w-80 rounded-full bg-[#ff8c69]/10 blur-3xl" />
+
+          <div className="relative flex h-full min-h-[100svh] flex-col p-12 text-white">
+            <div className="flex items-center justify-end">
+              <img
+                src="/images/infrastructure/logo.svg"
+                alt="Advanced Analytica"
+                className="h-10 w-auto opacity-85"
+                decoding="async"
+              />
+            </div>
+
+            <div className="flex flex-1 items-start justify-center pt-24">
+              <div className="max-w-2xl text-center">
+                <div className="text-6xl font-bold leading-[1.05] tracking-tight">
+                  Connect your brand to intelligent services
+                  <br />
+                  <span className="text-[#14B8A6]">#withBRANDO</span>
+                </div>
+                <p className="mx-auto mt-8 max-w-xl text-lg text-white/70">
+                  Use Brando to turn brand knowledge into controlled AI communications, governed workflows, and
+                  machine-operable controls.
+                </p>
+                <p className="mx-auto mt-10 max-w-xl text-base text-white/60">
+                  Trusted by some of the world&apos;s largest brands
+                </p>
+              </div>
+            </div>
           </div>
-        </>
-      }
-    >
-      <div className="flex items-center justify-between gap-4">
-        <div>
-          <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">Sign in</div>
-          <h2 className="mt-2 text-3xl font-semibold tracking-tight text-ink">Portal access</h2>
         </div>
-        <a href="/" className="text-sm font-semibold text-ink/60 transition hover:text-ink">
-          Back to site
-        </a>
       </div>
-
-      <div className="mt-6 flex gap-2 rounded-full border border-ink/8 bg-[#f4f4ef] p-1">
-        <button
-          type="button"
-          onClick={() => setMethod('password')}
-          className={`flex-1 rounded-full px-4 py-2 text-sm font-semibold transition ${method === 'password' ? 'bg-white text-ink shadow-sm' : 'text-ink/60'}`}
-        >
-          Password
-        </button>
-        <button
-          type="button"
-          onClick={() => setMethod('magic_link')}
-          className={`flex-1 rounded-full px-4 py-2 text-sm font-semibold transition ${method === 'magic_link' ? 'bg-white text-ink shadow-sm' : 'text-ink/60'}`}
-        >
-          Magic link
-        </button>
-      </div>
-
-      <form onSubmit={signIn} className="mt-6 grid gap-4">
-        <label className="grid gap-2 text-sm font-semibold text-ink/72">
-          Email
-          <input
-            className={lightInputClass}
-            type="email"
-            autoComplete="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            disabled={busy || loading}
-            placeholder="you@company.com"
-          />
-        </label>
-
-        {method === 'password' ? (
-          <label className="grid gap-2 text-sm font-semibold text-ink/72">
-            Password
-            <input
-              className={lightInputClass}
-              type="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              disabled={busy || loading}
-              placeholder="Your password"
-            />
-          </label>
-        ) : null}
-
-        <StatusBanner status={status} />
-
-        <div className="flex flex-wrap items-center gap-3 pt-2">
-          <button className={buttonClass} type="submit" disabled={busy || loading}>
-            {busy ? 'Working…' : method === 'magic_link' ? 'Send sign-in link' : 'Sign in'}
-          </button>
-          <button className={lightSubtleButtonClass} type="button" onClick={forgotPassword} disabled={busy || loading}>
-            Reset password
-          </button>
-          {method === 'magic_link' && inCooldown ? (
-            <span className="text-sm text-ink/55">Retry in {cooldownSeconds}s</span>
-          ) : null}
-        </div>
-      </form>
-    </AuthFrame>
+    </section>
   );
 }
 
@@ -375,58 +720,178 @@ function PortalInner() {
   }
 
   const user = session.user;
+  const access = getPortalAccess(user);
+  const serviceCards = [
+    {
+      type: 'service',
+      audiences: ['client', 'operator'],
+      eyebrow: 'Strategy',
+      title: 'AI readiness assessment',
+      href: '/brand-ai-readiness-assessment',
+      description:
+        'Review organisational readiness, identify the right next moves, and frame the commercial case for governed AI adoption.',
+      accent: 'from-[#14B8A6]/22 to-transparent',
+      cta: 'Open assessment',
+    },
+    {
+      type: 'service',
+      audiences: ['client', 'operator'],
+      eyebrow: 'Platform',
+      title: 'iBOM services',
+      href: '/services/ibom',
+      description:
+        'Explore the intelligent brand object model service layer that connects brand governance to operational systems and agents.',
+      accent: 'from-[#ff8c69]/22 to-transparent',
+      cta: 'View iBOM service',
+    },
+    {
+      type: 'service',
+      audiences: ['developer', 'operator'],
+      eyebrow: 'Developers',
+      title: 'MCP server access',
+      href: '/developers/mcp-servers',
+      description:
+        'Go straight to the governed MCP tooling and implementation guidance for connected applications and agent workflows.',
+      accent: 'from-[#59b3e4]/24 to-transparent',
+      cta: 'Open developer access',
+    },
+    {
+      type: 'service',
+      audiences: ['operator'],
+      eyebrow: 'Implementation',
+      title: 'Enterprise rollout',
+      href: '/enterprise',
+      description:
+        'Move into implementation planning, governance rollout, and enterprise operating model design for larger programmes.',
+      accent: 'from-[#ceced0]/24 to-transparent',
+      cta: 'Open rollout path',
+    },
+    {
+      type: 'service',
+      audiences: ['operator'],
+      eyebrow: 'Products',
+      title: 'iBOM product pages',
+      href: '/products/ibom',
+      description:
+        'Review the current product positioning, narrative, and service packaging that supports protected operator workflows.',
+      accent: 'from-[#fa26a0]/22 to-transparent',
+      cta: 'Open product view',
+    },
+    {
+      type: 'service',
+      audiences: ['client', 'operator'],
+      eyebrow: 'Engagement',
+      title: 'Advisory and contact',
+      href: '/company/contact',
+      description:
+        'Start a scoped conversation about implementation, governance design, enterprise rollout, or managed support.',
+      accent: 'from-[#f8d210]/24 to-transparent',
+      cta: 'Contact Advanced Analytica',
+    },
+  ];
+  const visibleServiceCards = serviceCards.filter((card) =>
+    card.audiences.some((audience) => access.roles.includes(audience) || (audience === 'client' && access.isClient)),
+  );
+  const utilityCards = [
+    {
+      type: 'meta',
+      eyebrow: 'Account',
+      title: 'Signed-in account',
+      description: user.email,
+      body: `Audience: ${access.audienceLabel}`,
+    },
+    {
+      type: 'meta',
+      eyebrow: 'Roles',
+      title: access.roles.length ? access.roles.join(', ') : 'client',
+      description: 'Resolved from Supabase metadata and internal account fallback.',
+      body: `User ID: ${user.id}`,
+    },
+    {
+      type: 'action',
+      eyebrow: 'Session',
+      title: 'Manage access',
+      description: 'Protected access is enforced on the server before this page renders.',
+      body: session.access_token ? 'Access token present.' : 'Access token missing.',
+    },
+  ];
+  const portalCards = [...visibleServiceCards, ...utilityCards].slice(0, 6);
 
   return (
-    <AuthFrame
-      title="Governed access, same domain."
-      intro="The protected portal now lives inside advancedanalytica.co.uk, with the browser session managed directly by Supabase."
-      aside={
-        <>
-          <div className="rounded-3xl border border-white/10 bg-white/6 p-5">
-            Access is now blocked on the server. Unauthenticated requests are redirected before the portal page is rendered.
+    <section className="min-h-screen bg-slate-100">
+      <div className="container-wide py-12 lg:py-16">
+        <div className="rounded-[2rem] border border-[#d7dde5] bg-[#111927] p-8 text-paper shadow-[0_30px_90px_rgba(0,0,0,0.24)] md:p-10">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div className="max-w-[48rem]">
+              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">Protected portal</div>
+              <h1 className="mt-2 text-3xl font-semibold tracking-tight text-paper md:text-4xl">Services dashboard</h1>
+              <p className="mt-3 text-sm leading-relaxed text-paper/68 md:text-base">
+                Start from one of the service cards below. The set shown here changes by audience, so clients, developers, and operators do not all see the same entry points.
+              </p>
+            </div>
+            <button className={buttonClass} type="button" onClick={signOut} disabled={signingOut}>
+              {signingOut ? 'Signing out…' : 'Sign out'}
+            </button>
           </div>
-          <div className="rounded-3xl border border-white/10 bg-white/6 p-5">
-            Current user: <span className="font-semibold text-paper">{user.email}</span>
-          </div>
-        </>
-      }
-    >
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">Protected portal</div>
-          <h2 className="mt-2 text-3xl font-semibold tracking-tight text-paper">Signed in</h2>
-          <p className="mt-3 max-w-[34rem] text-sm leading-relaxed text-paper/68">
-            The session is active on the main site domain. This page is the right place to start moving protected tools and account-specific features.
-          </p>
-        </div>
-        <button className={buttonClass} type="button" onClick={signOut} disabled={signingOut}>
-          {signingOut ? 'Signing out…' : 'Sign out'}
-        </button>
-      </div>
 
-      <div className="mt-8 grid gap-4 md:grid-cols-3">
-        <section className="rounded-[1.5rem] border border-white/10 bg-white/6 p-5">
-          <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[#14B8A6]">Account</div>
-          <div className="mt-4 grid gap-2 text-sm text-paper/70">
-            <div><span className="font-semibold text-paper">Email:</span> {user.email}</div>
-            <div><span className="font-semibold text-paper">User ID:</span> {user.id}</div>
+          <div className="mt-6 flex flex-wrap gap-3 text-sm">
+            <div className="rounded-full border border-white/10 bg-white/6 px-4 py-2 text-paper/78">
+              Signed in as <span className="font-semibold text-paper">{user.email}</span>
+            </div>
+            <div className="rounded-full border border-white/10 bg-white/6 px-4 py-2 text-paper/78">
+              <span className="font-semibold text-paper">{access.audienceLabel}</span>
+              {access.roles.length ? ` • ${access.roles.join(', ')}` : ' • default client view'}
+            </div>
           </div>
-        </section>
-        <section className="rounded-[1.5rem] border border-white/10 bg-white/6 p-5">
-          <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[#14B8A6]">Auth status</div>
-          <div className="mt-4 grid gap-2 text-sm text-paper/70">
-            <div><span className="font-semibold text-paper">Session:</span> active</div>
-            <div><span className="font-semibold text-paper">Access token:</span> {session.access_token ? 'present' : 'missing'}</div>
+
+          <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {portalCards.map((card, index) =>
+              card.type === 'service' ? (
+                <a
+                  key={`${card.type}-${card.href}-${index}`}
+                  href={card.href}
+                  className="group relative min-h-[18rem] overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/6 p-6 transition duration-200 hover:-translate-y-1 hover:border-white/18 hover:bg-white/8"
+                >
+                  <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${card.accent}`} />
+                  <div className="relative flex h-full flex-col">
+                    <div className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">
+                      {card.eyebrow}
+                    </div>
+                    <h3 className="mt-3 text-2xl font-semibold tracking-tight text-paper">{card.title}</h3>
+                    <p className="mt-3 text-sm leading-relaxed text-paper/68">{card.description}</p>
+                    <div className="mt-auto inline-flex items-center gap-2 pt-6 text-sm font-semibold text-paper">
+                      {card.cta}
+                      <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+                    </div>
+                  </div>
+                </a>
+              ) : (
+                <section
+                  key={`${card.type}-${card.title}-${index}`}
+                  className="min-h-[18rem] rounded-[1.75rem] border border-white/10 bg-white/6 p-6"
+                >
+                  <div className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">
+                    {card.eyebrow}
+                  </div>
+                  <h3 className="mt-3 text-2xl font-semibold tracking-tight text-paper">{card.title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-paper/68">{card.description}</p>
+                  <div className="mt-6 text-sm leading-relaxed text-paper/60">{card.body}</div>
+
+                  {card.type === 'action' ? (
+                    <div className="mt-6 flex flex-wrap gap-3">
+                      <a href="/" className={subtleButtonClass}>Back to site</a>
+                      <button className={buttonClass} type="button" onClick={signOut} disabled={signingOut}>
+                        {signingOut ? 'Signing out…' : 'Sign out'}
+                      </button>
+                    </div>
+                  ) : null}
+                </section>
+              ),
+            )}
           </div>
-        </section>
-        <section className="rounded-[1.5rem] border border-white/10 bg-white/6 p-5">
-          <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[#14B8A6]">Next move</div>
-          <div className="mt-4 text-sm leading-relaxed text-paper/70">
-            Start replacing this placeholder with the actual customer or operator tools that need protected access.
-          </div>
-        </section>
+        </div>
       </div>
-    </AuthFrame>
+    </section>
   );
 }
 

@@ -37,7 +37,7 @@ const defaultRightData: ClusterNode = {
 };
 
 const {
-  title = 'iBOM - Intelligent Business Operating Model',
+  title = 'Brando - Brand-first Operating Model',
   leftData = defaultLeftData,
   rightData = defaultRightData,
   agentOrder = ['Brand Agent', 'Support Agent', 'Marketing Agent', 'Other Agents'],
@@ -48,10 +48,10 @@ const {
     'Other Agents': 'Other MCP'
   },
   questionToTools = {},
-  controlLayer = 'iBOM CONTROL LAYER',
-  tagline = 'BRAND-FIRST COMMUNICATIONS',
+  controlLayer = 'CONTROLLED AI COMMUNICATIONS',
+  tagline = '',
   leftColumnOffset = 0,
-  ariaLabel = 'AICE MCP Gateway architecture diagram'
+  ariaLabel = 'Brando Brand Oracle controlled AI communications diagram'
 } = Astro.props as {
   title?: string;
   leftData?: ClusterNode;
@@ -215,7 +215,7 @@ const diagramConfig = JSON.stringify({
       .attr('fill', '#ffffff')
       .attr('font-size', 26)
       .attr('font-weight', 700)
-      .text(config.title || 'iBOM - Intelligent Business Operating Model');
+      .text(config.title || 'Brando - Brand-first Operating Model');
 
     const glow = defs
       .append('filter')
@@ -397,7 +397,7 @@ const diagramConfig = JSON.stringify({
       .attr('fill', '#ffffff')
       .attr('font-size', 28)
       .attr('font-weight', 700)
-      .text('AICE');
+      .text('BRANDO');
 
     gatewayLabel
       .append('text')
@@ -406,16 +406,35 @@ const diagramConfig = JSON.stringify({
       .attr('fill', 'rgba(255,255,255,0.95)')
       .attr('font-size', 19)
       .attr('font-weight', 600)
-      .text('MCP Gateway');
+      .text('BRAND ORACLE');
 
-    gatewayLabel
+    const controlLayerLabel = config.controlLayer || 'CONTROLLED AI COMMUNICATIONS';
+    const controlLayerLines =
+      controlLayerLabel === 'CONTROLLED AI COMMUNICATIONS'
+        ? ['CONTROLLED AI', 'COMMUNICATIONS']
+        : [controlLayerLabel];
+
+    const controlLayerText = gatewayLabel
       .append('text')
       .attr('text-anchor', 'middle')
-      .attr('y', 22)
+      .attr('y', 16)
       .attr('fill', 'rgba(255,255,255,0.82)')
       .attr('font-size', 11)
-      .attr('letter-spacing', '0.18em')
-      .text(config.controlLayer || 'iBOM CONTROL LAYER');
+      .attr('letter-spacing', '0.18em');
+
+    controlLayerText
+      .append('tspan')
+      .attr('x', 0)
+      .attr('dy', 0)
+      .text(controlLayerLines[0]);
+
+    if (controlLayerLines[1]) {
+      controlLayerText
+        .append('tspan')
+        .attr('x', 0)
+        .attr('dy', 12)
+        .text(controlLayerLines[1]);
+    }
 
     gatewayLabel
       .append('text')
@@ -424,7 +443,7 @@ const diagramConfig = JSON.stringify({
       .attr('fill', 'rgba(255,255,255,0.72)')
       .attr('font-size', 9)
       .attr('letter-spacing', '0.14em')
-      .text(config.tagline || 'BRAND-FIRST COMMUNICATIONS');
+      .text(config.tagline || '');
 
     const drawPill = (group, name, theme = 'leaf') => {
       if (theme === 'question') {

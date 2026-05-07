@@ -1,11 +1,15 @@
 ---
+export const prerender = true;
+
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TagPill from '../../components/TagPill.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
+import FunctionRoutingPrompt from '../../components/FunctionRoutingPrompt.astro';
 import components from '../../lib/mdx/components';
 import { getCollection } from 'astro:content';
 import { SITE_URL } from '../../lib/seo/site';
 import { getGeneratedCoverPath } from '../../lib/contentCover';
+import { toSentenceCaseTitle } from '../../lib/titleFormat';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -21,23 +25,24 @@ const allPosts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 const related = allPosts.filter((entry) => entry.slug !== post.slug).slice(0, 3);
 
 const title = post.data.title;
+const displayTitle = toSentenceCaseTitle(title);
 const description = post.data.description;
 const url = `${SITE_URL}/opinions/${post.slug}`;
 const coverImage = getGeneratedCoverPath('opinion', post.slug);
-const coverAlt = `${title} — ${description}`;
+const coverAlt = `${displayTitle} — ${description}`;
 
 const page = {
-  title,
+  title: displayTitle,
   description,
   url,
   breadcrumbs: [
     { name: 'Home', url: `${SITE_URL}/` },
     { name: 'Opinions', url: `${SITE_URL}/opinions/` },
-    { name: title, url }
+    { name: displayTitle, url }
   ],
   isArticle: true,
   article: {
-    title,
+    title: displayTitle,
     description,
     publishedAt: post.data.publishedAt,
     author: post.data.author,
@@ -50,7 +55,7 @@ const page = {
   imageAlt: coverAlt
 };
 ---
-<BaseLayout title={title} description={description} page={page} bodyClass="case-study">
+<BaseLayout title={displayTitle} description={description} page={page} bodyClass="case-study">
   <section>
     <div class="relative z-10 bg-[#0b0e14]">
       <div class="absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
@@ -94,18 +99,21 @@ const page = {
           <div>
             <div class="flex flex-wrap gap-3">
               {post.data.tags.map((tag) => (
-                <span class="rounded-sm bg-[#14B8A6] px-4 py-2 text-xs font-semibold uppercase text-paper">
+                <a
+                  href={`/opinions/tag/${encodeURIComponent(tag)}`}
+                  class="rounded-sm bg-[#14B8A6] px-4 py-2 text-xs font-semibold uppercase text-paper transition-colors hover:bg-[#0F766E]"
+                >
                   {tag}
-                </span>
+                </a>
             ))}
           </div>
 
             <h1 class="mt-4 text-[clamp(2rem,4vw,3.25rem)] font-normal tracking-tight text-white">
-              {title}
+              {displayTitle}
             </h1>
             <div class="mt-6 text-sm text-white/70">{post.data.author}</div>
             <div class="mt-6">
-              <ShareButtons url={url} title={title} description={description} variant="dark" />
+              <ShareButtons url={url} title={displayTitle} description={description} variant="dark" />
             </div>
           </div>
         </div>
@@ -159,6 +167,12 @@ const page = {
     </div>
   </section>
 
+  <FunctionRoutingPrompt
+    eyebrow="Next step"
+    title="What is your function?"
+    description="If this article is relevant, the next step is to route you to the function-specific hub that matches your role in the business."
+  />
+
   <section class="container-wide pt-8 pb-6">
     <div class="rounded-2xl border border-fog bg-surface p-6 md:p-7">
       <blockquote class="m-0 text-lg leading-relaxed text-ink md:text-[1.625rem]">
@@ -183,7 +197,7 @@ const page = {
           <div class="text-xs uppercase tracking-[0.2em] text-steel">
             {entry.data.series ?? 'Opinion'}
           </div>
-          <div class="mt-3 text-lg font-semibold text-ink">{entry.data.title}</div>
+          <div class="mt-3 text-lg font-semibold text-ink">{toSentenceCaseTitle(entry.data.title)}</div>
           <p class="mt-2 text-sm text-steel">{entry.data.description}</p>
         </a>
       ))}

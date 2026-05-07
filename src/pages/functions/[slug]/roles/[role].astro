@@ -1,8 +1,11 @@
 ---
+export const prerender = true;
+
 import BaseLayout from "../../../../layouts/BaseLayout.astro";
 import PostCard from "../../../../components/PostCard.astro";
 import { getCollection, type CollectionEntry } from "astro:content";
 import { SITE_URL } from "../../../../lib/seo/site";
+import { toSentenceCaseTitle } from "../../../../lib/titleFormat";
 import {
   businessFunctions,
   getRolePath,
@@ -36,7 +39,7 @@ export async function getStaticPaths() {
 
 const { entry, role, siblingRoles } = Astro.props as RolePageProps;
 
-const relatedUseCases = (await getCollection("caseStudies", ({ data }) => !data.draft))
+const relatedUseCases = (await getCollection("use-cases", ({ data }) => !data.draft))
   .filter((post) => post.data.tags?.some((tag) => entry.useCaseTags.includes(tag)))
   .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
   .slice(0, 3);
@@ -52,15 +55,15 @@ const journeySteps = [
     body: `Start with a focused conversation about ${role.data.title.toLowerCase()}, the decisions you own, and where governed AI can create the clearest value first.`,
   },
   {
-    title: "Build knowledge",
+    title: "Structure data",
     body: entry.journey[0]?.body ?? "",
   },
   {
-    title: "Deploy AICE",
+    title: "Controls toolkit",
     body: entry.journey[1]?.body ?? "",
   },
   {
-    title: "Assured Operations",
+    title: "Assured operations",
     body: entry.journey[2]?.body ?? "",
   },
 ];
@@ -75,8 +78,8 @@ const roleFaqs = [
     answer: `Instead of relying on fragmented guidance and local interpretation, ${entry.title} can work from a clearer specification base that supports repeatable decisions, stronger traceability, and better alignment across teams and systems.`,
   },
   {
-    question: `How does AICE help ${role.data.title.toLowerCase()} specifically?`,
-    answer: `The AICE gives this role a governed runtime layer for controlling how AI systems access knowledge, apply rules, and interact with approved tools. That makes it easier to move from policy or intent into live operational behaviour with more confidence.`,
+    question: `How does the implementation layer help ${role.data.title.toLowerCase()} specifically?`,
+    answer: `The implementation layer gives this role a governed runtime layer for controlling how AI systems access knowledge, apply rules, and interact with approved tools. That makes it easier to move from policy or intent into live operational behaviour with more confidence.`,
   },
   {
     question: "What does assured operation look like here?",
@@ -84,21 +87,22 @@ const roleFaqs = [
   },
   {
     question: "What is the right first step?",
-    answer: `Usually a focused conversation about the decisions, constraints, and operational pressure points this role owns. From there, we can define whether the strongest starting point is knowledge capture, AICE deployment, or a linked path through both.`,
+    answer: `Usually a focused conversation about the decisions, constraints, and operational pressure points this role owns. From there, we can define whether the strongest starting point is knowledge capture, implementation-layer deployment, or a linked path through both.`,
   },
 ];
 
-const title = `${role.data.title} | ${entry.title}`;
+const title = `${toSentenceCaseTitle(role.data.title)} | ${toSentenceCaseTitle(entry.title)}`;
 const description = `${role.data.summary} ${role.data.detail}`;
 
 const page = {
   title,
   description,
   url: `${SITE_URL}${getRolePath(entry.slug, role.data.title)}`,
+  noindex: true,
   breadcrumbs: [
     { name: "Home", url: `${SITE_URL}/` },
-    { name: entry.title, url: `${SITE_URL}/functions/${entry.slug}/` },
-    { name: role.data.title, url: `${SITE_URL}${getRolePath(entry.slug, role.data.title)}` },
+    { name: toSentenceCaseTitle(entry.title), url: `${SITE_URL}/functions/${entry.slug}/` },
+    { name: toSentenceCaseTitle(role.data.title), url: `${SITE_URL}${getRolePath(entry.slug, role.data.title)}` },
   ],
 };
 ---
@@ -113,7 +117,7 @@ const page = {
             Role page
           </div>
           <h1 class="mt-5 text-[clamp(2.8rem,5vw,4.85rem)] font-semibold tracking-tight leading-[1.05] text-paper">
-            {role.data.title}
+            {toSentenceCaseTitle(role.data.title)}
           </h1>
           <p class="mt-5 max-w-[72ch] text-[clamp(1.35rem,2.2vw,2rem)] font-light leading-[1.2] text-[#14B8A6]">
             Role path within {entry.title}
@@ -181,7 +185,7 @@ const page = {
                     : "border-paper/20 text-paper/70 hover:border-[#14B8A6] hover:text-paper",
                 ]}
               >
-                {item.data.title}
+                {toSentenceCaseTitle(item.data.title)}
               </a>
             ))
           }
@@ -193,7 +197,7 @@ const page = {
   <section class="container-wide py-16 md:py-20">
     <div class="eyebrow text-center">Role Context</div>
     <h2 class="mt-4 text-center text-[clamp(2.2rem,4vw,3.6rem)] font-semibold tracking-tight text-ink">
-      How iBOM and AICE support this role
+      How Brando and the implementation layer support this role
     </h2>
     <p class="mx-auto mt-5 max-w-[75ch] text-center text-lg leading-relaxed text-steel md:text-xl">
       The same operating model applies, but the value for {role.data.title.toLowerCase()} shows up in the decisions,
@@ -214,7 +218,7 @@ const page = {
         </p>
       </div>
       <div class="rounded-2xl border border-fog bg-surface p-8 shadow-outline">
-        <div class="text-xl font-semibold tracking-tight text-ink">Operate with assurance</div>
+        <div class="text-xl font-semibold tracking-tight text-ink">Assured operations</div>
         <p class="mt-4 text-base leading-relaxed text-steel">
           {entry.journey[2]?.body}
         </p>
@@ -228,11 +232,11 @@ const page = {
         <div>
           <div class="eyebrow">The Journey</div>
           <h2 class="mt-4 text-[clamp(2.4rem,4.6vw,4.3rem)] font-semibold tracking-tight leading-[1.04] text-ink">
-            From knowledge to assured operations
+            From brand disorder to controlled AI operations
           </h2>
           <p class="mt-5 max-w-[34rem] text-lg leading-relaxed text-steel md:text-xl">
             This role follows the same route as the wider function: clarify the operating reality, structure the
-            knowledge, deploy AICE with control, and run the model with live assurance.
+            knowledge, deploy the implementation layer with control, and run the model with live assurance.
           </p>
           <div class="mt-8 flex flex-wrap gap-4">
             <a
@@ -271,7 +275,7 @@ const page = {
     <div class="rounded-[2rem] border border-[#14B8A6]/20 bg-gradient-to-br from-[#14B8A6]/8 via-paper to-[#ff8c69]/10 p-8 shadow-outline md:p-12">
       <div class="eyebrow">Role Outcomes</div>
       <h2 class="mt-4 text-[clamp(2rem,3.4vw,3.2rem)] font-semibold tracking-tight text-ink">
-        What strong operation looks like for {role.data.title.toLowerCase()}
+        What AI control looks like for {role.data.title.toLowerCase()}
       </h2>
       <p class="mt-5 max-w-[72ch] text-lg leading-relaxed text-steel md:text-xl">
         This role is strongest when governed knowledge, controlled runtime behaviour, and assured operations all work

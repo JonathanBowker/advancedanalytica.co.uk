@@ -109,7 +109,7 @@ const renderSvg = ({
 
 export async function getStaticPaths() {
   const opinions = await getCollection('blog', ({ data }) => !data.draft);
-  const useCases = await getCollection('caseStudies', ({ data }) => !data.draft);
+  const useCases = await getCollection('use-cases', ({ data }) => !data.draft);
   const resources = await getCollection('resources', ({ data }) => !data.draft);
 
   return [
