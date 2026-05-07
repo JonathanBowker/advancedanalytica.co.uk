@@ -29,19 +29,6 @@ const blog = defineCollection({
   })
 });
 
-const caseStudies = defineCollection({
-  type: 'content',
-  schema: z.object({
-    title: plainTitle(),
-    description: plainText('description'),
-    coverImage: z.string().optional(),
-    publishedAt: z.date(),
-    author: z.string().default('Advanced Analytica'),
-    tags: z.array(z.string()).default([]),
-    draft: z.boolean().default(false)
-  })
-});
-
 const resources = defineCollection({
   type: 'content',
   schema: z.object({
@@ -71,26 +58,12 @@ const useCases = defineCollection({
   schema: z.object({
     title: plainTitle(),
     description: plainText('description'),
+    coverImage: z.string().optional(),
+    publishedAt: z.date(),
+    author: z.string().default('Advanced Analytica'),
+    tags: z.array(z.string()).default([]),
     industry: z.string().optional(),
     outcomes: z.array(z.string()).optional(),
-    draft: z.boolean().default(false)
-  })
-});
-
-const docs = defineCollection({
-  type: 'content',
-  schema: z.object({
-    title: plainTitle(),
-    description: plainText('description'),
-    draft: z.boolean().default(false)
-  })
-});
-
-const brand = defineCollection({
-  type: 'content',
-  schema: z.object({
-    title: plainTitle(),
-    description: plainText('description').optional(),
     draft: z.boolean().default(false)
   })
 });
@@ -145,12 +118,9 @@ const personas = defineCollection({
 
 export const collections = {
   blog,
-  caseStudies,
   resources,
   products,
-  useCases,
-  docs,
-  brand,
+  'use-cases': useCases,
   roles,
   personas
 };

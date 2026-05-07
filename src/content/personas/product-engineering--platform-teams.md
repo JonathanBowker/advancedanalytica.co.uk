@@ -6,7 +6,7 @@ roleSlug: "platform-teams"
 roleTitle: "Platform teams"
 seniority: "Platform Lead"
 organisationContext: "Leads teams responsible for turning business logic into production systems, where ambiguity in requirements quickly becomes technical drift and governance risk."
-summary: "Use the AICE as a controlled interface for models, tools, and internal systems instead of creating scattered point integrations."
+summary: "Use the implementation layer as a controlled interface for models, tools, and internal systems instead of creating scattered point integrations."
 goals:
   - "Translate business logic into design-ready specifications and governed system behaviour."
   - "Reduce ambiguity in AI builds and runtime control."
@@ -17,7 +17,7 @@ painPoints:
   - "Governance is often bolted on after build rather than designed into the runtime."
 questions:
   - "How do we engineer from specification rather than interpretation?"
-  - "Where should AICE sit in the architecture and runtime control model?"
+  - "Where should the implementation layer sit in the architecture and runtime control model?"
   - "What changes when business knowledge becomes machine-usable before build starts?"
   - "How do we test and revise system behaviour without losing delivery momentum?"
 kpis:
@@ -39,18 +39,18 @@ stakeholders:
   - "Technical delivery leads"
   - "Governance and security stakeholders"
 proofNeeds:
-  - "Clear architectural patterns showing where AICE sits."
+  - "Clear architectural patterns showing where the implementation layer sits."
   - "Examples of specifications improving build quality and runtime control."
   - "Evidence that stronger governance reduces technical drift and operational risk."
 contentStages:
   - "Awareness: why prompt-led development is not enough for governed systems."
   - "Evaluation: how to structure knowledge, tools, and runtime constraints."
-  - "Implementation: specification, build, testing, and AICE deployment patterns."
+  - "Implementation: specification, build, testing, and implementation layer deployment patterns."
   - "Scale: revision loops, monitoring, and multi-system governance."
 contentNeeds:
   - "Technical examples that connect specification, architecture, and runtime control."
   - "Patterns for governed tool access, evaluation, and operational traceability."
-  - "Clear explanations of how iBOM and AICE reduce build ambiguity."
+  - "Clear explanations of how Brando and its implementation layer reduce build ambiguity."
 messagingNotes:
   - "Responds to architectural clarity and delivery discipline more than marketing language."
   - "Needs to see how runtime control improves engineering quality rather than constrains it."
@@ -60,12 +60,12 @@ sourceFeeds:
   - "Developer posts on evaluation, agents, tool calling, and runtime governance."
   - "Security and architecture newsletters relevant to production AI systems."
 referenceContent:
-  - "Past articles on MCP servers governance, integrating iBOM into CI/CD, and schema vs semantics."
+  - "Past articles on MCP servers governance, structured governance in CI/CD, and schema vs semantics."
   - "Use cases covering systems, MCP, and governed technical delivery."
   - "Technical content with strong engagement from developers and engineering readers."
 topPerformingTopics:
   - "Specification-driven delivery."
-  - "Runtime control and AICE architecture."
+  - "Runtime control and implementation layer architecture."
   - "Governed tool access and evaluation."
   - "Reducing ambiguity in AI system builds."
 engagementSignals:
@@ -84,7 +84,7 @@ editorialVoice:
   - "Confident about design tradeoffs and operational realities."
   - "Minimal fluff."
 contentObjectives:
-  - "Position iBOM and AICE as credible parts of system design, not marketing abstractions."
+  - "Position Brando and its implementation layer as credible parts of system design, not marketing abstractions."
   - "Help engineering readers see how structured knowledge reduces build ambiguity."
   - "Create a content bridge from technical curiosity into product and role pages."
 ctaPatterns:
@@ -101,7 +101,7 @@ draft: false
 
 # Chris Dawson
 
-Use the AICE as a controlled interface for models, tools, and internal systems instead of creating scattered point integrations. For platform teams, that means a cleaner runtime layer for managing access, actions, and system-wide governance at scale.
+Use the implementation layer as a controlled interface for models, tools, and internal systems instead of creating scattered point integrations. For platform teams, that means a cleaner runtime layer for managing access, actions, and system-wide governance at scale.
 
 ## What This Persona Is Trying To Achieve
 
@@ -125,7 +125,7 @@ Use the AICE as a controlled interface for models, tools, and internal systems i
 ## Questions This Persona Is Likely To Ask
 
 - How do we engineer from specification rather than interpretation?
-- Where should AICE sit in the architecture and runtime control model?
+- Where should the implementation layer sit in the architecture and runtime control model?
 - What changes when business knowledge becomes machine-usable before build starts?
 - How do we test and revise system behaviour without losing delivery momentum?
 
@@ -147,7 +147,7 @@ Use the AICE as a controlled interface for models, tools, and internal systems i
 
 ## Proof This Persona Needs
 
-- Clear architectural patterns showing where AICE sits.
+- Clear architectural patterns showing where the implementation layer sits.
 - Examples of specifications improving build quality and runtime control.
 - Evidence that stronger governance reduces technical drift and operational risk.
 
@@ -155,7 +155,7 @@ Use the AICE as a controlled interface for models, tools, and internal systems i
 
 - Awareness: why prompt-led development is not enough for governed systems.
 - Evaluation: how to structure knowledge, tools, and runtime constraints.
-- Implementation: specification, build, testing, and AICE deployment patterns.
+- Implementation: specification, build, testing, and implementation layer deployment patterns.
 - Scale: revision loops, monitoring, and multi-system governance.
 
 ## Source Feeds To Watch
@@ -166,14 +166,14 @@ Use the AICE as a controlled interface for models, tools, and internal systems i
 
 ## Reference Content To Reuse
 
-- Past articles on MCP servers governance, integrating iBOM into CI/CD, and schema vs semantics.
+- Past articles on MCP servers governance, structured governance in CI/CD, and schema vs semantics.
 - Use cases covering systems, MCP, and governed technical delivery.
 - Technical content with strong engagement from developers and engineering readers.
 
 ## Topics Most Likely To Perform
 
 - Specification-driven delivery.
-- Runtime control and AICE architecture.
+- Runtime control and implementation layer architecture.
 - Governed tool access and evaluation.
 - Reducing ambiguity in AI system builds.
 
@@ -200,7 +200,7 @@ Use the AICE as a controlled interface for models, tools, and internal systems i
 
 ## Content Objectives
 
-- Position iBOM and AICE as credible parts of system design, not marketing abstractions.
+- Position Brando and its implementation layer as credible parts of system design, not marketing abstractions.
 - Help engineering readers see how structured knowledge reduces build ambiguity.
 - Create a content bridge from technical curiosity into product and role pages.
 
@@ -224,7 +224,7 @@ Review weekly against technical RSS and monthly against engineering-reader engag
 
 - Technical examples that connect specification, architecture, and runtime control.
 - Patterns for governed tool access, evaluation, and operational traceability.
-- Clear explanations of how iBOM and AICE reduce build ambiguity.
+- Clear explanations of how Brando and its implementation layer reduce build ambiguity.
 
 ## Messaging Notes
 

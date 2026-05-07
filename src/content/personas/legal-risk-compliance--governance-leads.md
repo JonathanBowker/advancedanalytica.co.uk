@@ -45,11 +45,11 @@ proofNeeds:
 contentStages:
   - "Awareness: why policy on paper is not enough for live AI systems."
   - "Evaluation: what rules, controls, and approvals must become operational first."
-  - "Implementation: structuring policy, deploying AICE, and governing runtime behaviour."
+  - "Implementation: structuring policy, deploying the implementation layer, and governing runtime behaviour."
   - "Scale: auditability, revision, and enforcement across more systems and teams."
 contentNeeds:
   - "Clear examples of policy becoming machine-usable operating logic."
-  - "Explanations of how AICE enforces access, actions, and runtime constraints."
+  - "Explanations of how the implementation layer enforces access, actions, and runtime constraints."
   - "Practical guidance on assurance, auditability, and policy revision."
 messagingNotes:
   - "Responds to control, traceability, and enforcement more than efficiency language."
@@ -85,7 +85,7 @@ editorialVoice:
   - "Professional and credible to governance audiences."
 contentObjectives:
   - "Help readers see why documentation alone is insufficient."
-  - "Position AICE and structured policy as the route to enforceable operational control."
+  - "Position the implementation layer and structured policy as the route to enforceable operational control."
   - "Generate content that can support both governance education and buying confidence."
 ctaPatterns:
   - "Lead with live exposure or policy drift, not with abstract AI hype."
@@ -155,7 +155,7 @@ Create a more testable and traceable operating model for AI systems across workf
 
 - Awareness: why policy on paper is not enough for live AI systems.
 - Evaluation: what rules, controls, and approvals must become operational first.
-- Implementation: structuring policy, deploying AICE, and governing runtime behaviour.
+- Implementation: structuring policy, deploying the implementation layer, and governing runtime behaviour.
 - Scale: auditability, revision, and enforcement across more systems and teams.
 
 ## Source Feeds To Watch
@@ -201,7 +201,7 @@ Create a more testable and traceable operating model for AI systems across workf
 ## Content Objectives
 
 - Help readers see why documentation alone is insufficient.
-- Position AICE and structured policy as the route to enforceable operational control.
+- Position the implementation layer and structured policy as the route to enforceable operational control.
 - Generate content that can support both governance education and buying confidence.
 
 ## CTA Patterns
@@ -223,7 +223,7 @@ Review weekly against governance and regulatory feeds, and monthly against engag
 ## Content That Helps
 
 - Clear examples of policy becoming machine-usable operating logic.
-- Explanations of how AICE enforces access, actions, and runtime constraints.
+- Explanations of how the implementation layer enforces access, actions, and runtime constraints.
 - Practical guidance on assurance, auditability, and policy revision.
 
 ## Messaging Notes

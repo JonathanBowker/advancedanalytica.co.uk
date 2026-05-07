@@ -6,7 +6,7 @@ roleSlug: "risk-leaders"
 roleTitle: "Risk leaders"
 seniority: "Chief Risk Officer"
 organisationContext: "Owns policy, obligations, controls, and governance expectations in environments where AI introduces new behavioural, access, and traceability risks."
-summary: "Use governed specifications and the AICE to reduce uncontrolled model behaviour, policy drift, and unmanaged system access."
+summary: "Use governed specifications and the implementation layer to reduce uncontrolled model behaviour, policy drift, and unmanaged system access."
 goals:
   - "Make policy operational before issues reach live systems."
   - "Reduce uncontrolled model behaviour, unmanaged access, and policy drift."
@@ -45,11 +45,11 @@ proofNeeds:
 contentStages:
   - "Awareness: why policy on paper is not enough for live AI systems."
   - "Evaluation: what rules, controls, and approvals must become operational first."
-  - "Implementation: structuring policy, deploying AICE, and governing runtime behaviour."
+  - "Implementation: structuring policy, deploying the implementation layer, and governing runtime behaviour."
   - "Scale: auditability, revision, and enforcement across more systems and teams."
 contentNeeds:
   - "Clear examples of policy becoming machine-usable operating logic."
-  - "Explanations of how AICE enforces access, actions, and runtime constraints."
+  - "Explanations of how the implementation layer enforces access, actions, and runtime constraints."
   - "Practical guidance on assurance, auditability, and policy revision."
 messagingNotes:
   - "Responds to control, traceability, and enforcement more than efficiency language."
@@ -85,7 +85,7 @@ editorialVoice:
   - "Professional and credible to governance audiences."
 contentObjectives:
   - "Help readers see why documentation alone is insufficient."
-  - "Position AICE and structured policy as the route to enforceable operational control."
+  - "Position the implementation layer and structured policy as the route to enforceable operational control."
   - "Generate content that can support both governance education and buying confidence."
 ctaPatterns:
   - "Lead with live exposure or policy drift, not with abstract AI hype."
@@ -101,7 +101,7 @@ draft: false
 
 # Martin Fraser
 
-Use governed specifications and the AICE to reduce uncontrolled model behaviour, policy drift, and unmanaged system access. This helps risk leaders move from reviewing exposure after the event to shaping the conditions under which AI systems can operate in the first place. The result is a stronger operating framework for reducing live risk through clearer controls, runtime guardrails, and governed system behaviour rather than only measuring issues after the fact.
+Use governed specifications and the implementation layer to reduce uncontrolled model behaviour, policy drift, and unmanaged system access. This helps risk leaders move from reviewing exposure after the event to shaping the conditions under which AI systems can operate in the first place. The result is a stronger operating framework for reducing live risk through clearer controls, runtime guardrails, and governed system behaviour rather than only measuring issues after the fact.
 
 ## What This Persona Is Trying To Achieve
 
@@ -155,7 +155,7 @@ Use governed specifications and the AICE to reduce uncontrolled model behaviour,
 
 - Awareness: why policy on paper is not enough for live AI systems.
 - Evaluation: what rules, controls, and approvals must become operational first.
-- Implementation: structuring policy, deploying AICE, and governing runtime behaviour.
+- Implementation: structuring policy, deploying the implementation layer, and governing runtime behaviour.
 - Scale: auditability, revision, and enforcement across more systems and teams.
 
 ## Source Feeds To Watch
@@ -201,7 +201,7 @@ Use governed specifications and the AICE to reduce uncontrolled model behaviour,
 ## Content Objectives
 
 - Help readers see why documentation alone is insufficient.
-- Position AICE and structured policy as the route to enforceable operational control.
+- Position the implementation layer and structured policy as the route to enforceable operational control.
 - Generate content that can support both governance education and buying confidence.
 
 ## CTA Patterns
@@ -223,7 +223,7 @@ Review weekly against governance and regulatory feeds, and monthly against engag
 ## Content That Helps
 
 - Clear examples of policy becoming machine-usable operating logic.
-- Explanations of how AICE enforces access, actions, and runtime constraints.
+- Explanations of how the implementation layer enforces access, actions, and runtime constraints.
 - Practical guidance on assurance, auditability, and policy revision.
 
 ## Messaging Notes

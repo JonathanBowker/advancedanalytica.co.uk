@@ -12,7 +12,7 @@ import { toSentenceCaseTitle } from '../lib/titleFormat';
 const { title, description, page } = Astro.props as {
   title: string;
   description: string;
-  page: PageMeta;
+  page: PageMeta & { noindex?: boolean };
   bodyClass?: string;
   hideFooterContactCta?: boolean;
   headerContactHref?: string;
@@ -38,6 +38,9 @@ const socialImage = DEFAULT_OG_IMAGE;
 const socialImageAlt = `${SITE_NAME}: ${description}`;
 const socialType = page.isArticle ? 'article' : 'website';
 const signedIn = Boolean(Astro.locals.user);
+const robotsContent = page.noindex
+  ? 'noindex,nofollow,max-image-preview:large,max-snippet:-1,max-video-preview:-1'
+  : 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1';
 ---
 <!doctype html>
 <html
@@ -49,7 +52,7 @@ const signedIn = Boolean(Astro.locals.user);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
-    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="robots" content={robotsContent} />
     <link rel="canonical" href={page.url} />
     <meta property="og:type" content={socialType} />
     <meta property="og:site_name" content={SITE_NAME} />

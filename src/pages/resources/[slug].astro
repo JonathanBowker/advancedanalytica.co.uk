@@ -3,6 +3,7 @@ export const prerender = true;
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
+import FunctionRoutingPrompt from '../../components/FunctionRoutingPrompt.astro';
 import components from '../../lib/mdx/components';
 import { getCollection } from 'astro:content';
 import { SITE_URL } from '../../lib/seo/site';
@@ -149,6 +150,12 @@ const page = {
       </div>
     </div>
   </section>
+
+  <FunctionRoutingPrompt
+    eyebrow="Use this well"
+    title="Which function are you leading?"
+    description="Route to the function page that matches your team so the next articles, use cases, and calls to action are more relevant."
+  />
 
   <section class="container-wide pt-8 pb-20">
     <div class="flex items-center justify-between gap-4">

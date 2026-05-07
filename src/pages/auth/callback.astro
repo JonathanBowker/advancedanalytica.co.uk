@@ -15,7 +15,8 @@ const requestUrl = new URL(Astro.request.url);
 const authCode = requestUrl.searchParams.get('code');
 const tokenHash = requestUrl.searchParams.get('token_hash');
 const type = requestUrl.searchParams.get('type') as EmailOtpType | null;
-const nextPath = requestUrl.searchParams.get('next') || '/portal';
+const requestedNextPath = requestUrl.searchParams.get('next');
+const nextPath = requestedNextPath?.startsWith('/') ? requestedNextPath : '/portal';
 
 let success = false;
 

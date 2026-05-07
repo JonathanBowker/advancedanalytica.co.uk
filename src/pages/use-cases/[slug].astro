@@ -3,6 +3,7 @@ export const prerender = true;
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
+import FunctionRoutingPrompt from '../../components/FunctionRoutingPrompt.astro';
 import components from '../../lib/mdx/components';
 import { getCollection } from 'astro:content';
 import { SITE_URL } from '../../lib/seo/site';
@@ -10,14 +11,14 @@ import { getGeneratedCoverPath } from '../../lib/contentCover';
 import { toSentenceCaseTitle } from '../../lib/titleFormat';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('caseStudies', ({ data }) => !data.draft);
+  const posts = await getCollection('use-cases', ({ data }) => !data.draft);
   return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
 }
 
-const { post } = Astro.props as { post: Awaited<ReturnType<typeof getCollection>>[number] };
+const { post } = Astro.props as { post: Awaited<ReturnType<typeof getCollection<'use-cases'>>>[number] };
 const { Content } = await post.render();
 
-const allPosts = (await getCollection('caseStudies', ({ data }) => !data.draft)).sort(
+const allPosts = (await getCollection('use-cases', ({ data }) => !data.draft)).sort(
   (a, b) => a.data.publishedAt.valueOf() - b.data.publishedAt.valueOf()
 );
 const related = allPosts.filter((entry) => entry.slug !== post.slug).slice(0, 3);
@@ -166,6 +167,12 @@ const page = {
       </div>
     </div>
   </section>
+
+  <FunctionRoutingPrompt
+    eyebrow="Apply this"
+    title="How does this apply to your business function?"
+    description="Choose your business function to see the governed AI model, supporting content, and next steps most relevant to how your team works."
+  />
 
   <section class="container-wide pt-8 pb-20">
     <div class="flex items-center justify-between gap-4">

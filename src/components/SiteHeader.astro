@@ -1,7 +1,7 @@
 ---
 const { contactHref = "#get-in-touch", signedIn = false } = Astro.props;
 const authHref = signedIn ? '/logout' : '/login';
-const authLabel = signedIn ? 'Logout' : 'Login';
+const authLabel = signedIn ? 'Sign out' : 'Sign in';
 const nav = [
   { label: 'Home', href: '/' },
   { label: 'Use Cases', href: '/use-cases' },

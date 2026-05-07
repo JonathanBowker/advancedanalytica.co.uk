@@ -207,7 +207,7 @@ export async function GET() {
     };
   });
 
-  const caseStudies = await getCollection('caseStudies', ({ data }) => !data.draft);
+  const caseStudies = await getCollection('use-cases', ({ data }) => !data.draft);
   const studies = caseStudies.map((post) => {
     const rawBody = typeof post.body === 'string' ? post.body : '';
     return {

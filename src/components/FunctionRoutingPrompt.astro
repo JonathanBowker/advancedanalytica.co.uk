@@ -1,0 +1,47 @@
+---
+import { businessFunctions } from '../lib/businessFunctions';
+
+const {
+  eyebrow = 'Find your route',
+  title = 'What is your function?',
+  description = 'Choose the function that best matches where you sit. We will take you to the most relevant content faster.'
+} = Astro.props as {
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+};
+---
+
+<section class="container-wide py-8">
+  <div class="rounded-[2rem] border border-fog bg-surface p-8 shadow-outline md:p-10">
+    <div class="eyebrow">{eyebrow}</div>
+    <h2 class="mt-4 text-[clamp(2rem,3.6vw,3rem)] font-semibold tracking-tight text-ink">
+      {title}
+    </h2>
+    <p class="mt-5 max-w-[70ch] text-lg leading-relaxed text-steel md:text-xl">
+      {description}
+    </p>
+
+    <div class="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+      {businessFunctions.map((entry) => (
+        <a
+          href={`/functions/${entry.slug}/`}
+          class="rounded-2xl border border-fog bg-white p-6 transition-colors hover:border-[#14B8A6] hover:bg-[#14B8A6]/5"
+        >
+          <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#14B8A6]">
+            {entry.eyebrow}
+          </div>
+          <div class="mt-3 text-xl font-semibold tracking-tight text-ink">
+            {entry.title}
+          </div>
+          <p class="mt-3 text-sm leading-relaxed text-steel">
+            {entry.homeBody}
+          </p>
+          <div class="mt-5 text-xs font-semibold tracking-[0.18em] uppercase text-ink">
+            View function
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

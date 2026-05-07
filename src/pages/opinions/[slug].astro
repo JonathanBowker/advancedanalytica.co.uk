@@ -4,6 +4,7 @@ export const prerender = true;
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TagPill from '../../components/TagPill.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
+import FunctionRoutingPrompt from '../../components/FunctionRoutingPrompt.astro';
 import components from '../../lib/mdx/components';
 import { getCollection } from 'astro:content';
 import { SITE_URL } from '../../lib/seo/site';
@@ -165,6 +166,12 @@ const page = {
       </div>
     </div>
   </section>
+
+  <FunctionRoutingPrompt
+    eyebrow="Next step"
+    title="What is your function?"
+    description="If this article is relevant, the next step is to route you to the function-specific hub that matches your role in the business."
+  />
 
   <section class="container-wide pt-8 pb-6">
     <div class="rounded-2xl border border-fog bg-surface p-6 md:p-7">

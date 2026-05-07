@@ -131,7 +131,25 @@ function getEmailFlowErrorMessage(err, fallback) {
 
   if (lower.includes('user not found')) {
     return {
-      message: 'No account exists for that email. Ask an admin to invite you first.',
+      message: 'No account exists for that email. Use Sign up to request access.',
+      isRateLimit: false,
+    };
+  }
+
+  if (
+    lower.includes('signups not allowed for otp') ||
+    lower.includes('signups not allowed') ||
+    lower.includes('otp signups are disabled')
+  ) {
+    return {
+      message: 'No account exists for that email. Use Sign up to request access.',
+      isRateLimit: false,
+    };
+  }
+
+  if (lower.includes('user already registered') || lower.includes('already been registered')) {
+    return {
+      message: 'An account already exists for that email. Use Password or Magic link to sign in.',
       isRateLimit: false,
     };
   }
@@ -216,7 +234,7 @@ function StatusBanner({ status }) {
     status.state === 'error'
       ? 'border-[#fca5a5] bg-[#fff1f2] text-[#9f1239]'
       : status.state === 'sent'
-        ? 'border-[#ffb69f] bg-[#fff3ee] text-[#b45309]'
+        ? 'border-[#86efac] bg-[#f0fdf4] text-[#166534]'
         : 'border-[#bfdbfe] bg-[#eff6ff] text-[#1d4ed8]';
 
   return <div className={`rounded-[10px] border px-4 py-3 text-sm ${tone}`}>{status.message}</div>;
@@ -260,7 +278,7 @@ function LoginInner() {
     return () => window.clearInterval(intervalId);
   }, [inCooldown]);
 
-  async function signIn(event) {
+  async function signIn(event, requestedMethod = method) {
     event.preventDefault();
     setStatus({ state: 'idle', message: '' });
 
@@ -280,7 +298,7 @@ function LoginInner() {
     setBusy(true);
 
     try {
-      if (method === 'magic_link') {
+      if (requestedMethod === 'magic_link') {
         if (inCooldown) {
           setStatus({
             state: 'error',
@@ -304,6 +322,33 @@ function LoginInner() {
         return;
       }
 
+      if (requestedMethod === 'request_access') {
+        if (inCooldown) {
+          setStatus({
+            state: 'error',
+            message: `Please wait ${cooldownSeconds}s before trying again.`,
+          });
+          return;
+        }
+
+        const { error } = await supabase.auth.signInWithOtp({
+          email: email.trim(),
+          options: {
+            emailRedirectTo: getCallbackUrlFor(nextUrl),
+            shouldCreateUser: true,
+          },
+        });
+
+        if (error) throw error;
+
+        setCooldownUntil(Date.now() + resendCooldownMs);
+        setStatus({
+          state: 'sent',
+          message: 'Check your email to complete registration and sign in.',
+        });
+        return;
+      }
+
       if (!password) {
         setStatus({ state: 'error', message: 'Enter a password.' });
         return;
@@ -318,7 +363,7 @@ function LoginInner() {
       window.location.replace(nextUrl);
     } catch (err) {
       const { message, isRateLimit } =
-        method === 'magic_link'
+        requestedMethod === 'magic_link' || requestedMethod === 'request_access'
           ? getEmailFlowErrorMessage(err, 'Failed to send magic link.')
           : { message: getPasswordErrorMessage(err), isRateLimit: false };
 
@@ -357,6 +402,35 @@ function LoginInner() {
       const { message } = getEmailFlowErrorMessage(err, 'Failed to start password reset.');
       setStatus({ state: 'error', message });
     } finally {
+      setBusy(false);
+    }
+  }
+
+  async function signInWithGitHub() {
+    setStatus({ state: 'idle', message: '' });
+
+    if (!isSupabaseConfigured || !supabase) {
+      setStatus({
+        state: 'error',
+        message: 'Supabase is not configured. Set PUBLIC_SUPABASE_URL and PUBLIC_SUPABASE_ANON_KEY.',
+      });
+      return;
+    }
+
+    setBusy(true);
+
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'github',
+        options: {
+          redirectTo: getCallbackUrlFor(nextUrl),
+        },
+      });
+
+      if (error) throw error;
+    } catch (err) {
+      const { message } = getEmailFlowErrorMessage(err, 'Failed to start GitHub sign-in.');
+      setStatus({ state: 'error', message });
       setBusy(false);
     }
   }
@@ -410,11 +484,15 @@ function LoginInner() {
                 <p className="text-sm text-slate-500">
                   {method === 'password'
                     ? 'Sign in with your email and password.'
-                    : 'We’ll email you a one-time sign-in link (existing users only).'}
+                    : method === 'request_access'
+                      ? 'We’ll email you a sign-in link and create your portal account if one does not exist yet.'
+                      : method === 'magic_link'
+                      ? 'We’ll email you a one-time sign-in link for an existing account.'
+                      : 'Sign in with your email and password.'}
                 </p>
               </div>
 
-              <form onSubmit={signIn} className="form">
+              <form onSubmit={(event) => signIn(event, method)} className="form">
                 <label className="label text-sm font-medium text-slate-700">
                   <span>
                     Email <span className="text-pink-600">*</span>
@@ -503,11 +581,31 @@ function LoginInner() {
                   >
                     {busy
                       ? 'Working…'
-                      : method === 'magic_link'
+                      : method === 'magic_link' || method === 'request_access'
                         ? inCooldown
                           ? `Try again in ${cooldownSeconds}s`
-                          : 'Send magic link'
+                          : method === 'request_access'
+                            ? 'Request access link'
+                            : 'Send magic link'
                         : 'Sign in'}
+                  </button>
+                </div>
+
+                <div>
+                  <button
+                    type="button"
+                    onClick={(event) => {
+                      setMethod('request_access');
+                      signIn(event, 'request_access');
+                    }}
+                    className="w-full rounded-[10px] border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
+                    disabled={busy || loading || inCooldown}
+                  >
+                    {busy && method === 'request_access'
+                      ? 'Working…'
+                      : inCooldown && method === 'request_access'
+                        ? `Try again in ${cooldownSeconds}s`
+                        : 'Sign up'}
                   </button>
                 </div>
               </form>
@@ -527,40 +625,23 @@ function LoginInner() {
               <div className="space-y-3">
                 <button
                   type="button"
-                  disabled
-                  className="flex w-full items-center justify-center gap-2 rounded-[10px] border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 opacity-60"
-                  title="Google sign-in not configured"
-                >
-                  <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-slate-200">
-                    G
-                  </span>
-                  Continue with Google
-                </button>
-
-                <button
-                  type="button"
-                  disabled
-                  className="flex w-full items-center justify-center gap-2 rounded-[10px] border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 opacity-60"
-                  title="SSO not configured"
-                >
-                  <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-slate-200">
-                    SS
-                  </span>
-                  Continue with SSO
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setMethod((value) => (value === 'password' ? 'magic_link' : 'password'))}
+                  onClick={signInWithGitHub}
                   disabled={busy || loading}
-                  className="w-full rounded-[10px] border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 hover:bg-slate-50"
+                  className="flex w-full items-center justify-center gap-2 rounded-[10px] border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
+                  title="Continue with GitHub"
                 >
-                  See other options
+                  <span className="inline-flex h-5 w-5 items-center justify-center text-slate-900">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-current">
+                      <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.17c-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.05-.71.08-.7.08-.7 1.16.08 1.78 1.19 1.78 1.19 1.03 1.76 2.69 1.25 3.35.96.1-.75.4-1.25.72-1.54-2.55-.29-5.23-1.28-5.23-5.69 0-1.26.45-2.3 1.18-3.11-.12-.29-.51-1.47.11-3.07 0 0 .96-.31 3.14 1.19a10.9 10.9 0 0 1 5.72 0c2.18-1.5 3.14-1.19 3.14-1.19.62 1.6.23 2.78.11 3.07.74.81 1.18 1.85 1.18 3.11 0 4.42-2.69 5.39-5.25 5.67.41.35.77 1.03.77 2.08v3.08c0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z" />
+                    </svg>
+                  </span>
+                  {busy ? 'Working…' : 'Continue with GitHub'}
                 </button>
+
               </div>
 
               <div className="pt-2 text-center text-sm text-slate-500">
-                Don&apos;t have an account? <span className="text-slate-400">Ask an admin to invite you.</span>
+                Don&apos;t have an account? <span className="text-slate-400">Use the Sign up button above.</span>
               </div>
             </div>
           </div>
@@ -587,11 +668,11 @@ function LoginInner() {
                 <div className="text-6xl font-bold leading-[1.05] tracking-tight">
                   Connect your brand to intelligent services
                   <br />
-                  <span className="text-[#14B8A6]">#withIBOM</span>
+                  <span className="text-[#14B8A6]">#withBRANDO</span>
                 </div>
                 <p className="mx-auto mt-8 max-w-xl text-lg text-white/70">
-                  From tasks and workflows to apps and systems, build and automate anything in one powerful visual
-                  platform.
+                  Use Brando to turn brand knowledge into controlled AI communications, governed workflows, and
+                  machine-operable controls.
                 </p>
                 <p className="mx-auto mt-10 max-w-xl text-base text-white/60">
                   Trusted by some of the world&apos;s largest brands
