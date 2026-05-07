@@ -1,4 +1,13 @@
 User-agent: *
 Allow: /
+Disallow: /AGENTS/
+Disallow: /auth/
+Disallow: /login/
+Disallow: /logout/
+Disallow: /personas/
+Disallow: /portal/
+Disallow: /rss/
+Disallow: /search/
+Disallow: /functions/*/roles/
 
 Sitemap: https://advancedanalytica.co.uk/sitemap-index.xml

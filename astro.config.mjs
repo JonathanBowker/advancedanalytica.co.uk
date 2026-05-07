@@ -21,5 +21,37 @@ export default defineConfig({
     },
     plugins: [tailwindcss()]
   },
-  integrations: [mdx(), react(), sitemap()]
+  integrations: [
+    mdx(),
+    react(),
+    sitemap({
+      filter: (page) => {
+        const { pathname } = new URL(page);
+
+        if (pathname.startsWith('/AGENTS/')) return false;
+        if (pathname.startsWith('/blog/')) return false;
+        if (pathname.startsWith('/case-studies/')) return false;
+        if (pathname.startsWith('/personas/')) return false;
+        if (pathname.includes('/roles/')) return false;
+
+        if (
+          new Set([
+            '/activate/',
+            '/auth/callback/',
+            '/auth/reset/',
+            '/login/',
+            '/logout/',
+            '/opinions/tag/',
+            '/portal/',
+            '/rss/',
+            '/search/',
+          ]).has(pathname)
+        ) {
+          return false;
+        }
+
+        return true;
+      }
+    })
+  ]
 });
