@@ -17,61 +17,73 @@ const description =
 
 const usesTabs = [
   {
-    key: "purpose_understanding",
+    key: "brand_asset_mapping",
     label: "1. Map",
     stage: "Stage 1",
     phase: "Phase 1",
     heading: "MAP",
-    subheading: "Understand the brand structure before you build anything.",
-    body: "We map your brand standards, business context, priority AI use cases, and the knowledge already present across your teams, documents, systems, and workflows. This shows what is clear, where ambiguity lives, and what your AI needs to account for before a single specification is written.",
+    subheading: "Locate, collect, and organise all brand assets.",
+    body: "We discover where your brand assets live - PDFs, CSVs, images, standards, toolkits, rules, data exports from existing systems. We gather everything into an organised staging repository, create a comprehensive map of what exists and how it is structured, and establish what is needed before processing can begin.",
     href: "#brand-ai-readiness",
-    cta: "Assess brand readiness",
+    cta: "Assess readiness",
     image: usesPurposeUnderstandingImg,
   },
   {
-    key: "system_framing",
+    key: "multimodal_pipeline_specification",
     label: "2. Specify",
     stage: "Stage 2",
     phase: "Phase 1",
     heading: "SPECIFY",
-    subheading: "Define what AI must know, do, and never do.",
-    body: "We turn your rules, constraints, approvals, tone standards, and escalation paths into explicit specifications. Not a loose requirements document. A machine-readable governing contract your AI systems can follow.",
+    subheading: "Define the multi-modal analysis architecture.",
+    body: "We specify which AI models analyse which asset types - natural language processing for text, computer vision for images, icons, illustrations, and graphics, audio analysis for sound and video. We define what gets extracted: composition, colour, objects, themes, metadata, and context. We design the repository structure and the search index that makes your Brand Oracle queryable. This is the brief every AI model works from.",
     href: "#brand-ai-readiness",
-    cta: "Assess brand readiness",
+    cta: "Assess readiness",
     image: usesSystemFramingImg,
   },
   {
-    key: "specification_design",
-    label: "3. Validate",
+    key: "atomisation_pipeline_build",
+    label: "3. Build",
     stage: "Stage 3",
-    phase: "Phase 1",
-    heading: "VALIDATE",
-    subheading: "Test ambiguity before AI acts on your behalf.",
-    body: "We challenge the specification against the roles, intents, and scenarios your AI will meet. This shows where the rules hold, where they conflict, and where stronger controls are needed before build starts.",
-    href: "#role-intent",
-    cta: "See testing method",
-    image: usesSpecificationDesignImg,
-  },
-  {
-    key: "execution_generation",
-    label: "4. Build",
-    stage: "Stage 4",
     phase: "Phase 2",
     heading: "BUILD",
-    subheading: "Build from the approved specification.",
-    body: "We build the governed system from the specification under expert oversight. Every workflow, agent behaviour, control, and escalation path traces back to the rules your business approved.",
+    subheading: "Run the atomisation pipeline. Produce the dataset in parallel.",
+    body: "We execute the atomisation pipeline against your staged assets. Every element is tagged, categorised, and structured against the Brando schema. Text becomes markdown. Images are analysed for composition, colour, objects, and context. Disambiguation and ambiguity testing runs throughout. Pipeline construction and dataset production happen in parallel - each section built, tested, and verified before the next begins.",
     href: "#engine",
-    cta: "See control layer",
+    cta: "See how we build",
     image: usesExecutionGenerationImg,
   },
   {
-    key: "validation_evaluation",
-    label: "5. Operate",
-    stage: "Stage 5",
+    key: "brand_oracle_validation",
+    label: "4. Validate",
+    stage: "Stage 4",
     phase: "Phase 2",
-    heading: "OPERATE",
-    subheading: "Run with governance. Extend without losing control.",
-    body: "We help you operate the deployed system with monitoring, behavioural controls, review paths, and structured extension. Your AI can grow without drifting away from the standards your brand depends on.",
+    heading: "VALIDATE",
+    subheading: "Refine until your Brand Oracle is production-ready.",
+    body: "Pipeline outputs and atomised datasets are tested, refined, and polished through iterative validation. Our specialists review outputs, identify failure cases, resolve ambiguities, and hone the dataset until it meets our accuracy and governance standards. The result is Brando - your production-ready Brand Oracle, validated and ready for interrogation.",
+    href: "#role-intent",
+    cta: "See our standards",
+    image: usesSpecificationDesignImg,
+  },
+  {
+    key: "brand_oracle_interrogation",
+    label: "5. Interrogate",
+    stage: "Stage 5",
+    phase: "Phase 3",
+    heading: "INTERROGATE",
+    subheading: "Query Brando. Identify gaps and opportunities.",
+    body: "Query your Brand Oracle to perform gap analysis and categorise assets into four buckets - Supporters, Detractors, Opportunities, and Peripherals. Surface patterns, identify what the brand owns, what weakens it, and where agentic automation makes sense. Human-led throughout.",
+    href: "#role-intent",
+    cta: "See our approach",
+    image: usesValidationEvaluationImg,
+  },
+  {
+    key: "agentic_brand_operationalisation",
+    label: "6. Agentify",
+    stage: "Stage 6",
+    phase: "Phase 3",
+    heading: "AGENTIFY",
+    subheading: "Operationalise into live brand operations and agentic systems.",
+    body: "Convert identified opportunities into automated brand workflows and live agentic systems. Integrate into your existing tools, platforms, and orchestration layers. The system scales horizontally. The standards it works to remain under human control at every stage.",
     href: "#next-step",
     cta: "Request assessment",
     image: usesValidationEvaluationImg,
@@ -111,15 +123,13 @@ const page = {
     >
       <div class="grid gap-12 lg:grid-cols-[1fr_0.45fr] lg:items-center">
         <div>
-          <div class="eyebrow mb-10 text-left">
-           BRAND-FIRST AI GOVERNANCE 
-          </div>
+          <div class="eyebrow mb-10 text-left">BRAND-FIRST AI GOVERNANCE</div>
 
           <h1
             class="font-masthead max-w-[52rem] text-[clamp(2.95rem,5.6vw,5.15rem)] font-semibold leading-[1.06] tracking-tight text-paper md:max-w-[56rem]"
           >
             <span class="block">
-              The <span class="text-[#14B8A6]">brand-first</span>
+              The <span class="text-[#14B8A6]">brand-first </span>
             </span>
             <span class="block">operating model</span>
             <span class="block">for controlled AI</span>
@@ -128,17 +138,16 @@ const page = {
           <h2
             class="mt-6 max-w-[46rem] text-[clamp(1.3rem,2.3vw,2rem)] font-light leading-snug text-paper/100"
           >
-            Your brand guidelines were not built for AI agents.
+            Most enterprises let AI act before it understands the rules. We
+            reverse that.
           </h2>
 
           <p
             class="mt-5 max-w-[46rem] text-[clamp(1.16rem,1.85vw,1.42rem)] font-light leading-relaxed text-paper/80 md:text-[1.36rem]"
           >
-            Brando<sup>&reg;</sup> turns brand standards, business logic, and expert judgement
-            into machine-operable controls. We test those controls against real roles
-            and intents before AI acts on your behalf. You get governed workflows,
-            traceable decisions, and a clear control layer across your brand, people,
-            knowledge, and AI systems.
+            We encode your brand standards, business logic, and expert judgement
+            into machine-operable controls — tested, governed, and traceable
+            before any AI decision is made.
           </p>
 
           <div class="mt-8 flex flex-wrap gap-4">
@@ -181,7 +190,9 @@ const page = {
           </div>
         </div>
 
-        <div class="rounded-2xl border border-paper/10 bg-paper/5 p-8 backdrop-blur">
+        <div
+          class="rounded-2xl border border-paper/10 bg-paper/5 p-8 backdrop-blur"
+        >
           <div
             class="text-[clamp(3.5rem,8vw,6rem)] font-semibold leading-none tracking-tight text-[#14B8A6]"
           >
@@ -237,9 +248,9 @@ const page = {
           </p>
 
           <p class="mt-6">
-           Brando<sup>&reg;</sup> -the Brand Oracle,   changes that. It turns your brand standards,
-            business logic, and expert judgement into machine-operable controls
-            your AI can follow.
+            Brando<sup>&reg;</sup>, the Brand Oracle, changes that. It turns your
+            brand standards, business logic, and expert judgement into machine-operable
+            controls your AI can follow.
           </p>
 
           <p class="mt-6">
@@ -273,7 +284,10 @@ const page = {
   </section>
 
   <!-- 3. DIAGNOSTIC OFFER -->
-  <section id="brand-ai-readiness" class="bg-gradient-to-br from-black via-[#0b0e14] to-[#171b24] text-paper">
+  <section
+    id="brand-ai-readiness"
+    class="bg-gradient-to-br from-black via-[#0b0e14] to-[#171b24] text-paper"
+  >
     <div class="container-wide py-20">
       <div class="grid gap-12 lg:grid-cols-[7fr_5fr] lg:items-center">
         <div>
@@ -283,11 +297,15 @@ const page = {
           >
             Assess your brand's AI readiness.
           </h2>
-          <p class="mt-8 max-w-[62ch] text-lg leading-relaxed text-paper/75 md:text-xl">
+          <p
+            class="mt-8 max-w-[62ch] text-lg leading-relaxed text-paper/75 md:text-xl"
+          >
             Before AI acts on your behalf, you need to know whether your brand
             rules are clear enough to govern it.
           </p>
-          <p class="mt-6 max-w-[62ch] text-lg leading-relaxed text-paper/75 md:text-xl">
+          <p
+            class="mt-6 max-w-[62ch] text-lg leading-relaxed text-paper/75 md:text-xl"
+          >
             Our Brand AI Readiness Assessment reviews your standards, toolkits,
             approval rules, and priority AI use cases. You see where AI can
             follow your brand, where ambiguity appears, and where stronger
@@ -319,37 +337,68 @@ const page = {
               class="inline-flex items-center justify-center gap-3 rounded-md bg-[#ff8c69] px-8 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper shadow-outline transition-colors hover:bg-[#e97d5d]"
             >
               What we test
-              <svg class="h-6 w-6 text-paper" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"></path>
+              <svg
+                class="h-6 w-6 text-paper"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"
+                ></path>
               </svg>
             </a>
           </div>
         </div>
 
-        <div class="rounded-2xl border border-paper/10 bg-paper/5 p-8 shadow-outline backdrop-blur">
-          <div class="text-sm font-semibold tracking-[0.2em] uppercase text-[#ff8c69]">
+        <div
+          class="rounded-2xl border border-paper/10 bg-paper/5 p-8 shadow-outline backdrop-blur"
+        >
+          <div
+            class="text-sm font-semibold tracking-[0.2em] uppercase text-[#ff8c69]"
+          >
             You get
           </div>
           <ul class="mt-8 space-y-6 text-paper/80">
             <li class="flex gap-4">
-              <span class="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#14B8A6]"></span>
-              <span>A structured review of your brand standards, toolkits, policies, and AI use cases.</span>
+              <span class="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#14B8A6]"
+              ></span>
+              <span
+                >A structured review of your brand standards, toolkits,
+                policies, and AI use cases.</span
+              >
             </li>
             <li class="flex gap-4">
-              <span class="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#14B8A6]"></span>
-              <span>A readiness score across machine-readability, ambiguity, and AI control.</span>
+              <span class="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#14B8A6]"
+              ></span>
+              <span
+                >A readiness score across machine-readability, ambiguity, and AI
+                control.</span
+              >
             </li>
             <li class="flex gap-4">
-              <span class="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#14B8A6]"></span>
-              <span>A risk map showing where AI may misread, over-interpret, or ignore your brand rules.</span>
+              <span class="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#14B8A6]"
+              ></span>
+              <span
+                >A risk map showing where AI may misread, over-interpret, or
+                ignore your brand rules.</span
+              >
             </li>
             <li class="flex gap-4">
-              <span class="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#14B8A6]"></span>
-              <span>A practical action plan with Critical, High, Medium, and Low priorities.</span>
+              <span class="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#14B8A6]"
+              ></span>
+              <span
+                >A practical action plan with Critical, High, Medium, and Low
+                priorities.</span
+              >
             </li>
             <li class="flex gap-4">
-              <span class="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#14B8A6]"></span>
-              <span>A short readout with recommended next steps into Brando, Brando policy files, and governed workflows.</span>
+              <span class="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#14B8A6]"
+              ></span>
+              <span
+                >A short readout with recommended next steps into Brando, Brando
+                policy files, and governed workflows.</span
+              >
             </li>
           </ul>
         </div>
@@ -364,9 +413,12 @@ const page = {
       <h2
         class="mx-auto max-w-5xl text-center text-[clamp(2.4rem,5vw,4.5rem)] font-semibold tracking-tight text-ink"
       >
-        We test your brand against the roles and intents your AI will meet in the real world.
+        We test your brand against the roles and intents your AI will meet in
+        the real world.
       </h2>
-      <p class="mx-auto mt-8 max-w-[82ch] text-center text-lg leading-relaxed text-ink/70 md:text-xl">
+      <p
+        class="mx-auto mt-8 max-w-[82ch] text-center text-lg leading-relaxed text-ink/70 md:text-xl"
+      >
         Your brand does not fail in theory. It fails in moments. A customer asks
         for reassurance. A journalist asks for proof. A regulator expects
         precision. A sales team pushes for conversion. An AI agent tries to
@@ -375,7 +427,9 @@ const page = {
 
       <div class="mt-12 grid gap-6 md:grid-cols-2">
         <div class="rounded-2xl border border-ink/10 bg-fog p-8">
-          <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#14B8A6]">
+          <div
+            class="text-xs font-semibold tracking-[0.2em] uppercase text-[#14B8A6]"
+          >
             Roles
           </div>
           <h3 class="mt-4 text-2xl font-semibold tracking-tight text-ink">
@@ -388,7 +442,9 @@ const page = {
         </div>
 
         <div class="rounded-2xl border border-ink/10 bg-fog p-8">
-          <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#14B8A6]">
+          <div
+            class="text-xs font-semibold tracking-[0.2em] uppercase text-[#14B8A6]"
+          >
             Intents
           </div>
           <h3 class="mt-4 text-2xl font-semibold tracking-tight text-ink">
@@ -401,7 +457,9 @@ const page = {
         </div>
       </div>
 
-      <p class="mx-auto mt-10 max-w-[72ch] text-center text-lg leading-relaxed text-ink/70">
+      <p
+        class="mx-auto mt-10 max-w-[72ch] text-center text-lg leading-relaxed text-ink/70"
+      >
         You see which rules hold, where toolkits create ambiguity, and where
         stronger controls are needed.
       </p>
@@ -412,8 +470,15 @@ const page = {
           class="inline-flex items-center justify-center gap-3 rounded-md bg-[#ff8c69] px-8 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper shadow-outline transition-colors hover:bg-[#e97d5d]"
         >
           <span>See how Brando works</span>
-          <svg class="h-6 w-6 text-paper" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"></path>
+          <svg
+            class="h-6 w-6 text-paper"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"
+            ></path>
           </svg>
         </a>
       </div>
@@ -429,63 +494,81 @@ const page = {
       >
         From brand disorder to controlled AI operations
       </h2>
-      <p class="mx-auto mt-10 max-w-[90ch] text-center text-lg leading-relaxed text-paper/80 md:text-xl">
-        Most businesses cannot scale what they cannot codify. We move your
-        brand standards, expert judgement, and operating rules into a governed
+      <p
+        class="mx-auto mt-10 max-w-[90ch] text-center text-lg leading-relaxed text-paper/80 md:text-xl"
+      >
+        Most businesses cannot scale what they cannot codify. We move your brand
+        standards, expert judgement, and operating rules into a governed
         intelligence layer. Your knowledge. Your rules. Under your control.
       </p>
 
       <div class="mt-14 grid gap-4 lg:grid-cols-3">
-        <div class="rounded-2xl border border-paper/15 bg-ink/30 p-6 shadow-outline backdrop-blur">
+        <div
+          class="rounded-2xl border border-paper/15 bg-ink/30 p-6 shadow-outline backdrop-blur"
+        >
           <h4 class="text-lg font-semibold tracking-tight text-paper">
             Brand Mapping
           </h4>
           <p class="mt-3 text-base leading-relaxed text-paper/75">
-            We map the rules, approvals, exceptions, and judgement your
-            teams already use. The system starts with how your business really
-            works, not a generic template.
+            We map the rules, approvals, exceptions, and judgement your teams
+            already use. The system starts with how your business really works,
+            not a generic template.
           </p>
         </div>
 
-        <div class="rounded-2xl border border-paper/15 bg-ink/30 p-6 shadow-outline backdrop-blur">
+        <div
+          class="rounded-2xl border border-paper/15 bg-ink/30 p-6 shadow-outline backdrop-blur"
+        >
           <h4 class="text-lg font-semibold tracking-tight text-paper">
             Brando Specification
           </h4>
           <p class="mt-3 text-base leading-relaxed text-paper/75">
-            We turn brand and business logic into machine machine-readable specifications. So your
-            AI gets rules it can consistently interpret and follow in
-            practice.
+            We turn brand and business logic into machine-readable
+            specifications. So your AI gets rules it can consistently interpret
+            and follow in practice.
           </p>
         </div>
 
-        <div class="rounded-2xl border border-paper/15 bg-ink/30 p-6 shadow-outline backdrop-blur">
+        <div
+          class="rounded-2xl border border-paper/15 bg-ink/30 p-6 shadow-outline backdrop-blur"
+        >
           <h4 class="text-lg font-semibold tracking-tight text-paper">
             Brando Deployment
           </h4>
           <p class="mt-3 text-base leading-relaxed text-paper/75">
-            We build, test, and deploy your Brando, embedding approved specifications into controlled workflows, review paths, and agent behaviours.
+            We build, test, and deploy your Brando, embedding approved
+            specifications into controlled workflows, review paths, and agent
+            behaviours.
           </p>
         </div>
       </div>
 
       <div class="mt-16 border-t border-paper/20 pt-16">
-        <h3 class="text-center text-3xl font-semibold tracking-tight text-paper md:text-4xl">
+        <h3
+          class="text-center text-3xl font-semibold tracking-tight text-paper md:text-4xl"
+        >
           Building a brand oracle and controlled operations
         </h3>
-        <p class="mx-auto mt-6 max-w-[90ch] text-center text-lg leading-relaxed text-paper/80 md:text-xl">
-          We deliver Brando in two connected phases. The first defines
-          and validates your knowledge and specifications. The second turns them
+        <p
+          class="mx-auto mt-6 max-w-[90ch] text-center text-lg leading-relaxed text-paper/80 md:text-xl"
+        >
+          We deliver Brando in two connected phases. The first defines and
+          validates your knowledge and specifications. The second turns them
           into governed workflows, controls, and operating capability.
         </p>
       </div>
 
       <div class="mt-12 grid gap-10 lg:grid-cols-2">
-        <div class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur">
-          <div class="text-lg font-semibold tracking-[0.2em] uppercase text-[#14B8A6]">
+        <div
+          class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur"
+        >
+          <div
+            class="text-lg font-semibold tracking-[0.2em] uppercase text-[#14B8A6]"
+          >
             Phase 1
           </div>
           <div class="mt-4 text-2xl font-semibold tracking-tight text-paper">
-            Building Brando 
+            Building Brando
           </div>
           <p class="mt-4 text-paper/80">
             We transform standards, toolkits, approvals, and expert judgement
@@ -494,44 +577,72 @@ const page = {
           </p>
           <ul class="mt-6 space-y-4 text-paper/75">
             <li class="flex gap-3">
-              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"></span>
-              <span><b>Codify</b> brand and business knowledge into high-fidelity structured records.</span>
+              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"
+              ></span>
+              <span
+                ><b>Codify</b> brand and business knowledge into high-fidelity structured
+                records.</span
+              >
             </li>
             <li class="flex gap-3">
-              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"></span>
-              <span><b>Construct</b> policy structures, role-intent scenarios, and machine-readable rules.</span>
+              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"
+              ></span>
+              <span
+                ><b>Construct</b> policy structures, role-intent scenarios, and machine-readable
+                rules.</span
+              >
             </li>
             <li class="flex gap-3">
-              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"></span>
-              <span><b>Validate</b> where the rules hold, conflict, or need stronger governance.</span>
+              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"
+              ></span>
+              <span
+                ><b>Validate</b> where the rules hold, conflict, or need stronger
+                governance.</span
+              >
             </li>
           </ul>
         </div>
 
-        <div class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur">
-          <div class="text-lg font-semibold tracking-[0.2em] uppercase text-[#14B8A6]">
+        <div
+          class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur"
+        >
+          <div
+            class="text-lg font-semibold tracking-[0.2em] uppercase text-[#14B8A6]"
+          >
             Phase 2
           </div>
           <div class="mt-4 text-2xl font-semibold tracking-tight text-paper">
-            Operating Brando 
+            Operating Brando
           </div>
           <p class="mt-4 text-paper/80">
-            We turn the approved brand oracle into controlled AI workflows,
-            with access rules, review paths, escalation triggers, and audit
+            We turn the approved brand oracle into controlled AI workflows, with
+            access rules, review paths, escalation triggers, and audit
             visibility.
           </p>
           <ul class="mt-6 space-y-4 text-paper/75">
             <li class="flex gap-3">
-              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"></span>
-              <span><b>Design</b> controlled interactions between people, knowledge, and AI systems.</span>
+              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"
+              ></span>
+              <span
+                ><b>Design</b> controlled interactions between people, knowledge,
+                and AI systems.</span
+              >
             </li>
             <li class="flex gap-3">
-              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"></span>
-              <span><b>Deploy</b> governed workflows that stay aligned to the approved specification.</span>
+              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"
+              ></span>
+              <span
+                ><b>Deploy</b> governed workflows that stay aligned to the approved
+                specification.</span
+              >
             </li>
             <li class="flex gap-3">
-              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"></span>
-              <span><b>Operate</b> with monitoring, review, and controlled change as needs evolve.</span>
+              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"
+              ></span>
+              <span
+                ><b>Operate</b> with monitoring, review, and controlled change as
+                needs evolve.</span
+              >
             </li>
           </ul>
         </div>
@@ -543,8 +654,15 @@ const page = {
           class="inline-flex items-center justify-center gap-3 rounded-md bg-[#ff8c69] px-8 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper transition-colors hover:bg-[#e97d5d]"
         >
           <span>See the framework</span>
-          <svg class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"></path>
+          <svg
+            class="h-6 w-6"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"
+            ></path>
           </svg>
         </a>
       </div>
@@ -555,14 +673,19 @@ const page = {
   <section id="uses" class="bg-paper">
     <div class="container-wide py-20">
       <div class="eyebrow mb-6 text-center">Framework</div>
-      <h2 class="text-center text-[clamp(2.5rem,5vw,4.75rem)] font-semibold tracking-tight text-ink">
-        Brando<sup class="text-[0.45em] align-super">&reg;</sup> Framework
+      <h2
+        class="text-center text-[clamp(2.5rem,5vw,4.75rem)] font-semibold tracking-tight text-ink"
+      >
+        Brand Transformation Framework
       </h2>
-      <p class="mx-auto mt-6 max-w-4xl text-center text-lg font-light leading-relaxed text-steel md:text-xl">
-        Most AI programmes struggle because the operating model is undefined.
-        Brando<sup class="text-[0.45em] align-super">&reg;</sup> gives you a five-stage
-        framework to discover, specify, validate, develop, and operate governed
-        AI systems from first brief to live use.
+      <p
+        class="mx-auto mt-6 max-w-4xl text-center text-lg font-light leading-relaxed text-steel md:text-xl"
+      >
+        Most AI builds fail before they start because nobody has defined what
+        the system is supposed to know, follow, or decide. We give you a
+        six-stage framework across three phases – Map and Data Prep, Build &
+        Validate, Interrogate & Agentify – so every milestone is earned before
+        you move forward.
       </p>
 
       <div class="mt-10">
@@ -590,8 +713,12 @@ const page = {
         </div>
       </div>
 
-      <div class="mt-14 grid gap-12 lg:grid-cols-[420px_1fr] lg:items-start lg:gap-24">
-        <div class="relative overflow-hidden rounded-2xl bg-slate shadow-outline">
+      <div
+        class="mt-14 grid gap-12 lg:grid-cols-[420px_1fr] lg:items-start lg:gap-24"
+      >
+        <div
+          class="relative overflow-hidden rounded-2xl bg-slate shadow-outline"
+        >
           <div class="aspect-square">
             {
               usesTabs.map((t) => (
@@ -663,6 +790,11 @@ const page = {
         </div>
       </div>
 
+      <!-- Closing paragraph -->
+      <p class="mx-auto mt-16 max-w-4xl text-center text-lg font-light leading-relaxed text-steel md:text-xl">
+        Brando doesn't stop at brand. Once your Brand Oracle is live, you repeat the process across other business functions - product, customer experience, operations, marketing. Each iteration builds on the foundation of branded knowledge already in place. Brand becomes the intelligence layer that informs your entire organisation. Every function, every workflow, every AI system operating from the same governed oracle. That is where compound intelligence emerges.
+      </p>
+
       <div class="mt-12 flex items-center justify-center">
         <a
           href="#engine"
@@ -670,8 +802,15 @@ const page = {
           aria-label="See the control layer"
         >
           <span>See the control layer</span>
-          <svg class="h-6 w-6 text-paper" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"></path>
+          <svg
+            class="h-6 w-6 text-paper"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"
+            ></path>
           </svg>
         </a>
       </div>
@@ -753,10 +892,14 @@ const page = {
       <div class="eyebrow mb-6 text-center">The Control Layer</div>
 
       <div class="mx-auto max-w-5xl">
-        <h2 class="text-center text-[clamp(2.2rem,4vw,3.5rem)] font-semibold leading-[1.1] tracking-tight">
+        <h2
+          class="text-center text-[clamp(2.2rem,4vw,3.5rem)] font-semibold leading-[1.1] tracking-tight"
+        >
           How controlled AI becomes operational
         </h2>
-        <p class="mx-auto mt-6 max-w-4xl text-center text-xl font-light leading-relaxed text-steel">
+        <p
+          class="mx-auto mt-6 max-w-4xl text-center text-xl font-light leading-relaxed text-steel"
+        >
           AI only becomes useful when it understands your business, follows your
           rules, and acts within clear boundaries. Our control layer connects
           people, policies, knowledge, brand standards, workflows, and AI agents
@@ -813,8 +956,12 @@ const page = {
           <AiceGatewayCluster />
         </div>
 
-        <div class="mt-10 rounded-2xl border border-[#14B8A6]/20 bg-[#14B8A6]/5 p-6">
-          <div class="text-sm font-semibold uppercase tracking-[0.16em] text-[#14B8A6]">
+        <div
+          class="mt-10 rounded-2xl border border-[#14B8A6]/20 bg-[#14B8A6]/5 p-6"
+        >
+          <div
+            class="text-sm font-semibold uppercase tracking-[0.16em] text-[#14B8A6]"
+          >
             The Bottom Line
           </div>
           <p class="mt-3 text-lg leading-relaxed text-ink">
@@ -831,18 +978,26 @@ const page = {
   <section id="for" class="bg-slate text-paper">
     <div class="container-wide py-20">
       <div class="eyebrow mb-6 text-center">What It Delivers</div>
-      <h2 class="text-center text-[clamp(2.5rem,5vw,4.75rem)] font-semibold tracking-tight text-paper">
+      <h2
+        class="text-center text-[clamp(2.5rem,5vw,4.75rem)] font-semibold tracking-tight text-paper"
+      >
         From brand knowledge to controlled operation
       </h2>
-      <p class="mx-auto mt-10 max-w-[80ch] text-center text-lg leading-relaxed text-paper/80 md:text-xl">
-        Once Brando<sup>&reg;</sup> has structured your knowledge and the control layer
-        has made it operational, you have a governed foundation your AI can
+      <p
+        class="mx-auto mt-10 max-w-[80ch] text-center text-lg leading-relaxed text-paper/80 md:text-xl"
+      >
+        Once Brando<sup>&reg;</sup> has structured your knowledge and the control
+        layer has made it operational, you have a governed foundation your AI can
         build on and your business can trust.
       </p>
 
       <div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        <div class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur">
-          <div class="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]">
+        <div
+          class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur"
+        >
+          <div
+            class="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]"
+          >
             Knowledge Asset
           </div>
           <div class="mt-4 text-2xl font-semibold tracking-tight text-paper">
@@ -854,47 +1009,63 @@ const page = {
           </p>
         </div>
 
-        <div class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur">
-          <div class="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]">
+        <div
+          class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur"
+        >
+          <div
+            class="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]"
+          >
             Structure
           </div>
           <div class="mt-4 text-2xl font-semibold tracking-tight text-paper">
             Rules AI can actually follow
           </div>
           <p class="mt-4 text-base font-medium leading-relaxed text-paper/80">
-            Your standards, approvals, and escalation paths become specifications
-            AI agents can interpret consistently.
+            Your standards, approvals, and escalation paths become
+            specifications AI agents can interpret consistently.
           </p>
         </div>
 
-        <div class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur">
-          <div class="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]">
+        <div
+          class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur"
+        >
+          <div
+            class="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]"
+          >
             Control
           </div>
           <div class="mt-4 text-2xl font-semibold tracking-tight text-paper">
             A controlled governance layer
           </div>
           <p class="mt-4 text-base font-medium leading-relaxed text-paper/80">
-            Access, behaviour, and execution are controlled through one
-            layer connecting your people, knowledge, and AI systems.
+            Access, behaviour, and execution are controlled through one layer
+            connecting your people, knowledge, and AI systems.
           </p>
         </div>
 
-        <div class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur">
-          <div class="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]">
+        <div
+          class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur"
+        >
+          <div
+            class="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]"
+          >
             Alignment
           </div>
           <div class="mt-4 text-2xl font-semibold tracking-tight text-paper">
             One shared operating logic
           </div>
           <p class="mt-4 text-base font-medium leading-relaxed text-paper/80">
-            Brand and communication operations, and all other business functions can work from the
-            same governed knowledge base.
+            Brand and communication operations, and all other business functions
+            can work from the same governed knowledge base.
           </p>
         </div>
 
-        <div class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur">
-          <div class="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]">
+        <div
+          class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur"
+        >
+          <div
+            class="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]"
+          >
             Assurance
           </div>
           <div class="mt-4 text-2xl font-semibold tracking-tight text-paper">
@@ -906,8 +1077,12 @@ const page = {
           </p>
         </div>
 
-        <div class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur">
-          <div class="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]">
+        <div
+          class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur"
+        >
+          <div
+            class="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]"
+          >
             Continuity
           </div>
           <div class="mt-4 text-2xl font-semibold tracking-tight text-paper">
@@ -927,8 +1102,15 @@ const page = {
           aria-label="Explore business entry points"
         >
           <span>Explore entry points</span>
-          <svg class="h-6 w-6 text-paper" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"></path>
+          <svg
+            class="h-6 w-6 text-paper"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"
+            ></path>
           </svg>
         </a>
       </div>
@@ -939,13 +1121,17 @@ const page = {
   <section id="leaders" class="bg-paper text-ink">
     <div class="container-wide py-20">
       <div class="eyebrow mb-6 text-center">Start Here</div>
-      <h2 class="text-center text-[clamp(2.4rem,5vw,4.5rem)] font-semibold tracking-tight text-ink">
+      <h2
+        class="text-center text-[clamp(2.4rem,5vw,4.5rem)] font-semibold tracking-tight text-ink"
+      >
         Start with brand. It spans everything.
       </h2>
-      <p class="mx-auto mt-4 max-w-[80ch] text-center text-lg leading-relaxed text-ink/70 md:text-xl">
+      <p
+        class="mx-auto mt-4 max-w-[80ch] text-center text-lg leading-relaxed text-ink/70 md:text-xl"
+      >
         Most businesses are adding AI to existing processes and hoping control
-        will follow. It will not. We start with the brand because brand spans the
-        business. It shapes language, decisions, risk, trust, and customer
+        will follow. It will not. We start with the brand because brand spans
+        the business. It shapes language, decisions, risk, trust, and customer
         experience. Govern brand first, and you have an operating model you can
         extend into every business function where AI needs control.
       </p>
@@ -978,7 +1164,9 @@ const page = {
 
       <div class="mt-20 border-t border-ink/10 pt-20">
         <div class="eyebrow mb-6 text-center">Latest Thinking</div>
-        <h2 class="text-center text-[clamp(2.4rem,5vw,4.5rem)] font-semibold tracking-tight text-ink">
+        <h2
+          class="text-center text-[clamp(2.4rem,5vw,4.5rem)] font-semibold tracking-tight text-ink"
+        >
           Latest Posts
         </h2>
         <p class="mt-4 text-center text-lg text-ink/70 md:text-xl">
@@ -1058,8 +1246,15 @@ const page = {
             : "display:none;"}
         >
           <span>Load More</span>
-          <svg class="h-6 w-6 text-paper" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"></path>
+          <svg
+            class="h-6 w-6 text-paper"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"
+            ></path>
           </svg>
         </button>
       </div>
