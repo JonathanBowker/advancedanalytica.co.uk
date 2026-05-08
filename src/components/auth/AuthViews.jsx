@@ -1,10 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AuthProvider, useAuth } from './AuthProvider';
 import { isSupabaseConfigured, supabase } from '../../lib/supabaseClient';
 import './login.css';
 
 const resendCooldownMs = 60_000;
 const defaultPortalPath = '/portal';
+const turnstileScriptId = 'cloudflare-turnstile-script';
+const turnstileScriptSrc = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '0x4AAAAAADKxAX20w3kRuz5A';
 
 const shellClass =
   'min-h-screen w-screen bg-slate-100';
@@ -241,7 +244,7 @@ function StatusBanner({ status }) {
 }
 
 function LoginInner() {
-  const { session, loading } = useAuth();
+  const [session, setSession] = useState(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [method, setMethod] = useState('password');
@@ -250,10 +253,107 @@ function LoginInner() {
   const [status, setStatus] = useState({ state: 'idle', message: '' });
   const [cooldownUntil, setCooldownUntil] = useState(0);
   const [now, setNow] = useState(() => Date.now());
+  const turnstileContainerRef = useRef(null);
+  const turnstileWidgetRef = useRef(null);
 
   const nextUrl = getNextUrl();
   const cooldownSeconds = Math.max(0, Math.ceil((cooldownUntil - now) / 1000));
   const inCooldown = cooldownSeconds > 0;
+
+  function resetTurnstile() {
+    if (typeof window === 'undefined' || turnstileWidgetRef.current == null) return;
+    if (!window.turnstile?.reset) return;
+
+    window.turnstile.reset(turnstileWidgetRef.current);
+  }
+
+  async function loadTurnstileScript() {
+    if (typeof window === 'undefined' || !turnstileSiteKey) return false;
+    if (window.turnstile?.render) return true;
+
+    const existingScript = document.getElementById(turnstileScriptId);
+    if (existingScript) {
+      await new Promise((resolve) => {
+        existingScript.addEventListener('load', resolve, { once: true });
+        existingScript.addEventListener('error', resolve, { once: true });
+      });
+      return Boolean(window.turnstile?.render);
+    }
+
+    await new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.id = turnstileScriptId;
+      script.src = turnstileScriptSrc;
+      script.async = true;
+      script.defer = true;
+      script.addEventListener('load', resolve, { once: true });
+      script.addEventListener('error', resolve, { once: true });
+      document.head.appendChild(script);
+    });
+
+    return Boolean(window.turnstile?.render);
+  }
+
+  async function getCaptchaToken() {
+    if (!turnstileSiteKey) return '';
+
+    const loaded = await loadTurnstileScript();
+    if (!loaded || !turnstileContainerRef.current || !window.turnstile?.render) {
+      setStatus({
+        state: 'error',
+        message: 'The verification check did not load correctly. Reload the page and try again.',
+      });
+      return '';
+    }
+
+    return new Promise((resolve) => {
+      const finish = (token = '') => {
+        resolve(token || '');
+      };
+
+      let widgetId = turnstileWidgetRef.current;
+      if (widgetId == null) {
+        widgetId = window.turnstile.render(turnstileContainerRef.current, {
+          sitekey: turnstileSiteKey,
+          size: 'invisible',
+          callback: (token) => finish(token),
+          'expired-callback': () => finish(''),
+          'error-callback': () => finish(''),
+        });
+        turnstileWidgetRef.current = widgetId;
+      } else {
+        try {
+          window.turnstile.reset(widgetId);
+        } catch {}
+      }
+
+      try {
+        window.turnstile.execute(widgetId);
+      } catch {
+        finish('');
+      }
+    });
+  }
+
+  useEffect(() => {
+    if (!isSupabaseConfigured || !supabase) return undefined;
+
+    let mounted = true;
+
+    supabase.auth.getSession().then(({ data }) => {
+      if (!mounted) return;
+      setSession(data.session ?? null);
+    });
+
+    const { data: subscription } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+      setSession(nextSession ?? null);
+    });
+
+    return () => {
+      mounted = false;
+      subscription?.subscription?.unsubscribe();
+    };
+  }, []);
 
   useEffect(() => {
     if (session) window.location.replace(nextUrl);
@@ -295,21 +395,37 @@ function LoginInner() {
       return;
     }
 
+    if ((requestedMethod === 'magic_link' || requestedMethod === 'request_access') && inCooldown) {
+      setStatus({
+        state: 'error',
+        message: `Please wait ${cooldownSeconds}s before trying again.`,
+      });
+      return;
+    }
+
+    if (requestedMethod === 'password' && !password) {
+      setStatus({ state: 'error', message: 'Enter a password.' });
+      return;
+    }
+
     setBusy(true);
 
     try {
-      if (requestedMethod === 'magic_link') {
-        if (inCooldown) {
-          setStatus({
-            state: 'error',
-            message: `Please wait ${cooldownSeconds}s before trying again.`,
-          });
-          return;
-        }
+      const captchaToken = await getCaptchaToken();
+      if (!captchaToken) {
+        setStatus((current) =>
+          current.state === 'error' && current.message
+            ? current
+            : { state: 'error', message: 'The verification check did not complete. Try again.' },
+        );
+        return;
+      }
 
+      if (requestedMethod === 'magic_link') {
         const { error } = await supabase.auth.signInWithOtp({
           email: email.trim(),
           options: {
+            captchaToken,
             emailRedirectTo: getCallbackUrlFor(nextUrl),
             shouldCreateUser: false,
           },
@@ -323,17 +439,10 @@ function LoginInner() {
       }
 
       if (requestedMethod === 'request_access') {
-        if (inCooldown) {
-          setStatus({
-            state: 'error',
-            message: `Please wait ${cooldownSeconds}s before trying again.`,
-          });
-          return;
-        }
-
         const { error } = await supabase.auth.signInWithOtp({
           email: email.trim(),
           options: {
+            captchaToken,
             emailRedirectTo: getCallbackUrlFor(nextUrl),
             shouldCreateUser: true,
           },
@@ -349,14 +458,12 @@ function LoginInner() {
         return;
       }
 
-      if (!password) {
-        setStatus({ state: 'error', message: 'Enter a password.' });
-        return;
-      }
-
       const { error } = await supabase.auth.signInWithPassword({
         email: email.trim(),
         password,
+        options: {
+          captchaToken,
+        },
       });
 
       if (error) throw error;
@@ -370,6 +477,7 @@ function LoginInner() {
       if (isRateLimit) setCooldownUntil(Date.now() + resendCooldownMs);
       setStatus({ state: 'error', message });
     } finally {
+      resetTurnstile();
       setBusy(false);
     }
   }
@@ -390,10 +498,21 @@ function LoginInner() {
       return;
     }
 
+    const captchaToken = await getCaptchaToken();
+    if (!captchaToken) {
+      setStatus((current) =>
+        current.state === 'error' && current.message
+          ? current
+          : { state: 'error', message: 'The verification check did not complete. Try again.' },
+      );
+      return;
+    }
+
     setBusy(true);
 
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+        captchaToken,
         redirectTo: getCallbackUrlFor('/auth/reset'),
       });
       if (error) throw error;
@@ -402,6 +521,7 @@ function LoginInner() {
       const { message } = getEmailFlowErrorMessage(err, 'Failed to start password reset.');
       setStatus({ state: 'error', message });
     } finally {
+      resetTurnstile();
       setBusy(false);
     }
   }
@@ -467,7 +587,7 @@ function LoginInner() {
                   <button
                     type="button"
                     onClick={() => setMethod('password')}
-                    disabled={busy || loading}
+                    disabled={busy}
                     className={`flex-1 rounded-[10px] border px-4 py-2 text-sm font-medium transition ${method === 'password' ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-200 bg-white text-slate-900 hover:bg-slate-50'}`}
                   >
                     Password
@@ -475,7 +595,7 @@ function LoginInner() {
                   <button
                     type="button"
                     onClick={() => setMethod('magic_link')}
-                    disabled={busy || loading}
+                    disabled={busy}
                     className={`flex-1 rounded-[10px] border px-4 py-2 text-sm font-medium transition ${method === 'magic_link' ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-200 bg-white text-slate-900 hover:bg-slate-50'}`}
                   >
                     Magic link
@@ -504,7 +624,7 @@ function LoginInner() {
                     inputMode="email"
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
-                    disabled={busy || loading}
+                    disabled={busy}
                     placeholder="you@company.com"
                     required
                   />
@@ -520,7 +640,7 @@ function LoginInner() {
                         className="text-sm text-slate-500 underline decoration-slate-300 underline-offset-4 hover:text-slate-700"
                         type="button"
                         onClick={forgotPassword}
-                        disabled={busy || loading}
+                        disabled={busy}
                       >
                         Forgot password?
                       </button>
@@ -532,14 +652,14 @@ function LoginInner() {
                         autoComplete="current-password"
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
-                        disabled={busy || loading}
+                        disabled={busy}
                         placeholder="••••••••"
                         required
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword((value) => !value)}
-                        disabled={busy || loading}
+                        disabled={busy}
                         className="absolute inset-y-0 right-0 inline-flex items-center px-3 text-slate-400 hover:text-slate-600"
                         aria-label={showPassword ? 'Hide password' : 'Show password'}
                       >
@@ -572,12 +692,13 @@ function LoginInner() {
                 ) : null}
 
                 <StatusBanner status={status} />
+                <div ref={turnstileContainerRef} className="absolute left-0 top-0 h-0 w-0 overflow-hidden opacity-0" aria-hidden="true" />
 
                 <div className="pt-2">
                   <button
                     className="w-full rounded-[10px] bg-[#14B8A6] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0F766E] disabled:cursor-not-allowed disabled:opacity-60"
                     type="submit"
-                    disabled={busy || loading || (method === 'magic_link' && inCooldown)}
+                    disabled={busy || (method === 'magic_link' && inCooldown)}
                   >
                     {busy
                       ? 'Working…'
@@ -599,7 +720,7 @@ function LoginInner() {
                       signIn(event, 'request_access');
                     }}
                     className="w-full rounded-[10px] border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
-                    disabled={busy || loading || inCooldown}
+                    disabled={busy || inCooldown}
                   >
                     {busy && method === 'request_access'
                       ? 'Working…'
@@ -626,7 +747,7 @@ function LoginInner() {
                 <button
                   type="button"
                   onClick={signInWithGitHub}
-                  disabled={busy || loading}
+                  disabled={busy}
                   className="flex w-full items-center justify-center gap-2 rounded-[10px] border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
                   title="Continue with GitHub"
                 >
@@ -986,11 +1107,7 @@ function ResetInner() {
 }
 
 export function LoginApp() {
-  return (
-    <AuthProvider>
-      <LoginInner />
-    </AuthProvider>
-  );
+  return <LoginInner />;
 }
 
 export function PortalApp() {
