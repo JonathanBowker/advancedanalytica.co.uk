@@ -4,6 +4,8 @@ import { isSupabaseConfigured, supabase } from '../../lib/supabaseClient';
 import './login.css';
 
 const resendCooldownMs = 60_000;
+const magicLinkRequestTimeoutMs = 10_000;
+const captchaTimeoutMs = 8_000;
 const defaultPortalPath = '/portal';
 const turnstileScriptId = 'cloudflare-turnstile-script';
 const turnstileScriptSrc = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
@@ -206,6 +208,43 @@ function getLoginErrorMessage(errorCode, errorDescription) {
   return '';
 }
 
+async function requestMagicLink({ email, captchaToken, nextUrl, shouldCreateUser }) {
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), magicLinkRequestTimeoutMs);
+
+  let response;
+  try {
+    response = await fetch('/api/auth/magic-link', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        captchaToken,
+        nextUrl,
+        shouldCreateUser,
+      }),
+      signal: controller.signal,
+    });
+  } catch (error) {
+    if (error instanceof DOMException && error.name === 'AbortError') {
+      throw new Error('Email validation took too long. Try again with a valid work email.');
+    }
+
+    throw error;
+  } finally {
+    window.clearTimeout(timeoutId);
+  }
+
+  const payload = await response.json().catch(() => null);
+  if (!response.ok) {
+    throw new Error(payload?.error || 'Failed to send magic link.');
+  }
+
+  return payload;
+}
+
 function AuthFrame({ title, intro, children, aside, cardToneClass = '' }) {
   return (
     <section className={shellClass}>
@@ -243,6 +282,86 @@ function StatusBanner({ status }) {
   return <div className={`rounded-[10px] border px-4 py-3 text-sm ${tone}`}>{status.message}</div>;
 }
 
+async function loadTurnstileScript() {
+  if (typeof window === 'undefined' || !turnstileSiteKey) return false;
+  if (window.turnstile?.render) return true;
+
+  const existingScript = document.getElementById(turnstileScriptId);
+  if (existingScript) {
+    await new Promise((resolve) => {
+      existingScript.addEventListener('load', resolve, { once: true });
+      existingScript.addEventListener('error', resolve, { once: true });
+    });
+    return Boolean(window.turnstile?.render);
+  }
+
+  await new Promise((resolve) => {
+    const script = document.createElement('script');
+    script.id = turnstileScriptId;
+    script.src = turnstileScriptSrc;
+    script.async = true;
+    script.defer = true;
+    script.addEventListener('load', resolve, { once: true });
+    script.addEventListener('error', resolve, { once: true });
+    document.head.appendChild(script);
+  });
+
+  return Boolean(window.turnstile?.render);
+}
+
+async function executeInvisibleTurnstile({
+  container,
+  widgetRef,
+  onLoadError,
+}) {
+  if (!turnstileSiteKey) return '';
+
+  const loaded = await loadTurnstileScript();
+  if (!loaded || !container?.current || !window.turnstile?.render) {
+    onLoadError?.();
+    return '';
+  }
+
+  return new Promise((resolve) => {
+    let settled = false;
+    const timeoutId = window.setTimeout(() => {
+      if (settled) return;
+      settled = true;
+      resolve('');
+    }, captchaTimeoutMs);
+
+    const finish = (token = '') => {
+      if (settled) return;
+      settled = true;
+      window.clearTimeout(timeoutId);
+      resolve(token || '');
+    };
+
+    let widgetId = widgetRef.current;
+    if (widgetId == null) {
+      widgetId = window.turnstile.render(container.current, {
+        sitekey: turnstileSiteKey,
+        size: 'invisible',
+        callback: (token) => finish(token),
+        'expired-callback': () => finish(''),
+        'error-callback': () => finish(''),
+        'timeout-callback': () => finish(''),
+      });
+      widgetRef.current = widgetId;
+    } else {
+      try {
+        window.turnstile.reset(widgetId);
+      } catch {}
+    }
+
+    try {
+      window.turnstile.execute(widgetId);
+    } catch {
+      finish('');
+    }
+  });
+}
+
 function LoginInner() {
   const [session, setSession] = useState(null);
   const [email, setEmail] = useState('');
@@ -267,71 +386,15 @@ function LoginInner() {
     window.turnstile.reset(turnstileWidgetRef.current);
   }
 
-  async function loadTurnstileScript() {
-    if (typeof window === 'undefined' || !turnstileSiteKey) return false;
-    if (window.turnstile?.render) return true;
-
-    const existingScript = document.getElementById(turnstileScriptId);
-    if (existingScript) {
-      await new Promise((resolve) => {
-        existingScript.addEventListener('load', resolve, { once: true });
-        existingScript.addEventListener('error', resolve, { once: true });
-      });
-      return Boolean(window.turnstile?.render);
-    }
-
-    await new Promise((resolve) => {
-      const script = document.createElement('script');
-      script.id = turnstileScriptId;
-      script.src = turnstileScriptSrc;
-      script.async = true;
-      script.defer = true;
-      script.addEventListener('load', resolve, { once: true });
-      script.addEventListener('error', resolve, { once: true });
-      document.head.appendChild(script);
-    });
-
-    return Boolean(window.turnstile?.render);
-  }
-
   async function getCaptchaToken() {
-    if (!turnstileSiteKey) return '';
-
-    const loaded = await loadTurnstileScript();
-    if (!loaded || !turnstileContainerRef.current || !window.turnstile?.render) {
-      setStatus({
-        state: 'error',
-        message: 'The verification check did not load correctly. Reload the page and try again.',
-      });
-      return '';
-    }
-
-    return new Promise((resolve) => {
-      const finish = (token = '') => {
-        resolve(token || '');
-      };
-
-      let widgetId = turnstileWidgetRef.current;
-      if (widgetId == null) {
-        widgetId = window.turnstile.render(turnstileContainerRef.current, {
-          sitekey: turnstileSiteKey,
-          size: 'invisible',
-          callback: (token) => finish(token),
-          'expired-callback': () => finish(''),
-          'error-callback': () => finish(''),
-        });
-        turnstileWidgetRef.current = widgetId;
-      } else {
-        try {
-          window.turnstile.reset(widgetId);
-        } catch {}
-      }
-
-      try {
-        window.turnstile.execute(widgetId);
-      } catch {
-        finish('');
-      }
+    return executeInvisibleTurnstile({
+      container: turnstileContainerRef,
+      widgetRef: turnstileWidgetRef,
+      onLoadError: () =>
+        setStatus({
+          state: 'error',
+          message: 'The verification check did not load correctly. Reload the page and try again.',
+        }),
     });
   }
 
@@ -422,16 +485,12 @@ function LoginInner() {
       }
 
       if (requestedMethod === 'magic_link') {
-        const { error } = await supabase.auth.signInWithOtp({
+        await requestMagicLink({
           email: email.trim(),
-          options: {
-            captchaToken,
-            emailRedirectTo: getCallbackUrlFor(nextUrl),
-            shouldCreateUser: false,
-          },
+          captchaToken,
+          nextUrl,
+          shouldCreateUser: false,
         });
-
-        if (error) throw error;
 
         setCooldownUntil(Date.now() + resendCooldownMs);
         setStatus({ state: 'sent', message: 'Check your email for a sign-in link.' });
@@ -439,16 +498,12 @@ function LoginInner() {
       }
 
       if (requestedMethod === 'request_access') {
-        const { error } = await supabase.auth.signInWithOtp({
+        await requestMagicLink({
           email: email.trim(),
-          options: {
-            captchaToken,
-            emailRedirectTo: getCallbackUrlFor(nextUrl),
-            shouldCreateUser: true,
-          },
+          captchaToken,
+          nextUrl,
+          shouldCreateUser: true,
         });
-
-        if (error) throw error;
 
         setCooldownUntil(Date.now() + resendCooldownMs);
         setStatus({
@@ -787,7 +842,7 @@ function LoginInner() {
             <div className="flex flex-1 items-start justify-center pt-24">
               <div className="max-w-2xl text-center">
                 <div className="text-6xl font-bold leading-[1.05] tracking-tight">
-                  Connect your brand to intelligent services
+                  Connect to our suite of intelligent services
                   <br />
                   <span className="text-[#14B8A6]">#withBRANDO</span>
                 </div>
@@ -1106,8 +1161,127 @@ function ResetInner() {
   );
 }
 
+function RoleMagicLinkInner({ role }) {
+  const [email, setEmail] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [status, setStatus] = useState({ state: 'idle', message: '' });
+  const turnstileContainerRef = useRef(null);
+  const turnstileWidgetRef = useRef(null);
+  const nextUrl = `/portal?intake_role=${encodeURIComponent(role.slug)}`;
+
+  function resetTurnstile() {
+    if (typeof window === 'undefined' || turnstileWidgetRef.current == null) return;
+    if (!window.turnstile?.reset) return;
+    window.turnstile.reset(turnstileWidgetRef.current);
+  }
+
+  async function getCaptchaToken() {
+    return executeInvisibleTurnstile({
+      container: turnstileContainerRef,
+      widgetRef: turnstileWidgetRef,
+      onLoadError: () =>
+        setStatus({
+          state: 'error',
+          message: 'The verification check did not load correctly. Reload the page and try again.',
+        }),
+    });
+  }
+
+  async function submitMagicLink(event) {
+    event.preventDefault();
+    setStatus({ state: 'idle', message: '' });
+
+    if (!email.trim()) {
+      setStatus({ state: 'error', message: 'Enter an email address.' });
+      return;
+    }
+
+    setBusy(true);
+    try {
+      const captchaToken = await getCaptchaToken();
+      if (!captchaToken) {
+        setStatus((current) => current.state === 'error' && current.message ? current : { state: 'error', message: 'The verification check did not complete. Try again.' });
+        return;
+      }
+
+      await requestMagicLink({
+        email: email.trim(),
+        captchaToken,
+        nextUrl,
+        shouldCreateUser: true,
+      });
+      setEmail('');
+      setStatus({ state: 'sent', message: 'Check your email to complete registration and sign in.' });
+    } catch (err) {
+      const { message } = getEmailFlowErrorMessage(err, 'Failed to send magic link.');
+      setStatus({ state: 'error', message });
+    } finally {
+      resetTurnstile();
+      setBusy(false);
+    }
+  }
+
+  return (
+    <section className="min-h-screen bg-[#eef3fb]">
+      <div className="grid min-h-screen w-full grid-cols-1 lg:grid-cols-12">
+        <div className="flex justify-center bg-slate-100 px-6 py-10 text-slate-900 lg:col-span-5">
+          <div className="w-full max-w-md lg:w-3/5 lg:max-w-none lg:translate-x-20">
+            <div className="relative mb-2">
+              <a href="/talk-to-us/" className="inline-flex h-10 w-10 items-center justify-center text-slate-400 hover:text-slate-600 lg:absolute lg:-left-16 lg:top-1/2 lg:-translate-y-1/2" aria-label="Back">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" className="h-9 w-9"><path d="M15 18l-6-6 6-6" /></svg>
+              </a>
+              <h1 className="text-3xl font-semibold tracking-tight text-slate-900">Magic link</h1>
+            </div>
+
+            <div className="space-y-4 auth-card pt-0">
+              <p className="text-sm text-slate-500">We&apos;ll email you a one-time specialist-call link for this role.</p>
+              <form onSubmit={submitMagicLink} className="form">
+                <label className="label text-sm font-medium text-slate-700">
+                  <span>Work email <span className="text-pink-600">*</span></span>
+                  <input className="input text-base text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#14B8A6]" type="email" autoComplete="email" inputMode="email" value={email} onChange={(event) => setEmail(event.target.value)} disabled={busy} placeholder="you@company.com" required />
+                </label>
+                <StatusBanner status={status} />
+                <div className="rounded-[10px] border border-dashed border-slate-200 bg-white px-4 py-3 text-sm leading-relaxed text-slate-500">We validate business email domains and run a verification check before sending the link.</div>
+                <div ref={turnstileContainerRef} className="absolute left-0 top-0 h-0 w-0 overflow-hidden opacity-0" aria-hidden="true" />
+                <button className="w-full rounded-[10px] bg-[#14B8A6] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0F766E] disabled:cursor-not-allowed disabled:opacity-60" type="submit" disabled={busy}>{busy ? 'Working…' : 'Send magic link'}</button>
+                <a href="/login" className="flex w-full items-center justify-center gap-2 rounded-[10px] border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50">Portal login</a>
+              </form>
+              <div className="pt-2 text-center text-sm text-slate-500">Start with your business email. We&apos;ll use it to route a specialist call for this role.</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="relative hidden overflow-hidden lg:col-span-7 lg:block">
+          <div className="absolute inset-0 bg-gradient-to-br from-black via-[#0b0e14] to-[#171b24]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/50" />
+          <div className="absolute -left-24 top-16 h-72 w-72 rounded-full bg-[#14B8A6]/10 blur-3xl" />
+          <div className="absolute right-0 top-10 h-80 w-80 rounded-full bg-[#ff8c69]/10 blur-3xl" />
+          <div className="relative flex h-full min-h-[100svh] flex-col p-12 text-white">
+            <div className="flex items-center justify-end"><img src="/images/infrastructure/logo.svg" alt="Advanced Analytica" className="h-10 w-auto opacity-85" decoding="async" /></div>
+            <div className="flex flex-1 items-start justify-center pt-24">
+              <div className="max-w-2xl text-center">
+                <div className="text-6xl font-bold leading-[1.05] tracking-tight">{role.title}</div>
+                <p className="mx-auto mt-8 max-w-xl text-lg text-white/70">{role.description}</p>
+                <div className="mx-auto mt-10 max-w-[44rem] space-y-4 text-left text-base text-white/72">
+                  {role.points.map((point) => <div key={point} className="flex gap-3"><span className="mt-1 h-2 w-2 flex-none rounded-full bg-[#14B8A6]" /><span>{point}</span></div>)}
+                </div>
+                <p className="mx-auto mt-10 max-w-xl text-base text-white/60">{role.coverage}</p>
+                <p className="mx-auto mt-12 max-w-xl text-base text-white/60">15 minutes. At your pace. Confidential.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function LoginApp() {
   return <LoginInner />;
+}
+
+export function RoleMagicLinkApp({ role }) {
+  return <RoleMagicLinkInner role={role} />;
 }
 
 export function PortalApp() {

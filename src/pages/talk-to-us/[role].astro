@@ -1,0 +1,130 @@
+---
+import '../../styles/global.css';
+import { RoleMagicLinkApp } from '../../components/auth/AuthViews.jsx';
+
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '0x4AAAAAADKxAX20w3kRuz5A';
+
+const roles = [
+  {
+    slug: 'ceo',
+    label: 'For CEOs',
+    title: 'Control AI output before speed creates unmanaged brand risk.',
+    description:
+      'You need a clear view of where AI is helping, where it is drifting, and what governed AI should look like across the business.',
+    points: [
+      'Your teams are generating AI content at scale with no governance controls.',
+      "You've invested in AI tools but cannot prove you have control of the output.",
+      'Approval cycles are getting longer, not shorter.',
+      'You are exposed to brand risk you cannot see or measure.',
+      'Your competitors are moving faster.',
+    ],
+    coverage:
+      'We will focus on operating control, approval drag, hidden exposure, and what a brand-first AI governance layer needs to hold together.',
+  },
+  {
+    slug: 'cmo',
+    label: 'For CMOs',
+    title: 'Move faster without letting off-brand AI output spread across the business.',
+    description:
+      'You need a control model that protects brand integrity while making production, review, and approval easier to run.',
+    points: [
+      'Your teams are spending more time rejecting content than creating it.',
+      'AI tools are producing faster output that looks right but is not on-brand.',
+      'Guidelines are not being followed because nobody can find or understand them.',
+      'Approval backlogs are eating your team’s time and budget.',
+      'You need to move faster without losing brand integrity.',
+    ],
+    coverage:
+      'We will focus on approval friction, machine-operable controls, and how to turn brand rules into governed workflows.',
+  },
+  {
+    slug: 'ciso',
+    label: 'For CISOs',
+    title: 'Get clearer control of what AI tools are exposing, storing, and producing.',
+    description:
+      'You need visibility into data leakage, unmanaged prompt behaviour, and whether AI-generated outputs can be governed and audited.',
+    points: [
+      'Your people are uploading sensitive brand assets into public AI models.',
+      'You have no visibility into what data is leaving the business via AI prompts.',
+      'You cannot audit or prove that AI-generated content meets governance standards.',
+      'Shadow AI use is happening at scale and you cannot stop it.',
+    ],
+    coverage:
+      'We will focus on policy coverage, control evidence, runtime safeguards, and the gap between AI adoption and AI governance.',
+  },
+  {
+    slug: 'cfo',
+    label: 'For CFOs',
+    title: 'Stop paying for AI speed that keeps coming back as rework and approval drag.',
+    description:
+      'You need a more measurable operating model that ties tooling, throughput, and control back to cost and value.',
+    points: [
+      'You have bought AI tools but costs keep climbing with no clear ROI.',
+      'Your teams keep asking for more tools because the ones they have do not work properly.',
+      'Approval cycles are a hidden cost centre nobody is measuring.',
+      'You are paying for speed and getting rework instead.',
+    ],
+    coverage:
+      'We will focus on operating drag, avoidable rework, control debt, and where governed AI should improve the economics.',
+  },
+  {
+    slug: 'creative-director',
+    label: 'For Creative Directors',
+    title: 'Protect creative standards without turning the team into a review desk for AI output.',
+    description:
+      'You need stronger constraints around AI-generated work so the team can spend more time making and less time correcting.',
+    points: [
+      'Your team is doing admin and approvals instead of creative work.',
+      'AI tools are producing generic output that undermines your brand standards.',
+      'Budget expectations are rising but headcount is not.',
+      'You are being asked to do more with the same team.',
+    ],
+    coverage:
+      'We will focus on turning subjective guidance into clearer control logic without flattening the creative system.',
+  },
+  {
+    slug: 'compliance',
+    label: 'For Compliance Leaders',
+    title: 'Create auditability around AI-generated brand output before risk turns into evidence gaps.',
+    description:
+      'You need traceable decisions, policy application, and a clearer line between AI activity and accountable control.',
+    points: [
+      'You have no audit trail for AI-generated brand content.',
+      'Policies and controls are not being applied consistently across AI outputs.',
+      'You cannot demonstrate governance of AI to regulators or board.',
+      'Brand risk is now a compliance risk and nobody owns it.',
+    ],
+    coverage:
+      'We will focus on traceable decisions, control application, escalation paths, and how brand-first governance can be evidenced.',
+  },
+];
+
+export function getStaticPaths() {
+  return roles.map((role) => ({
+    params: { role: role.slug },
+    props: { role },
+  }));
+}
+
+const routeRole = Astro.params.role;
+const role = Astro.props.role ?? roles.find((entry) => entry.slug === routeRole);
+
+if (!role) {
+  return Astro.redirect('/talk-to-us/');
+}
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{role.label} | Advanced Analytica</title>
+    <meta name="description" content={role.description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate icon" href="/favicon.svg" sizes="any" />
+  </head>
+  <body class="bg-background text-ink font-[ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,'Segoe_UI',sans-serif]">
+    <RoleMagicLinkApp client:load role={role} />
+  </body>
+</html>

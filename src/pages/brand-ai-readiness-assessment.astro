@@ -31,16 +31,20 @@ const primaryButtonClass =
 
 const assessmentAreas = [
   {
+    title: "Completeness",
+    body: "We check whether your brand guidance actually covers the situations AI will encounter. Most guidelines were written for human designers and copywriters. They do not address edge cases, tone in conflict situations, multi-channel variation, or regulatory adjacency. Gaps in coverage become gaps in output, and gaps in output become brand risk at scale."
+  },
+  {
     title: "Machine-readability",
-    body: "We check whether your brand guidance can be read as a usable specification. If AI has to infer meaning, the output will drift. We look for structure, clarity, and language that a system can follow consistently.",
+    body: "We check whether your brand guidance can be read as a usable instruction set by an AI system, not just a person. If structure is missing, if rules are buried in prose, or if meaning depends on context only a human would recognise, AI has to guess. Guessing produces drift. We look for clarity, structure, and language a system can follow without guesswork."
   },
   {
     title: "Ambiguity",
-    body: "We look for rules that depend on memory, local interpretation, or hidden exceptions. Ambiguity is where brand risk starts, because different people and different systems will fill the gap differently.",
+    body: "We look for rules that depend on memory, local interpretation, or hidden exceptions. Ambiguity is where brand risk starts. A rule that means different things to different people will mean different things to different systems. We identify where your guidance leaves gaps that AI will fill on its own, and where stronger definitions and examples are needed before you deploy."
   },
   {
     title: "AI control level",
-    body: "We assess which parts of your brand can already be enforced, tested, or logged, and which parts still rely on review after the fact. That tells us what is ready for AI now and what needs governance first.",
+    body: "We assess which parts of your brand can already be enforced, tested, or logged automatically, and which parts still rely on human review after the fact. This tells us what is ready for AI now, what needs governance infrastructure first, where rulesets need to be applied and what should never be delegated to a system without a human in the loop."
   },
 ];
 
@@ -207,14 +211,14 @@ const offerLevels = [
     <div class="container-wide py-20">
       <div class="eyebrow mb-6 text-center text-[#14B8A6]">What We Assess</div>
       <h2 class="text-center text-[clamp(2.5rem,5vw,4.75rem)] font-semibold tracking-tight text-paper">
-        Three criteria that show whether your brand is ready for AI
+        Four criteria that show whether your brand is ready for AI
       </h2>
       <p class="mx-auto mt-10 max-w-[90ch] text-center text-lg leading-relaxed text-paper/80 md:text-xl">
         We do not look at brand guidance as static copy. We assess whether it can be read,
         interpreted, and enforced by AI without guesswork.
       </p>
 
-      <div class="mt-14 grid gap-4 lg:grid-cols-3">
+      <div class="mt-14 grid gap-4 lg:grid-cols-2">
         {assessmentAreas.map((item, index) => (
           <article class="group rounded-2xl border border-paper/15 bg-ink/30 p-6 shadow-outline backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-[#14B8A6]/40 hover:bg-ink/40">
             <div class="text-lg font-semibold tracking-[0.2em] uppercase text-[#14B8A6]">
@@ -226,26 +230,7 @@ const offerLevels = [
         ))}
       </div>
 
-      <div class="mt-16 border-t border-paper/15 pt-10">
-        <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-          <div class="max-w-3xl">
-            <h3 class="text-2xl font-semibold tracking-tight text-paper">
-              Want the full diagnostic?
-            </h3>
-            <p class="mt-3 text-base leading-relaxed text-paper/75">
-              Request the assessment and we’ll show you where your brand is ready for AI, where it still relies on interpretation, and what should be governed first.
-            </p>
-          </div>
-          <div class="flex flex-wrap gap-3">
-            <a
-              href="#assessment-form"
-              class="inline-flex items-center justify-center gap-2 rounded-md bg-[#14B8A6] px-6 py-3 text-xs font-semibold tracking-[0.14em] uppercase text-paper shadow-outline transition-colors hover:bg-[#0F766E]"
-            >
-              Request assessment
-            </a>
-          </div>
-        </div>
-      </div>
+      
     </div>
   </section>
 
@@ -367,11 +352,11 @@ const offerLevels = [
     </style>
     <div class="container-wide relative z-10 py-20">
       <div class="mx-auto grid max-w-[1180px] gap-8">
+        <div class="eyebrow text-center text-[#14B8A6]">Assessment request</div>
         <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div class="max-w-[52rem]">
-            <div class="eyebrow text-[#14B8A6]">Assessment request</div>
-            <h2 class="mt-4 text-[clamp(2rem,4vw,3.2rem)] font-semibold tracking-tight text-paper">
-              Tell us where AI is already touching your brand
+            <h2 class="text-[clamp(2rem,4vw,3.2rem)] font-semibold tracking-tight text-paper">
+              Tell us where AI is already touching your brand and where you 
             </h2>
             <p class="mt-6 text-lg leading-relaxed text-paper/80">
               Keep this focused. We need enough context to see the likely risk,
@@ -484,12 +469,10 @@ const offerLevels = [
                   Step 1
                 </div>
                 <h3 class="mt-3 text-2xl font-semibold tracking-tight text-ink">
-                  Tell us the operating context
+                  Tell us about you and your brand operations
                 </h3>
                 <p class="mt-3 text-base leading-relaxed text-steel">
-                  Start with the essentials. We need to understand who you are,
-                  where the brand sits, and what you want AI to do before we
-                  assess risk properly.
+                  Start with the essentials. We need to understand who you are, the scale and structure of your brand, and what you want AI to do before we can assess risk properly.
                 </p>
               </div>
 
@@ -603,11 +586,10 @@ const offerLevels = [
                   Step 2
                 </div>
                 <h3 class="mt-3 text-2xl font-semibold tracking-tight text-ink">
-                  Tell us about the current assets
+                  Tell us about the existing brand assets
                 </h3>
                 <p class="mt-3 text-base leading-relaxed text-steel">
-                  This is where we locate the source material that already shapes
-                  how your brand behaves.
+                  This is where we identify the current source material that is shaping how your brand behaves. Understanding the lay of the brand tells us what AI has to work with, what it cannot find, and where the assessment should focus first.
                 </p>
               </div>
 
@@ -644,6 +626,19 @@ const offerLevels = [
                     <input type="checkbox" name="materials" value="Other" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
                     <span>Other</span>
                   </label>
+                  <label
+                    class="hidden grid gap-2 rounded-2xl border border-fog bg-white px-4 py-4 text-sm text-steel md:col-span-2"
+                    data-other-details="materials"
+                  >
+                    <span class={`${labelClass}`}>Other materials details</span>
+                    <textarea
+                      name="materials_other"
+                      rows="3"
+                      class="w-full rounded-xl border border-fog bg-paper px-4 py-3 text-base text-ink outline-none transition placeholder:text-steel/55 focus:border-[#14B8A6]"
+                      placeholder="Tell us what other materials are shaping brand decisions."
+                      disabled
+                    ></textarea>
+                  </label>
                 </div>
                 <p class="mt-1 text-sm text-steel" data-materials-count>
                   Select the materials that already shape brand decisions.
@@ -657,11 +652,11 @@ const offerLevels = [
                   Step 3
                 </div>
                 <h3 class="mt-3 text-2xl font-semibold tracking-tight text-ink">
-                  Show us the AI touchpoints
+                  Tell us about the brand's AI touchpoints
                 </h3>
                 <p class="mt-3 text-base leading-relaxed text-steel">
-                  This is where we map the workflows where AI is already creating exposure or shaping output.
-                </p>
+                  This helps us map the workflows where AI is already creating exposure or shaping output. Every touchpoint is a point where brand rules either hold or break down. Knowing where AI is already active tells us where the risk is live, where governance is missing, and where the assessment needs to go deepest.
+  </p>
               </div>
 
               <fieldset class="grid gap-5" data-required-group="ai_touchpoints">
@@ -702,8 +697,21 @@ const offerLevels = [
                     <span>Agency workflows</span>
                   </label>
                   <label class={`${optionCardClass} assessment-option md:col-span-2`}>
-                    <input type="checkbox" name="ai_touchpoints" value="Not sure yet" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
-                    <span>Not sure yet</span>
+                    <input type="checkbox" name="ai_touchpoints" value="Other" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
+                    <span>Other</span>
+                  </label>
+                  <label
+                    class="hidden grid gap-2 rounded-2xl border border-fog bg-white px-4 py-4 text-sm text-steel md:col-span-2"
+                    data-other-details="ai_touchpoints"
+                  >
+                    <span class={`${labelClass}`}>Other AI touchpoints details</span>
+                    <textarea
+                      name="ai_touchpoints_other"
+                      rows="3"
+                      class="w-full rounded-xl border border-fog bg-paper px-4 py-3 text-base text-ink outline-none transition placeholder:text-steel/55 focus:border-[#14B8A6]"
+                      placeholder="Tell us where else AI is already touching your brand."
+                      disabled
+                    ></textarea>
                   </label>
                 </div>
                 <p class="mt-1 text-sm text-steel" data-touchpoints-count>
@@ -721,8 +729,7 @@ const offerLevels = [
                   Clarify the risk and the preferred next step
                 </h3>
                 <p class="mt-3 text-base leading-relaxed text-steel">
-                  This final step helps us shape the right assessment path and
-                  the right first conversation.
+                  This final step helps us shape the right assessment path and the right first conversation. Your biggest concern tells us where to focus. Your preferred next step tells us how fast to move. Together they determine whether you need a light triage, a full diagnostic, or something in between.
                 </p>
               </div>
 
@@ -730,7 +737,7 @@ const offerLevels = [
                 <legend class={`${labelClass} mb-2`}>
                   What’s your biggest concern?*
                 </legend>
-                <div class="grid gap-3">
+                <div class="grid gap-3 md:grid-cols-2">
                   <label class={`${optionCardClass} assessment-option`}>
                     <input type="radio" name="biggest_concern" value="Off-brand output" required class="mt-1 h-4 w-4 accent-[#14B8A6]" />
                     <span>Off-brand output</span>
@@ -755,6 +762,23 @@ const offerLevels = [
                     <input type="radio" name="biggest_concern" value="Internal adoption" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
                     <span>Internal adoption</span>
                   </label>
+                  <label class={`${optionCardClass} assessment-option md:col-span-2`}>
+                    <input type="radio" name="biggest_concern" value="Other" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
+                    <span>Other</span>
+                  </label>
+                  <label
+                    class="hidden grid gap-2 rounded-2xl border border-fog bg-white px-4 py-4 text-sm text-steel md:col-span-2"
+                    data-other-details="biggest_concern"
+                  >
+                    <span class={`${labelClass}`}>Other concern details</span>
+                    <textarea
+                      name="biggest_concern_other"
+                      rows="3"
+                      class="w-full rounded-xl border border-fog bg-paper px-4 py-3 text-base text-ink outline-none transition placeholder:text-steel/55 focus:border-[#14B8A6]"
+                      placeholder="Tell us what your biggest concern is."
+                      disabled
+                    ></textarea>
+                  </label>
                 </div>
               </fieldset>
 
@@ -768,8 +792,8 @@ const offerLevels = [
                     <span>Intro call</span>
                   </label>
                   <label class={`${optionCardClass} assessment-option`}>
-                    <input type="radio" name="preferred_next_step" value="Assessment scoping" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
-                    <span>Assessment scoping</span>
+                    <input type="radio" name="preferred_next_step" value="Request a proposal" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
+                    <span>Request a proposal</span>
                   </label>
                   <label class={`${optionCardClass} assessment-option`}>
                     <input type="radio" name="preferred_next_step" value="Send more detail" class="mt-1 h-4 w-4 accent-[#14B8A6]" />
@@ -842,6 +866,9 @@ const offerLevels = [
       const voiceIconIdle = form.querySelector('[data-voice-icon="idle"]');
       const voiceIconActive = form.querySelector('[data-voice-icon="active"]');
       const messageField = form.querySelector("#assessment-message");
+      const otherDetailPanels = Array.from(
+        form.querySelectorAll("[data-other-details]")
+      );
       const requiredCheckboxGroups = ["materials", "ai_touchpoints"];
       const nextButton = form.querySelector("[data-step-next]");
       const backButton = form.querySelector("[data-step-back]");
@@ -1111,6 +1138,34 @@ const offerLevels = [
         });
       };
 
+      const syncOtherDetails = () => {
+        otherDetailPanels.forEach((panel) => {
+          if (!(panel instanceof HTMLElement)) return;
+
+          const groupName = panel.dataset.otherDetails;
+          if (!groupName) return;
+
+          const otherInput = form.querySelector(
+            `input[name="${CSS.escape(groupName)}"][value="Other"]`
+          );
+          const detailField = panel.querySelector("textarea");
+          const isChecked =
+            otherInput instanceof HTMLInputElement && otherInput.checked;
+
+          panel.classList.toggle("hidden", !isChecked);
+
+          if (detailField instanceof HTMLTextAreaElement) {
+            detailField.disabled = !isChecked;
+            detailField.required = isChecked;
+            if (!isChecked) {
+              detailField.value = "";
+            }
+          }
+        });
+
+        requestAnimationFrame(updateViewportHeight);
+      };
+
       const validateCurrentStep = () => {
         const panel = panels[current];
         if (!(panel instanceof HTMLElement)) return true;
@@ -1228,16 +1283,28 @@ const offerLevels = [
           }
           updateMeta();
         }
+        if (
+          target.name === "materials" ||
+          target.name === "ai_touchpoints" ||
+          target.name === "biggest_concern"
+        ) {
+          syncOtherDetails();
+        }
       });
 
       form.addEventListener("input", (event) => {
         const target = event.target;
-        if (!(target instanceof HTMLInputElement)) return;
-        if (target.name !== "email") return;
-        validateBusinessEmailField(target);
+        if (target instanceof HTMLInputElement && target.name === "email") {
+          validateBusinessEmailField(target);
+        }
+
+        if (target instanceof HTMLTextAreaElement) {
+          requestAnimationFrame(updateViewportHeight);
+        }
       });
 
       updateMeta();
+      syncOtherDetails();
       panels.forEach((panel) => {
         syncRequiredCheckboxGroups(panel);
       });
