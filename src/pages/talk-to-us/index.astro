@@ -1,0 +1,128 @@
+---
+import '../../styles/global.css';
+
+const roles = [
+  {
+    slug: 'ceo',
+    title: 'CEO',
+    pain: 'You need clearer control of AI output, approval drag, and brand risk exposure.',
+    accent: 'from-[#14B8A6] to-[#0F766E]',
+  },
+  {
+    slug: 'cmo',
+    title: 'CMO',
+    pain: 'Your teams need speed without letting off-brand output or review bottlenecks spread.',
+    accent: 'from-[#f97316] to-[#c2410c]',
+  },
+  {
+    slug: 'ciso',
+    title: 'CISO',
+    pain: 'You need visibility into AI usage, data exposure, and control coverage.',
+    accent: 'from-[#38bdf8] to-[#1d4ed8]',
+  },
+  {
+    slug: 'cfo',
+    title: 'CFO',
+    pain: 'You need AI spend, rework, and operating drag tied back to measurable value.',
+    accent: 'from-[#f59e0b] to-[#b45309]',
+  },
+  {
+    slug: 'creative-director',
+    title: 'Creative Director',
+    pain: 'Your team needs stronger output control without turning creative work into admin.',
+    accent: 'from-[#fb7185] to-[#be123c]',
+  },
+  {
+    slug: 'compliance',
+    title: 'Compliance',
+    pain: 'You need traceable controls, auditability, and governance evidence for AI output.',
+    accent: 'from-[#a78bfa] to-[#6d28d9]',
+  },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Talk To Us | Advanced Analytica</title>
+    <meta
+      name="description"
+      content="Choose the role that best matches your current AI governance pressure and continue to a specialist page."
+    />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate icon" href="/favicon.svg" sizes="any" />
+  </head>
+  <body class="bg-background text-paper font-[ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,'Segoe_UI',sans-serif]">
+    <section class="min-h-screen w-screen bg-slate-100">
+      <div class="container-wide grid min-h-[100svh] gap-12 py-14 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
+        <div class="order-2 text-paper lg:order-1">
+          <div class="inline-flex rounded-full border border-white/15 bg-white/6 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">
+            Specialist Call Intake
+          </div>
+          <h1 class="mt-6 max-w-[12ch] text-[clamp(2.7rem,5vw,5rem)] leading-[0.95] tracking-tight">
+            Choose the pressure you need to resolve first.
+          </h1>
+          <p class="mt-5 max-w-[35rem] text-lg leading-relaxed text-paper/78">
+            Pick the role that best matches the decisions you own. We will take you to a focused landing page with
+            the signals, questions, and next step that fit your context.
+          </p>
+          <div class="mt-8 grid gap-4 text-sm leading-relaxed text-paper/72">
+            <div class="rounded-2xl border border-white/12 bg-white/6 p-5 backdrop-blur">
+              We test your brand against the roles and intents your AI will meet.
+            </div>
+            <div class="rounded-2xl border border-white/12 bg-white/6 p-5 backdrop-blur">
+              You see which rules hold, where toolkits create ambiguity, and where stronger controls are needed.
+            </div>
+            <div class="rounded-2xl border border-white/12 bg-white/6 p-5 backdrop-blur">
+              The outcome is a clearer control layer for governed workflows and traceable decisions.
+            </div>
+          </div>
+        </div>
+
+        <div class="order-1 lg:order-2">
+          <div class="w-full rounded-[2rem] border border-white/10 bg-[#111927]/92 p-8 text-paper shadow-[0_30px_90px_rgba(0,0,0,0.42)] backdrop-blur md:p-10">
+            <div class="mb-8 flex items-center justify-between gap-4">
+              <div>
+                <div class="text-xs font-semibold uppercase tracking-[0.18em] text-[#14B8A6]">Choose your role</div>
+                <h2 class="mt-2 text-2xl font-semibold tracking-tight text-paper">Start from the right lens</h2>
+              </div>
+              <a
+                href="/login"
+                class="inline-flex items-center justify-center rounded-md border border-white/14 px-4 py-2 text-sm font-semibold text-paper transition hover:border-white/28"
+              >
+                Portal login
+              </a>
+            </div>
+
+            <div class="grid gap-4 md:grid-cols-2">
+              {
+                roles.map((role) => (
+                  <a
+                    href={`/talk-to-us/${role.slug}/`}
+                    class="group rounded-[1.6rem] border border-white/12 bg-white/6 p-5 transition hover:border-[#14B8A6] hover:bg-white/8"
+                  >
+                    <div class={`h-1.5 w-20 rounded-full bg-gradient-to-r ${role.accent}`}></div>
+                    <div class="mt-5 flex items-start justify-between gap-4">
+                      <div>
+                        <div class="text-lg font-semibold tracking-tight text-paper">{role.title}</div>
+                        <p class="mt-3 text-sm leading-relaxed text-paper/70">{role.pain}</p>
+                      </div>
+                      <span class="text-paper/35 transition group-hover:text-[#14B8A6]">→</span>
+                    </div>
+                  </a>
+                ))
+              }
+            </div>
+
+            <p class="mt-6 text-sm leading-relaxed text-paper/58">
+              Each page narrows the conversation to the business pressure that role usually owns, then takes you to a
+              work-email step for a specialist call.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,211 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE_URL } from "../lib/seo/site";
+
+const title = "Brand Semantics Analysis";
+const description =
+  "A structured audit of brand standards and real-world brand expression across completeness, machine-readability, ambiguity, and AI control level.";
+
+const page = {
+  title,
+  description,
+  url: `${SITE_URL}/brand-sematics-analysis`,
+  breadcrumbs: [
+    { name: "Home", url: `${SITE_URL}/` },
+    { name: title, url: `${SITE_URL}/brand-sematics-analysis` },
+  ],
+};
+
+const analysisAreas = [
+  {
+    title: "Completeness",
+    body:
+      "We check whether your standards actually cover the situations your brand meets across content, service, product, and AI. Missing guidance creates missing controls.",
+  },
+  {
+    title: "Machine-readability",
+    body:
+      "We assess whether your guidance can be understood by a system as an instruction set, not just read by a human as narrative copy.",
+  },
+  {
+    title: "Ambiguity",
+    body:
+      "We surface the phrases, exceptions, and vague definitions that leave teams and AI systems to interpret your brand differently.",
+  },
+  {
+    title: "AI control level",
+    body:
+      "We identify what can already be enforced, tested, and logged automatically, and what still depends on manual review or local judgement.",
+  },
+];
+
+const auditOutputs = [
+  "A complete audit of your standards and your real-world brand expression",
+  "A mapped view of contradictions, drift, and control blind spots",
+  "A breakdown of gaps across completeness, machine-readability, ambiguity, and AI control level",
+  "A clear blueprint for rebuilding your brand as a governed, machine-readable system",
+  "A practical foundation for Brand Oracle design and rollout",
+];
+
+const comparisonRows = [
+  ["Audits brand standards", "Yes", "No"],
+  ["Audits real-world brand expression", "Yes", "No"],
+  ["Identifies ambiguity in guidelines", "Yes", "No"],
+  ["Checks machine readability", "Yes", "No"],
+  ["Assesses completeness for AI", "Yes", "No"],
+  ["Evaluates AI control level", "Yes", "No"],
+  ["Validates assets against existing rules", "Yes", "Yes"],
+  ["Works if standards are flawed", "Yes", "No"],
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  page={page}
+  headerContactHref="/company/contact"
+  hideFooterContactCta={true}
+>
+  <section class="relative overflow-hidden bg-gradient-to-br from-black via-[#0b0e14] to-[#171b24] text-paper">
+    <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/50" aria-hidden="true"></div>
+    <div class="absolute -left-24 top-16 h-80 w-80 rounded-full bg-[#14B8A6]/12 blur-3xl" aria-hidden="true"></div>
+    <div class="absolute right-0 top-10 h-80 w-80 rounded-full bg-[#ff8c69]/10 blur-3xl" aria-hidden="true"></div>
+
+    <div class="container-wide relative z-10 py-24">
+      <div class="grid gap-12 lg:grid-cols-[7fr_5fr] lg:items-start">
+        <div>
+          <div class="eyebrow text-[#14B8A6]">Diagnostic offer</div>
+          <h1 class="mt-4 max-w-[12ch] text-[clamp(2.5rem,5vw,5.25rem)] font-semibold tracking-tight text-paper">
+            Brand Semantics Analysis
+          </h1>
+          <p class="mt-6 max-w-[44rem] text-lg leading-relaxed text-paper/78 md:text-xl">
+            Stop managing your brand as two separate things. Brand Semantics Analysis shows
+            where your official standards and your actual brand expression contradict, drift,
+            or leave AI systems guessing.
+          </p>
+          <p class="mt-5 max-w-[44rem] text-base leading-relaxed text-paper/70 md:text-lg">
+            The result is a complete picture you can use to rebuild your brand as a governed,
+            machine-readable system.
+          </p>
+        </div>
+
+        <div class="rounded-[2rem] border border-paper/12 bg-white/6 p-8 shadow-outline backdrop-blur">
+          <div class="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]">
+            Elevator pitch
+          </div>
+          <p class="mt-5 text-base leading-relaxed text-paper/78">
+            Every brand exists in two places. First, there is what you say you are: your
+            standards, guidelines, and toolkits. Then there is what you actually are:
+            scattered across websites, documents, and platforms. We analyse both.
+          </p>
+
+          <div class="mt-8 border-t border-paper/15 pt-5">
+            <div class="text-xs font-semibold uppercase tracking-[0.2em] text-[#ff8c69]">
+              You get
+            </div>
+            <ul class="mt-4 grid gap-3 text-sm leading-relaxed text-paper/78">
+              {auditOutputs.map((item) => (
+                <li class="flex gap-3">
+                  <span class="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]" aria-hidden="true"></span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-paper text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-6 text-center text-[#14B8A6]">What It Is</div>
+      <h2 class="mx-auto max-w-[18ch] text-center text-[clamp(2.4rem,5vw,4.6rem)] font-semibold tracking-tight text-ink">
+        An audit of what your brand says and what your brand does
+      </h2>
+      <p class="mx-auto mt-8 max-w-[84ch] text-center text-lg leading-relaxed text-ink/72 md:text-xl">
+        Brand Semantics Analysis atomises both your brand standards and your real-world
+        brand expression into their smallest elements, then audits each one against four
+        critical parameters: completeness, machine-readability, ambiguity, and AI control
+        level.
+      </p>
+      <p class="mx-auto mt-6 max-w-[84ch] text-center text-lg leading-relaxed text-ink/72 md:text-xl">
+        The result is a complete audit that surfaces gaps, inconsistencies, and control
+        blind spots. It becomes the blueprint for the Brand Oracle.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-slate text-paper">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-6 text-center text-[#14B8A6]">What We Assess</div>
+      <h2 class="text-center text-[clamp(2.5rem,5vw,4.75rem)] font-semibold tracking-tight text-paper">
+        Four parameters that show where your brand breaks under AI pressure
+      </h2>
+      <div class="mt-14 grid gap-4 lg:grid-cols-2">
+        {analysisAreas.map((item, index) => (
+          <article class="rounded-2xl border border-paper/15 bg-ink/30 p-6 shadow-outline backdrop-blur">
+            <div class="text-lg font-semibold uppercase tracking-[0.2em] text-[#14B8A6]">
+              0{index + 1}
+            </div>
+            <h3 class="mt-4 text-2xl font-semibold tracking-tight text-paper">{item.title}</h3>
+            <p class="mt-4 text-base leading-relaxed text-paper/75">{item.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-paper text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-6 text-center text-[#14B8A6]">Example</div>
+      <h2 class="mx-auto max-w-[16ch] text-center text-[clamp(2.2rem,4.5vw,4rem)] font-semibold tracking-tight text-ink">
+        Where the guidance says one thing and the brand does another
+      </h2>
+      <p class="mx-auto mt-8 max-w-[84ch] text-center text-lg leading-relaxed text-ink/72 md:text-xl">
+        Take tone of voice. Your guideline says <span class="font-semibold text-ink">professional but approachable</span>,
+        but your website uses contractions unevenly, formal register inconsistently, and has
+        no rules for AI systems such as chatbots. That creates ambiguity, incompleteness, and
+        control gaps at the same time.
+      </p>
+      <p class="mx-auto mt-6 max-w-[84ch] text-center text-lg leading-relaxed text-ink/72 md:text-xl">
+        Brand Semantics Analysis surfaces those issues precisely, so standards and live
+        expression can be brought back into alignment before AI amplifies the problem.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-[#f4f6f8] text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-6 text-center text-[#14B8A6]">Competitor Analysis</div>
+      <h2 class="mx-auto max-w-[18ch] text-center text-[clamp(2.3rem,4.5vw,4.2rem)] font-semibold tracking-tight text-ink">
+        We audit the foundation, not just the final asset
+      </h2>
+      <p class="mx-auto mt-8 max-w-[90ch] text-center text-lg leading-relaxed text-ink/72 md:text-xl">
+        Adobe Brand Intelligence is the nearest enterprise offer in this space, but it solves
+        a different problem. It validates assets against existing rules. We test whether the
+        rules themselves are complete, clear, machine-readable, and governable in practice.
+      </p>
+      <p class="mx-auto mt-6 max-w-[90ch] text-center text-lg leading-relaxed text-ink/72 md:text-xl">
+        If your standards are flawed, validation alone only automates the flaw. Brand
+        Semantics Analysis exposes the weakness in the foundation before it becomes system
+        behaviour.
+      </p>
+
+      <div class="mt-12 overflow-hidden rounded-[2rem] border border-ink/10 bg-white shadow-outline">
+        <div class="grid grid-cols-[1.4fr_1fr_1fr] border-b border-ink/10 bg-ink px-6 py-5 text-sm font-semibold uppercase tracking-[0.14em] text-paper">
+          <div>Capability</div>
+          <div>Brand Semantics Analysis</div>
+          <div>Adobe Brand Intelligence</div>
+        </div>
+        {comparisonRows.map(([capability, ours, theirs]) => (
+          <div class="grid grid-cols-[1.4fr_1fr_1fr] border-b border-ink/10 px-6 py-4 text-sm leading-relaxed text-steel last:border-b-0">
+            <div class="font-medium text-ink">{capability}</div>
+            <div>{ours === "Yes" ? "Yes" : "No"}</div>
+            <div>{theirs === "Yes" ? "Yes" : "No"}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -32,6 +32,22 @@ pnpm build
 - Build command: `pnpm build`
 - Output directory: `dist/`
 
+## Supabase Auth Email
+
+The production auth flow uses Supabase callback URLs on this site:
+
+- magic link -> `/auth/callback?next=/portal`
+- reset password -> `/auth/callback?next=/auth/reset`
+
+The recommended production email setup is documented in:
+
+- [docs/supabase-auth-email-deliverability.md](./docs/supabase-auth-email-deliverability.md)
+
+Checked-in Supabase email templates:
+
+- [magic link email](./docs/templates/applications/supabase-magic-link-email.html)
+- [reset password email](./docs/templates/applications/supabase-reset-password-email.html)
+
 ## Analytics
 
 Google Analytics is consent-gated and only loads when `PUBLIC_GA_MEASUREMENT_ID`
