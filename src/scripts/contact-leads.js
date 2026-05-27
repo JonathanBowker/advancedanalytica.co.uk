@@ -504,6 +504,9 @@
       ai_touchpoints: aiTouchpoints,
       biggest_concern: getValue(form, "biggest_concern"),
       preferred_next_step: getValue(form, "preferred_next_step"),
+      clickstream_data: getValue(form, "clickstream_data"),
+      persona_inferred: getValue(form, "persona_inferred"),
+      pain_point: getValue(form, "pain_point"),
     };
   };
 

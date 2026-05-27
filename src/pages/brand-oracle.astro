@@ -1,0 +1,684 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE_URL } from "../lib/seo/site";
+import cmoPersona from "../data/persona-cmo.json";
+import headOfBrandPersona from "../data/persona-head-of-brand.json";
+import generalCounselPersona from "../data/persona-general-counsel.json";
+
+const title = "Brand Oracle";
+const description =
+  "A persona-driven Brand Oracle landing page for brand governance, machine-readable controls, and qualified sales context.";
+const leadEndpoint =
+  "https://advancedanalytica-co-uk-omj3v.ondigitalocean.app/api/leads/contact";
+
+const page = {
+  title,
+  description,
+  url: `${SITE_URL}/brand-oracle`,
+  breadcrumbs: [
+    { name: "Home", url: `${SITE_URL}/` },
+    { name: title, url: `${SITE_URL}/brand-oracle` },
+  ],
+};
+
+const personaConfigs = {
+  consistency: cmoPersona,
+  enforcement: headOfBrandPersona,
+  compliance: generalCounselPersona,
+};
+
+const countries = [
+  "Australia",
+  "Austria",
+  "Belgium",
+  "Brazil",
+  "Canada",
+  "China",
+  "Denmark",
+  "Finland",
+  "France",
+  "Germany",
+  "Hong Kong",
+  "India",
+  "Indonesia",
+  "Ireland",
+  "Italy",
+  "Japan",
+  "Luxembourg",
+  "Malaysia",
+  "Mexico",
+  "Netherlands",
+  "New Zealand",
+  "Norway",
+  "Philippines",
+  "Poland",
+  "Portugal",
+  "Saudi Arabia",
+  "Singapore",
+  "South Africa",
+  "South Korea",
+  "Spain",
+  "Sweden",
+  "Switzerland",
+  "Thailand",
+  "Turkey",
+  "United Arab Emirates",
+  "United Kingdom",
+  "United States",
+  "Vietnam",
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  page={page}
+  hideFooterContactCta={true}
+>
+  <style is:inline>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .brand-oracle-panel {
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand-oracle-panel-light {
+      border: 1px solid rgba(5, 5, 5, 0.12);
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand-oracle-option {
+      width: min(100%, 36rem);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: transparent;
+      color: #ffffff;
+      transition:
+        transform 180ms ease,
+        border-color 180ms ease,
+        background-color 180ms ease;
+    }
+
+    .brand-oracle-option:hover,
+    .brand-oracle-option:focus-visible {
+      transform: translateY(-1px);
+      border-color: rgba(255, 255, 255, 0.38);
+      background: rgba(255, 255, 255, 0.05);
+      outline: none;
+    }
+
+    .brand-oracle-option-contrast {
+      border-width: 2px;
+      border-color: rgba(255, 255, 255, 0.82);
+    }
+
+    .brand-oracle-option-contrast:hover,
+    .brand-oracle-option-contrast:focus-visible {
+      border-color: #ffffff;
+    }
+
+    .brand-oracle-option-light {
+      border-color: rgba(5, 5, 5, 0.16);
+      color: #050505;
+    }
+
+    .brand-oracle-option-light:hover,
+    .brand-oracle-option-light:focus-visible {
+      border-color: rgba(5, 5, 5, 0.38);
+      background: rgba(5, 5, 5, 0.04);
+    }
+
+    .brand-oracle-reveal[hidden] {
+      display: none;
+    }
+
+    .brand-oracle-reveal.is-visible {
+      animation: brand-oracle-rise 360ms ease-out;
+    }
+
+    @keyframes brand-oracle-rise {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .brand-oracle-option,
+      .brand-oracle-reveal.is-visible {
+        transition: none;
+        animation: none;
+      }
+    }
+  </style>
+
+  <div>
+    <section class="border-b border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_28%),linear-gradient(180deg,#050505_0%,#0b0b0b_52%,#050505_100%)] py-24 text-paper">
+      <div class="container-wide text-center">
+        <h1 class="mx-auto max-w-[52rem] font-masthead text-[clamp(3rem,8vw,6.25rem)] font-semibold leading-[0.97] tracking-tight text-white md:max-w-[56rem]">
+          Your brand means different things to different people.
+        </h1>
+        <p class="mx-auto mt-8 max-w-[46rem] text-[clamp(1.05rem,2.2vw,1.55rem)] leading-relaxed text-white/74">
+          It shouldn't. Brand Oracle makes your brand machine-readable, continuously enforced, always current.
+        </p>
+        <p class="mt-6 text-[clamp(1.2rem,2.8vw,1.9rem)] font-semibold uppercase tracking-[0.22em] text-white">
+          One meaning. Everywhere.
+        </p>
+      </div>
+    </section>
+
+    <section id="qualification" class="border-b border-[#050505]/10 bg-[#f3f0e8] py-24 text-[#050505]">
+      <div class="container-wide flex flex-col items-center text-center">
+        <div class="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-[#050505]/58">
+          Qualification
+        </div>
+        <h2 class="mt-6 max-w-[60rem] font-masthead text-[clamp(2.2rem,5vw,4.4rem)] font-semibold leading-[1.02] tracking-tight text-[#050505] md:max-w-[64rem]">
+          Is your brand doing what you want it to do?
+        </h2>
+
+        <div class="mt-12 flex w-full flex-col items-center gap-4">
+          <button
+            type="button"
+            class="brand-oracle-option brand-oracle-option-light rounded-full px-8 py-5 text-lg font-semibold"
+            data-qualification="yes"
+          >
+            Yes
+          </button>
+          <button
+            type="button"
+            class="brand-oracle-option brand-oracle-option-light rounded-full px-8 py-5 text-lg font-semibold"
+            data-qualification="no"
+          >
+            No
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section
+      id="pain-point"
+      class="brand-oracle-reveal border-b border-white/10 bg-[#14B8A6] py-24 text-paper"
+      hidden
+    >
+      <div class="container-wide flex flex-col items-center text-center">
+        <div class="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-white/58">
+          Brand governance
+        </div>
+        <h2 class="mt-6 max-w-[46rem] font-masthead text-[clamp(2.1rem,4.8vw,4rem)] font-semibold leading-[1.04] tracking-tight text-white">
+          What's the biggest issue with your brand AI governance?
+        </h2>
+
+        <div class="mt-12 flex w-full flex-col items-center gap-4">
+          <button
+            type="button"
+            class="brand-oracle-option brand-oracle-option-contrast rounded-[2rem] px-8 py-5 text-xl leading-relaxed"
+            data-pain-point="consistency"
+          >
+            Keeping our brand consistent across markets
+          </button>
+          <button
+            type="button"
+            class="brand-oracle-option brand-oracle-option-contrast rounded-[2rem] px-8 py-5 text-xl leading-relaxed"
+            data-pain-point="enforcement"
+          >
+            Enforcing brand guidelines reliably
+          </button>
+          <button
+            type="button"
+            class="brand-oracle-option brand-oracle-option-contrast rounded-[2rem] px-8 py-5 text-xl leading-relaxed"
+            data-pain-point="compliance"
+          >
+            Managing compliance and regulatory risk
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section
+      id="maturity-section"
+      class="brand-oracle-reveal border-b border-[#050505]/10 bg-[#ff8c69] py-24 text-[#050505]"
+      hidden
+    >
+      <div class="container-wide">
+        <div class="p-8 text-center sm:p-12">
+          <div class="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-[#050505]/58">
+            Maturity
+          </div>
+          <h2 class="mx-auto mt-6 max-w-[46rem] font-masthead text-[clamp(2.2rem,5vw,4rem)] font-semibold leading-[1.03] tracking-tight text-[#050505]">
+            Your brand is harmonised. Here's how to scale it.
+          </h2>
+          <p class="mx-auto mt-8 max-w-[46rem] text-lg leading-relaxed text-[#050505]/74">
+            Brand Oracle turns good governance into a live control layer. We make brand rules machine-operable, keep them current, and give your teams governed workflows with traceable decisions as your system scales.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section
+      id="persona-section"
+      class="brand-oracle-reveal border-b border-white/10 bg-[#050505] py-24 text-paper"
+      hidden
+    >
+      <div class="container-wide">
+        <div class="brand-oracle-panel rounded-[2rem] p-8 sm:p-12">
+          <div class="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-white/58" data-persona-label>
+            Persona
+          </div>
+          <h2
+            class="mt-6 max-w-[46rem] font-masthead text-[clamp(2.2rem,5vw,4rem)] font-semibold leading-[1.03] tracking-tight text-white"
+            data-persona-heading
+          ></h2>
+          <p class="mt-8 max-w-[46rem] text-lg leading-relaxed text-white/74" data-persona-body></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="proof" class="border-b border-[#050505]/10 bg-[#f3f0e8] py-24 text-[#050505]">
+      <div class="container-wide text-center">
+        <div class="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-[#050505]/58">
+          Proof
+        </div>
+        <h2 class="mx-auto mt-6 max-w-[58rem] font-masthead text-[clamp(2.2rem,5vw,4rem)] font-semibold leading-[1.03] tracking-tight text-[#050505]">
+          Trusted by some of the world's leading brands.
+        </h2>
+      </div>
+    </section>
+
+    <section
+      id="cta"
+      class="bg-[#050505] py-24 text-paper"
+      data-track-section="cta_reached"
+    >
+      <div class="container-wide">
+        <div class="mb-12 text-center">
+          <div class="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-white/58">
+            Contact
+          </div>
+          <h2 class="mt-6 font-masthead text-[clamp(2.2rem,5vw,4rem)] font-semibold leading-[1.03] tracking-tight text-white">
+            Ready to put your brand to work?
+          </h2>
+        </div>
+
+        <form
+          id="brand-oracle-form"
+          action={leadEndpoint}
+          method="POST"
+          data-lead-form
+          data-lead-endpoint={leadEndpoint}
+          data-lead-type="brand_oracle"
+          data-lead-name="Brand Oracle"
+          data-form-location="brand_oracle_page"
+          data-status-target="brand-oracle-status"
+          data-success-message="Thanks. Your Brand Oracle enquiry has been sent."
+          data-success-copy="We will review your context and come back with the right next step."
+          class="brand-oracle-panel rounded-[2rem] p-8 sm:p-12"
+          novalidate
+        >
+          <input
+            type="text"
+            name="website"
+            class="hidden"
+            tabindex="-1"
+            autocomplete="off"
+            aria-hidden="true"
+          />
+          <input type="hidden" name="language" value="en" />
+          <input type="hidden" name="topic" value="Brand Oracle" />
+          <input type="hidden" name="clickstream_data" value="" data-summary-label="Clickstream data" />
+          <input type="hidden" name="persona_inferred" value="" data-summary-label="Persona inferred" />
+          <input type="hidden" name="pain_point" value="" data-summary-label="Pain point" />
+
+          <div class="grid gap-6 sm:grid-cols-2">
+            <div class="grid gap-2">
+              <label for="brand-oracle-name" class="text-sm font-semibold uppercase tracking-[0.12em] text-white/78">Name</label>
+              <input
+                id="brand-oracle-name"
+                name="name"
+                type="text"
+                autocomplete="name"
+                required
+                placeholder="Your name"
+                class="w-full rounded-none border-0 border-b border-white/22 bg-transparent px-0 py-3 text-base text-white outline-none transition-colors placeholder:text-white/38 focus:border-white"
+              />
+            </div>
+
+            <div class="grid gap-2">
+              <label for="brand-oracle-email" class="text-sm font-semibold uppercase tracking-[0.12em] text-white/78">Email</label>
+              <input
+                id="brand-oracle-email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                inputmode="email"
+                required
+                placeholder="you@company.com"
+                class="w-full rounded-none border-0 border-b border-white/22 bg-transparent px-0 py-3 text-base text-white outline-none transition-colors placeholder:text-white/38 focus:border-white"
+              />
+            </div>
+
+            <div class="grid gap-2">
+              <label for="brand-oracle-company" class="text-sm font-semibold uppercase tracking-[0.12em] text-white/78">Company</label>
+              <input
+                id="brand-oracle-company"
+                name="company"
+                type="text"
+                autocomplete="organization"
+                required
+                placeholder="Company"
+                class="w-full rounded-none border-0 border-b border-white/22 bg-transparent px-0 py-3 text-base text-white outline-none transition-colors placeholder:text-white/38 focus:border-white"
+              />
+            </div>
+
+            <div class="grid gap-2">
+              <label for="brand-oracle-role" class="text-sm font-semibold uppercase tracking-[0.12em] text-white/78">Role / Title</label>
+              <input
+                id="brand-oracle-role"
+                name="role"
+                type="text"
+                required
+                placeholder="Role / Title"
+                class="w-full rounded-none border-0 border-b border-white/22 bg-transparent px-0 py-3 text-base text-white outline-none transition-colors placeholder:text-white/38 focus:border-white"
+              />
+            </div>
+
+            <div class="grid gap-2">
+              <label for="brand-oracle-company-size" class="text-sm font-semibold uppercase tracking-[0.12em] text-white/78">Company size</label>
+              <select
+                id="brand-oracle-company-size"
+                name="company_size"
+                required
+                class="w-full rounded-none border-0 border-b border-white/22 bg-black px-0 py-3 text-base text-white outline-none transition-colors focus:border-white"
+              >
+                <option value="" disabled selected>Select employee range</option>
+                <option value="1-50">1-50 employees</option>
+                <option value="51-200">51-200 employees</option>
+                <option value="201-500">201-500 employees</option>
+                <option value="501-1000">501-1000 employees</option>
+                <option value="1001-5000">1001-5000 employees</option>
+                <option value="5001+">5001+ employees</option>
+              </select>
+            </div>
+
+            <div class="grid gap-2">
+              <label for="brand-oracle-country" class="text-sm font-semibold uppercase tracking-[0.12em] text-white/78">Country</label>
+              <select
+                id="brand-oracle-country"
+                name="country"
+                required
+                class="w-full rounded-none border-0 border-b border-white/22 bg-black px-0 py-3 text-base text-white outline-none transition-colors focus:border-white"
+              >
+                <option value="" disabled selected>Select country</option>
+                {countries.map((country) => (
+                  <option value={country}>{country}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div class="mt-8 grid gap-2">
+            <label for="brand-oracle-message" class="text-sm font-semibold uppercase tracking-[0.12em] text-white/78">
+              Brief note on your challenge
+            </label>
+            <textarea
+              id="brand-oracle-message"
+              name="message"
+              rows="5"
+              placeholder="Optional"
+              class="min-h-36 w-full resize-y border border-white/16 bg-transparent px-4 py-4 text-base text-white outline-none transition-colors placeholder:text-white/38 focus:border-white"
+            ></textarea>
+          </div>
+
+          <div class="mt-8">
+            <label class="flex items-start gap-4 text-sm leading-relaxed text-white/76">
+              <input
+                name="confidentiality_consent"
+                type="checkbox"
+                value="agreed"
+                required
+                class="mt-1 h-4 w-4 border border-white/30 bg-transparent accent-white"
+              />
+              <span>I agree to receive information about Brand Oracle deployments under confidentiality.</span>
+            </label>
+          </div>
+
+          <div class="mt-10 flex flex-col items-start gap-4">
+            <button
+              type="submit"
+              class="rounded-full border border-white bg-white px-8 py-4 text-sm font-semibold uppercase tracking-[0.16em] text-black transition-colors hover:bg-transparent hover:text-white"
+            >
+              Get in touch
+            </button>
+            <div id="brand-oracle-status" class="text-sm text-white/68" aria-live="polite"></div>
+          </div>
+
+          <noscript>
+            <p class="mt-6 text-sm text-white/68">
+              JavaScript is disabled. Submitting the form will still send your enquiry, but persona clickstream capture will be unavailable.
+            </p>
+          </noscript>
+        </form>
+      </div>
+    </section>
+  </div>
+
+  <script define:vars={{ personaConfigs }} is:inline>
+    (() => {
+      const form = document.getElementById("brand-oracle-form");
+      const painPointSection = document.getElementById("pain-point");
+      const maturitySection = document.getElementById("maturity-section");
+      const personaSection = document.getElementById("persona-section");
+      const ctaSection = document.getElementById("cta");
+      const qualificationButtons = document.querySelectorAll("[data-qualification]");
+      const painPointButtons = document.querySelectorAll("[data-pain-point]");
+      const personaLabel = personaSection?.querySelector("[data-persona-label]");
+      const personaHeading = personaSection?.querySelector("[data-persona-heading]");
+      const personaBody = personaSection?.querySelector("[data-persona-body]");
+
+      if (!(form instanceof HTMLFormElement) || !(ctaSection instanceof HTMLElement)) {
+        return;
+      }
+
+      const clickstreamField = form.querySelector('[name="clickstream_data"]');
+      const personaField = form.querySelector('[name="persona_inferred"]');
+      const painPointField = form.querySelector('[name="pain_point"]');
+      if (!(clickstreamField instanceof HTMLInputElement)) return;
+
+      const cookieName = "aa_brand_oracle_session";
+      const storagePrefix = "brand_oracle_clickstream:";
+
+      const readCookie = (name) => {
+        return document.cookie
+          .split("; ")
+          .find((entry) => entry.startsWith(`${name}=`))
+          ?.split("=")[1] || "";
+      };
+
+      const ensureSessionId = () => {
+        const existing = readCookie(cookieName);
+        if (existing) return existing;
+        const sessionId =
+          typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+            ? crypto.randomUUID()
+            : `session-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+        document.cookie = `${cookieName}=${encodeURIComponent(sessionId)}; path=/; samesite=lax`;
+        return sessionId;
+      };
+
+      const sessionId = ensureSessionId();
+      const storageKey = `${storagePrefix}${sessionId}`;
+      const safeParse = (value) => {
+        try {
+          return JSON.parse(value);
+        } catch {
+          return null;
+        }
+      };
+
+      const initialState = safeParse(localStorage.getItem(storageKey)) || {
+        session_id: sessionId,
+        timestamp_start: new Date().toISOString(),
+        events: [],
+        persona_inferred: "",
+      };
+
+      const state = {
+        session_id: initialState.session_id || sessionId,
+        timestamp_start: initialState.timestamp_start || new Date().toISOString(),
+        events: Array.isArray(initialState.events) ? initialState.events : [],
+        persona_inferred: initialState.persona_inferred || "",
+      };
+
+      const syncClickstream = () => {
+        const payload = JSON.stringify(state);
+        clickstreamField.value = payload;
+        if (personaField instanceof HTMLInputElement) {
+          personaField.value = state.persona_inferred || "";
+        }
+        localStorage.setItem(storageKey, payload);
+      };
+
+      const trackEvent = (event, value) => {
+        const entry = {
+          event,
+          timestamp: new Date().toISOString(),
+        };
+
+        if (typeof value !== "undefined") {
+          entry.value = value;
+        }
+
+        state.events.push(entry);
+        syncClickstream();
+      };
+
+      const reveal = (section, eventName, value) => {
+        if (!(section instanceof HTMLElement)) return;
+        const wasHidden = section.hasAttribute("hidden");
+        section.hidden = false;
+        section.classList.add("is-visible");
+        if (wasHidden && eventName) {
+          trackEvent(eventName, value);
+        }
+      };
+
+      const scrollToSection = (section) => {
+        if (!(section instanceof HTMLElement)) return;
+        section.scrollIntoView({ behavior: "smooth", block: "start" });
+      };
+
+      qualificationButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const value = button.getAttribute("data-qualification");
+          if (!value) return;
+
+          trackEvent("qualification_answer", value);
+
+          if (value === "no") {
+            state.persona_inferred = "";
+            if (personaField instanceof HTMLInputElement) {
+              personaField.value = "";
+            }
+            if (painPointField instanceof HTMLInputElement) {
+              painPointField.value = "";
+            }
+            syncClickstream();
+            reveal(painPointSection, "pain_point_section_revealed");
+            if (maturitySection instanceof HTMLElement) {
+              maturitySection.hidden = true;
+            }
+            if (personaSection instanceof HTMLElement) {
+              personaSection.hidden = true;
+            }
+            scrollToSection(painPointSection);
+            return;
+          }
+
+          reveal(maturitySection, "maturity_section_revealed");
+          if (painPointSection instanceof HTMLElement) {
+            painPointSection.hidden = true;
+          }
+          if (personaSection instanceof HTMLElement) {
+            personaSection.hidden = true;
+          }
+          state.persona_inferred = "";
+          if (personaField instanceof HTMLInputElement) {
+            personaField.value = "";
+          }
+          if (painPointField instanceof HTMLInputElement) {
+            painPointField.value = "";
+          }
+          syncClickstream();
+          scrollToSection(maturitySection);
+        });
+      });
+
+      painPointButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const value = button.getAttribute("data-pain-point");
+          if (!value) return;
+
+          const config = personaConfigs[value];
+          if (!config) return;
+
+          state.persona_inferred = config.persona;
+          if (personaField instanceof HTMLInputElement) {
+            personaField.value = config.persona;
+          }
+          if (painPointField instanceof HTMLInputElement) {
+            painPointField.value = value;
+          }
+
+          trackEvent("pain_point_selected", value);
+
+          if (personaLabel instanceof HTMLElement) {
+            personaLabel.textContent = config.persona.replaceAll("_", " ");
+          }
+          if (personaHeading instanceof HTMLElement) {
+            personaHeading.textContent = config.section.heading;
+          }
+          if (personaBody instanceof HTMLElement) {
+            personaBody.textContent = config.section.body;
+          }
+
+          reveal(personaSection, "persona_section_revealed", config.persona);
+          scrollToSection(personaSection);
+        });
+      });
+
+      let ctaReachedTracked = false;
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting || ctaReachedTracked) return;
+            ctaReachedTracked = true;
+            trackEvent("cta_reached");
+            observer.disconnect();
+          });
+        },
+        {
+          threshold: 0.55,
+        }
+      );
+
+      form.addEventListener("submit", () => {
+        syncClickstream();
+      });
+
+      syncClickstream();
+      observer.observe(ctaSection);
+    })();
+  </script>
+</BaseLayout>
