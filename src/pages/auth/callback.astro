@@ -19,21 +19,30 @@ const requestedNextPath = requestUrl.searchParams.get('next');
 const nextPath = requestedNextPath?.startsWith('/') ? requestedNextPath : '/portal';
 
 let success = false;
+let callbackError = '';
 
 if (authCode) {
   const { error } = await supabase.auth.exchangeCodeForSession(authCode);
   success = !error;
+  callbackError = error?.message || '';
 } else if (tokenHash && type) {
   const { error } = await supabase.auth.verifyOtp({
     token_hash: tokenHash,
     type,
   });
   success = !error;
+  callbackError = error?.message || '';
 }
 
 if (success) {
   return Astro.redirect(nextPath);
 }
 
-return Astro.redirect('/login?error=callback');
+const loginErrorUrl = new URL('/login', requestUrl.origin);
+loginErrorUrl.searchParams.set('error', 'callback');
+if (callbackError) {
+  loginErrorUrl.searchParams.set('error_description', callbackError);
+}
+
+return Astro.redirect(loginErrorUrl.toString());
 ---

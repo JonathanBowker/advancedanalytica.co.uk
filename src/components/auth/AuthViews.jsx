@@ -246,11 +246,30 @@ function getLoginErrorMessage(errorCode, errorDescription) {
   }
 
   if (normalizedCode === 'callback') {
+    if (normalizedDescription.includes('requested resource does not exist')) {
+      return 'Supabase could not find the requested auth resource. Check the GitHub provider and redirect URL configuration for this Supabase project.';
+    }
+
+    if (errorDescription) {
+      return `The sign-in callback failed: ${errorDescription}`;
+    }
+
     return 'The sign-in link could not be completed. Request a new magic link and try again.';
   }
 
   if (normalizedCode === 'config') {
     return 'Authentication is not configured correctly for this environment.';
+  }
+
+  if (
+    normalizedCode === 'unexpected_failure' &&
+    normalizedDescription.includes('multiple accounts with the same email address')
+  ) {
+    return 'Supabase found more than one account using this email address. Merge or remove the duplicate user/identity in Supabase, then try GitHub sign-in again.';
+  }
+
+  if (errorDescription) {
+    return `Authentication failed: ${errorDescription}`;
   }
 
   return '';
@@ -657,14 +676,18 @@ function LoginInner() {
     setBusy(true);
 
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'github',
         options: {
           redirectTo: getCallbackUrlFor(nextUrl),
+          skipBrowserRedirect: true,
         },
       });
 
       if (error) throw error;
+      if (!data?.url) throw new Error('GitHub sign-in did not return a redirect URL.');
+
+      window.location.assign(data.url);
     } catch (err) {
       const { message } = getEmailFlowErrorMessage(err, 'Failed to start GitHub sign-in.');
       setStatus({ state: 'error', message });
