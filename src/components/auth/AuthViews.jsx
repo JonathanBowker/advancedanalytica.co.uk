@@ -10,6 +10,7 @@ const defaultPortalPath = '/portal';
 const turnstileScriptId = 'cloudflare-turnstile-script';
 const turnstileScriptSrc = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
 const fallbackTurnstileSiteKey = '0x4AAAAAADKxAX20w3kRuz5A';
+const turnstileMountClass = 'fixed bottom-0 right-0 h-px w-px overflow-hidden pointer-events-none';
 
 const shellClass =
   'min-h-screen w-screen bg-slate-100';
@@ -423,8 +424,14 @@ async function executeInvisibleTurnstile({
         size: 'invisible',
         callback: (token) => finish(token),
         'expired-callback': () => finish(''),
-        'error-callback': () => finish(''),
-        'timeout-callback': () => finish(''),
+        'error-callback': () => {
+          onLoadError?.('The verification check failed. Reload the page and try again.');
+          finish('');
+        },
+        'timeout-callback': () => {
+          onLoadError?.('The verification check timed out. Reload the page and try again.');
+          finish('');
+        },
       });
       widgetRef.current = widgetId;
     } else {
@@ -834,7 +841,7 @@ function LoginInner() {
                 ) : null}
 
                 <StatusBanner status={status} />
-                <div ref={turnstileContainerRef} className="absolute left-0 top-0 h-0 w-0 overflow-hidden opacity-0" aria-hidden="true" />
+                <div ref={turnstileContainerRef} className={turnstileMountClass} aria-hidden="true" />
 
                 <div className="pt-2">
                   <button
@@ -1329,7 +1336,7 @@ function RoleMagicLinkInner({ role }) {
                 </label>
                 <StatusBanner status={status} />
                 <div className="rounded-[10px] border border-dashed border-slate-200 bg-white px-4 py-3 text-sm leading-relaxed text-slate-500">We validate business email domains and run a verification check before sending the link.</div>
-                <div ref={turnstileContainerRef} className="absolute left-0 top-0 h-0 w-0 overflow-hidden opacity-0" aria-hidden="true" />
+                <div ref={turnstileContainerRef} className={turnstileMountClass} aria-hidden="true" />
                 <button className="w-full rounded-[10px] bg-[#14B8A6] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0F766E] disabled:cursor-not-allowed disabled:opacity-60" type="submit" disabled={busy}>{busy ? 'Working…' : 'Send magic link'}</button>
                 <a href="/login" className="flex w-full items-center justify-center gap-2 rounded-[10px] border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50">Portal login</a>
               </form>
