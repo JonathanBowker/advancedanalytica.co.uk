@@ -2,6 +2,34 @@
 import type { EmailOtpType } from '@supabase/supabase-js';
 import { createSupabaseServerClient, isSupabaseConfigured } from '../../lib/supabaseServer';
 
+const productionSiteOrigin = 'https://advancedanalytica.co.uk';
+
+function isLocalDevelopmentRequest(request: Request) {
+  try {
+    const { hostname } = new URL(request.url);
+    return hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1';
+  } catch {
+    return false;
+  }
+}
+
+function getPublicOrigin(request: Request) {
+  const requestUrl = new URL(request.url);
+
+  if (isLocalDevelopmentRequest(request)) {
+    return requestUrl.origin;
+  }
+
+  const forwardedHost = request.headers.get('x-forwarded-host')?.split(',')[0]?.trim();
+  const forwardedProto = request.headers.get('x-forwarded-proto')?.split(',')[0]?.trim() || 'https';
+
+  if (forwardedHost && !forwardedHost.endsWith('.ondigitalocean.app')) {
+    return `${forwardedProto}://${forwardedHost}`;
+  }
+
+  return productionSiteOrigin;
+}
+
 if (!isSupabaseConfigured) {
   return Astro.redirect('/login?error=config');
 }
@@ -38,7 +66,7 @@ if (success) {
   return Astro.redirect(nextPath);
 }
 
-const loginErrorUrl = new URL('/login', requestUrl.origin);
+const loginErrorUrl = new URL('/login', getPublicOrigin(Astro.request));
 loginErrorUrl.searchParams.set('error', 'callback');
 if (callbackError) {
   loginErrorUrl.searchParams.set('error_description', callbackError);

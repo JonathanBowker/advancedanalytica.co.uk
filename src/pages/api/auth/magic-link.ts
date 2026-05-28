@@ -5,6 +5,7 @@ import { createSupabaseServerClient, isSupabaseConfigured } from '../../../lib/s
 export const prerender = false;
 
 const mxLookupTimeoutMs = 5_000;
+const productionSiteOrigin = 'https://advancedanalytica.co.uk';
 
 const freeEmailDomains = new Set([
   'aol.com',
@@ -77,6 +78,23 @@ function isLocalDevelopmentRequest(request: Request) {
   }
 }
 
+function getPublicOrigin(request: Request) {
+  const requestUrl = new URL(request.url);
+
+  if (isLocalDevelopmentRequest(request)) {
+    return requestUrl.origin;
+  }
+
+  const forwardedHost = request.headers.get('x-forwarded-host')?.split(',')[0]?.trim();
+  const forwardedProto = request.headers.get('x-forwarded-proto')?.split(',')[0]?.trim() || 'https';
+
+  if (forwardedHost && !forwardedHost.endsWith('.ondigitalocean.app')) {
+    return `${forwardedProto}://${forwardedHost}`;
+  }
+
+  return productionSiteOrigin;
+}
+
 export const POST: APIRoute = async ({ request, cookies }) => {
   if (!isSupabaseConfigured) {
     return new Response(JSON.stringify({ error: 'Supabase is not configured.' }), {
@@ -132,7 +150,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       });
     }
 
-    const redirectTo = new URL('/auth/callback', request.url);
+    const redirectTo = new URL('/auth/callback', getPublicOrigin(request));
     redirectTo.searchParams.set('next', nextUrl.startsWith('/') ? nextUrl : '/portal');
 
     const supabase = createSupabaseServerClient({ request, cookies });
