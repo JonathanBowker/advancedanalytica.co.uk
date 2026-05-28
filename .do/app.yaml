@@ -3,6 +3,11 @@ region: lon
 ingress:
   rules:
     - component:
+        name: web
+      match:
+        path:
+          prefix: /api/auth
+    - component:
         name: lead-api
       match:
         path:
