@@ -9,7 +9,6 @@ const captchaTimeoutMs = 8_000;
 const defaultPortalPath = '/portal';
 const turnstileScriptId = 'cloudflare-turnstile-script';
 const turnstileScriptSrc = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
-const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '0x4AAAAAADKxAX20w3kRuz5A';
 
 const shellClass =
   'min-h-screen w-screen bg-slate-100';
@@ -101,6 +100,29 @@ function getCallbackUrlFor(nextPath) {
   return url.toString();
 }
 
+function getTurnstileSiteKey() {
+  const envKey = String(import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '').trim();
+  if (envKey) return envKey;
+
+  if (typeof document !== 'undefined') {
+    return String(document.documentElement.dataset.turnstileSiteKey || '').trim();
+  }
+
+  return '';
+}
+
+function canBypassTurnstileForLocalDev() {
+  if (typeof window === 'undefined') return false;
+
+  const hostname = window.location.hostname;
+  const isLocalHost =
+    hostname === 'localhost' ||
+    hostname === '127.0.0.1' ||
+    hostname === '::1';
+
+  return isLocalHost && !getTurnstileSiteKey();
+}
+
 function getNextUrl() {
   if (typeof window === 'undefined') return defaultPortalPath;
 
@@ -136,7 +158,8 @@ function getEmailFlowErrorMessage(err, fallback) {
 
   if (lower.includes('user not found')) {
     return {
-      message: 'No account exists for that email. Use Sign up to request access.',
+      message:
+        'Supabase did not find an email magic-link account for that address in this project. If the user exists, check the local Supabase project or use the provider the account was created with.',
       isRateLimit: false,
     };
   }
@@ -147,7 +170,8 @@ function getEmailFlowErrorMessage(err, fallback) {
     lower.includes('otp signups are disabled')
   ) {
     return {
-      message: 'No account exists for that email. Use Sign up to request access.',
+      message:
+        'Supabase did not find an email magic-link account for that address in this project. If the user exists, check the local Supabase project or use the provider the account was created with.',
       isRateLimit: false,
     };
   }
@@ -171,6 +195,30 @@ function getEmailFlowErrorMessage(err, fallback) {
     return {
       message:
         'Auth email could not be sent. Check the Supabase SMTP settings and sender verification status.',
+      isRateLimit: false,
+    };
+  }
+
+  if (
+    lower.includes('captcha protection') ||
+    lower.includes('captcha_token') ||
+    lower.includes('captcha token')
+  ) {
+    return {
+      message:
+        'Supabase rejected this request because captcha protection is enabled and no valid captcha token was sent.',
+      isRateLimit: false,
+    };
+  }
+
+  if (
+    lower.includes('requested resource does not exist') ||
+    lower.includes('resource does not exist') ||
+    lower.includes('not found')
+  ) {
+    return {
+      message:
+        'Supabase could not find the requested auth resource. Check the Supabase project URL and auth configuration for this environment.',
       isRateLimit: false,
     };
   }
@@ -239,7 +287,10 @@ async function requestMagicLink({ email, captchaToken, nextUrl, shouldCreateUser
 
   const payload = await response.json().catch(() => null);
   if (!response.ok) {
-    throw new Error(payload?.error || 'Failed to send magic link.');
+    const error = new Error(payload?.error || 'Failed to send magic link.');
+    error.status = response.status;
+    error.code = payload?.code || payload?.error_code || '';
+    throw error;
   }
 
   return payload;
@@ -283,7 +334,7 @@ function StatusBanner({ status }) {
 }
 
 async function loadTurnstileScript() {
-  if (typeof window === 'undefined' || !turnstileSiteKey) return false;
+  if (typeof window === 'undefined' || !getTurnstileSiteKey()) return false;
   if (window.turnstile?.render) return true;
 
   const existingScript = document.getElementById(turnstileScriptId);
@@ -314,11 +365,18 @@ async function executeInvisibleTurnstile({
   widgetRef,
   onLoadError,
 }) {
-  if (!turnstileSiteKey) return '';
+  const turnstileSiteKey = getTurnstileSiteKey();
+  if (!turnstileSiteKey) {
+    if (canBypassTurnstileForLocalDev()) {
+      return '';
+    }
+    onLoadError?.('Verification is not configured on this page. Contact support.');
+    return '';
+  }
 
   const loaded = await loadTurnstileScript();
   if (!loaded || !container?.current || !window.turnstile?.render) {
-    onLoadError?.();
+    onLoadError?.('The verification check did not load correctly. Reload the page and try again.');
     return '';
   }
 
@@ -387,13 +445,17 @@ function LoginInner() {
   }
 
   async function getCaptchaToken() {
+    if (canBypassTurnstileForLocalDev()) {
+      return '';
+    }
+
     return executeInvisibleTurnstile({
       container: turnstileContainerRef,
       widgetRef: turnstileWidgetRef,
-      onLoadError: () =>
+      onLoadError: (message) =>
         setStatus({
           state: 'error',
-          message: 'The verification check did not load correctly. Reload the page and try again.',
+          message: message || 'The verification check did not load correctly. Reload the page and try again.',
         }),
     });
   }
@@ -475,7 +537,7 @@ function LoginInner() {
 
     try {
       const captchaToken = await getCaptchaToken();
-      if (!captchaToken) {
+      if (!captchaToken && !canBypassTurnstileForLocalDev()) {
         setStatus((current) =>
           current.state === 'error' && current.message
             ? current
@@ -513,12 +575,11 @@ function LoginInner() {
         return;
       }
 
+      const passwordSignInOptions = captchaToken ? { captchaToken } : undefined;
       const { error } = await supabase.auth.signInWithPassword({
         email: email.trim(),
         password,
-        options: {
-          captchaToken,
-        },
+        options: passwordSignInOptions,
       });
 
       if (error) throw error;
@@ -554,7 +615,7 @@ function LoginInner() {
     }
 
     const captchaToken = await getCaptchaToken();
-    if (!captchaToken) {
+    if (!captchaToken && !canBypassTurnstileForLocalDev()) {
       setStatus((current) =>
         current.state === 'error' && current.message
           ? current
@@ -566,10 +627,11 @@ function LoginInner() {
     setBusy(true);
 
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
-        captchaToken,
+      const resetPasswordOptions = {
         redirectTo: getCallbackUrlFor('/auth/reset'),
-      });
+        ...(captchaToken ? { captchaToken } : {}),
+      };
+      const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), resetPasswordOptions);
       if (error) throw error;
       setStatus({ state: 'sent', message: 'If an account exists, a password reset email has been sent.' });
     } catch (err) {

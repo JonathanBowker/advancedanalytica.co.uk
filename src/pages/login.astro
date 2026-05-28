@@ -3,7 +3,10 @@ import '../styles/global.css';
 import { LoginApp } from '../components/auth/AuthViews.jsx';
 ---
 <!doctype html>
-<html lang="en">
+<html
+  lang="en"
+  data-turnstile-site-key={String(import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "").trim()}
+>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

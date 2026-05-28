@@ -5,7 +5,6 @@ import { createSupabaseServerClient, isSupabaseConfigured } from '../../../lib/s
 export const prerender = false;
 
 const mxLookupTimeoutMs = 5_000;
-const turnstileSecret = String(import.meta.env.TURNSTILE_SECRET_KEY || '').trim();
 
 const freeEmailDomains = new Set([
   'aol.com',
@@ -69,24 +68,10 @@ async function hasMxRecords(email: string) {
   }
 }
 
-async function verifyTurnstile(token: string, remoteIp: string) {
-  if (!turnstileSecret) return true;
-  if (!token) return false;
-
+function isLocalDevelopmentRequest(request: Request) {
   try {
-    const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        secret: turnstileSecret,
-        response: token,
-        remoteip: remoteIp || undefined,
-      }),
-    });
-    const result = await response.json();
-    return result.success === true;
+    const { hostname } = new URL(request.url);
+    return hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1';
   } catch {
     return false;
   }
@@ -127,7 +112,9 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       });
     }
 
-    if (!(await hasMxRecords(email))) {
+    const isLocalDevelopment = isLocalDevelopmentRequest(request);
+
+    if (!isLocalDevelopment && !(await hasMxRecords(email))) {
       return new Response(JSON.stringify({ error: 'That email domain cannot receive mail.' }), {
         status: 400,
         headers: {
@@ -136,9 +123,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       });
     }
 
-    const forwardedFor = request.headers.get('x-forwarded-for') || '';
-    const remoteIp = forwardedFor.split(',')[0]?.trim() || '';
-    if (!(await verifyTurnstile(captchaToken, remoteIp))) {
+    if (!isLocalDevelopment && !captchaToken) {
       return new Response(JSON.stringify({ error: 'The verification check did not complete. Try again.' }), {
         status: 400,
         headers: {
@@ -161,7 +146,10 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     });
 
     if (error) {
-      return new Response(JSON.stringify({ error: error.message || 'Failed to send magic link.' }), {
+      return new Response(JSON.stringify({
+        error: error.message || 'Failed to send magic link.',
+        code: error.code || '',
+      }), {
         status: error.status || 400,
         headers: {
           'Content-Type': 'application/json; charset=utf-8',
