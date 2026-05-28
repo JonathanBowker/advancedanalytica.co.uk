@@ -9,6 +9,7 @@ const captchaTimeoutMs = 8_000;
 const defaultPortalPath = '/portal';
 const turnstileScriptId = 'cloudflare-turnstile-script';
 const turnstileScriptSrc = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+const fallbackTurnstileSiteKey = '0x4AAAAAADKxAX20w3kRuz5A';
 
 const shellClass =
   'min-h-screen w-screen bg-slate-100';
@@ -105,10 +106,11 @@ function getTurnstileSiteKey() {
   if (envKey) return envKey;
 
   if (typeof document !== 'undefined') {
-    return String(document.documentElement.dataset.turnstileSiteKey || '').trim();
+    const pageKey = String(document.documentElement.dataset.turnstileSiteKey || '').trim();
+    if (pageKey) return pageKey;
   }
 
-  return '';
+  return fallbackTurnstileSiteKey;
 }
 
 function canBypassTurnstileForLocalDev() {

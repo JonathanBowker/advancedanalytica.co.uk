@@ -1,11 +1,15 @@
 ---
 import '../styles/global.css';
 import { LoginApp } from '../components/auth/AuthViews.jsx';
+
+const turnstileSiteKey =
+  String(import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "").trim() ||
+  "0x4AAAAAADKxAX20w3kRuz5A";
 ---
 <!doctype html>
 <html
   lang="en"
-  data-turnstile-site-key={String(import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "").trim()}
+  data-turnstile-site-key={turnstileSiteKey}
 >
   <head>
     <meta charset="utf-8" />
