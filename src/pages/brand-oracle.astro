@@ -166,8 +166,20 @@ const countries = [
   </style>
 
   <div>
-    <section class="border-b border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_28%),linear-gradient(180deg,#050505_0%,#0b0b0b_52%,#050505_100%)] py-24 text-paper">
-      <div class="container-wide text-center">
+    <section class="relative min-h-[88vh] overflow-hidden border-b border-white/10 bg-[#050505] py-24 text-paper">
+      <video
+        class="absolute inset-0 h-full w-full object-cover opacity-50"
+        autoplay
+        muted
+        playsinline
+        preload="auto"
+        aria-hidden="true"
+      >
+        <source src="/videos/brand-oracle-mark-dots.mp4" type="video/mp4" />
+      </video>
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(5,5,5,0.18),rgba(5,5,5,0.74)_58%,#050505_100%)]"></div>
+      <div class="container-wide relative z-10 flex min-h-[calc(88vh-12rem)] items-center justify-center text-center">
+        <div>
         <h1 class="mx-auto max-w-[52rem] font-masthead text-[clamp(3rem,8vw,6.25rem)] font-semibold leading-[0.97] tracking-tight text-white md:max-w-[56rem]">
           Your brand means different things to different people.
         </h1>
@@ -177,6 +189,7 @@ const countries = [
         <p class="mt-6 text-[clamp(1.2rem,2.8vw,1.9rem)] font-semibold uppercase tracking-[0.22em] text-white">
           One meaning. Everywhere.
         </p>
+        </div>
       </div>
     </section>
 

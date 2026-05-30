@@ -1,0 +1,312 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE_URL } from "../lib/seo/site";
+
+const title = "Dots Brand Oracle Wordmark Animation";
+const description =
+  "Prototype page for a dot-cloud animation that assembles into the words Brand Oracle.";
+
+const page = {
+  title,
+  description,
+  url: `${SITE_URL}/dots-brand-oracle-wordmark-animation`,
+  breadcrumbs: [
+    { name: "Home", url: `${SITE_URL}/` },
+    { name: title, url: `${SITE_URL}/dots-brand-oracle-wordmark-animation` },
+  ],
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  page={page}
+  hideFooterContactCta={true}
+>
+  <section class="min-h-screen bg-[#050505] text-white">
+    <div class="px-4 py-14 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-[72rem] text-center">
+        <div class="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-white/58">
+          Animation prototype
+        </div>
+        <h1 class="mx-auto mt-6 max-w-[58rem] font-masthead text-[clamp(2.8rem,7vw,6rem)] font-semibold leading-[0.97] tracking-tight text-white">
+          Dots spell Brand Oracle.
+        </h1>
+        <p class="mx-auto mt-8 max-w-[44rem] text-[clamp(1rem,2vw,1.35rem)] leading-relaxed text-white/68">
+          This version scatters a field of dots, then resolves them into a
+          typographic Brand Oracle wordmark.
+        </p>
+      </div>
+
+      <div class="mx-auto mt-12 max-w-[calc(100vw-2rem)] rounded-[2rem] border border-white/12 bg-white/[0.025] p-3 shadow-outline sm:p-4">
+        <div
+          class="relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-[linear-gradient(180deg,#080808,#020202)] transition-colors duration-300"
+          style="height: 82vh; min-height: 720px; max-height: 980px;"
+          data-animation-stage
+          data-background="dark"
+        >
+          <canvas
+            id="dot-wordmark-canvas"
+            class="absolute inset-0 h-full w-full"
+            aria-label="Dot cloud assembling into the words Brand Oracle"
+          ></canvas>
+          <div
+            class="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/45 to-transparent transition-opacity duration-300"
+            data-animation-vignette
+          ></div>
+        </div>
+
+        <div class="mt-6 flex flex-wrap items-center justify-between gap-4">
+          <div class="text-sm leading-relaxed text-white/58" data-animation-status>
+            Preparing wordmark dots.
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <button
+              type="button"
+              class="rounded-[2rem] border border-white/28 px-6 py-3 text-sm font-semibold text-white transition-colors hover:border-white hover:bg-white hover:text-[#050505]"
+              data-animation-replay
+            >
+              Replay
+            </button>
+            <button
+              type="button"
+              class="rounded-[2rem] border border-white/28 px-6 py-3 text-sm font-semibold text-white transition-colors hover:border-white hover:bg-white hover:text-[#050505]"
+              data-animation-scatter
+            >
+              Scatter
+            </button>
+            <button
+              type="button"
+              class="rounded-[2rem] border border-white/28 px-6 py-3 text-sm font-semibold text-white transition-colors hover:border-white hover:bg-white hover:text-[#050505]"
+              data-background-toggle
+            >
+              Light background
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script is:inline>
+    (() => {
+      const canvas = document.querySelector("#dot-wordmark-canvas");
+      const status = document.querySelector("[data-animation-status]");
+      const replayButton = document.querySelector("[data-animation-replay]");
+      const scatterButton = document.querySelector("[data-animation-scatter]");
+      const backgroundButton = document.querySelector("[data-background-toggle]");
+      const stage = document.querySelector("[data-animation-stage]");
+      const vignette = document.querySelector("[data-animation-vignette]");
+      if (!(canvas instanceof HTMLCanvasElement)) return;
+
+      const context = canvas.getContext("2d");
+      if (!context) return;
+
+      const wordmark = "Brand Oracle";
+      const state = {
+        particles: [],
+        width: 0,
+        height: 0,
+        startedAt: 0,
+        duration: 3600,
+        settleDuration: 500,
+        mode: "assemble",
+        background: "dark",
+        frame: 0,
+      };
+
+      const easeOutCubic = (value) => 1 - Math.pow(1 - value, 3);
+      const smootherStep = (value) => value * value * value * (value * (value * 6 - 15) + 10);
+      const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+      const setStatus = (message) => {
+        if (status instanceof HTMLElement) {
+          status.textContent = message;
+        }
+      };
+
+      const syncBackground = () => {
+        const isLight = state.background === "light";
+        if (stage instanceof HTMLElement) {
+          stage.dataset.background = state.background;
+          stage.className = isLight
+            ? "relative overflow-hidden rounded-[1.5rem] border border-black/10 bg-[linear-gradient(180deg,#f4f4f1,#ddddda)] transition-colors duration-300"
+            : "relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-[linear-gradient(180deg,#080808,#020202)] transition-colors duration-300";
+        }
+        if (vignette instanceof HTMLElement) {
+          vignette.classList.toggle("opacity-0", isLight);
+        }
+        if (backgroundButton instanceof HTMLButtonElement) {
+          backgroundButton.textContent = isLight ? "Dark background" : "Light background";
+        }
+      };
+
+      const resize = () => {
+        const rect = canvas.getBoundingClientRect();
+        const ratio = window.devicePixelRatio || 1;
+        state.width = rect.width;
+        state.height = rect.height;
+        canvas.width = Math.round(rect.width * ratio);
+        canvas.height = Math.round(rect.height * ratio);
+        context.setTransform(ratio, 0, 0, ratio, 0, 0);
+      };
+
+      const makeStartPoint = () => {
+        const bleed = Math.max(state.width, state.height) * 0.14;
+        return {
+          x: Math.random() * (state.width + bleed * 2) - bleed,
+          y: Math.random() * (state.height + bleed * 2) - bleed,
+        };
+      };
+
+      const makeStartRadius = () => {
+        const sizeBase = Math.min(state.width, state.height);
+        const roll = Math.random();
+
+        if (roll > 0.9) {
+          return sizeBase * (0.04 + Math.random() * 0.05);
+        }
+
+        if (roll > 0.6) {
+          return sizeBase * (0.016 + Math.random() * 0.024);
+        }
+
+        return sizeBase * (0.003 + Math.random() * 0.009);
+      };
+
+      const makeWordTargets = () => {
+        const offscreen = document.createElement("canvas");
+        const offscreenContext = offscreen.getContext("2d", { willReadFrequently: true });
+        if (!offscreenContext) return [];
+
+        offscreen.width = Math.max(1, Math.round(state.width));
+        offscreen.height = Math.max(1, Math.round(state.height));
+        const fontFamily = "Avenir Next, Helvetica Neue, Helvetica, sans-serif";
+        let fontSize = Math.min(state.width * 0.13, state.height * 0.24);
+        const maxWidth = state.width * 0.84;
+
+        offscreenContext.textAlign = "center";
+        offscreenContext.textBaseline = "middle";
+
+        while (fontSize > 40) {
+          offscreenContext.font = `900 ${fontSize}px ${fontFamily}`;
+          if (offscreenContext.measureText(wordmark).width <= maxWidth) break;
+          fontSize *= 0.94;
+        }
+
+        offscreenContext.clearRect(0, 0, offscreen.width, offscreen.height);
+        offscreenContext.font = `900 ${fontSize}px ${fontFamily}`;
+        offscreenContext.fillStyle = "#ffffff";
+        offscreenContext.fillText(wordmark, state.width / 2, state.height / 2);
+
+        const image = offscreenContext.getImageData(0, 0, offscreen.width, offscreen.height);
+        const step = Math.max(7, Math.round(fontSize / 13));
+        const targets = [];
+
+        for (let y = 0; y < offscreen.height; y += step) {
+          for (let x = 0; x < offscreen.width; x += step) {
+            const alpha = image.data[(y * offscreen.width + x) * 4 + 3];
+            if (alpha > 80) {
+              targets.push({
+                x,
+                y,
+                r: Math.max(1.2, step * (0.24 + (alpha / 255) * 0.22)),
+              });
+            }
+          }
+        }
+
+        return targets;
+      };
+
+      const resetParticles = (mode = "assemble") => {
+        state.mode = mode;
+        state.startedAt = performance.now();
+        const targets = makeWordTargets();
+
+        state.particles = targets.map((target) => {
+          const start = mode === "assemble" ? makeStartPoint() : target;
+          const end = mode === "assemble" ? target : makeStartPoint();
+          const startR = mode === "assemble" ? makeStartRadius() : target.r;
+          const endR = mode === "assemble" ? target.r : makeStartRadius();
+
+          return {
+            startX: start.x,
+            startY: start.y,
+            endX: end.x,
+            endY: end.y,
+            startR,
+            endR,
+            delay: Math.random() * 680,
+            drift: (Math.random() - 0.5) * 90,
+          };
+        });
+      };
+
+      const projectParticle = (particle, elapsed) => {
+        const local = clamp((elapsed - particle.delay) / state.duration, 0, 1);
+        const eased = state.mode === "assemble" ? smootherStep(local) : easeOutCubic(local);
+        const wave = Math.sin(eased * Math.PI) * particle.drift;
+        const x = particle.startX + (particle.endX - particle.startX) * eased + wave * 0.3;
+        const y = particle.startY + (particle.endY - particle.startY) * eased - wave * 0.18;
+        const radius = Math.max(0.4, particle.startR + (particle.endR - particle.startR) * eased);
+        const alpha = state.mode === "assemble"
+          ? 0.92 - Math.sin(local * Math.PI) * 0.08
+          : 1 - eased * 0.74;
+
+        return { x, y, radius, alpha: clamp(alpha, 0.16, 1) };
+      };
+
+      const draw = (time) => {
+        const elapsed = time - state.startedAt;
+        context.clearRect(0, 0, state.width, state.height);
+        const isLight = state.background === "light";
+        context.fillStyle = isLight ? "#f8f8f5" : "#ffffff";
+
+        for (const particle of state.particles) {
+          const projected = projectParticle(particle, elapsed);
+          context.globalAlpha = projected.alpha;
+          context.beginPath();
+          context.arc(projected.x, projected.y, projected.radius, 0, Math.PI * 2);
+          context.fill();
+        }
+
+        context.globalAlpha = 1;
+
+        if (state.mode === "assemble") {
+          if (elapsed > state.duration + state.settleDuration) {
+            setStatus(`${state.particles.length} dots assembled into Brand Oracle.`);
+            return;
+          }
+          state.frame = requestAnimationFrame(draw);
+          return;
+        }
+
+        if (elapsed < state.duration + state.settleDuration) {
+          state.frame = requestAnimationFrame(draw);
+          return;
+        }
+
+        setStatus(`${state.particles.length} dots scattered from Brand Oracle.`);
+      };
+
+      const run = (mode = "assemble") => {
+        cancelAnimationFrame(state.frame);
+        resize();
+        resetParticles(mode);
+        setStatus(mode === "assemble" ? "Assembling dots into Brand Oracle." : "Scattering dots from Brand Oracle.");
+        state.frame = requestAnimationFrame(draw);
+      };
+
+      replayButton?.addEventListener("click", () => run("assemble"));
+      scatterButton?.addEventListener("click", () => run("scatter"));
+      backgroundButton?.addEventListener("click", () => {
+        state.background = state.background === "light" ? "dark" : "light";
+        syncBackground();
+      });
+      window.addEventListener("resize", () => run(state.mode));
+      syncBackground();
+      run("assemble");
+    })();
+  </script>
+</BaseLayout>

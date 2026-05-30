@@ -1,0 +1,332 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE_URL } from "../lib/seo/site";
+
+const title = "Dots Brand Oracle Animation";
+const description =
+  "Prototype page for a dot-cloud animation that assembles into the Brand Oracle mark.";
+
+const page = {
+  title,
+  description,
+  url: `${SITE_URL}/dots-brand-oracle-animation`,
+  breadcrumbs: [
+    { name: "Home", url: `${SITE_URL}/` },
+    { name: title, url: `${SITE_URL}/dots-brand-oracle-animation` },
+  ],
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  page={page}
+  hideFooterContactCta={true}
+>
+  <section class="min-h-screen bg-[#050505] text-white">
+    <div class="px-4 py-14 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-[72rem] text-center">
+        <div class="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-white/58">
+          Animation prototype
+        </div>
+        <h1 class="mx-auto mt-6 max-w-[58rem] font-masthead text-[clamp(2.8rem,7vw,6rem)] font-semibold leading-[0.97] tracking-tight text-white">
+          Dots assemble into the mark.
+        </h1>
+        <p class="mx-auto mt-8 max-w-[44rem] text-[clamp(1rem,2vw,1.35rem)] leading-relaxed text-white/68">
+          This page loads the dot SVG, scatters every dot into a loose cloud,
+          then resolves the cloud back into the Brand Oracle mark.
+        </p>
+      </div>
+
+      <div class="mx-auto mt-12 max-w-[calc(100vw-2rem)] rounded-[2rem] border border-white/12 bg-white/[0.025] p-3 shadow-outline sm:p-4">
+        <div
+          class="relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-[radial-gradient(circle_at_center,rgba(20,184,166,0.12),transparent_36%),linear-gradient(180deg,#080808,#020202)] transition-colors duration-300"
+          style="height: 82vh; min-height: 720px; max-height: 980px;"
+          data-animation-stage
+          data-background="dark"
+        >
+          <canvas
+            id="dot-mark-canvas"
+            class="absolute inset-0 h-full w-full"
+            aria-label="Dot cloud assembling into Brand Oracle mark"
+          ></canvas>
+          <div
+            class="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/45 to-transparent transition-opacity duration-300"
+            data-animation-vignette
+          ></div>
+        </div>
+
+        <div class="mt-6 flex flex-wrap items-center justify-between gap-4">
+          <div class="text-sm leading-relaxed text-white/58" data-animation-status>
+            Loading dot map.
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <button
+              type="button"
+              class="rounded-[2rem] border border-white/28 px-6 py-3 text-sm font-semibold text-white transition-colors hover:border-white hover:bg-white hover:text-[#050505]"
+              data-animation-replay
+            >
+              Replay
+            </button>
+            <button
+              type="button"
+              class="rounded-[2rem] border border-white/28 px-6 py-3 text-sm font-semibold text-white transition-colors hover:border-white hover:bg-white hover:text-[#050505]"
+              data-animation-scatter
+            >
+              Scatter
+            </button>
+            <button
+              type="button"
+              class="rounded-[2rem] border border-white/28 px-6 py-3 text-sm font-semibold text-white transition-colors hover:border-white hover:bg-white hover:text-[#050505]"
+              data-background-toggle
+            >
+              Light background
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script is:inline>
+    (() => {
+      const canvas = document.querySelector("#dot-mark-canvas");
+      const status = document.querySelector("[data-animation-status]");
+      const replayButton = document.querySelector("[data-animation-replay]");
+      const scatterButton = document.querySelector("[data-animation-scatter]");
+      const backgroundButton = document.querySelector("[data-background-toggle]");
+      const stage = document.querySelector("[data-animation-stage]");
+      const vignette = document.querySelector("[data-animation-vignette]");
+      if (!(canvas instanceof HTMLCanvasElement)) return;
+
+      const context = canvas.getContext("2d");
+      if (!context) return;
+
+      const svgPath = "/images/infrastructure/dots-brand-oracle.svg";
+      const state = {
+        particles: [],
+        width: 0,
+        height: 0,
+        scale: 1,
+        offsetX: 0,
+        offsetY: 0,
+        viewBox: { width: 426.98, height: 533.51 },
+        startedAt: 0,
+        duration: 3400,
+        settleDuration: 500,
+        startHold: 350,
+        scatter: 0,
+        mode: "assemble",
+        background: "dark",
+        frame: 0,
+      };
+
+      const easeOutCubic = (value) => 1 - Math.pow(1 - value, 3);
+      const smootherStep = (value) => value * value * value * (value * (value * 6 - 15) + 10);
+      const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+      const setStatus = (message) => {
+        if (status instanceof HTMLElement) {
+          status.textContent = message;
+        }
+      };
+
+      const syncBackground = () => {
+        const isLight = state.background === "light";
+        if (stage instanceof HTMLElement) {
+          stage.dataset.background = state.background;
+          stage.className = isLight
+            ? "relative overflow-hidden rounded-[1.5rem] border border-black/10 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.72),transparent_34%),linear-gradient(180deg,#f4f4f1,#ddddda)] transition-colors duration-300"
+            : "relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-[radial-gradient(circle_at_center,rgba(20,184,166,0.12),transparent_36%),linear-gradient(180deg,#080808,#020202)] transition-colors duration-300";
+        }
+        if (vignette instanceof HTMLElement) {
+          vignette.classList.toggle("opacity-0", isLight);
+        }
+        if (backgroundButton instanceof HTMLButtonElement) {
+          backgroundButton.textContent = isLight ? "Dark background" : "Light background";
+        }
+      };
+
+      const resize = () => {
+        const rect = canvas.getBoundingClientRect();
+        const ratio = window.devicePixelRatio || 1;
+        state.width = rect.width;
+        state.height = rect.height;
+        canvas.width = Math.round(rect.width * ratio);
+        canvas.height = Math.round(rect.height * ratio);
+        context.setTransform(ratio, 0, 0, ratio, 0, 0);
+
+        const padding = Math.min(rect.width, rect.height) * 0.08;
+        state.scale = Math.min(
+          (rect.width - padding * 2) / state.viewBox.width,
+          (rect.height - padding * 2) / state.viewBox.height
+        );
+        state.offsetX = (rect.width - state.viewBox.width * state.scale) / 2;
+        state.offsetY = (rect.height - state.viewBox.height * state.scale) / 2;
+      };
+
+      const targetPoint = (particle) => ({
+        x: state.offsetX + particle.cx * state.scale,
+        y: state.offsetY + particle.cy * state.scale,
+        r: Math.max(1.25, particle.r * state.scale),
+      });
+
+      const makeStartPoint = () => {
+        const bleed = Math.max(state.width, state.height) * 0.14;
+        return {
+          x: Math.random() * (state.width + bleed * 2) - bleed,
+          y: Math.random() * (state.height + bleed * 2) - bleed,
+        };
+      };
+
+      const makeStartRadius = () => {
+        const sizeBase = Math.min(state.width, state.height);
+        const roll = Math.random();
+
+        if (roll > 0.88) {
+          return sizeBase * (0.045 + Math.random() * 0.055);
+        }
+
+        if (roll > 0.58) {
+          return sizeBase * (0.018 + Math.random() * 0.024);
+        }
+
+        return sizeBase * (0.003 + Math.random() * 0.01);
+      };
+
+      const resetParticles = (mode = "assemble") => {
+        state.mode = mode;
+        state.startedAt = performance.now();
+        state.particles = state.particles.map((particle) => {
+          const target = targetPoint(particle);
+          const start = mode === "assemble" ? makeStartPoint() : target;
+          const end = mode === "assemble" ? target : makeStartPoint();
+          const startR = mode === "assemble" ? makeStartRadius() : target.r;
+          const endR = mode === "assemble" ? target.r : makeStartRadius();
+          return {
+            ...particle,
+            startX: start.x,
+            startY: start.y,
+            endX: end.x,
+            endY: end.y,
+            startR,
+            endR,
+            delay: state.startHold + Math.random() * 620,
+            drift: (Math.random() - 0.5) * 78,
+          };
+        });
+      };
+
+      const projectParticle = (particle, elapsed, time) => {
+        const local = clamp((elapsed - particle.delay) / state.duration, 0, 1);
+        const eased = state.mode === "assemble" ? smootherStep(local) : easeOutCubic(local);
+        const wave = Math.sin(eased * Math.PI) * particle.drift;
+        let x = particle.startX + (particle.endX - particle.startX) * eased + wave * 0.34;
+        let y = particle.startY + (particle.endY - particle.startY) * eased - wave * 0.2;
+        let radius = Math.max(0.4, particle.startR + (particle.endR - particle.startR) * eased);
+        const fadeIn = smootherStep(clamp(local / 0.18, 0, 1));
+        let alpha = state.mode === "assemble"
+          ? fadeIn * (0.92 - Math.sin(local * Math.PI) * 0.08)
+          : 1 - eased * 0.74;
+        return { x, y, radius, alpha: clamp(alpha, 0.16, 1), depth: 0 };
+      };
+
+      const drawParticle = (particle, elapsed, time) => {
+        const projected = projectParticle(particle, elapsed, time);
+
+        context.globalAlpha = projected.alpha;
+        context.beginPath();
+        context.arc(projected.x, projected.y, projected.radius, 0, Math.PI * 2);
+        context.fill();
+      };
+
+      const draw = (time) => {
+        const elapsed = time - state.startedAt;
+        context.clearRect(0, 0, state.width, state.height);
+        const isLight = state.background === "light";
+        context.fillStyle = isLight ? "#f8f8f5" : "#ffffff";
+        context.shadowColor = isLight ? "rgba(0,0,0,0.28)" : "rgba(255,255,255,0.28)";
+        context.shadowBlur = state.mode === "assemble" && elapsed > state.duration ? (isLight ? 11 : 8) : 0;
+
+        const projectedParticles = state.particles
+          .map((particle) => ({
+            particle,
+            projected: projectParticle(particle, elapsed, time),
+          }))
+          .sort((a, b) => a.projected.depth - b.projected.depth);
+
+        for (const item of projectedParticles) {
+          context.globalAlpha = item.projected.alpha;
+          context.beginPath();
+          context.arc(item.projected.x, item.projected.y, item.projected.radius, 0, Math.PI * 2);
+          context.fill();
+        }
+
+        context.globalAlpha = 1;
+        context.shadowBlur = 0;
+
+        if (state.mode === "assemble") {
+          if (elapsed > state.duration + state.settleDuration) {
+            setStatus(`${state.particles.length} dots assembled into the mark.`);
+            return;
+          }
+          state.frame = requestAnimationFrame(draw);
+          return;
+        }
+
+        if (elapsed < state.duration + state.settleDuration) {
+          state.frame = requestAnimationFrame(draw);
+          return;
+        }
+
+        if (state.mode !== "assemble") {
+          setStatus(`${state.particles.length} dots scattered from the mark.`);
+        }
+      };
+
+      const run = (mode = "assemble") => {
+        cancelAnimationFrame(state.frame);
+        resize();
+        resetParticles(mode);
+        setStatus(mode === "assemble" ? "Assembling dots into the mark." : "Scattering dots from the mark.");
+        state.frame = requestAnimationFrame(draw);
+      };
+
+      const load = async () => {
+        const response = await fetch(svgPath);
+        if (!response.ok) {
+          setStatus("Could not load the dot SVG.");
+          return;
+        }
+
+        const svgText = await response.text();
+        const documentNode = new DOMParser().parseFromString(svgText, "image/svg+xml");
+        const svg = documentNode.querySelector("svg");
+        const viewBox = svg?.getAttribute("viewBox")?.split(/\s+/).map(Number);
+        if (viewBox?.length === 4) {
+          state.viewBox = { width: viewBox[2], height: viewBox[3] };
+        }
+
+        state.particles = Array.from(documentNode.querySelectorAll("circle"))
+          .map((circle) => ({
+            cx: Number(circle.getAttribute("cx") || 0),
+            cy: Number(circle.getAttribute("cy") || 0),
+            r: Number(circle.getAttribute("r") || 1),
+          }))
+          .filter((particle) => Number.isFinite(particle.cx) && Number.isFinite(particle.cy) && Number.isFinite(particle.r));
+
+        run("assemble");
+      };
+
+      replayButton?.addEventListener("click", () => run("assemble"));
+      scatterButton?.addEventListener("click", () => run("scatter"));
+      backgroundButton?.addEventListener("click", () => {
+        state.background = state.background === "light" ? "dark" : "light";
+        syncBackground();
+      });
+      window.addEventListener("resize", () => run(state.mode));
+      syncBackground();
+      load();
+    })();
+  </script>
+</BaseLayout>
