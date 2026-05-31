@@ -104,7 +104,7 @@
   const getLeadType = (form) => {
     const explicit = form.getAttribute("data-lead-type");
     if (explicit) return explicit;
-    if (form.id === "assessment-form-main") return "brand_ai_readiness_assessment";
+    if (form.id === "assessment-form-main") return "brand_ai_drift_audit";
     if (form.id === "home-contact-form") return "get_in_touch";
     return form.id || "lead_form";
   };
@@ -112,7 +112,7 @@
   const getLeadName = (form) => {
     const explicit = form.getAttribute("data-lead-name");
     if (explicit) return explicit;
-    if (form.id === "assessment-form-main") return "Brand AI Readiness Assessment";
+    if (form.id === "assessment-form-main") return "Brand Drift Audit";
     if (form.id === "home-contact-form") return "Get in Touch";
     return "Website Lead Form";
   };

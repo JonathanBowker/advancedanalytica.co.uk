@@ -996,8 +996,8 @@ function PortalInner() {
       type: 'service',
       audiences: ['client', 'operator'],
       eyebrow: 'Strategy',
-      title: 'AI readiness assessment',
-      href: '/brand-ai-readiness-assessment',
+      title: 'Brand Drift Audit',
+      href: '/brand-ai-drift-audit',
       description:
         'Review organisational readiness, identify the right next moves, and frame the commercial case for governed AI adoption.',
       accent: 'from-[#14B8A6]/22 to-transparent',

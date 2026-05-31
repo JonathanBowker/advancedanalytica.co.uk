@@ -2,19 +2,19 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { SITE_URL } from "../lib/seo/site";
 
-const title = "Brand AI Readiness Assessment";
+const title = "Brand Drift Audit";
 const description =
-  "Request a structured diagnostic of your brand guidance, standards, and AI use cases across machine-readability, ambiguity, and AI control level.";
+  "Request a structured audit of your brand guidance, standards, and AI use cases across machine-readability, ambiguity, and AI control level.";
 const leadEndpoint =
   "https://advancedanalytica-co-uk-omj3v.ondigitalocean.app/api/leads/contact";
 
 const page = {
   title,
   description,
-  url: `${SITE_URL}/brand-ai-readiness-assessment`,
+  url: `${SITE_URL}/brand-ai-drift-audit`,
   breadcrumbs: [
     { name: "Home", url: `${SITE_URL}/` },
-    { name: title, url: `${SITE_URL}/brand-ai-readiness-assessment` },
+    { name: title, url: `${SITE_URL}/brand-ai-drift-audit` },
   ],
 };
 
@@ -63,7 +63,7 @@ const offerLevels = [
     body: "A lighter diagnostic for teams that need to understand the problem shape quickly before scoping deeper work.",
   },
   {
-    title: "Brand AI Readiness Assessment",
+    title: "Brand Drift Audit",
     body: "The main assessment offer for businesses with real brand systems and real AI exposure across content, service, product, or operations.",
   },
   {
@@ -91,7 +91,7 @@ const offerLevels = [
         <div>
           <div class="eyebrow text-[#14B8A6]">Diagnostic offer</div>
           <h1 class="mt-4 text-[clamp(2.4rem,4.8vw,4rem)] font-semibold leading-[1.05] tracking-tight text-paper">
-            Request a Brand AI Readiness Assessment
+            Request a Brand Drift Audit
           </h1>
           <p class="mt-7 max-w-[72ch] text-lg leading-relaxed text-paper/80 md:text-xl">
             Your AI can only follow the rules your business has made clear.
@@ -352,15 +352,15 @@ const offerLevels = [
     </style>
     <div class="container-wide relative z-10 py-20">
       <div class="mx-auto grid max-w-[1180px] gap-8">
-        <div class="eyebrow text-center text-[#14B8A6]">Assessment request</div>
+        <div class="eyebrow text-center text-[#14B8A6]">Brand Drift Audit request</div>
         <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div class="max-w-[52rem]">
             <h2 class="text-[clamp(2rem,4vw,3.2rem)] font-semibold tracking-tight text-paper">
-              Tell us where AI is already touching your brand and where you 
+              Tell us where AI is already touching your brand, and where it still needs governance.
             </h2>
             <p class="mt-6 text-lg leading-relaxed text-paper/80">
               Keep this focused. We need enough context to see the likely risk,
-              the current materials, and the right assessment path.
+              review the current materials, and point you to the right audit path.
             </p>
           </div>
 
@@ -399,7 +399,7 @@ const offerLevels = [
             <input
               type="hidden"
               name="topic"
-              value="Brand AI Readiness Assessment"
+              value="Brand Drift Audit"
             />
 
             <div class="rounded-2xl border border-fog bg-paper p-5 shadow-outline">

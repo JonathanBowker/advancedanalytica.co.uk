@@ -170,14 +170,14 @@ export async function GET() {
         'get in touch contact form general enquiries project discussions governed AI systems operating models MCP infrastructure implementation support'
     },
     {
-      title: 'Brand AI Readiness Assessment',
-      description: 'Assessment form for diagnosing brand AI readiness.',
-      url: '/brand-ai-readiness-assessment',
+      title: 'Brand Drift Audit',
+      description: 'Audit form for diagnosing brand drift.',
+      url: '/brand-ai-drift-audit',
       type: 'Form',
       snippet:
-        'Request the Brand AI Readiness Assessment to review your brand guidance, current materials, and where AI is already touching your business.',
+        'Request the Brand Drift Audit to review your brand guidance, current materials, and where AI is already touching your business.',
       searchText:
-        'brand ai readiness assessment assessment form diagnose readiness brand guidance current materials ai touching business'
+        'brand drift audit assessment form diagnose drift brand guidance current materials ai touching business'
     },
     {
       title: 'Security',
