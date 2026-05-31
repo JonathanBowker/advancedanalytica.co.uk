@@ -170,14 +170,14 @@ export async function GET() {
         'get in touch contact form general enquiries project discussions governed AI systems operating models MCP infrastructure implementation support'
     },
     {
-      title: 'Brand Drift Audit',
-      description: 'Audit form for diagnosing brand drift.',
+      title: 'AI Drift Audit',
+      description: 'Audit form for diagnosing AI drift.',
       url: '/brand-ai-drift-audit',
       type: 'Form',
       snippet:
-        'Request the Brand Drift Audit to review your brand guidance, current materials, and where AI is already touching your business.',
+        'Request the AI Drift Audit to review your brand guidance, current materials, and where AI is already touching your business.',
       searchText:
-        'brand drift audit assessment form diagnose drift brand guidance current materials ai touching business'
+        'ai drift audit assessment form diagnose drift brand guidance current materials ai touching business'
     },
     {
       title: 'Security',

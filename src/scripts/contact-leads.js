@@ -112,7 +112,7 @@
   const getLeadName = (form) => {
     const explicit = form.getAttribute("data-lead-name");
     if (explicit) return explicit;
-    if (form.id === "assessment-form-main") return "Brand Drift Audit";
+    if (form.id === "assessment-form-main") return "AI Drift Audit";
     if (form.id === "home-contact-form") return "Get in Touch";
     return "Website Lead Form";
   };

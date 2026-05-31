@@ -996,7 +996,7 @@ function PortalInner() {
       type: 'service',
       audiences: ['client', 'operator'],
       eyebrow: 'Strategy',
-      title: 'Brand Drift Audit',
+      title: 'AI Drift Audit',
       href: '/brand-ai-drift-audit',
       description:
         'Review organisational readiness, identify the right next moves, and frame the commercial case for governed AI adoption.',
