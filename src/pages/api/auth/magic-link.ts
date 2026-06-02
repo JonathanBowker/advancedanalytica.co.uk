@@ -1,11 +1,11 @@
 import type { APIRoute } from 'astro';
 import { promises as dns } from 'node:dns';
 import { createSupabaseServerClient, isSupabaseConfigured } from '../../../lib/supabaseServer';
+import { getRequestOrigin, getTenantHomePath } from '../../../lib/tenants';
 
 export const prerender = false;
 
 const mxLookupTimeoutMs = 5_000;
-const productionSiteOrigin = 'https://advancedanalytica.co.uk';
 
 const freeEmailDomains = new Set([
   'aol.com',
@@ -70,29 +70,8 @@ async function hasMxRecords(email: string) {
 }
 
 function isLocalDevelopmentRequest(request: Request) {
-  try {
-    const { hostname } = new URL(request.url);
-    return hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1';
-  } catch {
-    return false;
-  }
-}
-
-function getPublicOrigin(request: Request) {
-  const requestUrl = new URL(request.url);
-
-  if (isLocalDevelopmentRequest(request)) {
-    return requestUrl.origin;
-  }
-
-  const forwardedHost = request.headers.get('x-forwarded-host')?.split(',')[0]?.trim();
-  const forwardedProto = request.headers.get('x-forwarded-proto')?.split(',')[0]?.trim() || 'https';
-
-  if (forwardedHost && !forwardedHost.endsWith('.ondigitalocean.app')) {
-    return `${forwardedProto}://${forwardedHost}`;
-  }
-
-  return productionSiteOrigin;
+  const hostname = new URL(request.url).hostname;
+  return hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1';
 }
 
 export const POST: APIRoute = async ({ request, cookies }) => {
@@ -109,7 +88,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const body = await request.json();
     const email = String(body?.email || '').trim().toLowerCase();
     const captchaToken = String(body?.captchaToken || '').trim();
-    const nextUrl = String(body?.nextUrl || '/portal').trim();
+    const nextUrl = String(body?.nextUrl || getTenantHomePath()).trim();
     const shouldCreateUser = Boolean(body?.shouldCreateUser);
 
     if (!isValidEmail(email)) {
@@ -150,8 +129,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       });
     }
 
-    const redirectTo = new URL('/auth/callback', getPublicOrigin(request));
-    redirectTo.searchParams.set('next', nextUrl.startsWith('/') ? nextUrl : '/portal');
+    const redirectTo = new URL('/auth/callback', getRequestOrigin(request));
+    redirectTo.searchParams.set('next', nextUrl.startsWith('/') ? nextUrl : getTenantHomePath());
 
     const supabase = createSupabaseServerClient({ request, cookies });
     const { error } = await supabase.auth.signInWithOtp({

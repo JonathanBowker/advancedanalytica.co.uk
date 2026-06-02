@@ -1,0 +1,80 @@
+---
+import '../styles/global.css';
+import { getTenantThemeCss, type ResolvedTenant } from '../lib/tenants';
+
+const {
+  title,
+  description,
+  tenant,
+  signedIn = false,
+} = Astro.props as {
+  title: string;
+  description: string;
+  tenant: ResolvedTenant;
+  signedIn?: boolean;
+};
+
+const themeCss = getTenantThemeCss(tenant);
+---
+<!doctype html>
+<html
+  lang="en"
+  data-turnstile-site-key={String(import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '').trim()}
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="noindex,nofollow" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate icon" href="/favicon.svg" sizes="any" />
+    <style is:inline>{themeCss}</style>
+    <slot name="head" />
+  </head>
+  <body class="tenant-shell bg-background text-ink">
+    <div class="min-h-screen">
+      <header class="border-b border-[color:var(--color-fog)]/80 bg-surface/90 backdrop-blur">
+        <div class="mx-auto flex w-[min(1120px,92vw)] items-center justify-between gap-4 py-5">
+          <div class="flex items-center gap-4">
+            <a href={signedIn ? '/portal' : '/login'} class="tenant-logo-mark" aria-label={tenant.name}></a>
+            <div>
+              <div class="text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--color-accent)]">
+                Multi-tenant portal
+              </div>
+              <div class="text-sm text-slate">{tenant.name}</div>
+            </div>
+          </div>
+          <nav class="flex items-center gap-3 text-sm font-semibold">
+            {signedIn ? (
+              <>
+                <a
+                  href="/portal"
+                  class="rounded-full border border-[color:var(--color-fog)] bg-surface px-4 py-2 text-ink transition hover:border-[color:var(--color-accent)]"
+                >
+                  Portal home
+                </a>
+                <a
+                  href="/logout"
+                  class="rounded-full bg-[color:var(--color-accent)] px-4 py-2 text-paper transition hover:bg-[color:var(--color-accent-deep)]"
+                >
+                  Sign out
+                </a>
+              </>
+            ) : (
+              <a
+                href="/login"
+                class="rounded-full bg-[color:var(--color-accent)] px-4 py-2 text-paper transition hover:bg-[color:var(--color-accent-deep)]"
+              >
+                Sign in
+              </a>
+            )}
+          </nav>
+        </div>
+      </header>
+      <main>
+        <slot />
+      </main>
+    </div>
+  </body>
+</html>

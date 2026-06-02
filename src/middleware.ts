@@ -1,10 +1,17 @@
 import { defineMiddleware } from 'astro:middleware';
 import { createSupabaseServerClient, isSupabaseConfigured } from './lib/supabaseServer';
+import { getDefaultTenant, getTenantHomePath, getTenantLoginPath, resolveTenantFromRequest } from './lib/tenants';
 
 const protectedPaths = ['/portal'];
 const authPages = ['/login'];
 
 export const onRequest = defineMiddleware(async (context, next) => {
+  if (context.isPrerendered) {
+    context.locals.tenant = getDefaultTenant();
+    context.locals.user = null;
+    return next();
+  }
+
   const requestUrl = new URL(context.request.url);
   const { pathname, search } = requestUrl;
   const authError = requestUrl.searchParams.get('error');
@@ -12,6 +19,9 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const authErrorDescription = requestUrl.searchParams.get('error_description');
   const authCode = requestUrl.searchParams.get('code');
   const tokenHash = requestUrl.searchParams.get('token_hash');
+  const tenant = resolveTenantFromRequest(context.request);
+
+  context.locals.tenant = tenant;
 
   if (pathname === '/index.html') {
     const rewriteTarget = search ? `/${search}` : '/';
@@ -42,11 +52,9 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   if (!isSupabaseConfigured) {
     context.locals.user = null;
-    return next();
-  }
-
-  if (context.isPrerendered) {
-    context.locals.user = null;
+    if (protectedPaths.some((path) => pathname === path || pathname.startsWith(`${path}/`))) {
+      return context.redirect('/login?error=config');
+    }
     return next();
   }
 
@@ -64,12 +72,12 @@ export const onRequest = defineMiddleware(async (context, next) => {
   if (protectedPaths.some((path) => pathname === path || pathname.startsWith(`${path}/`))) {
     if (!user) {
       const nextPath = pathname === '/portal' && !search ? pathname : `${pathname}${search}`;
-      return context.redirect(`/login?next=${encodeURIComponent(nextPath)}`);
+      return context.redirect(getTenantLoginPath(nextPath));
     }
   }
 
   if (authPages.includes(pathname) && user) {
-    return context.redirect('/portal');
+    return context.redirect(getTenantHomePath());
   }
 
   return next();

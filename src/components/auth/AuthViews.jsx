@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from './AuthProvider';
 import { isSupabaseConfigured, supabase } from '../../lib/supabaseClient';
 import './login.css';
 
+const databaseLabel = 'MasterDB';
 const resendCooldownMs = 60_000;
 const magicLinkRequestTimeoutMs = 10_000;
 const captchaTimeoutMs = 8_000;
@@ -11,6 +12,18 @@ const turnstileScriptId = 'cloudflare-turnstile-script';
 const turnstileScriptSrc = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
 const fallbackTurnstileSiteKey = '0x4AAAAAADKxAX20w3kRuz5A';
 const turnstileMountClass = 'fixed bottom-0 right-0 h-px w-px overflow-hidden pointer-events-none';
+const portalServiceCardCatalog = {
+  'brand-readiness-assessment': {
+    eyebrow: 'Assessment',
+    accent: 'from-[#14B8A6]/22 to-transparent',
+    cta: 'Open assessment',
+  },
+  'policy-intake': {
+    eyebrow: 'Policy',
+    accent: 'from-[#ff8c69]/22 to-transparent',
+    cta: 'Open policy intake',
+  },
+};
 
 const shellClass =
   'min-h-screen w-screen bg-slate-100';
@@ -140,7 +153,7 @@ function getPasswordErrorMessage(err) {
   if (lower.includes('invalid login credentials')) return 'Invalid email or password.';
   if (lower.includes('email not confirmed')) return 'This email address is not confirmed yet.';
   if (lower.includes('failed to fetch') || lower.includes('network')) {
-    return 'Could not reach Supabase. Check the project URL, network connection, and service status.';
+    return `Could not reach ${databaseLabel}. Check the project URL, network connection, and service status.`;
   }
 
   return rawMessage;
@@ -162,7 +175,7 @@ function getEmailFlowErrorMessage(err, fallback) {
   if (lower.includes('user not found')) {
     return {
       message:
-        'Supabase did not find an email magic-link account for that address in this project. If the user exists, check the local Supabase project or use the provider the account was created with.',
+        `${databaseLabel} did not find an email magic-link account for that address in this project. If the user exists, check the local ${databaseLabel} project or use the provider the account was created with.`,
       isRateLimit: false,
     };
   }
@@ -174,7 +187,7 @@ function getEmailFlowErrorMessage(err, fallback) {
   ) {
     return {
       message:
-        'Supabase did not find an email magic-link account for that address in this project. If the user exists, check the local Supabase project or use the provider the account was created with.',
+        `${databaseLabel} did not find an email magic-link account for that address in this project. If the user exists, check the local ${databaseLabel} project or use the provider the account was created with.`,
       isRateLimit: false,
     };
   }
@@ -197,7 +210,7 @@ function getEmailFlowErrorMessage(err, fallback) {
   ) {
     return {
       message:
-        'Auth email could not be sent. Check the Supabase SMTP settings and sender verification status.',
+        `Auth email could not be sent. Check the ${databaseLabel} SMTP settings and sender verification status.`,
       isRateLimit: false,
     };
   }
@@ -209,7 +222,7 @@ function getEmailFlowErrorMessage(err, fallback) {
   ) {
     return {
       message:
-        'Supabase rejected this request because captcha protection is enabled and no valid captcha token was sent.',
+        `${databaseLabel} rejected this request because captcha protection is enabled and no valid captcha token was sent.`,
       isRateLimit: false,
     };
   }
@@ -221,14 +234,14 @@ function getEmailFlowErrorMessage(err, fallback) {
   ) {
     return {
       message:
-        'Supabase could not find the requested auth resource. Check the Supabase project URL and auth configuration for this environment.',
+        `${databaseLabel} could not find the requested auth resource. Check the ${databaseLabel} project URL and auth configuration for this environment.`,
       isRateLimit: false,
     };
   }
 
   if (lower.includes('failed to fetch') || lower.includes('network')) {
     return {
-      message: 'Could not reach Supabase. Check the project URL, network connection, and service status.',
+      message: `Could not reach ${databaseLabel}. Check the project URL, network connection, and service status.`,
       isRateLimit: false,
     };
   }
@@ -250,7 +263,7 @@ function getLoginErrorMessage(errorCode, errorDescription) {
 
   if (normalizedCode === 'callback') {
     if (normalizedDescription.includes('requested resource does not exist')) {
-      return 'Supabase could not find the requested auth resource. Check the GitHub provider and redirect URL configuration for this Supabase project.';
+      return `${databaseLabel} could not find the requested auth resource. Check the GitHub provider and redirect URL configuration for this ${databaseLabel} project.`;
     }
 
     if (errorDescription) {
@@ -268,7 +281,7 @@ function getLoginErrorMessage(errorCode, errorDescription) {
     normalizedCode === 'unexpected_failure' &&
     normalizedDescription.includes('multiple accounts with the same email address')
   ) {
-    return 'Supabase found more than one account using this email address. Merge or remove the duplicate user/identity in Supabase, then try GitHub sign-in again.';
+    return `${databaseLabel} found more than one account using this email address. Merge or remove the duplicate user/identity in ${databaseLabel}, then try GitHub sign-in again.`;
   }
 
   if (errorDescription) {
@@ -448,7 +461,7 @@ async function executeInvisibleTurnstile({
   });
 }
 
-function LoginInner() {
+function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-analytica', tenantHost = '' }) {
   const [session, setSession] = useState(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -538,7 +551,7 @@ function LoginInner() {
     if (!isSupabaseConfigured || !supabase) {
       setStatus({
         state: 'error',
-        message: 'Supabase is not configured. Set PUBLIC_SUPABASE_URL and PUBLIC_SUPABASE_ANON_KEY.',
+        message: `${databaseLabel} is not configured. Set PUBLIC_SUPABASE_URL and PUBLIC_SUPABASE_ANON_KEY.`,
       });
       return;
     }
@@ -632,7 +645,7 @@ function LoginInner() {
     if (!isSupabaseConfigured || !supabase) {
       setStatus({
         state: 'error',
-        message: 'Supabase is not configured. Set PUBLIC_SUPABASE_URL and PUBLIC_SUPABASE_ANON_KEY.',
+        message: `${databaseLabel} is not configured. Set PUBLIC_SUPABASE_URL and PUBLIC_SUPABASE_ANON_KEY.`,
       });
       return;
     }
@@ -677,7 +690,7 @@ function LoginInner() {
     if (!isSupabaseConfigured || !supabase) {
       setStatus({
         state: 'error',
-        message: 'Supabase is not configured. Set PUBLIC_SUPABASE_URL and PUBLIC_SUPABASE_ANON_KEY.',
+        message: `${databaseLabel} is not configured. Set PUBLIC_SUPABASE_URL and PUBLIC_SUPABASE_ANON_KEY.`,
       });
       return;
     }
@@ -882,7 +895,7 @@ function LoginInner() {
 
               {!isSupabaseConfigured ? (
                 <div className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
-                  Supabase not configured. Set <code>PUBLIC_SUPABASE_URL</code> and <code>PUBLIC_SUPABASE_ANON_KEY</code>.
+                  {databaseLabel} not configured. Set <code>PUBLIC_SUPABASE_URL</code> and <code>PUBLIC_SUPABASE_ANON_KEY</code>.
                 </div>
               ) : null}
 
@@ -936,13 +949,16 @@ function LoginInner() {
             <div className="flex flex-1 items-start justify-center pt-24">
               <div className="max-w-2xl text-center">
                 <div className="text-6xl font-bold leading-[1.05] tracking-tight">
-                  Connect to our suite of intelligent services
+                  Connect to {tenantName}
                   <br />
                   <span className="text-[#14B8A6]">#withBRANDO</span>
                 </div>
                 <p className="mx-auto mt-8 max-w-xl text-lg text-white/70">
                   Use Brando to turn brand knowledge into controlled AI communications, governed workflows, and
                   machine-operable controls.
+                </p>
+                <p className="mx-auto mt-6 max-w-xl text-sm uppercase tracking-[0.22em] text-white/45">
+                  {tenantSlug}{tenantHost ? ` • ${tenantHost}` : ''}
                 </p>
                 <p className="mx-auto mt-10 max-w-xl text-base text-white/60">
                   Trusted by some of the world&apos;s largest brands
@@ -956,7 +972,7 @@ function LoginInner() {
   );
 }
 
-function PortalInner() {
+function PortalInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-analytica', services = [] }) {
   const { session, loading } = useAuth();
   const [signingOut, setSigningOut] = useState(false);
 
@@ -991,90 +1007,36 @@ function PortalInner() {
 
   const user = session.user;
   const access = getPortalAccess(user);
-  const serviceCards = [
-    {
-      type: 'service',
-      audiences: ['client', 'operator'],
-      eyebrow: 'Strategy',
-      title: 'AI Drift Audit',
-      href: '/brand-ai-drift-audit',
-      description:
-        'Review organisational readiness, identify the right next moves, and frame the commercial case for governed AI adoption.',
-      accent: 'from-[#14B8A6]/22 to-transparent',
-      cta: 'Open assessment',
-    },
-    {
-      type: 'service',
-      audiences: ['client', 'operator'],
-      eyebrow: 'Platform',
-      title: 'iBOM services',
-      href: '/services/ibom',
-      description:
-        'Explore the intelligent brand object model service layer that connects brand governance to operational systems and agents.',
-      accent: 'from-[#ff8c69]/22 to-transparent',
-      cta: 'View iBOM service',
-    },
-    {
-      type: 'service',
-      audiences: ['developer', 'operator'],
-      eyebrow: 'Developers',
-      title: 'MCP server access',
-      href: '/developers/mcp-servers',
-      description:
-        'Go straight to the governed MCP tooling and implementation guidance for connected applications and agent workflows.',
+  const visibleServiceCards = services.map((service) => {
+    const visual = portalServiceCardCatalog[service.slug] || {
+      eyebrow: 'Service',
       accent: 'from-[#59b3e4]/24 to-transparent',
-      cta: 'Open developer access',
-    },
-    {
+      cta: 'Open service',
+    };
+
+    return {
       type: 'service',
-      audiences: ['operator'],
-      eyebrow: 'Implementation',
-      title: 'Enterprise rollout',
-      href: '/enterprise',
-      description:
-        'Move into implementation planning, governance rollout, and enterprise operating model design for larger programmes.',
-      accent: 'from-[#ceced0]/24 to-transparent',
-      cta: 'Open rollout path',
-    },
-    {
-      type: 'service',
-      audiences: ['operator'],
-      eyebrow: 'Products',
-      title: 'iBOM product pages',
-      href: '/products/ibom',
-      description:
-        'Review the current product positioning, narrative, and service packaging that supports protected operator workflows.',
-      accent: 'from-[#fa26a0]/22 to-transparent',
-      cta: 'Open product view',
-    },
-    {
-      type: 'service',
-      audiences: ['client', 'operator'],
-      eyebrow: 'Engagement',
-      title: 'Advisory and contact',
-      href: '/company/contact',
-      description:
-        'Start a scoped conversation about implementation, governance design, enterprise rollout, or managed support.',
-      accent: 'from-[#f8d210]/24 to-transparent',
-      cta: 'Contact Advanced Analytica',
-    },
-  ];
-  const visibleServiceCards = serviceCards.filter((card) =>
-    card.audiences.some((audience) => access.roles.includes(audience) || (audience === 'client' && access.isClient)),
-  );
+      eyebrow: visual.eyebrow,
+      title: service.name,
+      href: `/portal/services/${service.slug}`,
+      description: service.summary,
+      accent: visual.accent,
+      cta: visual.cta,
+    };
+  });
   const utilityCards = [
     {
       type: 'meta',
       eyebrow: 'Account',
       title: 'Signed-in account',
       description: user.email,
-      body: `Audience: ${access.audienceLabel}`,
+      body: `Audience: ${access.audienceLabel} • Tenant: ${tenantName}`,
     },
     {
       type: 'meta',
       eyebrow: 'Roles',
       title: access.roles.length ? access.roles.join(', ') : 'client',
-      description: 'Resolved from Supabase metadata and internal account fallback.',
+      description: `Resolved from ${databaseLabel} metadata and internal account fallback.`,
       body: `User ID: ${user.id}`,
     },
     {
@@ -1094,9 +1056,9 @@ function PortalInner() {
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="max-w-[48rem]">
               <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">Protected portal</div>
-              <h1 className="mt-2 text-3xl font-semibold tracking-tight text-paper md:text-4xl">Services dashboard</h1>
+              <h1 className="mt-2 text-3xl font-semibold tracking-tight text-paper md:text-4xl">{tenantName} services dashboard</h1>
               <p className="mt-3 text-sm leading-relaxed text-paper/68 md:text-base">
-                Start from one of the service cards below. The set shown here changes by audience, so clients, developers, and operators do not all see the same entry points.
+                Start from one of the service cards below. This tenant view is resolved from the request hostname and only exposes the services assigned to {tenantSlug}.
               </p>
             </div>
             <button className={buttonClass} type="button" onClick={signOut} disabled={signingOut}>
@@ -1178,7 +1140,7 @@ function ResetInner() {
     if (!isSupabaseConfigured || !supabase) {
       setStatus({
         state: 'error',
-        message: 'Supabase is not configured. Set PUBLIC_SUPABASE_URL and PUBLIC_SUPABASE_ANON_KEY.',
+        message: `${databaseLabel} is not configured. Set PUBLIC_SUPABASE_URL and PUBLIC_SUPABASE_ANON_KEY.`,
       });
       return;
     }
@@ -1210,7 +1172,7 @@ function ResetInner() {
   return (
     <AuthFrame
       title="Reset the account password."
-      intro="This page completes the Supabase recovery flow on the main production domain."
+      intro={`This page completes the ${databaseLabel} recovery flow on the main production domain.`}
       aside={<div className="rounded-3xl border border-white/10 bg-white/6 p-5">The callback route exchanges the recovery code on the server before this page is rendered.</div>}
     >
       <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">Password reset</div>
@@ -1370,18 +1332,18 @@ function RoleMagicLinkInner({ role }) {
   );
 }
 
-export function LoginApp() {
-  return <LoginInner />;
+export function LoginApp(props) {
+  return <LoginInner {...props} />;
 }
 
 export function RoleMagicLinkApp({ role }) {
   return <RoleMagicLinkInner role={role} />;
 }
 
-export function PortalApp() {
+export function PortalApp(props) {
   return (
     <AuthProvider>
-      <PortalInner />
+      <PortalInner {...props} />
     </AuthProvider>
   );
 }

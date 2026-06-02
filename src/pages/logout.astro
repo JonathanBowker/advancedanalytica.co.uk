@@ -1,5 +1,6 @@
 ---
 import { createSupabaseServerClient, isSupabaseConfigured } from '../lib/supabaseServer';
+import { getTenantLoginPath } from '../lib/tenants';
 
 if (isSupabaseConfigured) {
   const supabase = createSupabaseServerClient({
@@ -10,5 +11,5 @@ if (isSupabaseConfigured) {
   await supabase.auth.signOut();
 }
 
-return Astro.redirect('/');
+return Astro.redirect(getTenantLoginPath());
 ---
