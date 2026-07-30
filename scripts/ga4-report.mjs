@@ -182,7 +182,7 @@ async function main() {
   const outputDir = readArg('output', process.env.GA4_OUTPUT_DIR || DEFAULT_OUTPUT_DIR);
 
   if (!propertyId) {
-    throw new Error('Missing GA4_PROPERTY_ID. Set it in .env.local or pass --property=123456789.');
+    throw new Error('Missing GA4_PROPERTY_ID. Set it in .env or .env.local, or pass --property=123456789.');
   }
 
   const dateRanges = [{ startDate, endDate }];

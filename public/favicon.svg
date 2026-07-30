@@ -10,7 +10,7 @@
       }
     </style>
   </defs>
-  <g id="Layer_1-2" data-name="Layer 1">
+  <g id="Layer_1-2" data-name="Layer 1" transform="translate(1000 0) scale(-1 1)">
     <g>
       <rect x="504.79" y="200.31" width="200" height="200"/>
       <path class="cls-1" d="M898.12,492.09c0,150.4,1.88,257.51,1.88,407.91H100V100h404.11"/>

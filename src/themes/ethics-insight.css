@@ -1,0 +1,22 @@
+:root {
+  --tenant-name: "Ethics Insight";
+  --tenant-logo-url: url("/images/infrastructure/logo.svg");
+  --font-body: "Georgia", "Times New Roman", serif;
+  --font-display: "Georgia", "Times New Roman", serif;
+  --font-masthead: "Georgia", "Times New Roman", serif;
+  --color-ink: #15161c;
+  --color-paper: #fffaf2;
+  --color-background: #f7efe0;
+  --color-surface: #fffdf9;
+  --color-slate: #5f5749;
+  --color-steel: #7d6f5e;
+  --color-fog: #e9dcc6;
+  --color-accent: #8c3f2c;
+  --color-accent-deep: #5d281d;
+  --color-highlight: #d4a24d;
+  --color-signal: #8c3f2c;
+  --color-warning: #a16207;
+  --color-success: #166534;
+  --shadow-soft: 0 24px 60px rgba(72, 43, 28, 0.12);
+  --shadow-outline: 0 14px 34px rgba(72, 43, 28, 0.12);
+}

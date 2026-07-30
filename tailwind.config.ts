@@ -21,7 +21,7 @@ export default {
         accent: 'var(--color-accent)',
         accentDeep: 'var(--color-accent-deep)',
         strandPurple: 'var(--color-strand-purple)',
-        strandOrange: 'var(--color-strand-orange)',
+        strandTeal: 'var(--color-strand-teal)',
         strandBlue: 'var(--color-strand-blue)',
         strandGreen: 'var(--color-strand-green)',
         signal: 'var(--color-signal)',

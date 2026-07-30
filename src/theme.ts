@@ -31,7 +31,7 @@ export const theme = {
     danger: "#DC2626",
 
     // Strand palette
-    strandOrange: "#FF8C69",
+    strandTeal: "#14B8A6",
     strandPurple: "#8B17FF",
     strandBlue: "#174AFF",
     strandGreen: "#DDF952",
@@ -41,16 +41,15 @@ export const theme = {
   },
 
   typography: {
-    // Matches the live jonnybowker.com typography stack.
+    // Shared public typography stack for the marketing site.
     fontSans:
-      'Archivo, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"',
+      '"Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"',
     fontDisplay:
-      'Archivo, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"',
+      '"Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"',
     fontMono:
-      'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-    // Keep mastheads aligned with the rest of the imported Jonny Bowker style.
+      '"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
     fontMasthead:
-      'Archivo, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"',
+      '"Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"',
 
     // Used for MDX/prose readability
     contentWidth: "72ch",
@@ -71,7 +70,7 @@ export const theme = {
   },
 
   layout: {
-    container: "1100px",
+    container: "1224px",
     gutter: "1.25rem",
     sectionY: "5rem",
   },

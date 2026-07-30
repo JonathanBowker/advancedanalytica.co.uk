@@ -4,9 +4,6 @@ import { RoleMagicLinkApp } from '../../components/auth/AuthViews.jsx';
 import { talkToUsRoles } from '../../data/talk-to-us-roles';
 
 export const prerender = true;
-
-const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '0x4AAAAAADKxAX20w3kRuz5A';
-
 export function getStaticPaths() {
   return talkToUsRoles.map((role) => ({
     params: { role: role.slug },

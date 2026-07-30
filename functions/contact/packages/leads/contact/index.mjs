@@ -114,6 +114,15 @@ const cleanMultiline = (value, maxLength = 500) =>
     .trim()
     .slice(0, maxLength);
 
+const cleanList = (value, maxLength = 500) => {
+  const entries = Array.isArray(value) ? value : String(value || "").split(",");
+  return entries
+    .map((entry) => clean(entry, maxLength))
+    .filter(Boolean)
+    .join(", ")
+    .slice(0, maxLength);
+};
+
 const escapeHtml = (value) =>
   String(value)
     .replace(/&/g, "&amp;")
@@ -178,8 +187,8 @@ const normalisePayload = (event) => {
     leadName: clean(body.lead_name || body.form_name, MAX_LENGTHS.leadName),
     formId: clean(body.form_id, MAX_LENGTHS.formId),
     formLocation: clean(body.form_location, MAX_LENGTHS.formLocation),
-    materials: clean(body.materials, MAX_LENGTHS.materials),
-    aiTouchpoints: clean(body.ai_touchpoints, MAX_LENGTHS.aiTouchpoints),
+    materials: cleanList(body.materials, MAX_LENGTHS.materials),
+    aiTouchpoints: cleanList(body.ai_touchpoints, MAX_LENGTHS.aiTouchpoints),
     biggestConcern: clean(body.biggest_concern, MAX_LENGTHS.biggestConcern),
     preferredNextStep: clean(
       body.preferred_next_step,
@@ -517,7 +526,9 @@ const verifyTurnstile = async (token, remoteIp) => {
 
 const isAssessmentSubmission = (payload) =>
   payload.formId === "assessment-form-main" ||
+  payload.leadType === "brand_ai_drift_audit" ||
   payload.leadType === "brand_ai_readiness_assessment" ||
+  payload.topic === "AI Drift Audit" ||
   payload.topic === "Brand AI Readiness Assessment";
 
 const formatMessageHtml = (message) => {
@@ -805,6 +816,17 @@ export async function main(event = {}) {
 
   const emailPolicy = await isAllowedEmailDomain(payload.email);
   if (!emailPolicy.ok) {
+    if (
+      emailPolicy.reason === "no_mx_records" ||
+      emailPolicy.reason === "mx_lookup_failed"
+    ) {
+      return json(400, {
+        ok: false,
+        error: "email_mx_lookup_failed",
+        reason: emailPolicy.reason,
+      });
+    }
+
     return json(400, {
       ok: false,
       error: "business_email_required",

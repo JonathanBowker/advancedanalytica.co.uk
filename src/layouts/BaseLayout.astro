@@ -7,6 +7,7 @@ import SiteFooter from '../components/SiteFooter.astro';
 import GoogleAnalytics from '../components/GoogleAnalytics.astro';
 import type { PageMeta } from '../lib/seo/buildGraph';
 import { DEFAULT_OG_IMAGE, SITE_NAME } from '../lib/seo/site';
+import { getDefaultTenant, getTenantThemeCss } from '../lib/tenants';
 import { toSentenceCaseTitle } from '../lib/titleFormat';
 
 const { title, description, page } = Astro.props as {
@@ -41,6 +42,7 @@ const signedIn = Boolean(Astro.locals.user);
 const robotsContent = page.noindex
   ? 'noindex,nofollow,max-image-preview:large,max-snippet:-1,max-video-preview:-1'
   : 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1';
+const tenant = Astro.locals.tenant ?? getDefaultTenant();
 ---
 <!doctype html>
 <html
@@ -72,14 +74,15 @@ const robotsContent = page.noindex
     <link rel="alternate icon" href="/favicon.svg" sizes="any" />
     <slot name="head" />
     <ThemeVars />
+    <style is:inline set:html={getTenantThemeCss(tenant)}></style>
     <JsonLd page={normalizedPage} />
   </head>
   <body class={`bg-background text-ink ${Astro.props.bodyClass ?? ""}`.trim()}>
-    <SiteHeader contactHref={Astro.props.headerContactHref ?? "#get-in-touch"} signedIn={signedIn} />
+    <SiteHeader contactHref={Astro.props.headerContactHref ?? "/company/contact/"} signedIn={signedIn} />
     <main class="pt-20">
       <slot />
     </main>
-    <SiteFooter hideContactCta={Astro.props.hideFooterContactCta ?? false} />
+    <SiteFooter />
     <GoogleAnalytics />
     <script is:inline>
       (() => {

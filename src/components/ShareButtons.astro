@@ -20,7 +20,6 @@ const cleanTitle = stripHtml(title);
 const cleanDescription = stripHtml(description);
 const encodedUrl = encodeURIComponent(url);
 const encodedTitle = encodeURIComponent(cleanTitle);
-const encodedText = encodeURIComponent(cleanDescription || cleanTitle);
 const mailSubject = encodeURIComponent(cleanTitle);
 const mailBody = encodeURIComponent(`${cleanDescription || cleanTitle}\n\n${url}`);
 
@@ -139,16 +138,7 @@ const iconClass = 'h-4 w-4';
         return true;
       }
 
-      const input = document.createElement("textarea");
-      input.value = value;
-      input.setAttribute("readonly", "");
-      input.style.position = "fixed";
-      input.style.opacity = "0";
-      document.body.appendChild(input);
-      input.select();
-      const copied = document.execCommand("copy");
-      input.remove();
-      return copied;
+      return false;
     };
 
     const setTemporaryLabel = (button, label) => {

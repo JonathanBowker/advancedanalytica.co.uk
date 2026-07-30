@@ -57,21 +57,6 @@ const assessmentOutputs = [
   "A practical action-plan steer for diligence, contracting, monitoring, and investment committee decisions",
 ];
 
-const offerLevels = [
-  {
-    title: "Risk Triage",
-    body: "A lighter review for teams that need to understand the shape of business integrity risk before scoping deeper diligence.",
-  },
-  {
-    title: "Contextual Risk Assessment",
-    body: "The deep-dive assessment for impact investors evaluating business integrity risk in an opportunity, portfolio company, or investment thesis.",
-  },
-  {
-    title: "Monitoring and Governance Design",
-    body: "The follow-on path for teams ready to turn risk findings into controls, monitoring indicators, contractual safeguards, and decision workflows.",
-  },
-];
-
 const processSteps = [
   {
     title: "Screen",
@@ -111,7 +96,7 @@ const processSteps = [
   <section class="relative overflow-hidden bg-gradient-to-br from-black via-[#0b0e14] to-[#171b24] text-paper">
     <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/50" aria-hidden="true"></div>
     <div class="absolute -left-24 top-16 h-80 w-80 rounded-full bg-[#14B8A6]/12 blur-3xl" aria-hidden="true"></div>
-    <div class="absolute right-0 top-10 h-80 w-80 rounded-full bg-[#ff8c69]/10 blur-3xl" aria-hidden="true"></div>
+    <div class="absolute right-0 top-10 h-80 w-80 rounded-full bg-[#14B8A6]/10 blur-3xl" aria-hidden="true"></div>
 
     <div class="container-wide relative z-10 py-24">
       <div class="grid gap-12 lg:grid-cols-[7fr_5fr] lg:items-stretch">
@@ -140,7 +125,7 @@ const processSteps = [
             </a>
             <a
               href="#role-intent-testing"
-              class="inline-flex items-center justify-center gap-3 rounded-md border border-[#ff8c69] px-6 py-3 text-xs font-semibold tracking-[0.14em] uppercase text-[#ff8c69] transition-colors hover:bg-[#ff8c69] hover:text-paper"
+              class="inline-flex items-center justify-center gap-3 rounded-md border border-[#14B8A6] px-6 py-3 text-xs font-semibold tracking-[0.14em] uppercase text-[#14B8A6] transition-colors hover:bg-[#14B8A6] hover:text-paper"
             >
               What we test
             </a>
@@ -149,7 +134,7 @@ const processSteps = [
 
         <div class="flex h-full flex-col rounded-[1.75rem] border border-paper/15 bg-paper/8 p-7 shadow-outline backdrop-blur md:p-8">
           <div class="flex items-center gap-4">
-            <div class="flex h-12 w-12 items-center justify-center rounded-full border border-[#ff8c69]/70 text-[#ff8c69]">
+            <div class="flex h-12 w-12 items-center justify-center rounded-full border border-[#14B8A6]/70 text-[#14B8A6]">
               <svg
                 class="h-5 w-5"
                 viewBox="0 0 24 24"
@@ -164,7 +149,7 @@ const processSteps = [
               </svg>
             </div>
             <div>
-              <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#ff8c69]">
+              <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#14B8A6]">
                 You get
               </div>
               <div class="mt-1 text-xs text-paper/55">
@@ -343,7 +328,7 @@ const processSteps = [
       }
 
       .assessment-progress-dot:focus-visible {
-        outline: 3px solid rgba(255, 140, 105, 0.34);
+        outline: 3px solid rgba(20, 184, 166, 0.34);
         outline-offset: 3px;
       }
 
@@ -957,8 +942,9 @@ const processSteps = [
       if (!(track instanceof HTMLElement)) return;
       if (!panels.length) return;
 
+      const speechWindow = /** @type {Window & { SpeechRecognition?: unknown; webkitSpeechRecognition?: unknown }} */ (window);
       const SpeechRecognitionCtor =
-        window.SpeechRecognition || window.webkitSpeechRecognition || null;
+        speechWindow.SpeechRecognition || speechWindow.webkitSpeechRecognition || null;
       const supportsVoiceInput =
         typeof SpeechRecognitionCtor === "function" &&
         voiceToggle instanceof HTMLButtonElement &&
@@ -1057,7 +1043,7 @@ const processSteps = [
       const setVoiceStatus = (text, isError = false) => {
         if (!(voiceStatus instanceof HTMLElement)) return;
         voiceStatus.textContent = text;
-        voiceStatus.classList.toggle("text-[#ff8c69]", isError);
+        voiceStatus.classList.toggle("text-[#14B8A6]", isError);
         voiceStatus.classList.toggle("text-steel", !isError);
       };
 

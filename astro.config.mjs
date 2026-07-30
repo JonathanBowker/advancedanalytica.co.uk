@@ -19,6 +19,9 @@ export default defineConfig({
     optimizeDeps: {
       include: ['d3']
     },
+    // Tailwind's Vite 7 plugin types do not line up with Astro's Vite 6 config types.
+    // Runtime build is unaffected; this keeps astro check from failing on the config.
+    // @ts-expect-error Vite type versions differ between Astro and @tailwindcss/vite.
     plugins: [tailwindcss()]
   },
   integrations: [

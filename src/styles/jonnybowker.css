@@ -3,8 +3,8 @@
     --jb-black: #111;
     --jb-white: #fff;
     --jb-vivid-cyan-blue: #0693e3;
-    --jb-vivid-purple: #ff8c69;
-    --jb-soft-pink: #fcf3f8;
+    --jb-vivid-teal: #14B8A6;
+    --jb-soft-blush: #fcf3f8;
     --jb-soft-grey: #f7f7f7;
     --jb-accent: var(--jb-vivid-cyan-blue);
 
@@ -24,7 +24,7 @@
   }
 
   body {
-    font-family: "Archivo", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+    font-family: var(--font-body);
   }
 }
 
@@ -100,15 +100,15 @@
   .jb-hero-gradient {
     background: radial-gradient(
       90% 106.38% at 122.89% 49.97%,
-      var(--jb-vivid-purple) 0%,
+      var(--jb-vivid-teal) 0%,
       #5a00ad 25%,
       #360067 56%,
       #220041 100%
     );
   }
 
-  .jb-soft-pink {
-    background: var(--jb-soft-pink);
+  .jb-soft-blush {
+    background: var(--jb-soft-blush);
   }
 
   .jb-soft-grey {

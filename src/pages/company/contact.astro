@@ -1,9 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { SITE_URL } from '../../lib/seo/site';
+import contactLeadsScriptUrl from '../../scripts/contact-leads.js?url';
 
 const title = 'Contact';
-const description = 'Start a governance conversation with Advanced Analytica.';
+const description = 'A short conversation is enough to understand where you are, what needs governing, and what the right next step should be.';
 const leadEndpoint =
   'https://advancedanalytica-co-uk-omj3v.ondigitalocean.app/api/leads/contact';
 
@@ -15,34 +16,32 @@ const page = {
   breadcrumbs: [
     { name: 'Home', url: `${SITE_URL}/` },
     { name: 'Company', url: `${SITE_URL}/company/about` },
-    { name: 'Contact', url: `${SITE_URL}/company/contact` }
-  ]
+    { name: 'Contact', url: `${SITE_URL}/company/contact` },
+  ],
 };
 
-const labelClass = 'text-sm font-semibold tracking-[0.08em] uppercase text-ink';
-const fieldClass =
-  'w-full border-b border-fog bg-transparent pb-3 text-base text-ink outline-none transition-colors placeholder:text-steel/55 focus:border-ink';
-
-const briefingPrompts = [
-  'What you want AI or data systems to do better',
-  'Where knowledge, policy, approvals, or controls are currently hard to manage',
-  'Which teams, tools, workflows, or channels are in scope',
-  'Any security, compliance, assurance, or brand governance requirements'
+const programmeStages = [
+  { value: 'governance-planning', label: 'We need to define the governance and operating model' },
+  { value: 'build-readiness', label: 'We are ready to build and need implementation support' },
+  { value: 'stalled-programme', label: 'We have started but the programme has stalled' },
+  { value: 'live-operations', label: 'We are live and need ongoing operational support' },
+  { value: 'evaluation', label: 'We are still evaluating partners and next steps' },
+  { value: 'other', label: 'Something else' },
 ];
 
-const deliveryNotes = [
+const nextSteps = [
   {
-    title: 'Your message is sent safely',
-    body: 'Use the form to share what you need help with. Your enquiry is sent directly to Advanced Analytica so we can review it properly.'
+    title: 'We review your submission',
+    body: 'We read what you send and reply with a useful next step, not an automated nurture sequence.',
   },
   {
-    title: 'You see it was sent',
-    body: 'After the form is sent, you will see an on-screen confirmation so you know your enquiry has reached us.'
+    title: '30-minute scoping conversation',
+    body: 'We talk through the operating problem, what needs governing, and which teams, systems, or workflows are in scope.',
   },
   {
-    title: 'We come back with a next step',
-    body: 'We read each enquiry and respond with the most useful next step, whether that is a short call, a scoping conversation, or a more detailed briefing.'
-  }
+    title: 'Clear recommendation',
+    body: 'We tell you what we think you need next, whether that is a short diagnostic, a scoping engagement, or a different route entirely.',
+  },
 ];
 ---
 <BaseLayout
@@ -51,164 +50,625 @@ const deliveryNotes = [
   page={page}
   hideFooterContactCta={true}
 >
-  <section class="relative overflow-hidden bg-gradient-to-br from-black via-[#0b0e14] to-[#171b24] text-paper">
-    <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/50" aria-hidden="true"></div>
-    <div class="absolute -left-28 top-20 h-80 w-80 rounded-full bg-[#14B8A6]/12 blur-3xl" aria-hidden="true"></div>
-    <div class="absolute right-0 top-10 h-80 w-80 rounded-full bg-[#ff8c69]/10 blur-3xl" aria-hidden="true"></div>
+  <section class="aa-contact-hero">
+    <div class="aa-contact-container">
+      <p class="aa-contact-eyebrow">Contact</p>
 
-    <div class="container-wide relative z-10 py-24">
-      <div class="grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
+      <div class="aa-contact-hero-grid">
+        <h1 class="aa-contact-hero-title">
+          Let's talk about your agenda.
+        </h1>
+
         <div>
-          <h1 class="text-[clamp(2.2rem,4.6vw,3.75rem)] font-semibold leading-[1.05] tracking-tight text-paper">
-            <span class="block">Ready to put your</span>
-            <span class="block">brand to work?</span>
-          </h1>
-          <p class="mt-7 max-w-[72ch] text-lg leading-relaxed text-paper/80 md:text-xl">
-            Tell us what you are trying to improve, what needs governing, and
-            where AI or data systems need to work more reliably. We will help
-            you turn the problem into a practical next step.
+          <p class="aa-contact-hero-lead">
+            A 30-minute conversation is typically enough for us to understand where you are, what
+            needs governing, and whether we are the right fit. No pitch deck,
+            just an honest conversation about your operating model, controls, and
+            current agenda.
           </p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-          <div class="mt-8 rounded-2xl border border-paper/15 bg-ink/35 p-6 shadow-outline backdrop-blur md:p-8">
-            <h1 class="text-xs font-semibold tracking-[0.2em] uppercase text-[#14B8A6]">
-              Helpful context
-            </h1>
-            <ul class="mt-5 grid gap-4 text-sm leading-relaxed text-paper/75 md:text-base">
-              {briefingPrompts.map((item) => (
-                <li class="flex gap-3">
-                  <span class="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#ff8c69]" aria-hidden="true"></span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+  <section class="aa-contact-main">
+    <div class="aa-contact-container aa-contact-main-grid">
+      <div class="aa-contact-formcard">
+        <div id="form-success" class="aa-contact-formstate aa-contact-formstate-ok" hidden>
+          <p class="aa-contact-formstate-title">Thank you. We’ll be in touch.</p>
+          <p class="aa-contact-formstate-body">
+            We’ll review your note and come back within one business day.
+          </p>
         </div>
 
-        <div class="bg-paper p-12 text-ink lg:-mr-[calc(50vw-50%)] lg:pr-[calc(50vw-50%)]">
-          <div class="mb-8">
-            <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#14B8A6]">
-              Get in touch
-            </div>
-            <h2 class="mt-3 text-[clamp(1.9rem,3vw,2.7rem)] font-semibold tracking-tight text-ink">
-              Send the outline
-            </h2>
-            <p class="mt-3 max-w-[38rem] text-base leading-relaxed text-steel md:text-lg">
-              Tell us what you need, what is not working today, or what you would like to build. We’ll review it and come back with the right next step.
-            </p>
-          </div>
+        <div id="form-error" class="aa-contact-formstate aa-contact-formstate-error" hidden>
+          <p class="aa-contact-formstate-title">Something went wrong.</p>
+          <p class="aa-contact-formstate-body">
+            Please try again, or email us directly via
+            <a href="mailto:hello@advancedanalytica.co.uk">hello@advancedanalytica.co.uk</a>.
+          </p>
+        </div>
 
-          <form
-            id="contact-form"
-            action={leadEndpoint}
-            method="POST"
-            data-lead-form
-            data-lead-endpoint={leadEndpoint}
-            data-status-target="contact-status"
-            class="grid gap-6 max-w-[520px]"
-            novalidate
-          >
-            <input
-              type="text"
-              name="website"
-              class="hidden"
-              tabindex="-1"
-              autocomplete="off"
-              aria-hidden="true"
-            />
-            <input type="hidden" name="language" value="en" />
+        <form
+          id="contact-form"
+          action={leadEndpoint}
+          method="POST"
+          data-lead-form
+          data-lead-endpoint={leadEndpoint}
+          data-status-target="contact-status"
+          data-form-location="contact_page"
+          novalidate
+        >
+          <p class="aa-contact-formcard-title">Book a 30-minute call</p>
 
-            <div class="grid gap-2">
-              <label for="name" class="text-base font-semibold text-ink/70">Name</label>
+          <input
+            type="text"
+            name="website"
+            class="hidden"
+            tabindex="-1"
+            autocomplete="off"
+            aria-hidden="true"
+          />
+          <input type="hidden" name="language" value="en" />
+
+          <div class="aa-contact-field-row">
+            <div class="aa-contact-field">
+              <label for="contact-name">Full name <span>*</span></label>
               <input
-                id="name"
+                id="contact-name"
                 name="name"
                 type="text"
                 autocomplete="name"
-                required
                 placeholder="Your name"
-                class={fieldClass}
+                required
               />
             </div>
 
-            <div class="grid gap-2">
-              <label for="email" class="text-base font-semibold text-ink/70">Email*</label>
+            <div class="aa-contact-field">
+              <label for="contact-role">Job title <span>*</span></label>
               <input
-                id="email"
+                id="contact-role"
+                name="role"
+                type="text"
+                autocomplete="organization-title"
+                placeholder="e.g. CIO, COO, Head of Brand"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="aa-contact-field-row">
+            <div class="aa-contact-field">
+              <label for="contact-company">Company <span>*</span></label>
+              <input
+                id="contact-company"
+                name="company"
+                type="text"
+                autocomplete="organization"
+                placeholder="Company name"
+                required
+              />
+            </div>
+
+            <div class="aa-contact-field">
+              <label for="contact-email">Work email <span>*</span></label>
+              <input
+                id="contact-email"
                 name="email"
                 type="email"
                 autocomplete="email"
+                spellcheck="false"
                 inputmode="email"
-                required
                 placeholder="you@company.com"
-                class={fieldClass}
-              />
-              <p class="text-xs leading-relaxed text-steel">
-                This must be a business email address.
-              </p>
-            </div>
-
-            <div class="grid gap-2">
-              <label for="contact-subject" class="text-base font-semibold text-ink/70">Subject*</label>
-              <input
-                id="contact-subject"
-                name="topic"
-                type="text"
                 required
-                placeholder="What would you like to discuss?"
-                class={fieldClass}
               />
             </div>
+          </div>
 
-            <div class="grid gap-2">
-              <label for="message" class="text-base font-semibold text-ink/70">Message</label>
-              <textarea
-                id="message"
-                name="message"
-                rows="4"
-                required
-                placeholder="Tell us what you need, what is not working today, or what you would like to build."
-                class={`${fieldClass} min-h-40 resize-y`}
-              ></textarea>
+          <div class="aa-contact-field">
+            <label for="contact-topic">Where are you in your programme? <span>*</span></label>
+            <select id="contact-topic" name="topic" required>
+              <option value="" disabled selected>Select your current stage</option>
+              {programmeStages.map((stage) => (
+                <option value={stage.value}>{stage.label}</option>
+              ))}
+            </select>
+          </div>
+
+          <div class="aa-contact-field">
+            <label for="contact-message">What would you like to discuss? <span>*</span></label>
+            <textarea
+              id="contact-message"
+              name="message"
+              placeholder="Tell us what you are trying to improve, what is not working today, or what needs to become governable."
+              required
+            ></textarea>
+          </div>
+
+          <button type="submit" class="aa-contact-submit">
+            Book your call
+          </button>
+
+          <p class="aa-contact-formcard-note">
+            We’ll reply within one business day. No commitment required.
+          </p>
+
+          <div id="contact-status" class="aa-contact-status" aria-live="polite"></div>
+
+          <noscript>
+            <p class="aa-contact-formcard-note">
+              JavaScript is disabled. Submitting the form will still send your enquiry securely.
+            </p>
+          </noscript>
+        </form>
+      </div>
+
+      <div class="aa-contact-side">
+        <div>
+          <p class="aa-contact-eyebrow">What happens next</p>
+
+          <div class="aa-contact-steps">
+            {nextSteps.map((step, index) => {
+              const isLast = index === nextSteps.length - 1;
+              return (
+                <div class="aa-contact-step" data-last={isLast ? 'true' : 'false'}>
+                  <div class="aa-contact-step-rail">
+                    <div class="aa-contact-step-chip" data-last={isLast ? 'true' : 'false'}>
+                      <span>{String(index + 1).padStart(2, '0')}</span>
+                    </div>
+                    {!isLast ? <div class="aa-contact-step-line"></div> : null}
+                  </div>
+
+                  <div class="aa-contact-step-content">
+                    <p class="aa-contact-step-title">{step.title}</p>
+                    <p class="aa-contact-step-body">{step.body}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div class="aa-contact-directcard">
+          <p class="aa-contact-eyebrow">Direct contact</p>
+
+          <div class="aa-contact-direct">
+            <div>
+              <p class="aa-contact-direct-label">Email</p>
+              <a href="mailto:hello@advancedanalytica.co.uk" class="aa-contact-direct-link">
+                hello@advancedanalytica.co.uk
+              </a>
             </div>
 
-            <div class="pt-2">
-              <div class="flex justify-end pr-10">
-                <button
-                  type="submit"
-                  class="rounded-md bg-ink px-8 py-3 text-sm font-semibold text-paper"
-                >
-                  Submit
-                </button>
-              </div>
-              <div id="contact-status" class="mt-3 text-sm text-steel" aria-live="polite"></div>
+            <div class="aa-contact-direct-rule"></div>
+
+            <div>
+              <p class="aa-contact-direct-label">LinkedIn</p>
+              <a
+                href="https://www.linkedin.com/company/advanced-analytica/"
+                target="_blank"
+                rel="noreferrer"
+                class="aa-contact-direct-link"
+              >
+                Advanced Analytica on LinkedIn →
+              </a>
             </div>
 
-            <noscript>
-              <p class="text-base text-steel">
-                JavaScript is disabled. Submitting the form will still send your enquiry through the secure form endpoint.
-              </p>
-            </noscript>
-          </form>
+            <div class="aa-contact-direct-rule"></div>
+
+            <div>
+              <p class="aa-contact-direct-label">Response time</p>
+              <p class="aa-contact-direct-plain">Within one business day</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="aa-contact-reassure">
+          <span class="aa-contact-reassure-dot"></span>
+          <p>
+            <strong>No commitment, no sales deck..</strong> We won't add you to a nurture campaign or send you a 40-slide presentation. If we're not the right fit, we'll tell you, and point you somewhere useful.
+          </p>
         </div>
       </div>
     </div>
-    </div>
   </section>
 
-  <section class="bg-paper">
-    <div class="container-wide py-20">
-      <div class="grid gap-6 lg:grid-cols-3">
-        {deliveryNotes.map((item) => (
-          <div class="rounded-2xl border border-fog bg-surface p-8 shadow-outline">
-            <div class="text-xs font-semibold tracking-[0.2em] uppercase text-[#14B8A6]">
-              {item.title}
-            </div>
-            <p class="mt-4 text-base leading-relaxed text-steel">
-              {item.body}
-            </p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
+  <script is:inline type="module" src={contactLeadsScriptUrl}></script>
+
+  <style>
+    .aa-contact-container {
+      max-width: 1224px;
+      margin: 0 auto;
+      padding-inline: 1.25rem;
+    }
+
+    .aa-contact-eyebrow {
+      margin: 0 0 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: color-mix(in srgb, var(--color-ink) 30%, white);
+    }
+
+    .aa-contact-hero {
+      padding-top: 5rem;
+      padding-bottom: 4rem;
+      border-bottom: 1px solid color-mix(in srgb, var(--color-ink) 10%, white);
+      background: var(--color-paper);
+    }
+
+    .aa-contact-hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .aa-contact-hero-title {
+      margin: 0;
+      font-size: clamp(40px, 4.4vw, 60px);
+      font-weight: 900;
+      letter-spacing: -0.055em;
+      line-height: 1.25;
+      color: var(--color-ink);
+      text-wrap: balance;
+    }
+
+    .aa-contact-hero-lead {
+      max-width: 34rem;
+      margin: 0;
+      font-size: 1.125rem;
+      color: color-mix(in srgb, var(--color-ink) 62%, white);
+      line-height: 1.625;
+      text-wrap: pretty;
+    }
+
+    .aa-contact-main {
+      padding-top: 5rem;
+      padding-bottom: 6rem;
+      background: var(--color-paper);
+    }
+
+    .aa-contact-main-grid {
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      gap: 72px;
+      align-items: start;
+    }
+
+    .aa-contact-formcard {
+      background: color-mix(in srgb, var(--color-ink) 3%, white);
+      border: 1px solid #ebebeb;
+      border-radius: 1.5rem;
+      padding: 44px;
+    }
+
+    .aa-contact-formcard-title {
+      margin: 0 0 2rem;
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--color-ink);
+    }
+
+    .aa-contact-field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .aa-contact-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 1rem;
+    }
+
+    .aa-contact-field-row .aa-contact-field {
+      margin-bottom: 0;
+    }
+
+    .aa-contact-field label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--color-ink);
+    }
+
+    .aa-contact-field label span {
+      color: #14B8A6;
+    }
+
+    .aa-contact-field input,
+    .aa-contact-field select,
+    .aa-contact-field textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid color-mix(in srgb, var(--color-ink) 14%, white);
+      border-radius: 0.875rem;
+      font-size: 1rem;
+      color: var(--color-ink);
+      background: #fff;
+      outline: none;
+      transition:
+        border-color 180ms ease,
+        box-shadow 180ms ease;
+    }
+
+    .aa-contact-field textarea {
+      min-height: 120px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .aa-contact-field input::placeholder,
+    .aa-contact-field textarea::placeholder {
+      color: color-mix(in srgb, var(--color-ink) 34%, white);
+    }
+
+    .aa-contact-field input:focus,
+    .aa-contact-field select:focus,
+    .aa-contact-field textarea:focus {
+      border-color: #14B8A6;
+      box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.12);
+    }
+
+    .aa-contact-field select {
+      appearance: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+      padding-right: 40px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+    }
+
+    .aa-contact-submit {
+      width: 100%;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+      padding: 15px;
+      border: none;
+      border-radius: 0.875rem;
+      background: #14B8A6;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition:
+        background 180ms ease,
+        transform 180ms ease;
+    }
+
+    .aa-contact-submit:hover {
+      background: #0F766E;
+      transform: translateY(-1px);
+    }
+
+    .aa-contact-submit:disabled {
+      opacity: 0.6;
+      cursor: default;
+      transform: none;
+    }
+
+    .aa-contact-formcard-note,
+    .aa-contact-status {
+      text-align: center;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      color: color-mix(in srgb, var(--color-ink) 40%, white);
+    }
+
+    .aa-contact-status {
+      margin-top: 0.5rem;
+    }
+
+    .aa-contact-formstate {
+      margin-bottom: 1.5rem;
+      padding: 1.5rem;
+      border-radius: 1rem;
+    }
+
+    .aa-contact-formstate-ok {
+      background: rgba(20, 184, 166, 0.1);
+    }
+
+    .aa-contact-formstate-error {
+      background: #fff0f0;
+      border: 1px solid #ffd6d6;
+    }
+
+    .aa-contact-formstate-title {
+      margin: 0 0 0.25rem;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--color-ink);
+    }
+
+    .aa-contact-formstate-body {
+      margin: 0;
+      font-size: 1rem;
+      color: color-mix(in srgb, var(--color-ink) 62%, white);
+    }
+
+    .aa-contact-formstate-body a {
+      color: #14B8A6;
+    }
+
+    .aa-contact-side {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .aa-contact-steps {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .aa-contact-step {
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+      padding-bottom: 28px;
+    }
+
+    .aa-contact-step[data-last="true"] {
+      padding-bottom: 0;
+    }
+
+    .aa-contact-step-rail {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .aa-contact-step-chip {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.5rem;
+      background: #14B8A6;
+    }
+
+    .aa-contact-step-chip[data-last="true"] {
+      background: rgba(20, 184, 166, 0.12);
+      border: 1px solid rgba(20, 184, 166, 0.28);
+    }
+
+    .aa-contact-step-chip span {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #fff;
+    }
+
+    .aa-contact-step-chip[data-last="true"] span {
+      color: #14B8A6;
+    }
+
+    .aa-contact-step-line {
+      width: 1px;
+      min-height: 32px;
+      flex: 1;
+      margin-top: 8px;
+      background: color-mix(in srgb, var(--color-ink) 10%, white);
+    }
+
+    .aa-contact-step-content {
+      padding-top: 4px;
+    }
+
+    .aa-contact-step-title {
+      margin: 0 0 6px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--color-ink);
+    }
+
+    .aa-contact-step-body {
+      margin: 0;
+      font-size: 0.875rem;
+      line-height: 1.625;
+      color: color-mix(in srgb, var(--color-ink) 50%, white);
+    }
+
+    .aa-contact-directcard {
+      padding: 28px 24px;
+      border: 1px solid #ebebeb;
+      border-radius: 1rem;
+      background: color-mix(in srgb, var(--color-ink) 3%, white);
+    }
+
+    .aa-contact-direct {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .aa-contact-direct-label {
+      margin: 0 0 4px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--color-ink);
+    }
+
+    .aa-contact-direct-link {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #14B8A6;
+      text-decoration: none;
+      transition: opacity 180ms ease;
+    }
+
+    .aa-contact-direct-link:hover {
+      opacity: 0.75;
+    }
+
+    .aa-contact-direct-plain {
+      margin: 0;
+      font-size: 1rem;
+      color: color-mix(in srgb, var(--color-ink) 62%, white);
+    }
+
+    .aa-contact-direct-rule {
+      height: 1px;
+      background: #ebebeb;
+    }
+
+    .aa-contact-reassure {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      background: rgba(20, 184, 166, 0.1);
+    }
+
+    .aa-contact-reassure-dot {
+      width: 6px;
+      height: 6px;
+      margin-top: 7px;
+      flex-shrink: 0;
+      border-radius: 1px;
+      background: #14B8A6;
+    }
+
+    .aa-contact-reassure p {
+      margin: 0;
+      font-size: 0.875rem;
+      line-height: 1.625;
+      color: var(--color-ink);
+    }
+
+    @media (max-width: 880px) {
+      .aa-contact-hero-grid,
+      .aa-contact-main-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .aa-contact-container {
+        padding-inline: 1.5rem;
+      }
+
+      .aa-contact-formcard {
+        padding: 1.5rem;
+      }
+
+      .aa-contact-field-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      .aa-contact-field-row .aa-contact-field {
+        margin-bottom: 1rem;
+      }
+    }
+  </style>
 </BaseLayout>

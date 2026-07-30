@@ -148,7 +148,7 @@ const html = `<!doctype html>
       --paper: #f8fafc;
       --muted: rgba(248, 250, 252, 0.72);
       --accent: #14B8A6;
-      --orange: #ff8c69;
+      --teal: #14B8A6;
     }
 
     * {

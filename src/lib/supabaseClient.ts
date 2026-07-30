@@ -6,5 +6,5 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
 export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
 
 export const supabase = isSupabaseConfigured
-  ? createBrowserClient(supabaseUrl, supabaseAnonKey)
+  ? createBrowserClient(supabaseUrl as string, supabaseAnonKey as string)
   : null;
