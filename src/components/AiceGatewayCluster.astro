@@ -7,10 +7,10 @@ type ClusterNode = {
 const defaultLeftData: ClusterNode = {
   name: 'Enterprise IT',
   children: [
-    { name: 'Brand Agent' },
-    { name: 'Support Agent' },
-    { name: 'Marketing Agent' },
-    { name: 'Other Agents' }
+    { name: 'Brand Team' },
+    { name: 'Support Team' },
+    { name: 'Marketing Team' },
+    { name: 'Other Teams' }
   ]
 };
 
@@ -18,40 +18,40 @@ const defaultRightData: ClusterNode = {
   name: 'Connected Systems',
   children: [
     {
-      name: 'Brand MCP',
+      name: 'Brand Agent',
       children: [{ name: 'Standards' }, { name: 'Toolkits' }, { name: 'Assets' }]
     },
     {
-      name: 'Support MCP',
+      name: 'Support Agent',
       children: [{ name: 'Tickets' }, { name: 'Knowledge' }, { name: 'Escalations' }]
     },
     {
-      name: 'Marketing MCP',
+      name: 'Marketing Agent',
       children: [{ name: 'Campaigns' }, { name: 'Channels' }, { name: 'Content' }]
     },
     {
-      name: 'Other MCP',
+      name: 'Other Agents',
       children: [{ name: 'Systems' }, { name: 'Policies' }, { name: 'Workflows' }]
     }
   ]
 };
 
 const {
-  title = 'Brando - Brand-first Operating Model',
+  title = 'Brando - AI Brand Brain',
   leftData = defaultLeftData,
   rightData = defaultRightData,
-  agentOrder = ['Brand Agent', 'Support Agent', 'Marketing Agent', 'Other Agents'],
+  agentOrder = ['Brand Team', 'Support Team', 'Marketing Team', 'Other Teams'],
   agentToMcp = {
-    'Brand Agent': 'Brand MCP',
-    'Support Agent': 'Support MCP',
-    'Marketing Agent': 'Marketing MCP',
-    'Other Agents': 'Other MCP'
+    'Brand Team': 'Brand Agent',
+    'Support Team': 'Support Agent',
+    'Marketing Team': 'Marketing Agent',
+    'Other Teams': 'Other Agents'
   },
   questionToTools = {},
-  controlLayer = 'CONTROLLED AI COMMUNICATIONS',
+  controlLayer = 'CONTROLLED BRAND COMMUNICATIONS',
   tagline = '',
   leftColumnOffset = 0,
-  ariaLabel = 'Brando Brand Oracle controlled AI communications diagram'
+  ariaLabel = 'Brando AI Brand Brain controlled AI communications diagram'
 } = Astro.props as {
   title?: string;
   leftData?: ClusterNode;
@@ -142,6 +142,7 @@ const diagramConfig = JSON.stringify({
 </style>
 
 <script>
+  // @ts-nocheck
   import * as d3 from 'd3';
 
   (() => {
@@ -215,7 +216,7 @@ const diagramConfig = JSON.stringify({
       .attr('fill', '#ffffff')
       .attr('font-size', 26)
       .attr('font-weight', 700)
-      .text(config.title || 'Brando - Brand-first Operating Model');
+      .text(config.title || 'Brando - AI Brand Brain');
 
     const glow = defs
       .append('filter')
@@ -406,12 +407,12 @@ const diagramConfig = JSON.stringify({
       .attr('fill', 'rgba(255,255,255,0.95)')
       .attr('font-size', 19)
       .attr('font-weight', 600)
-      .text('BRAND ORACLE');
+      .text('AI BRAND BRAIN');
 
-    const controlLayerLabel = config.controlLayer || 'CONTROLLED AI COMMUNICATIONS';
+    const controlLayerLabel = config.controlLayer || 'CONTROLLED BRAND COMMUNICATIONS';
     const controlLayerLines =
-      controlLayerLabel === 'CONTROLLED AI COMMUNICATIONS'
-        ? ['CONTROLLED AI', 'COMMUNICATIONS']
+      controlLayerLabel === 'CONTROLLED BRAND COMMUNICATIONS'
+        ? ['CONTROLLED BRAND', 'COMMUNICATIONS']
         : [controlLayerLabel];
 
     const controlLayerText = gatewayLabel
@@ -503,17 +504,17 @@ const diagramConfig = JSON.stringify({
     const defaultRightStroke = 'rgba(226,232,240,0.72)';
     const defaultBridgeStroke = 'rgba(226,232,240,0.72)';
     const activeStroke = '#14B8A6';
-    const agentOrder = config.agentOrder || ['Brand Agent', 'Support Agent', 'Marketing Agent', 'Other Agents'];
+    const agentOrder = config.agentOrder || ['Brand Team', 'Support Team', 'Marketing Team', 'Other Teams'];
     let rightGroup;
     let autoplayTimer = null;
     let autoplayIndex = 0;
     let isInView = false;
     let isManualHover = false;
     const agentToMcp = config.agentToMcp || {
-      'Brand Agent': 'Brand MCP',
-      'Support Agent': 'Support MCP',
-      'Marketing Agent': 'Marketing MCP',
-      'Other Agents': 'Other MCP'
+      'Brand Team': 'Brand Agent',
+      'Support Team': 'Support Agent',
+      'Marketing Team': 'Marketing Agent',
+      'Other Teams': 'Other Agents'
     };
     const questionToTools = config.questionToTools || {};
 
@@ -553,7 +554,7 @@ const diagramConfig = JSON.stringify({
 
         if (activeMcpNames.size === 0) {
           activeMcpNames.add(activeMcpName);
-          activeMcpNames.add('Brand MCP');
+          activeMcpNames.add('Brand Agent');
         }
 
         activeMcpNames.forEach((mcpName) => {

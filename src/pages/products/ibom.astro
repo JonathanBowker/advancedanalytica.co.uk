@@ -2,10 +2,10 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { SITE_URL } from '../../lib/seo/site';
 
-const title = 'iBOM<sup>®</sup>';
+const title = 'IBOM';
 const description = 'This page has moved.';
 
-const targetPath = '/services/iBOM/';
+const targetPath = '/services/IBOM/';
 const targetUrl = `${SITE_URL}${targetPath}`;
 
 const page = {
@@ -15,7 +15,7 @@ const page = {
   breadcrumbs: [
     { name: 'Home', url: `${SITE_URL}/` },
     { name: 'Services', url: `${SITE_URL}/services/` },
-    { name: 'iBOM<sup>®</sup>', url: targetUrl }
+    { name: 'IBOM', url: targetUrl }
   ]
 };
 ---
@@ -27,13 +27,13 @@ const page = {
   <section class="container-wide py-16">
     <h1 class="text-3xl font-semibold tracking-tight text-ink">Redirecting…</h1>
     <p class="mt-4 text-steel">
-      This page has moved to <a class="underline hover:text-ink" href={targetPath}>iBOM<sup>®</sup></a>.
+      This page has moved to <a class="underline hover:text-ink" href={targetPath}>IBOM</a>.
     </p>
   </section>
 
   <script is:inline>
     (() => {
-      const target = "/services/iBOM/";
+      const target = "/services/IBOM/";
       if (typeof window !== "undefined") window.location.replace(target);
     })();
   </script>

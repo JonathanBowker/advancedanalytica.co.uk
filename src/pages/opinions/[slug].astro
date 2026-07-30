@@ -2,11 +2,10 @@
 export const prerender = true;
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import TagPill from '../../components/TagPill.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
 import FunctionRoutingPrompt from '../../components/FunctionRoutingPrompt.astro';
 import components from '../../lib/mdx/components';
-import { getCollection } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 import { SITE_URL } from '../../lib/seo/site';
 import { getGeneratedCoverPath } from '../../lib/contentCover';
 import { toSentenceCaseTitle } from '../../lib/titleFormat';
@@ -16,8 +15,8 @@ export async function getStaticPaths() {
   return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
 }
 
-const { post } = Astro.props as { post: Awaited<ReturnType<typeof getCollection>>[number] };
-const { Content, headings } = await post.render();
+const { post } = Astro.props as { post: CollectionEntry<'blog'> };
+const { Content } = await post.render();
 
 const allPosts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
   (a, b) => a.data.publishedAt.valueOf() - b.data.publishedAt.valueOf()
@@ -98,7 +97,7 @@ const page = {
 
           <div>
             <div class="flex flex-wrap gap-3">
-              {post.data.tags.map((tag) => (
+              {post.data.tags.map((tag: string) => (
                 <a
                   href={`/opinions/tag/${encodeURIComponent(tag)}`}
                   class="rounded-sm bg-[#14B8A6] px-4 py-2 text-xs font-semibold uppercase text-paper transition-colors hover:bg-[#0F766E]"
@@ -146,7 +145,7 @@ const page = {
             <div class="mt-4">
               <a
                 href="#case-study-content"
-                class="text-sm font-semibold tracking-[0.18em] uppercase text-orange-500 hover:text-orange-600"
+                class="text-sm font-semibold tracking-[0.18em] uppercase text-[#14B8A6] hover:text-[#0F766E]"
               >
                 READ MORE
               </a>

@@ -1,7 +1,7 @@
 ---
 import type { EmailOtpType } from '@supabase/supabase-js';
 import { createSupabaseServerClient, isSupabaseConfigured } from '../../lib/supabaseServer';
-import { getRequestOrigin, getTenantHomePath } from '../../lib/tenants';
+import { getRequestOrigin } from '../../lib/tenants';
 
 if (!isSupabaseConfigured) {
   return Astro.redirect('/login?error=config');
@@ -16,8 +16,6 @@ const requestUrl = new URL(Astro.request.url);
 const authCode = requestUrl.searchParams.get('code');
 const tokenHash = requestUrl.searchParams.get('token_hash');
 const type = requestUrl.searchParams.get('type') as EmailOtpType | null;
-const requestedNextPath = requestUrl.searchParams.get('next');
-const nextPath = requestedNextPath?.startsWith('/') ? requestedNextPath : getTenantHomePath();
 
 let success = false;
 let callbackError = '';
@@ -36,7 +34,11 @@ if (authCode) {
 }
 
 if (success) {
-  return Astro.redirect(nextPath);
+  return Astro.redirect(
+    requestUrl.searchParams.get('next')?.startsWith('/')
+      ? String(requestUrl.searchParams.get('next'))
+      : '/portal'
+  );
 }
 
 const loginErrorUrl = new URL('/login', getRequestOrigin(Astro.request));

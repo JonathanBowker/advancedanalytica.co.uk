@@ -1,4 +1,4 @@
-export const SITE_URL = 'https://advancedanalytica.co.uk';
+export const SITE_URL = String(import.meta.env.PUBLIC_SITE_URL || 'https://advancedanalytica.co.uk').replace(/\/+$/, '');
 export const SITE_NAME = 'Advanced Analytica';
 export const SITE_TAGLINE = 'Stop Trusting AI. Start Governing It.';
 export const ORGANIZATION_LOGO = `${SITE_URL}/images/infrastructure/logo.png`;

@@ -7,12 +7,12 @@
       <stop offset="0.52" stop-color="#0b0e14"/>
       <stop offset="1" stop-color="#171b24"/>
     </linearGradient>
-    <radialGradient id="pinkGlow" cx="0.78" cy="0.28" r="0.52">
+    <radialGradient id="tealGlow" cx="0.78" cy="0.28" r="0.52">
       <stop offset="0" stop-color="#14B8A6" stop-opacity="0.58"/>
       <stop offset="0.42" stop-color="#14B8A6" stop-opacity="0.16"/>
       <stop offset="1" stop-color="#14B8A6" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="orangeGlow" cx="0.14" cy="0.88" r="0.5">
+    <radialGradient id="deepTealGlow" cx="0.14" cy="0.88" r="0.5">
       <stop offset="0" stop-color="#14B8A6" stop-opacity="0.5"/>
       <stop offset="0.45" stop-color="#14B8A6" stop-opacity="0.12"/>
       <stop offset="1" stop-color="#14B8A6" stop-opacity="0"/>
@@ -23,8 +23,8 @@
   </defs>
 
   <rect width="1200" height="630" fill="url(#bg)"/>
-  <rect width="1200" height="630" fill="url(#pinkGlow)"/>
-  <rect width="1200" height="630" fill="url(#orangeGlow)"/>
+  <rect width="1200" height="630" fill="url(#tealGlow)"/>
+  <rect width="1200" height="630" fill="url(#deepTealGlow)"/>
   <path d="M960 112 C1032 172 1074 245 1110 338" fill="none" stroke="#14B8A6" stroke-opacity="0.18" stroke-width="2"/>
   <path d="M916 154 C990 225 1032 308 1064 414" fill="none" stroke="#14B8A6" stroke-opacity="0.18" stroke-width="2"/>
 

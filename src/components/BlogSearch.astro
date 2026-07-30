@@ -13,17 +13,28 @@
 </div>
 
 <script>
+  type SearchItem = {
+    title: string;
+    description: string;
+    tags?: string[];
+    url: string;
+  };
+
   const input = document.getElementById('blog-search');
   const results = document.getElementById('blog-search-results');
 
-  const render = (items) => {
+  if (!(input instanceof HTMLInputElement) || !results) {
+    throw new Error('Blog search markup is missing required elements.');
+  }
+
+  const render = (items: SearchItem[]) => {
     if (!items.length) {
       results.innerHTML = '<div class="text-xs text-steel">No matches found.</div>';
       return;
     }
     results.innerHTML = items
       .map(
-        (item) => `
+        (item: SearchItem) => `
           <div class="border-b border-fog pb-3">
             <a class="text-sm font-semibold text-ink hover:text-accent" href="${item.url}">${item.title}</a>
             <div class="mt-1 text-xs text-steel">${item.description}</div>
@@ -36,7 +47,7 @@
   const load = async () => {
     const response = await fetch('/opinions/search.json');
     if (!response.ok) return;
-    const data = await response.json();
+    const data = (await response.json()) as SearchItem[];
 
     const onSearch = () => {
       const q = input.value.trim().toLowerCase();
@@ -44,7 +55,7 @@
         results.innerHTML = '';
         return;
       }
-      const filtered = data.filter((item) => {
+      const filtered = data.filter((item: SearchItem) => {
         const haystack = `${item.title} ${item.description} ${(item.tags || []).join(' ')}`.toLowerCase();
         return haystack.includes(q);
       });

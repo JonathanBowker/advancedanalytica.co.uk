@@ -61,12 +61,24 @@ The repo includes a local GA4 Data API report command:
 pnpm ga:report
 ```
 
-Set these values in `.env.local` first:
+Set these values in `.env` or `.env.local`:
 
 ```sh
 GA4_PROPERTY_ID=123456789
 GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/to/google-service-account.json
 ```
+
+The app also expects browser-safe public variables for client-side features:
+
+```sh
+PUBLIC_SITE_URL=https://advancedanalytica.co.uk
+PUBLIC_SUPABASE_URL=...
+PUBLIC_SUPABASE_ANON_KEY=...
+PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+PUBLIC_TURNSTILE_SITE_KEY=...
+```
+
+If you already have `SUPABASE_URL` and `SUPABASE_ANON_KEY` in `.env`, this repo now aliases them into the required `PUBLIC_SUPABASE_*` names automatically.
 
 The Google service account email must have at least Viewer access to the GA4
 property, and the Google Analytics Data API must be enabled in the linked Google

@@ -5,7 +5,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
 import FunctionRoutingPrompt from '../../components/FunctionRoutingPrompt.astro';
 import components from '../../lib/mdx/components';
-import { getCollection } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 import { SITE_URL } from '../../lib/seo/site';
 import { getGeneratedCoverPath } from '../../lib/contentCover';
 import { toSentenceCaseTitle } from '../../lib/titleFormat';
@@ -15,7 +15,7 @@ export async function getStaticPaths() {
   return items.map((item) => ({ params: { slug: item.slug }, props: { item } }));
 }
 
-const { item } = Astro.props as { item: Awaited<ReturnType<typeof getCollection>>[number] };
+const { item } = Astro.props as { item: CollectionEntry<'resources'> };
 const { Content } = await item.render();
 const allItems = (await getCollection('resources', ({ data }) => !data.draft)).sort((a, b) =>
   a.data.title.localeCompare(b.data.title)
@@ -82,7 +82,7 @@ const page = {
           <div>
             {item.data.tags?.length ? (
               <div class="flex flex-wrap gap-3">
-                {item.data.tags.map((tag) => (
+                {item.data.tags.map((tag: string) => (
                   <span class="rounded-sm bg-[#14B8A6] px-4 py-2 text-xs font-semibold uppercase text-paper">
                     {tag}
                   </span>
@@ -130,7 +130,7 @@ const page = {
             <div class="mt-4">
               <a
                 href="#resource-content"
-                class="text-sm font-semibold tracking-[0.18em] uppercase text-orange-500 hover:text-orange-600"
+                class="text-sm font-semibold tracking-[0.18em] uppercase text-[#14B8A6] hover:text-[#0F766E]"
               >
                 READ MORE
               </a>

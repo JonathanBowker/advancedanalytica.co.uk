@@ -20,7 +20,7 @@ const portalServiceCardCatalog = {
   },
   'policy-intake': {
     eyebrow: 'Policy',
-    accent: 'from-[#ff8c69]/22 to-transparent',
+    accent: 'from-[#0F766E]/22 to-transparent',
     cta: 'Open policy intake',
   },
 };
@@ -35,12 +35,6 @@ const buttonClass =
   'inline-flex items-center justify-center rounded-md bg-ink px-5 py-3 text-sm font-semibold text-paper transition hover:bg-[#122033] disabled:cursor-not-allowed disabled:opacity-60';
 const subtleButtonClass =
   'inline-flex items-center justify-center rounded-md border border-white/14 px-4 py-2 text-sm font-semibold text-paper transition hover:border-white/28';
-const lightCardClass =
-  'border border-white/12 bg-white/94 text-ink shadow-[0_30px_90px_rgba(0,0,0,0.26)]';
-const lightInputClass =
-  'w-full rounded-2xl border border-[#d8dbde] bg-white px-4 py-3 text-base text-ink outline-none transition placeholder:text-slate-400 focus:border-[#14B8A6]';
-const lightSubtleButtonClass =
-  'inline-flex items-center justify-center rounded-md border border-ink/12 px-4 py-2 text-sm font-semibold text-ink transition hover:border-ink/30';
 
 function slugifyRole(value) {
   return String(value || '')
@@ -777,7 +771,7 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
               <form onSubmit={(event) => signIn(event, method)} className="form">
                 <label className="label text-sm font-medium text-slate-700">
                   <span>
-                    Email <span className="text-pink-600">*</span>
+                    Email <span className="text-[#14B8A6]">*</span>
                   </span>
                   <input
                     className="input text-base text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#14B8A6]"
@@ -796,7 +790,7 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
                   <div className="space-y-1.5">
                     <div className="flex items-baseline justify-between gap-4">
                       <label className="text-sm font-medium text-slate-700">
-                        Password <span className="text-pink-600">*</span>
+                        Password <span className="text-[#14B8A6]">*</span>
                       </label>
                       <button
                         className="text-sm text-slate-500 underline decoration-slate-300 underline-offset-4 hover:text-slate-700"
@@ -934,7 +928,7 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
           <div className="absolute inset-0 bg-gradient-to-br from-black via-[#0b0e14] to-[#171b24]" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/50" />
           <div className="absolute -left-24 top-16 h-72 w-72 rounded-full bg-[#14B8A6]/10 blur-3xl" />
-          <div className="absolute right-0 top-10 h-80 w-80 rounded-full bg-[#ff8c69]/10 blur-3xl" />
+          <div className="absolute right-0 top-10 h-80 w-80 rounded-full bg-[#14B8A6]/10 blur-3xl" />
 
           <div className="relative flex h-full min-h-[100svh] flex-col p-12 text-white">
             <div className="flex items-center justify-end">
@@ -1293,7 +1287,7 @@ function RoleMagicLinkInner({ role }) {
               <p className="text-sm text-slate-500">We&apos;ll email you a one-time specialist-call link for this role.</p>
               <form onSubmit={submitMagicLink} className="form">
                 <label className="label text-sm font-medium text-slate-700">
-                  <span>Work email <span className="text-pink-600">*</span></span>
+                  <span>Work email <span className="text-[#14B8A6]">*</span></span>
                   <input className="input text-base text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#14B8A6]" type="email" autoComplete="email" inputMode="email" value={email} onChange={(event) => setEmail(event.target.value)} disabled={busy} placeholder="you@company.com" required />
                 </label>
                 <StatusBanner status={status} />
@@ -1311,7 +1305,7 @@ function RoleMagicLinkInner({ role }) {
           <div className="absolute inset-0 bg-gradient-to-br from-black via-[#0b0e14] to-[#171b24]" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/50" />
           <div className="absolute -left-24 top-16 h-72 w-72 rounded-full bg-[#14B8A6]/10 blur-3xl" />
-          <div className="absolute right-0 top-10 h-80 w-80 rounded-full bg-[#ff8c69]/10 blur-3xl" />
+          <div className="absolute right-0 top-10 h-80 w-80 rounded-full bg-[#14B8A6]/10 blur-3xl" />
           <div className="relative flex h-full min-h-[100svh] flex-col p-12 text-white">
             <div className="flex items-center justify-end"><img src="/images/infrastructure/logo.svg" alt="Advanced Analytica" className="h-10 w-auto opacity-85" decoding="async" /></div>
             <div className="flex flex-1 items-start justify-center pt-24">

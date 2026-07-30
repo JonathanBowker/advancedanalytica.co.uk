@@ -17,6 +17,6 @@
   <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="10" opacity=".45">
     <path d="M60 640V520c0-44.2 35.8-80 80-80h250c44.2 0 80-35.8 80-80V60" stroke="#174aff" />
     <path d="M60 640V548c0-44.2 35.8-80 80-80h222c44.2 0 80-35.8 80-80V60" stroke="#8b17ff" />
-    <path d="M60 640V576c0-44.2 35.8-80 80-80h194c44.2 0 80-35.8 80-80V60" stroke="#ff8c69" />
+    <path d="M60 640V576c0-44.2 35.8-80 80-80h194c44.2 0 80-35.8 80-80V60" stroke="#14B8A6" />
   </g>
 </svg>

@@ -2,9 +2,9 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { SITE_URL } from "../lib/seo/site";
 
-const title = "Dots Brand Oracle Wordmark Animation";
+const title = "Dots Brand Brain Wordmark Animation";
 const description =
-  "Prototype page for a dot-cloud animation that assembles into the words Brand Oracle.";
+  "Prototype page for a dot-cloud animation that assembles into the words Brand Brain.";
 
 const page = {
   title,
@@ -30,11 +30,11 @@ const page = {
           Animation prototype
         </div>
         <h1 class="mx-auto mt-6 max-w-[58rem] font-masthead text-[clamp(2.8rem,7vw,6rem)] font-semibold leading-[0.97] tracking-tight text-white">
-          Dots spell Brand Oracle.
+          Dots spell Brand Brain.
         </h1>
         <p class="mx-auto mt-8 max-w-[44rem] text-[clamp(1rem,2vw,1.35rem)] leading-relaxed text-white/68">
           This version scatters a field of dots, then resolves them into a
-          typographic Brand Oracle wordmark.
+          typographic Brand Brain wordmark.
         </p>
       </div>
 
@@ -48,7 +48,7 @@ const page = {
           <canvas
             id="dot-wordmark-canvas"
             class="absolute inset-0 h-full w-full"
-            aria-label="Dot cloud assembling into the words Brand Oracle"
+            aria-label="Dot cloud assembling into the words Brand Brain"
           ></canvas>
           <div
             class="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/45 to-transparent transition-opacity duration-300"
@@ -102,7 +102,7 @@ const page = {
       const context = canvas.getContext("2d");
       if (!context) return;
 
-      const wordmark = "Brand Oracle";
+      const wordmark = "Brand Brain";
       const state = {
         particles: [],
         width: 0,
@@ -275,7 +275,7 @@ const page = {
 
         if (state.mode === "assemble") {
           if (elapsed > state.duration + state.settleDuration) {
-            setStatus(`${state.particles.length} dots assembled into Brand Oracle.`);
+            setStatus(`${state.particles.length} dots assembled into Brand Brain.`);
             return;
           }
           state.frame = requestAnimationFrame(draw);
@@ -287,14 +287,14 @@ const page = {
           return;
         }
 
-        setStatus(`${state.particles.length} dots scattered from Brand Oracle.`);
+        setStatus(`${state.particles.length} dots scattered from Brand Brain.`);
       };
 
       const run = (mode = "assemble") => {
         cancelAnimationFrame(state.frame);
         resize();
         resetParticles(mode);
-        setStatus(mode === "assemble" ? "Assembling dots into Brand Oracle." : "Scattering dots from Brand Oracle.");
+        setStatus(mode === "assemble" ? "Assembling dots into Brand Brain." : "Scattering dots from Brand Brain.");
         state.frame = requestAnimationFrame(draw);
       };
 

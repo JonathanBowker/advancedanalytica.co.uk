@@ -2,7 +2,7 @@
   const forms = document.querySelectorAll("[data-lead-form]");
   if (!forms.length) return;
 
-  const successMessage = "Thank you. Your enquiry has been sent.";
+  const CONTACT_EMAIL = "hello@advancedanalytica.co.uk";
   const RATE_LIMIT_KEY = "aa_lead_last_submit";
   const RATE_LIMIT_MS = 60_000;
   const MIN_SUBMIT_MS = 2_500;
@@ -91,11 +91,9 @@
     if (window._phantom || window.callPhantom) return true;
     if (/Chrome\//.test(navigator.userAgent) && !window.chrome) return true;
     if (window.outerWidth === 0 && window.outerHeight === 0) return true;
-    if (
-      navigator.plugins?.length === 0 &&
-      navigator.mimeTypes?.length === 0 &&
-      !/Firefox/.test(navigator.userAgent)
-    ) {
+    const pluginCount = Array.from(navigator.plugins || []).length;
+    const mimeTypeCount = Array.from(navigator.mimeTypes || []).length;
+    if (pluginCount === 0 && mimeTypeCount === 0 && !/Firefox/.test(navigator.userAgent)) {
       return true;
     }
     return false;
@@ -351,18 +349,21 @@
     window.advancedAnalyticaTrack(eventName, params);
   };
 
+  const getDirectContactMessage = () =>
+    `We are having trouble receiving enquiries right now. Please email ${CONTACT_EMAIL} directly.`;
+
   const getErrorMessage = (result) => {
     if (result?.error === "email_not_configured") {
-      if (result?.reason === "invalid_from_identity") {
-        return "The mail sender is not configured correctly. Please contact jonny.bowker@advancedanalytica.co.uk directly.";
-      }
-
-      return "The mail service is not configured correctly. Please contact jonny.bowker@advancedanalytica.co.uk directly.";
+      return getDirectContactMessage();
     }
 
     if (result?.error !== "email_delivery_failed") {
       if (result?.error === "business_email_required") {
         return "Please use a business email address.";
+      }
+
+      if (result?.error === "email_mx_lookup_failed") {
+        return "Please use a work email domain with valid mail server records.";
       }
 
       if (result?.error === "english_language_required") {
@@ -408,22 +409,14 @@
     }
 
     const reasonMessages = {
-      ses_access_denied:
-        "The mail service is not authorised to send this enquiry. Please email jonny.bowker@advancedanalytica.co.uk directly.",
-      ses_message_rejected:
-        "The mail service rejected this enquiry. Please email jonny.bowker@advancedanalytica.co.uk directly.",
-      ses_signature_error:
-        "The mail service credentials need attention. Please email jonny.bowker@advancedanalytica.co.uk directly.",
-      ses_credentials_invalid:
-        "The mail service credentials need attention. Please email jonny.bowker@advancedanalytica.co.uk directly.",
-      ses_delivery_failed:
-        "The mail service could not send this enquiry. Please email jonny.bowker@advancedanalytica.co.uk directly.",
+      ses_access_denied: getDirectContactMessage(),
+      ses_message_rejected: getDirectContactMessage(),
+      ses_signature_error: getDirectContactMessage(),
+      ses_credentials_invalid: getDirectContactMessage(),
+      ses_delivery_failed: getDirectContactMessage(),
     };
 
-    return (
-      reasonMessages[result?.reason] ||
-      "The mail service could not send this enquiry. Please email jonny.bowker@advancedanalytica.co.uk directly."
-    );
+    return reasonMessages[result?.reason] || getDirectContactMessage();
   };
 
   const getCompletedFieldCount = (form) =>
@@ -545,7 +538,7 @@
 
       .lead-success-kicker {
         margin-bottom: 0.9rem;
-        color: #ff8c69;
+        color: #14B8A6;
         font-size: 0.78rem;
         font-weight: 800;
         letter-spacing: 0.18em;
@@ -603,7 +596,7 @@
 
       .lead-success-close:focus-visible,
       .lead-success-action:focus-visible {
-        outline: 3px solid rgba(255, 140, 105, 0.82);
+        outline: 3px solid rgba(20, 184, 166, 0.82);
         outline-offset: 3px;
       }
 

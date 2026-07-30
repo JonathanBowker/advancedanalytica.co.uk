@@ -2,9 +2,9 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { SITE_URL } from "../lib/seo/site";
 
-const title = "Dots Brand Oracle Animation";
+const title = "Dots Brand Brain Animation";
 const description =
-  "Prototype page for a dot-cloud animation that assembles into the Brand Oracle mark.";
+  "Prototype page for a dot-cloud animation that assembles into the Brand Brain mark.";
 
 const page = {
   title,
@@ -34,7 +34,7 @@ const page = {
         </h1>
         <p class="mx-auto mt-8 max-w-[44rem] text-[clamp(1rem,2vw,1.35rem)] leading-relaxed text-white/68">
           This page loads the dot SVG, scatters every dot into a loose cloud,
-          then resolves the cloud back into the Brand Oracle mark.
+          then resolves the cloud back into the Brand Brain mark.
         </p>
       </div>
 
@@ -48,7 +48,7 @@ const page = {
           <canvas
             id="dot-mark-canvas"
             class="absolute inset-0 h-full w-full"
-            aria-label="Dot cloud assembling into Brand Oracle mark"
+            aria-label="Dot cloud assembling into Brand Brain mark"
           ></canvas>
           <div
             class="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/45 to-transparent transition-opacity duration-300"
@@ -217,7 +217,7 @@ const page = {
         });
       };
 
-      const projectParticle = (particle, elapsed, time) => {
+      const projectParticle = (particle, elapsed) => {
         const local = clamp((elapsed - particle.delay) / state.duration, 0, 1);
         const eased = state.mode === "assemble" ? smootherStep(local) : easeOutCubic(local);
         const wave = Math.sin(eased * Math.PI) * particle.drift;
@@ -231,15 +231,6 @@ const page = {
         return { x, y, radius, alpha: clamp(alpha, 0.16, 1), depth: 0 };
       };
 
-      const drawParticle = (particle, elapsed, time) => {
-        const projected = projectParticle(particle, elapsed, time);
-
-        context.globalAlpha = projected.alpha;
-        context.beginPath();
-        context.arc(projected.x, projected.y, projected.radius, 0, Math.PI * 2);
-        context.fill();
-      };
-
       const draw = (time) => {
         const elapsed = time - state.startedAt;
         context.clearRect(0, 0, state.width, state.height);
@@ -251,7 +242,7 @@ const page = {
         const projectedParticles = state.particles
           .map((particle) => ({
             particle,
-            projected: projectParticle(particle, elapsed, time),
+            projected: projectParticle(particle, elapsed),
           }))
           .sort((a, b) => a.projected.depth - b.projected.depth);
 

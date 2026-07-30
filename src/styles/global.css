@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
 @import "./jonnybowker.css";
 @config "../../tailwind.config.js";
 @import "tailwindcss";
@@ -82,7 +82,7 @@
   }
 
   .container-wide {
-    width: min(1080px, 92vw);
+    width: min(1224px, calc(100vw - 2.5rem));
     margin-inline: auto;
   }
 

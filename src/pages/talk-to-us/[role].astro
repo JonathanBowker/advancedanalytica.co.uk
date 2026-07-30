@@ -2,9 +2,9 @@
 import '../../styles/global.css';
 import { RoleMagicLinkApp } from '../../components/auth/AuthViews.jsx';
 
-const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '0x4AAAAAADKxAX20w3kRuz5A';
+export const prerender = true;
 
-const roles = [
+export const roles = [
   {
     slug: 'ceo',
     label: 'For CEOs',

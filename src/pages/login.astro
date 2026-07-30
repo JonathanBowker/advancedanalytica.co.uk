@@ -4,7 +4,6 @@ import { LoginApp } from '../components/auth/AuthViews.jsx';
 import { getTenantThemeCss } from '../lib/tenants';
 
 const tenant = Astro.locals.tenant;
-const tenantThemeCss = getTenantThemeCss(tenant);
 const turnstileSiteKey =
   String(import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "").trim() ||
   "0x4AAAAAADKxAX20w3kRuz5A";
@@ -24,7 +23,7 @@ const turnstileSiteKey =
     />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="alternate icon" href="/favicon.svg" sizes="any" />
-    <style is:inline>{tenantThemeCss}</style>
+    <style is:inline set:html={getTenantThemeCss(tenant)}></style>
   </head>
   <body class="bg-background text-ink font-[ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,'Segoe_UI',sans-serif]">
     <LoginApp client:load tenantName={tenant.name} tenantSlug={tenant.slug} tenantHost={tenant.host} />

@@ -14,7 +14,6 @@ const {
   signedIn?: boolean;
 };
 
-const themeCss = getTenantThemeCss(tenant);
 ---
 <!doctype html>
 <html
@@ -29,7 +28,7 @@ const themeCss = getTenantThemeCss(tenant);
     <meta name="robots" content="noindex,nofollow" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="alternate icon" href="/favicon.svg" sizes="any" />
-    <style is:inline>{themeCss}</style>
+    <style is:inline set:html={getTenantThemeCss(tenant)}></style>
     <slot name="head" />
   </head>
   <body class="tenant-shell bg-background text-ink">

@@ -4,6 +4,13 @@ import { buildRssFeed } from '../../lib/rss';
 
 export const prerender = true;
 
+type SiteFeedItem = {
+  title: string;
+  description: string;
+  url: string;
+  publishedAt?: Date;
+};
+
 export async function GET() {
   const [opinions, useCases, resources] = await Promise.all([
     getCollection('blog', ({ data }) => !data.draft),
@@ -11,7 +18,7 @@ export async function GET() {
     getCollection('resources', ({ data }) => !data.draft)
   ]);
 
-  const items = [
+  const unsortedItems: SiteFeedItem[] = [
     {
       title: 'Advanced Analytica',
       description:
@@ -35,7 +42,10 @@ export async function GET() {
       description: item.data.description,
       url: `${SITE_URL}/resources/${encodeURIComponent(item.slug)}/`
     }))
-  ].sort((a, b) => (b.publishedAt?.valueOf() ?? 0) - (a.publishedAt?.valueOf() ?? 0));
+  ];
+  const items = unsortedItems.sort(
+    (a, b) => (b.publishedAt?.valueOf() ?? 0) - (a.publishedAt?.valueOf() ?? 0)
+  );
 
   const xml = buildRssFeed({
     title: 'Advanced Analytica Site Feed',
