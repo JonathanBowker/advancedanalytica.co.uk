@@ -16,13 +16,13 @@ const nav: NavItem[] = [
   { label: 'About', href: '/company/about' }
 ];
 ---
- <header data-site-header class="fixed top-0 z-50 w-full border-b border-paper/10 bg-ink/95 backdrop-blur">
-  <div class="container-nav flex items-center justify-between py-5 md:py-7">
-    <a href="/" class="flex items-center gap-3 text-paper justify-self-start">
+ <header data-site-header class="fixed top-0 z-50 w-full border-b border-[#e7e0d4] bg-[#fbfaf6]/96 text-ink backdrop-blur">
+  <div class="container-nav flex items-center justify-between py-4 md:py-4.5">
+    <a href="/" class="flex items-center gap-3 text-ink justify-self-start">
       <img
         src="/images/infrastructure/logo.svg"
         alt="Advanced Analytica"
-        class="h-7 w-auto md:h-9"
+        class="h-7 w-auto brightness-0 saturate-100 md:h-9"
         decoding="async"
       />
       <span class="sr-only">Advanced Analytica: IBOM</span>
@@ -30,15 +30,15 @@ const nav: NavItem[] = [
     <div class="flex items-center gap-3 md:hidden">
       <a
         href={authHref}
-        class="inline-flex items-center gap-2 rounded-md border border-[#14B8A6] px-3 py-2 text-xs font-semibold text-[#14B8A6] shadow-outline transition-colors hover:bg-[#14B8A6] hover:text-paper"
+        class="inline-flex items-center gap-2 rounded-md border border-[#cfe8e2] bg-white px-3 py-2 text-xs font-semibold text-[#0F766E] transition-colors hover:border-[#14B8A6] hover:bg-[#f0fbf8]"
       >
         {authLabel}
       </a>
       <a
         href={contactHref}
-        class="inline-flex items-center gap-2 rounded-md bg-[#14B8A6] px-3 py-2 text-xs font-semibold text-paper shadow-outline transition-colors hover:bg-[#0F766E]"
+        class="inline-flex items-center gap-2 rounded-md bg-[#14B8A6] px-3 py-2 text-xs font-semibold text-paper transition-colors hover:bg-[#0F766E]"
       >
-        Get in touch
+        Talk to Us
         <svg
           class="h-4 w-4"
           viewBox="0 0 20 20"
@@ -59,7 +59,7 @@ const nav: NavItem[] = [
         aria-label="Open menu"
         aria-expanded="false"
         aria-controls="mobile-nav-panel"
-        class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-paper/15 text-paper transition-colors hover:border-paper/30 hover:text-paper"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-[#e7e0d4] bg-white text-ink/72 transition-colors hover:border-[#cfc4b1] hover:text-ink"
       >
         <svg
           data-mobile-menu-icon-open
@@ -90,20 +90,20 @@ const nav: NavItem[] = [
         </svg>
       </button>
     </div>
-    <div class="hidden md:flex md:flex-1 md:items-center md:justify-end md:gap-6">
-      <div class="relative flex flex-1 items-center justify-end gap-6">
-        <nav data-main-nav class="flex items-center gap-8 text-base text-paper/80 transition-opacity duration-200">
+    <div class="hidden md:flex md:flex-1 md:items-center md:justify-end md:gap-7">
+      <div class="relative flex flex-1 items-center justify-end gap-7">
+        <nav data-main-nav class="flex items-center gap-9 text-[0.96rem] text-ink/72 transition-opacity duration-200">
           {nav.map((item) =>
             item.children ? (
               <div class="relative group after:absolute after:inset-x-0 after:top-full after:h-4 after:content-[''] after:bg-transparent">
                 <a
                   href={item.href}
-                  class="inline-flex items-center gap-2 hover:text-paper transition-colors"
+                  class="inline-flex items-center gap-2 hover:text-ink transition-colors"
                   aria-haspopup="true"
                 >
                   {item.label}
                   <svg
-                    class="h-4 w-4 opacity-60 transition-transform group-hover:rotate-180 group-focus-within:rotate-180"
+                    class="h-4 w-4 opacity-45 transition-transform group-hover:rotate-180 group-focus-within:rotate-180"
                     viewBox="0 0 20 20"
                     fill="currentColor"
                     aria-hidden="true"
@@ -113,12 +113,12 @@ const nav: NavItem[] = [
                 </a>
 
                 <div class="absolute left-1/2 top-full z-50 mt-2 w-[320px] -translate-x-1/2 translate-y-2 scale-[0.98] opacity-0 pointer-events-none transition-all duration-200 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:scale-100 group-focus-within:opacity-100 group-focus-within:pointer-events-auto">
-                  <div class="rounded-xl bg-[#d8f6ff] p-3 shadow-outline">
+                  <div class="rounded-xl border border-[#e7e0d4] bg-white p-3 shadow-outline">
                     <div class="grid">
                       {item.children.map((child: { label: string; href: string }) => (
                         <a
                           href={child.href}
-                          class="rounded-lg px-5 py-4 text-sm font-semibold text-ink/90 hover:bg-white/50 hover:text-ink transition-colors"
+                          class="rounded-lg px-5 py-4 text-sm font-semibold text-ink/88 hover:bg-[#f5f1e8] hover:text-ink transition-colors"
                         >
                           {child.label}
                         </a>
@@ -128,7 +128,7 @@ const nav: NavItem[] = [
                 </div>
               </div>
             ) : (
-              <a href={item.href} class="inline-flex items-center hover:text-paper transition-colors">
+              <a href={item.href} class="inline-flex items-center hover:text-ink transition-colors">
                 {item.label}
               </a>
             )
@@ -140,7 +140,7 @@ const nav: NavItem[] = [
           aria-label="Open search"
           aria-expanded="false"
           aria-controls="site-search-panel"
-          class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-paper/15 text-paper/80 transition-colors hover:border-paper/30 hover:text-paper"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-[#e7e0d4] bg-white text-ink/62 transition-colors hover:border-[#cfc4b1] hover:text-ink"
         >
           <svg
             class="h-4 w-4"
@@ -159,7 +159,7 @@ const nav: NavItem[] = [
         <div
           id="site-search-panel"
           data-search-panel
-          class="absolute inset-y-[-0.35rem] right-0 flex w-full max-w-[48rem] items-center opacity-0 pointer-events-none -translate-x-8 transition-all duration-300 ease-out"
+          class="absolute inset-y-[-0.2rem] right-0 flex w-full max-w-[48rem] items-center opacity-0 pointer-events-none -translate-x-8 transition-all duration-300 ease-out"
         >
           <form action="/search" method="get" class="w-full">
             <label class="sr-only" for="site-search-input">Search</label>
@@ -169,12 +169,12 @@ const nav: NavItem[] = [
                 name="q"
                 type="search"
                 placeholder="Search the site..."
-                class="w-full rounded-md border border-paper/15 bg-[#12161d] px-4 py-3 pr-24 text-base text-paper placeholder:text-paper/45 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/40"
+                class="w-full rounded-md border border-[#e7e0d4] bg-white px-4 py-3 pr-24 text-base text-ink placeholder:text-ink/35 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30"
               />
               <button
                 type="submit"
                 aria-label="Submit search"
-                class="absolute right-11 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-md text-paper/70 transition-colors hover:text-paper"
+                class="absolute right-11 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-md text-ink/52 transition-colors hover:text-ink"
               >
                 <svg
                   class="h-4 w-4"
@@ -194,7 +194,7 @@ const nav: NavItem[] = [
                 type="button"
                 data-search-close
                 aria-label="Close search"
-                class="absolute right-3 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-md text-paper/70 transition-colors hover:text-paper"
+                class="absolute right-3 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-md text-ink/52 transition-colors hover:text-ink"
               >
                 <svg
                   class="h-4 w-4"
@@ -216,16 +216,16 @@ const nav: NavItem[] = [
       </div>
       <a
         href={authHref}
-        class="inline-flex items-center gap-2 rounded-md border border-[#14B8A6] px-5 py-2.5 text-sm font-semibold text-[#14B8A6] shadow-outline transition-colors hover:bg-[#14B8A6] hover:text-paper"
+        class="inline-flex items-center gap-2 rounded-md border border-[#d9ded8] bg-white px-5 py-2.5 text-sm font-medium text-ink/58 transition-colors hover:border-[#14B8A6] hover:text-[#0F766E] hover:bg-[#f0fbf8]"
       >
         {authLabel}
         
       </a>
       <a
         href={contactHref}
-        class="inline-flex items-center gap-2 rounded-md bg-[#14B8A6] px-5 py-2.5 text-sm font-semibold text-paper shadow-outline hover:bg-[#0F766E] transition-colors"
+        class="inline-flex items-center gap-2 rounded-md bg-[#14B8A6] px-5 py-2.5 text-sm font-semibold text-paper hover:bg-[#0F766E] transition-colors"
       >
-        Get in touch
+        Talk to Us
         
       </a>
     </div>
@@ -233,20 +233,20 @@ const nav: NavItem[] = [
   <div
     id="mobile-nav-panel"
     data-mobile-menu-panel
-    class="hidden border-t border-paper/10 bg-ink/98 md:hidden"
+    class="hidden border-t border-[#e7e0d4] bg-[#fbfaf6] md:hidden"
   >
-    <nav class="container-nav grid gap-1 py-4 text-base font-medium text-paper/85" aria-label="Mobile navigation">
+    <nav class="container-nav grid gap-1 py-4 text-base font-medium text-ink/78" aria-label="Mobile navigation">
       {nav.map((item) => (
         <a
           href={item.href}
-          class="rounded-md px-3 py-3 transition-colors hover:bg-paper/5 hover:text-paper"
+          class="rounded-md px-3 py-3 transition-colors hover:bg-[#f1ece2] hover:text-ink"
         >
           {item.label}
         </a>
       ))}
       <a
         href="/search"
-        class="rounded-md px-3 py-3 transition-colors hover:bg-paper/5 hover:text-paper"
+        class="rounded-md px-3 py-3 transition-colors hover:bg-[#f1ece2] hover:text-ink"
       >
         Search
       </a>
