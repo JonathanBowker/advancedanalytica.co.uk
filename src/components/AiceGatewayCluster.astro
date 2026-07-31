@@ -103,12 +103,18 @@ const diagramConfig = JSON.stringify({
     animation: aice-rotor-flow 1.2s linear infinite;
   }
 
-  [data-aice-icon-active] {
-    opacity: 0;
+  [data-brando-dot-system],
+  [data-brando-single-dot] {
+    transform-box: fill-box;
+    transform-origin: center;
   }
 
-  [data-aice-icon-active].is-active {
-    animation: aice-icon-beat 1.1s ease-in-out infinite;
+  [data-aice-icon-dots].is-active [data-brando-dot-system] {
+    animation: brando-dot-system-cycle 3.8s ease-in-out infinite;
+  }
+
+  [data-aice-icon-dots].is-active [data-brando-single-dot] {
+    animation: brando-single-dot-cycle 3.8s ease-in-out infinite;
   }
 
   @keyframes aice-rotor-flow {
@@ -129,15 +135,35 @@ const diagramConfig = JSON.stringify({
     }
   }
 
-  @keyframes aice-icon-beat {
+  @keyframes brando-dot-system-cycle {
     0%,
-    100% {
-      opacity: 0.12;
-      filter: drop-shadow(0 0 8px rgba(20,184,166,0.45));
+    24% {
+      transform: rotate(0deg);
+      filter: drop-shadow(0 0 0 rgba(20,184,166,0));
     }
-    50% {
-      opacity: 0.32;
-      filter: drop-shadow(0 0 16px rgba(20,184,166,0.75));
+    55% {
+      transform: rotate(360deg);
+      filter: drop-shadow(0 0 10px rgba(20,184,166,0.42));
+    }
+    72%,
+    100% {
+      transform: rotate(360deg);
+      filter: drop-shadow(0 0 0 rgba(20,184,166,0));
+    }
+  }
+
+  @keyframes brando-single-dot-cycle {
+    0%,
+    12% {
+      transform: translate(0, 0);
+    }
+    24%,
+    62% {
+      transform: translate(0, 42px);
+    }
+    78%,
+    100% {
+      transform: translate(0, 0);
     }
   }
 </style>
@@ -376,21 +402,38 @@ const diagramConfig = JSON.stringify({
 
     gatewayLabel
       .append('image')
-      .attr('href', '/images/infrastructure/brando-avatar.svg')
+      .attr('data-aice-icon-base', '')
+      .attr('href', '/images/infrastructure/brando-avatar-circle.svg')
       .attr('x', -26)
       .attr('y', -118)
       .attr('width', 52)
       .attr('height', 52);
 
-    const gatewayActiveIcon = gatewayLabel
-      .append('image')
-      .attr('data-aice-icon-active', '')
-      .attr('href', '/images/infrastructure/brando-avatar.svg')
-      .attr('x', -26)
-      .attr('y', -118)
-      .attr('width', 52)
-      .attr('height', 52)
-      .style('filter', 'drop-shadow(0 0 12px rgba(20,184,166,0.85))');
+    const gatewayDotsIcon = gatewayLabel
+      .append('g')
+      .attr('data-aice-icon-dots', '')
+      .attr('transform', 'translate(-26,-118) scale(0.35173160173160175)');
+
+    const brandoDotSystem = gatewayDotsIcon
+      .append('g')
+      .attr('data-brando-dot-system', '')
+      .attr('fill', '#000');
+
+    [
+      'M93.08,107.24c.66,5.88-3.94,10.88-9.69,10.88-3.62,0-6.77-1.98-8.45-4.91-.44-.77-1.58-.77-2.02,0-1.68,2.93-4.84,4.91-8.45,4.91-5.75,0-10.36-5-9.69-10.88.5-4.46,4.1-8.06,8.56-8.57,4.08-.46,7.72,1.6,9.58,4.83.45.79,1.58.79,2.04,0,1.86-3.22,5.51-5.29,9.58-4.83,4.46.51,8.06,4.11,8.56,8.57Z',
+      'M64.46,61.35c3.62,0,6.77-1.98,8.45-4.91.44-.77,1.58-.77,2.02,0,1.68,2.93,4.84,4.91,8.45,4.91,5.75,0,10.36-5,9.69-10.88-.5-4.46-4.1-8.06-8.56-8.57-4.07-.46-7.72,1.6-9.58,4.83-.45.79-1.58.79-2.04,0-1.86-3.22-5.51-5.29-9.58-4.83-4.46.51-8.06,4.11-8.56,8.57-.66,5.88,3.94,10.88,9.69,10.88Z',
+      'M50.4,81c-.79-.45-.79-1.58,0-2.04,3.22-1.86,5.29-5.51,4.83-9.58-.51-4.46-4.11-8.06-8.57-8.56-5.88-.66-10.88,3.94-10.88,9.69,0,3.62,1.98,6.77,4.91,8.45.77.44.77,1.58,0,2.02-2.93,1.68-4.91,4.84-4.91,8.45,0,5.75,5,10.36,10.88,9.69,4.46-.5,8.06-4.1,8.57-8.56.46-4.08-1.6-7.72-4.83-9.58Z',
+      'M107.18,81c-.79-.45-.79-1.58,0-2.04,3.22-1.86,5.29-5.51,4.83-9.58-.51-4.46-4.11-8.06-8.57-8.56-5.88-.66-10.88,3.94-10.88,9.69,0,3.62,1.98,6.77,4.91,8.45.77.44.77,1.58,0,2.02-2.93,1.68-4.91,4.84-4.91,8.45,0,5.75,5,10.36,10.88,9.69,4.46-.5,8.06-4.1,8.57-8.56.46-4.08-1.6-7.72-4.83-9.58Z'
+    ].forEach((dotPath) => {
+      brandoDotSystem.append('path').attr('d', dotPath);
+    });
+
+    brandoDotSystem
+      .append('circle')
+      .attr('data-brando-single-dot', '')
+      .attr('cx', 45.54)
+      .attr('cy', 32.67)
+      .attr('r', 8.6);
 
     gatewayLabel
       .append('text')
@@ -649,7 +692,7 @@ const diagramConfig = JSON.stringify({
       }
 
       gatewayRotor.classed('is-active', isActiveAgent);
-      gatewayActiveIcon.classed('is-active', isActiveAgent);
+      gatewayDotsIcon.classed('is-active', isActiveAgent);
     };
 
     const resetQuestionFlow = () => {
