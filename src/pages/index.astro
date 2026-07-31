@@ -20,6 +20,29 @@ const page = {
   breadcrumbs: [{ name: "Home", url: `${SITE_URL}/` }],
 };
 
+const solvedProblems = [
+  {
+    context: "Global professional services",
+    title: "Governed terminology across complex markets",
+    body: "Converted policy rules that were being interpreted differently across teams into structured, machine-readable guidance that could be checked consistently.",
+  },
+  {
+    context: "Entertainment and intellectual property",
+    title: "AI image compliance at asset scale",
+    body: "Designed a verification approach for large visual asset libraries, testing generated outputs against defined brand rules before they reached production workflows.",
+  },
+  {
+    context: "Ambiguous brand governance",
+    title: "A repeatable way to resolve conflicting rules",
+    body: "Turned judgement calls, exceptions, and unresolved guidance into a decision register that teams can maintain and AI systems can follow.",
+  },
+  {
+    context: "Spec-driven delivery",
+    title: "A buildable blueprint before the build",
+    body: "Each engagement creates the specification, architecture, validation logic, and guardrail policies needed for accountable implementation.",
+  },
+] as const;
+
 const pathways = [
   {
     eyebrow: "Product",
@@ -144,6 +167,49 @@ const pathways = [
             </a>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-[#f3f0e8] text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Selected Work</div>
+      <div class="home-split-grid">
+        <div>
+          <h2 class="text-5xl font-extrabold tracking-tight text-ink">
+            Problems solved, not logos displayed.
+          </h2>
+        </div>
+        <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
+          <p>
+            Some of the strongest proof sits behind confidentiality. So we do
+            not build credibility around a logo strip. We explain the operating
+            problems the work has solved.
+          </p>
+          <p class="mt-6">
+            The pattern is consistent: make judgement explicit, turn policy into
+            usable structure, and give AI systems rules that can be tested before
+            they act.
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-12 grid gap-6 md:grid-cols-2">
+        {solvedProblems.map((item) => (
+          <article class="rounded-2xl border border-ink/10 bg-paper p-7 shadow-outline">
+            <div class="eyebrow text-[#14B8A6]">{item.context}</div>
+            <h3 class="mt-4 text-2xl font-semibold tracking-tight text-ink">
+              {item.title}
+            </h3>
+            <p class="mt-4 text-base leading-relaxed text-steel">
+              {item.body}
+            </p>
+          </article>
+        ))}
+      </div>
+
+      <div class="mt-12 flex justify-center">
+        <a href="/company/contact/" class="home-outline-cta">Talk to Us</a>
       </div>
     </div>
   </section>

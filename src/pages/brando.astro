@@ -19,8 +19,20 @@ const page = {
 ---
 
 <BaseLayout title={title} description={description} page={page}>
-  <section class="bg-paper text-ink">
-    <div class="container-wide py-20">
+  <section class="brando-hero bg-paper text-ink">
+    <video
+      class="brando-hero__video"
+      autoplay
+      muted
+      playsinline
+      preload="metadata"
+      aria-hidden="true"
+    >
+      <source src="/videos/brando.mp4" type="video/mp4" />
+    </video>
+    <div class="brando-hero__overlay brando-hero__overlay--hidden" aria-hidden="true"></div>
+
+    <div class="container-wide brando-hero__content brando-hero__content--hidden py-20">
       <div class="eyebrow text-center text-[#14B8A6]">MOVE FAST. STAY SAFE.</div>
       <div class="mt-8 grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
         <h1 class="text-6xl font-black leading-none tracking-tight text-ink">
@@ -100,6 +112,61 @@ const page = {
   </section>
 
   <style>
+    .brando-hero {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      min-height: 34rem;
+      background: #f7f5ef;
+    }
+
+    .brando-hero__video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      opacity: 1;
+      z-index: -2;
+    }
+
+    .brando-hero__overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(247, 245, 239, 0.96) 0%, rgba(247, 245, 239, 0.88) 42%, rgba(247, 245, 239, 0.7) 100%),
+        radial-gradient(circle at 84% 18%, rgba(20, 184, 166, 0.16), transparent 32%);
+      z-index: -1;
+      opacity: 1;
+      transition: opacity 700ms ease;
+    }
+
+    .brando-hero__overlay--hidden {
+      opacity: 0;
+    }
+
+    .brando-hero__content {
+      position: relative;
+      opacity: 1;
+      transform: translateY(0);
+      transition:
+        opacity 700ms ease,
+        transform 700ms ease;
+    }
+
+    .brando-hero__content--hidden {
+      opacity: 0;
+      transform: translateY(1rem);
+      pointer-events: none;
+    }
+
+    @media (min-width: 1024px) {
+      .brando-hero {
+        min-height: 39rem;
+      }
+    }
+
     .aa-primary-cta,
     .aa-dark-cta,
     .aa-outline-cta {
@@ -124,4 +191,24 @@ const page = {
       color: #0f766e;
     }
   </style>
+
+  <script>
+    const heroVideo = document.querySelector<HTMLVideoElement>(".brando-hero__video");
+    const heroContent = document.querySelector<HTMLElement>(".brando-hero__content");
+    const heroOverlay = document.querySelector<HTMLElement>(".brando-hero__overlay");
+
+    const revealHeroContent = () => {
+      heroOverlay?.classList.remove("brando-hero__overlay--hidden");
+      heroContent?.classList.remove("brando-hero__content--hidden");
+    };
+
+    if (heroVideo) {
+      heroVideo.playbackRate = 0.55;
+      heroVideo.addEventListener("ended", revealHeroContent, { once: true });
+
+      window.setTimeout(revealHeroContent, 9000);
+    } else {
+      revealHeroContent();
+    }
+  </script>
 </BaseLayout>
