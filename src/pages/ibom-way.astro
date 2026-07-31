@@ -1,0 +1,300 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import IBOMCheckpointVisual from "../components/IBOMCheckpointVisual.astro";
+import { SITE_URL } from "../lib/seo/site";
+
+const title = "The IBOM Way";
+const description =
+  "A visual guide to the IBOM Framework: a checkpoint-led delivery path that turns brand knowledge into Brando, the governed Brand Operator.";
+
+const page = {
+  title,
+  description,
+  url: `${SITE_URL}/ibom-way`,
+  breadcrumbs: [
+    { name: "Home", url: `${SITE_URL}/` },
+    { name: "IBOM Way", url: `${SITE_URL}/ibom-way` },
+  ],
+};
+
+const phases = [
+  {
+    num: "01",
+    heading: "Scope",
+    body: "Map the business outcome, brand exposure, decision owners, and the first workflows where Brando needs to govern AI.",
+  },
+  {
+    num: "02",
+    heading: "Define",
+    body: "Translate the scope into requirements, user stories, acceptance criteria, governance rules, and the evidence needed for sign-off.",
+  },
+  {
+    num: "03",
+    heading: "Design",
+    body: "Design the Brando data asset, schema, controls, integrations, and operating pattern before any production build begins.",
+  },
+  {
+    num: "04",
+    heading: "Checkpoint Review",
+    body: "Validate the specification, implementation plan, task sequence, dependencies, risks, and governance evidence. This is the gate before execution.",
+    featured: true,
+  },
+  {
+    num: "05",
+    heading: "Build, Test & Deploy",
+    body: "Build from the validated task plan, test the controls, resolve defects, and deploy Brando into governed workflows your team can operate.",
+  },
+  {
+    num: "06",
+    heading: "Evolve",
+    body: "Keep Brando current as models, risks, brand rules, workflows, and operating priorities change. The asset improves without losing governance or traceability.",
+    evolution: true,
+  },
+] as const;
+
+const parallelWork = [
+  {
+    heading: "Governance and assurance",
+    body: "Evidence, ownership, risks, approvals, and acceptance criteria are maintained throughout the programme, not gathered at the end.",
+  },
+  {
+    heading: "Adoption and operation",
+    body: "The work is designed around live use: who will rely on Brando, what changes for them, and how the operating model keeps improving after launch.",
+  },
+] as const;
+
+const principles = [
+  {
+    num: "01",
+    heading: "Judgement before tooling",
+    body: "We challenge the route before we build it, because the right operating model matters more than a fast demo.",
+  },
+  {
+    num: "02",
+    heading: "Outcomes over artefacts",
+    body: "Every document, dataset, and task exists to make Brando usable, governable, and defensible in live work.",
+  },
+  {
+    num: "03",
+    heading: "No hidden handoffs",
+    body: "The same programme logic runs from scope to deployment, so strategy, specification, build, and assurance stay connected.",
+  },
+  {
+    num: "04",
+    heading: "Validated before velocity",
+    body: "The checkpoint protects speed by making sure the plan, tasks, dependencies, and risks are sound before execution starts.",
+  },
+  {
+    num: "05",
+    heading: "AI-native delivery",
+    body: "AI helps structure, test, and accelerate the work, while expert review keeps the output accountable.",
+  },
+  {
+    num: "06",
+    heading: "Owned by the client",
+    body: "Brando is delivered as an operating asset your organisation can keep, inspect, govern, and evolve.",
+  },
+] as const;
+---
+
+<BaseLayout title={title} description={description} page={page}>
+  <section class="bg-paper text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow text-center text-[#14B8A6]">Approach</div>
+      <div class="mt-8 grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
+        <h1 class="text-6xl font-black leading-none tracking-tight text-ink">
+          The IBOM Way
+        </h1>
+        <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
+          <p>
+            A structured, phase-gated method for turning brand knowledge into
+            Brando: scoped, defined, designed, checked, then built into live
+            operation.
+          </p>
+          <p class="mt-6">
+            The checkpoint is the important part. It is where AI-assisted
+            planning becomes defensible: specifications, tasks, risks,
+            dependencies, and acceptance criteria are validated before execution.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-4">
+            <a href="/company/contact/" class="aa-primary-cta">Book a Conversation</a>
+            <a href="/ibom/" class="aa-outline-cta">Explore IBOM</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-[#f3f0e8] text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">How We Work</div>
+      <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+        <h2 class="text-5xl font-extrabold tracking-tight text-ink">
+          Guides, not order takers.
+        </h2>
+        <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
+          <p>
+            A weak AI programme builds what was asked for. A strong one finds
+            the route that should be taken, exposes the questions nobody had
+            asked yet, and turns judgement into a plan that can survive scrutiny.
+          </p>
+          <p class="mt-6">
+            IBOM is built for that. It keeps speed and discipline together by
+            making the route explicit before Brando moves into production.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-[#f3f0e8] text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">The Five Phases</div>
+      <h2 class="mx-auto max-w-5xl text-center text-5xl font-extrabold tracking-tight text-ink">
+        Five phases. One governed programme.
+      </h2>
+      <p class="mx-auto mt-6 max-w-[76ch] text-center text-lg leading-relaxed text-steel md:text-xl">
+        The first three phases shape the route. The checkpoint validates the
+        plan. The final phase builds, tests, and deploys from approved tasks.
+      </p>
+      <div class="mt-12">
+        <IBOMCheckpointVisual />
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-paper text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Phase Detail</div>
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {phases.map((phase) => (
+          <article
+            class:list={[
+              "rounded-2xl border p-7 shadow-outline",
+              phase.featured
+                ? "border-[#14B8A6]/45 bg-slate text-paper"
+                : phase.evolution
+                  ? "border-[#14B8A6]/30 bg-[#e2fbf7]"
+                : "border-ink/10 bg-fog",
+            ]}
+          >
+            <div class="eyebrow text-[#14B8A6]">{phase.num}</div>
+            <h2
+              class:list={[
+                "mt-4 text-2xl font-semibold tracking-tight",
+                phase.featured ? "text-paper" : "text-ink",
+              ]}
+            >
+              {phase.heading}
+            </h2>
+            <p
+              class:list={[
+                "mt-4 text-base leading-relaxed",
+                phase.featured ? "text-paper/72" : "text-steel",
+              ]}
+            >
+              {phase.body}
+            </p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-[#f3f0e8] text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">In Parallel</div>
+      <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+        <h2 class="text-5xl font-extrabold tracking-tight text-ink">
+          Two things run alongside every phase.
+        </h2>
+        <div class="grid gap-5">
+          {parallelWork.map((item) => (
+            <article class="rounded-2xl border border-ink/10 bg-paper p-7 shadow-outline">
+              <h3 class="text-2xl font-semibold tracking-tight text-ink">
+                {item.heading}
+              </h3>
+              <p class="mt-4 text-base leading-relaxed text-steel">
+                {item.body}
+              </p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-paper text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Principles</div>
+      <h2 class="mx-auto max-w-4xl text-center text-5xl font-extrabold tracking-tight text-ink">
+        Six principles, on every engagement.
+      </h2>
+      <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {principles.map((principle) => (
+          <article class="rounded-2xl border border-ink/10 bg-fog p-7 shadow-outline">
+            <div class="eyebrow text-[#14B8A6]">{principle.num}</div>
+            <h3 class="mt-4 text-2xl font-semibold tracking-tight text-ink">
+              {principle.heading}
+            </h3>
+            <p class="mt-4 text-base leading-relaxed text-steel">
+              {principle.body}
+            </p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-slate text-paper">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Ready When You Are</div>
+      <div class="grid items-start gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+        <div>
+          <h2 class="text-5xl font-semibold tracking-tight text-paper">
+            See it mapped to your programme.
+          </h2>
+        </div>
+        <div class="max-w-prose text-lg leading-relaxed text-paper/78 md:text-xl">
+          <p>
+            The fastest way to make IBOM useful is to apply the checkpoint to a
+            live AI workflow or brand operation already in motion.
+          </p>
+          <p class="mt-6">
+            We can map the route, test the assumptions, and show what needs to
+            be true before Brando moves into production.
+          </p>
+          <div class="mt-8">
+            <a href="/company/contact/" class="aa-dark-cta">Book a Conversation</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .aa-primary-cta,
+    .aa-dark-cta,
+    .aa-outline-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.875rem;
+      padding: 15px 32px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .aa-primary-cta,
+    .aa-dark-cta {
+      border: 1.5px solid #14b8a6;
+      background: #14b8a6;
+      color: #fff;
+    }
+
+    .aa-outline-cta {
+      border: 1.5px solid #14b8a6;
+      color: #0f766e;
+    }
+  </style>
+</BaseLayout>

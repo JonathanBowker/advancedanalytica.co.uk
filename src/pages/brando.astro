@@ -1,0 +1,127 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE_URL } from "../lib/seo/site";
+import { brandoBenefits } from "../lib/brandoContent";
+
+const title = "Brando AI Brand Operator";
+const description =
+  "Brando turns brand standards, approvals, policies, and expert judgement into an interconnected AI Brand Operator your business owns and your agents can follow.";
+
+const page = {
+  title,
+  description,
+  url: `${SITE_URL}/brando`,
+  breadcrumbs: [
+    { name: "Home", url: `${SITE_URL}/` },
+    { name: "Brando", url: `${SITE_URL}/brando` },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} page={page}>
+  <section class="bg-paper text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow text-center text-[#14B8A6]">Product</div>
+      <div class="mt-8 grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
+        <h1 class="text-6xl font-black leading-none tracking-tight text-ink">
+          Brando is your AI Brand Operator.
+        </h1>
+        <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
+          <p>
+            Brando converts brand identity into a governed, interconnected data
+            asset. It captures your standards, policies, approvals, examples,
+            exceptions, and expert judgement in a form AI systems can read,
+            validate, and act on.
+          </p>
+          <p class="mt-6">
+            Your teams stop relying on pasted fragments and one-off prompts.
+            Your agents get one source of truth, one operating logic, and one
+            auditable control layer.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-4">
+            <a href="/company/contact/" class="aa-primary-cta">Talk to Us</a>
+            <a href="/how-it-works/" class="aa-outline-cta">See How It Works</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-[#f3f0e8] text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">What You Own</div>
+      <h2 class="mx-auto max-w-4xl text-center text-5xl font-extrabold tracking-tight text-ink">
+        A brand asset AI can operate, not another platform to rent.
+      </h2>
+      <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {brandoBenefits.map((item) => (
+          <article class="rounded-2xl border border-ink/10 bg-paper p-7 shadow-outline">
+            <div class="eyebrow text-[#14B8A6]">
+              {item.label}
+            </div>
+            <h3 class="mt-4 text-2xl font-semibold tracking-tight text-ink">
+              {item.heading}
+            </h3>
+            <p class="mt-4 text-base leading-relaxed text-steel">
+              {item.body}
+            </p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-slate text-paper">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Why It Matters</div>
+      <div class="grid items-start gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+        <div>
+          <h2 class="text-5xl font-semibold tracking-tight text-paper">
+            Brand governance has to happen at the moment content is created.
+          </h2>
+        </div>
+        <div class="max-w-prose text-lg leading-relaxed text-paper/78 md:text-xl">
+          <p>
+            Reviewing AI output after the fact does not scale. Brando places
+            brand knowledge, rules, and approval logic where agents can use them
+            before outputs ship.
+          </p>
+          <p class="mt-6">
+            That is the conversation worth having first: where your brand is
+            exposed to AI now, which workflows matter most, and what would need
+            to be governed before you put agents into production.
+          </p>
+          <div class="mt-8">
+            <a href="/company/contact/" class="aa-dark-cta">Book a Conversation</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .aa-primary-cta,
+    .aa-dark-cta,
+    .aa-outline-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.875rem;
+      padding: 15px 32px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .aa-primary-cta,
+    .aa-dark-cta {
+      border: 1.5px solid #14b8a6;
+      background: #14b8a6;
+      color: #fff;
+    }
+
+    .aa-outline-cta {
+      border: 1.5px solid #14b8a6;
+      color: #0f766e;
+    }
+  </style>
+</BaseLayout>

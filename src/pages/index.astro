@@ -4,150 +4,51 @@ import PostCard from "../components/PostCard.astro";
 import AiceGatewayCluster from "../components/AiceGatewayCluster.astro";
 import { getCollection } from "astro:content";
 import { SITE_URL } from "../lib/seo/site";
-import { businessFunctions } from "../lib/businessFunctions";
-import usesPurposeUnderstandingImg from "../components/uses/assessment.svg?url";
-import usesSystemFramingImg from "../components/uses/frame.svg?url";
-import usesSpecificationDesignImg from "../components/uses/codification.svg?url";
-import usesValidationEvaluationImg from "../components/uses/evaluation.svg?url";
-import usesExecutionGenerationImg from "../components/uses/operation.svg?url";
 
 const title = "Brand-First AI Governance";
 const description =
-  "Make your brand AI-ready. Brando turns brand standards, business logic, and expert judgement into a Brand Brain AI agents can follow.";
+  "Turn brand standards, business logic, and expert judgement into Brando: an AI Brand Operator your agents can follow. Talk to Advanced Analytica about governed AI brand operations.";
 
-const usesTabs = [
-  {
-    key: "platform_asset_pack_architecture",
-    label: "1. Architect",
-    stage: "Stage 1",
-    phase: "Phase 1",
-    heading: "ARCHITECT",
-    subheading: "Design the blueprint agents execute.",
-    body: "We locate where your brand assets live - PDFs, CSVs, images, standards, toolkits, rules, data exports from existing systems. We gather everything into a staged repository and map what exists and how it's structured. From that we design the Platform Asset Pack: the strategic blueprint for the whole system. It's specified in enough detail that agents can execute it directly, under expert supervision. Every stage after this builds against the pack.",
-    href: "#brand-ai-readiness",
-    cta: "Assess readiness",
-    image: usesPurposeUnderstandingImg,
-  },
-  {
-    key: "brand_constitution_schema",
-    label: "2. Constitute",
-    stage: "Stage 2",
-    phase: "Phase 1",
-    heading: "CONSTITUTE",
-    subheading: "Define the principles and architecture everything after refers to.",
-    body: "We specify which AI models analyse which asset types - natural language processing for text, computer vision for images, icons, illustrations, and graphics, audio analysis for sound and video. We define what gets extracted: composition, colour, objects, themes, metadata, and context. We design the repository structure and the schema every asset must conform to. This becomes the constitution the whole build works from.",
-    href: "#brand-ai-readiness",
-    cta: "Assess readiness",
-    image: usesSystemFramingImg,
-  },
-  {
-    key: "brand_specification_atomisation",
-    label: "3. Specify",
-    stage: "Stage 3",
-    phase: "Phase 2",
-    heading: "SPECIFY",
-    subheading: "Produce the interconnected brand data asset AI can read.",
-    body: "We execute the atomisation pipeline against your staged assets. Every element is tagged, categorised, and structured against the Brando schema. Text becomes markdown. Images are analysed for composition, colour, objects, and context. Disambiguation and ambiguity testing runs throughout. The output is your brand's governed Brand Brain: an interconnected data asset that AI systems can read and act on, built and verified in parallel.",
-    href: "#engine",
-    cta: "See how we build",
-    image: usesExecutionGenerationImg,
-  },
-  {
-    key: "brand_model_validation_plan",
-    label: "4. Plan",
-    stage: "Stage 4",
-    phase: "Phase 2",
-    heading: "PLAN",
-    subheading: "Set the standard Brando must meet before it goes live.",
-    body: "Pipeline outputs and atomised datasets are tested, refined, and polished through iterative review. Our specialists identify failure cases, resolve ambiguities, and confirm the dataset meets our accuracy and governance standards. The result is Brando: your production-ready Brand Brain, delivered as an interconnected data asset and checked against a clear plan for what good looks like.",
-    href: "#role-intent",
-    cta: "See our standards",
-    image: usesSpecificationDesignImg,
-  },
-  {
-    key: "brand_model_build_execution",
-    label: "5. Execute",
-    stage: "Stage 5",
-    phase: "Phase 3",
-    heading: "EXECUTE",
-    subheading: "Build out the Brando data asset against the plan, under expert supervision.",
-    body: "We execute the build plan. Our specialists run each step, review the output, and correct course before the next one starts. Agents do the work at speed. Senior practitioners hold the standard, resolve judgement calls, and sign off each section against the plan. Nothing progresses on automation alone.",
-    href: "#role-intent",
-    cta: "See our approach",
-    image: usesValidationEvaluationImg,
-  },
-  {
-    key: "agentic_brand_implementation",
-    label: "6. Implement",
-    stage: "Stage 6",
-    phase: "Phase 3",
-    heading: "IMPLEMENT",
-    subheading: "Operationalise into live brand operations and agentic systems.",
-    body: "Convert identified opportunities into automated brand workflows and live agentic systems. Integrate into your existing tools, platforms, and orchestration layers. The system scales horizontally. The standards it works to remain under human control at every stage.",
-    href: "#next-step",
-    cta: "Request assessment",
-    image: usesValidationEvaluationImg,
-  },
-] as const;
-
-const personaPositioningCards = [
-  {
-    role: "CMO",
-    heading: "For the CMO",
-    body: "Your teams are already pasting brand guidelines into ChatGPT. The output looks plausible and drifts off-brand at scale, because fragments carry no governance. Every off-brand output spends trust you paid decades to build. Brando deploys an AI agent governed by your Brand Brain, enforcing your rules at the moment content is created, so approval happens in hours, not days. Brand drift becomes a measured score, not a feeling. In one enterprise workflow, a five-to-seven-day amend cycle was cut to minutes. Your team stops policing content and starts making campaigns.",
-  },
-  {
-    role: "Head of Brand",
-    heading: "For the Head of Brand",
-    body: "You own the nuance, but a PDF cannot enforce it. Your Brand Brain holds the interlinked intent behind every rule, and the agent that reads it applies them. Update a policy once and the agent cascades that change across everything it governs, keeping the whole brand coherent. Every asset, tone decision, and exception stays versioned and auditable. Your brand stops being interpreted and starts being executed by an agent that knows it as well as you do.",
-  },
-  {
-    role: "Chief Legal Officer",
-    heading: "For the Chief Legal Officer",
-    body: "AI-generated brand content is a liability surface: IP misuse, regulatory exposure, unapproved claims. The agent validates every output against your Brand Brain before content ships, not after complaints arrive. Full audit trails record what was generated, against which policy, and who approved it. Permissions restrict sensitive contexts. Built by a team with a governance and security operations background, led by an accredited AI Expert with the Law Society of Scotland.",
-  },
-  {
-    role: "Head of AI",
-    heading: "For the Head of AI",
-    body: "You need brand knowledge your systems can actually consume. Brando delivers a structured, schema-defined Brand Brain served over Model Context Protocol. It ships inside an evaluation harness: validators, an LLM judge for red-teaming outputs, and drift measurement in one loop. It slots into your existing stack rather than replacing it, with deterministic and semantic evaluation of brand adherence. Speed and governance in the same pipeline, not in tension.",
-  },
-  {
-    role: "CTO",
-    heading: "For the CTO",
-    body: "No new platform to run. Brando ships as code: the pipeline, the Brand Brain, the MCP endpoint, and the governing agent, all owned by you. Deploy in your infrastructure or take it as a container. The agent sits in your workflow via API, governing brand data across multiple systems as an independent layer outside your DAM and martech stack. You are never trapped in a vendor's asset store. Six stages, delivered through IBOM with an end.",
-  },
-  {
-    role: "CFO",
-    heading: "For the CFO",
-    body: "Brand is a shortcut to trust, and trust is the asset nobody prices until it is damaged. The cost of governing it today is hidden in salaries and delay: every approval cycle stalls campaign revenue; every off-brand asset burns review hours. Brando automates governance at scale, cutting manual review cycles and the cost of brand inconsistency. You buy an asset, not a subscription.",
-  },
-] as const;
-
-const postFilterChips = [
-  "All",
-  "Governance",
-  "Knowledge",
-  "Systems",
-  "Operation",
-  "MCP",
-] as const;
-
-const defaultUsesKey = usesTabs[0].key;
 const latestPosts = (
   await getCollection("blog", ({ data }) => !data.draft)
 ).sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
-const HOME_POST_INITIAL_COUNT = 3;
-const HOME_POST_BATCH_SIZE = 3;
+
 const page = {
   title,
   description,
   url: `${SITE_URL}/`,
   breadcrumbs: [{ name: "Home", url: `${SITE_URL}/` }],
 };
+
+const pathways = [
+  {
+    eyebrow: "Product",
+    title: "Brando",
+    body: "Understand the AI Brand Operator: what it is, what your business owns, and why static brand guidance is not enough for AI.",
+    href: "/brando/",
+  },
+  {
+    eyebrow: "Framework",
+    title: "IBOM",
+    body: "See the Intelligent Business Operating Model that delivers Brando through staged, governed, expert-led implementation.",
+    href: "/ibom/",
+  },
+  {
+    eyebrow: "Delivery",
+    title: "How It Works",
+    body: "Walk through mapping, modelling, validation, deployment, and the controlled layer that makes AI brand operations usable.",
+    href: "/how-it-works/",
+  },
+  {
+    eyebrow: "Stakeholders",
+    title: "For Leaders",
+    body: "See how Brando matters to brand, marketing, legal, AI, technology, finance, and transformation leaders.",
+    href: "/for-leaders/",
+  },
+] as const;
 ---
 
 <BaseLayout title={title} description={description} page={page}>
-  <!-- 1. HERO -->
   <section class="home-hero bg-paper text-ink">
     <div class="container-wide home-hero__inner">
       <div class="eyebrow mb-10 text-left">MOVE FAST. STAY SAFE.</div>
@@ -159,14 +60,15 @@ const page = {
 
         <div>
           <p class="home-hero__lead">
-            Advanced Analytica specialises in rewiring brands and business domains for AI-assisted operations. We capture the structure behind your brand and express it in a form AI can read and operate. We run the whole programme, with the speed to show results in weeks and a methodology that you can stand behind under scrutiny.
+            Advanced Analytica specialises in rewiring brands and business
+            domains for AI-assisted operations. We capture the structure behind
+            your brand and express it in a form AI can read and operate. We run
+            the whole programme, with the speed to show results in weeks and a
+            methodology that you can stand behind under scrutiny.
           </p>
 
           <div class="home-hero__actions">
-            <a
-              href="/company/contact/"
-              class="home-hero__button"
-            >
+            <a href="/company/contact/" class="home-hero__button">
               Book a Conversation
             </a>
 
@@ -180,1206 +82,192 @@ const page = {
     </div>
   </section>
 
-  <!-- 2. WHY IT MATTERS -->
-  <section id="why" class="bg-[#f3f0e8]">
+  <section id="why" class="bg-[#f3f0e8] text-ink">
     <div class="container-wide py-20">
       <div class="eyebrow mb-10 text-center">Why It Matters</div>
 
       <div class="home-split-grid">
         <div>
-          <h2
-            class="text-[clamp(1.75rem,3vw,3.2rem)] font-extrabold tracking-tight text-ink"
-          >
+          <h2 class="text-5xl font-extrabold tracking-tight text-ink">
             A PDF cannot govern an AI agent.
           </h2>
         </div>
 
         <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
           <p>
-           Teams paste fragments into chatbots, one prompt at a time, a person present for every cycle. That's not governance. That's supervision. Every off-brand output spends trust you've worked hard to build.   </p>
+            Teams paste fragments into chatbots, one prompt at a time, with a
+            person present for every cycle. That is not governance. That is
+            supervision. Every off-brand output spends trust you have worked
+            hard to build.
+          </p>
 
           <p class="mt-6">
-            The fix isn't a stricter document or a better prompt. It's Brando: a governed Brand Brain delivered as an interconnected data asset, so AI expresses the brand correctly, everywhere, every time.
+            The fix is not a stricter document or a better prompt. It is
+            Brando: a governed Brand Operator delivered as an interconnected data
+            asset, so AI expresses the brand correctly, everywhere, every time.
           </p>
-        </div>
-      </div>
 
-      <div class="mt-12 flex items-center justify-center">
-        <a
-          href="#brand-ai-drift"
-          class="inline-flex items-center justify-center gap-3 rounded-md bg-[#14B8A6] px-8 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper shadow-outline transition-colors hover:bg-[#0F766E]"
-          aria-label="Run an AI Drift Audit"
-        >
-          <span>Assess AI drift</span>
-          <svg
-            class="h-6 w-6 text-paper"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"
-            ></path>
-          </svg>
-        </a>
+          <div class="mt-8">
+            <a href="/company/contact/" class="home-outline-cta">
+              Talk to Us
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- 3. PERSONA POSITIONING -->
-  <section id="persona-positioning" class="bg-paper text-ink">
+  <section class="bg-paper text-ink">
     <div class="container-wide py-20">
-      <div class="eyebrow mb-10 text-center text-[#14B8A6]">
-        Why Each Leader Cares
-      </div>
-
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">What Brando Is</div>
       <div class="home-split-grid">
         <div>
-          <h2
-            class="text-[clamp(1.75rem,3vw,3.2rem)] font-extrabold tracking-tight text-ink"
-          >
-            Brando gives every owner a reason to act.
+          <h2 class="text-5xl font-extrabold tracking-tight text-ink">
+            Brando is your AI Brand Operator.
           </h2>
         </div>
-
         <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
           <p>
-            A brand is a compression of information and a shortcut to trust.
-            Compressed into PDFs, it means ten different things to ten different
-            people, and the trust leaks out.
+            Brando turns brand standards, approvals, policies, examples, and
+            judgement into an interconnected data asset that AI systems can
+            consume. It gives agents something structured to follow instead of
+            asking them to infer the brand from documents.
           </p>
           <p class="mt-6">
-            Brando converts brand identity into a governed Brand Brain: an
-            interconnected data asset. An AI agent governed by your policies
-            ensures every output reflects your intent, checked, recorded, and
-            auditable at the moment content is created. One source of truth, one
-            meaning. Delivered as code the client owns. No licences, no lock-in.
+            Delivered through IBOM, it becomes a governed operating asset: your
+            knowledge, your rules, your audit trail, and your control layer.
           </p>
-        </div>
-      </div>
-
-      <div class="mt-12 grid gap-6 lg:grid-cols-3">
-        {
-          personaPositioningCards.map((card) => (
-            <article class="flex min-h-full flex-col rounded-2xl border border-ink/10 bg-[#f3f0e8] p-7 shadow-outline">
-              <div class="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]">
-                {card.role}
-              </div>
-              <h3 class="mt-4 text-2xl font-semibold tracking-tight text-ink">
-                {card.heading}
-              </h3>
-              <p class="mt-5 text-base leading-relaxed text-steel">
-                {card.body}
-              </p>
-            </article>
-          ))
-        }
-      </div>
-
-      <p
-        class="mx-auto mt-14 max-w-4xl text-center text-[clamp(1.75rem,3vw,3.2rem)] font-extrabold tracking-tight text-ink"
-      >
-        Move fast. Stay safe.
-      </p>
-    </div>
-  </section>
-
-  <!-- 4. DIAGNOSTIC OFFER -->
-  <section
-    id="brand-ai-drift"
-    class="bg-gradient-to-br from-black via-[#0b0e14] to-[#171b24] text-paper"
-  >
-    <div class="container-wide py-20">
-      <div class="home-split-grid home-split-grid--center">
-        <div>
-          <div class="eyebrow mb-6 text-[#14B8A6]">Diagnostic Offer</div>
-          <h2
-            class="max-w-[12ch] text-[clamp(1.75rem,3vw,3.2rem)] font-extrabold tracking-tight text-paper"
-          >
-            Run an AI Drift Audit.
-          </h2>
-          <p
-            class="mt-8 max-w-[62ch] text-lg leading-relaxed text-paper/75 md:text-xl"
-          >
-            Before AI acts on your behalf, you need to know whether your brand
-            rules are clear enough to govern it.
-          </p>
-          <p
-            class="mt-6 max-w-[62ch] text-lg leading-relaxed text-paper/75 md:text-xl"
-          >
-            Our AI Drift Audit reviews your standards, toolkits,
-            approval rules, and priority AI use cases. You see where AI can
-            follow your brand, where ambiguity appears, and where stronger
-            controls are needed first.
-          </p>
-
           <div class="mt-8 flex flex-wrap gap-4">
-            <a
-              href="/brand-ai-drift-audit/"
-              class="inline-flex items-center justify-center gap-2 rounded-md bg-[#14B8A6] px-6 py-3 text-xs font-semibold leading-none tracking-[0.14em] uppercase text-paper shadow-outline transition-colors hover:bg-[#0F766E]"
-            >
-              Request assessment
-              <svg
-                class="h-4 w-4"
-                viewBox="0 0 20 20"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M4 10h12"></path>
-                <path d="M12 6l4 4-4 4"></path>
-              </svg>
-            </a>
-            <a
-              href="#role-intent"
-              class="inline-flex items-center justify-center gap-3 rounded-md bg-[#14B8A6] px-8 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper shadow-outline transition-colors hover:bg-[#0F766E]"
-            >
-              What we test
-              <svg
-                class="h-6 w-6 text-paper"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"
-                ></path>
-              </svg>
+            <a href="/brando/" class="home-outline-cta">Explore Brando</a>
+            <a href="/company/contact/" class="home-outline-cta">
+              Talk to Us
             </a>
           </div>
         </div>
-
-        <div
-          class="rounded-2xl border border-paper/10 bg-paper/5 p-8 shadow-outline backdrop-blur"
-        >
-          <div
-            class="text-sm font-semibold tracking-[0.2em] uppercase text-[#14B8A6]"
-          >
-            You get
-          </div>
-          <ul class="mt-8 space-y-6 text-paper/80">
-            <li class="flex gap-4">
-              <span class="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#14B8A6]"
-              ></span>
-              <span
-                >A structured review of your brand standards, toolkits,
-                policies, and AI use cases.</span
-              >
-            </li>
-            <li class="flex gap-4">
-              <span class="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#14B8A6]"
-              ></span>
-              <span
-                >A readiness score across machine-readability, ambiguity, and AI
-                control.</span
-              >
-            </li>
-            <li class="flex gap-4">
-              <span class="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#14B8A6]"
-              ></span>
-              <span
-                >A risk map showing where AI may misread, over-interpret, or
-                ignore your brand rules.</span
-              >
-            </li>
-            <li class="flex gap-4">
-              <span class="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#14B8A6]"
-              ></span>
-              <span
-                >A practical action plan with Critical, High, Medium, and Low
-                priorities.</span
-              >
-            </li>
-            <li class="flex gap-4">
-              <span class="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#14B8A6]"
-              ></span>
-              <span
-                >A short readout with recommended next steps into Brando, IBOM<sup>&reg;</sup>
-                delivery, and governed workflows.</span
-              >
-            </li>
-          </ul>
-        </div>
       </div>
     </div>
   </section>
 
-  <!-- 5. ROLE-INTENT TESTING -->
-  <section id="role-intent" class="bg-paper text-ink">
+  <section class="bg-slate text-paper">
     <div class="container-wide py-20">
-      <div class="eyebrow mb-6 text-center">Role-Intent Testing</div>
-      <h2
-        class="mx-auto max-w-5xl text-center text-[clamp(2.4rem,5vw,4.5rem)] font-semibold tracking-tight text-ink"
-      >
-        We test your brand against the roles and intents your AI will meet in
-        the real world.
+      <div class="eyebrow mb-6 text-center text-[#14B8A6]">The Operating Model</div>
+      <h2 class="mx-auto max-w-4xl text-center text-5xl font-semibold tracking-tight text-paper">
+        One controlled layer between your brand, your systems, and your AI.
       </h2>
-      <p
-        class="mx-auto mt-8 max-w-[82ch] text-center text-lg leading-relaxed text-ink/70 md:text-xl"
-      >
-        Your brand does not fail in theory. It fails in moments. A customer asks
-        for reassurance. A journalist asks for proof. A regulator expects
-        precision. A sales team pushes for conversion. An AI agent tries to
-        summarise, rewrite, compare, recommend, or respond.
+      <p class="mx-auto mt-8 max-w-[82ch] text-center text-lg leading-relaxed text-paper/80 md:text-xl">
+        The visual below is the short version: teams, agents, systems, and
+        policies connected through a governed brand-first operating model.
       </p>
-
-      <div class="mt-12 grid gap-6 md:grid-cols-2">
-        <div class="rounded-2xl border border-ink/10 bg-fog p-8">
-          <div
-            class="text-xs font-semibold tracking-[0.2em] uppercase text-[#14B8A6]"
-          >
-            Roles
-          </div>
-          <h3 class="mt-4 text-2xl font-semibold tracking-tight text-ink">
-            Who is interacting with your brand?
-          </h3>
-          <p class="mt-4 text-base leading-relaxed text-steel">
-            Customers, employees, journalists, partners, regulators, agency
-            teams, sales teams, support agents, and AI agents.
-          </p>
-        </div>
-
-        <div class="rounded-2xl border border-ink/10 bg-fog p-8">
-          <div
-            class="text-xs font-semibold tracking-[0.2em] uppercase text-[#14B8A6]"
-          >
-            Intents
-          </div>
-          <h3 class="mt-4 text-2xl font-semibold tracking-tight text-ink">
-            What are they intending to do?
-          </h3>
-          <p class="mt-4 text-base leading-relaxed text-steel">
-            Compare, complain, buy, escalate, summarise, localise, request
-            proof, push conversion, create content, or ask for an exception.
-          </p>
-        </div>
-      </div>
-
-      <p
-        class="mx-auto mt-10 max-w-[72ch] text-center text-lg leading-relaxed text-ink/70"
-      >
-        You see which rules hold, where toolkits create ambiguity, and where
-        stronger controls are needed.
-      </p>
-
-      <div class="mt-12 flex items-center justify-center">
-        <a
-          href="#concerns"
-          class="inline-flex items-center justify-center gap-3 rounded-md bg-[#14B8A6] px-8 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper shadow-outline transition-colors hover:bg-[#0F766E]"
-        >
-          <span>See how Brando works</span>
-          <svg
-            class="h-6 w-6 text-paper"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"
-            ></path>
-          </svg>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- 6. HOW BRANDO WORKS -->
-  <section id="concerns" class="bg-slate text-paper">
-    <div class="container-wide py-20">
-      <div class="eyebrow mb-6 text-center opacity-70">How Brando Works</div>
-      <h2
-        class="text-center text-[clamp(2.5rem,5vw,4.75rem)] font-semibold tracking-tight text-paper"
-      >
-        From brand disorder to controlled AI operations
-      </h2>
-      <p
-        class="mx-auto mt-10 max-w-[90ch] text-center text-lg leading-relaxed text-paper/80 md:text-xl"
-      >
-        Most businesses cannot scale what they cannot codify. We move your brand
-        standards, expert judgement, and operating rules into a governed
-        intelligence layer. Your knowledge. Your rules. Under your control.
-      </p>
-
-      <div class="mt-14 grid gap-4 lg:grid-cols-3">
-        <div
-          class="rounded-2xl border border-paper/15 bg-ink/30 p-6 shadow-outline backdrop-blur"
-        >
-          <h4 class="text-lg font-semibold tracking-tight text-paper">
-            Brando Mapping
-          </h4>
-          <p class="mt-3 text-base leading-relaxed text-paper/75">
-            We map the rules, approvals, exceptions, and judgement your teams
-            already use. The system starts with how your business really works,
-            not a generic template.
-          </p>
-        </div>
-
-        <div
-          class="rounded-2xl border border-paper/15 bg-ink/30 p-6 shadow-outline backdrop-blur"
-        >
-          <h4 class="text-lg font-semibold tracking-tight text-paper">
-            Brando Data Modelling
-          </h4>
-          <p class="mt-3 text-base leading-relaxed text-paper/75">
-            We turn brand and business logic into an interconnected,
-            machine-readable data asset. So your AI gets rules it can
-            consistently interpret and follow in practice.
-          </p>
-        </div>
-
-        <div
-          class="rounded-2xl border border-paper/15 bg-ink/30 p-6 shadow-outline backdrop-blur"
-        >
-          <h4 class="text-lg font-semibold tracking-tight text-paper">
-            Brando Deployment
-          </h4>
-          <p class="mt-3 text-base leading-relaxed text-paper/75">
-            We build, test, and deploy your Brando, embedding approved
-            specifications into controlled workflows, review paths, and agent
-            behaviours.
-          </p>
-        </div>
-      </div>
-
-      <div class="mt-16 border-t border-paper/20 pt-16">
-        <h3
-          class="text-center text-3xl font-semibold tracking-tight text-paper md:text-4xl"
-        >
-          Building Brando through IBOM
-        </h3>
-        <p
-          class="mx-auto mt-6 max-w-[90ch] text-center text-lg leading-relaxed text-paper/80 md:text-xl"
-        >
-          We deliver Brando through IBOM in two connected phases. The first
-          defines and validates your knowledge and specifications. The second
-          turns them into governed workflows, controls, and operating
-          capability.
-        </p>
-      </div>
-
-      <div class="mt-12 grid gap-10 lg:grid-cols-2">
-        <div
-          class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur"
-        >
-          <div
-            class="text-lg font-semibold tracking-[0.2em] uppercase text-[#14B8A6]"
-          >
-            Phase 1
-          </div>
-          <div class="mt-4 text-2xl font-semibold tracking-tight text-paper">
-            Brand Rewiring
-          </div>
-          <p class="mt-4 text-paper/80">
-            We transform standards, toolkits, approvals, and expert judgement
-            into structured knowledge your business owns without vendor lock-in.
-          </p>
-          <ul class="mt-6 space-y-4 text-paper/75">
-            <li class="flex gap-3">
-              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"
-              ></span>
-              <span
-                ><b>Codify</b> brand and business knowledge into high-fidelity structured
-                records.</span
-              >
-            </li>
-            <li class="flex gap-3">
-              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"
-              ></span>
-              <span
-                ><b>Construct</b> policy structures, role-intent scenarios, and machine-readable
-                rules.</span
-              >
-            </li>
-            <li class="flex gap-3">
-              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"
-              ></span>
-              <span
-                ><b>Validate</b> where the rules hold, conflict, or need stronger
-                governance.</span
-              >
-            </li>
-          </ul>
-        </div>
-
-        <div
-          class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur"
-        >
-          <div
-            class="text-lg font-semibold tracking-[0.2em] uppercase text-[#14B8A6]"
-          >
-            Phase 2
-          </div>
-          <div class="mt-4 text-2xl font-semibold tracking-tight text-paper">
-            AI Brand Operation
-          </div>
-          <p class="mt-4 text-paper/80">
-            We turn the approved Brando data asset into controlled AI workflows, with
-            access rules, review paths, escalation triggers, and audit
-            visibility.
-          </p>
-          <ul class="mt-6 space-y-4 text-paper/75">
-            <li class="flex gap-3">
-              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"
-              ></span>
-              <span
-                ><b>Design</b> controlled interactions between people, knowledge,
-                and AI systems.</span
-              >
-            </li>
-            <li class="flex gap-3">
-              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"
-              ></span>
-              <span
-                ><b>Deploy</b> governed workflows that stay aligned to the approved
-                specification.</span
-              >
-            </li>
-            <li class="flex gap-3">
-              <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#14B8A6]"
-              ></span>
-              <span
-                ><b>Operate</b> with monitoring, review, and controlled change as
-                needs evolve.</span
-              >
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="mt-12 flex items-center justify-center">
-        <a
-          href="#uses"
-          class="inline-flex items-center justify-center gap-3 rounded-md bg-[#14B8A6] px-8 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper transition-colors hover:bg-[#0F766E]"
-        >
-          <span>See the framework</span>
-          <svg
-            class="h-6 w-6"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"
-            ></path>
-          </svg>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- 7. IBOM FRAMEWORK -->
-  <section id="uses" class="bg-[#f3f0e8]">
-    <div class="container-wide py-20">
-      <div class="eyebrow mb-6 text-center">Intelligent Business Operating Model</div>
-      <h2
-        class="text-center text-[clamp(2.5rem,5vw,4.75rem)] font-semibold tracking-tight text-ink"
-      >
-        IBOM Framework
-      </h2>
-      <p
-        class="mx-auto mt-6 max-w-4xl text-center text-lg font-light leading-relaxed text-steel md:text-xl"
-      >
-        The IBOM Framework delivers Brando through six stages across three phases:
-        Map and Data Prep, Build & Validate, Evaluate & Deploy. Each stage is
-        delivered through AI-enabled expert workflows and proprietary agentic
-        pipelines operated by senior specialists, with human oversight and
-        governance built in at every milestone.
-      </p>
-
-      <div class="mt-10">
-        <div
-          id="uses-tabs"
-          role="tablist"
-          aria-label="Advanced Analytica IBOM Framework"
-          class="flex w-full flex-wrap items-center justify-between gap-1 rounded-md bg-fog p-2"
-        >
-          {
-            usesTabs.map((t) => (
-              <button
-                type="button"
-                role="tab"
-                aria-selected={t.key === defaultUsesKey ? "true" : "false"}
-                aria-controls={`uses-panel-${t.key}`}
-                id={`uses-tab-${t.key}`}
-                data-tab={t.key}
-                class="flex-1 rounded-md px-5 py-3 text-base font-medium text-ink/80 transition-colors hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-[#14B8A6]/70 aria-selected:bg-[#14B8A6] aria-selected:text-paper aria-selected:shadow-sm"
-              >
-                {t.label}
-              </button>
-            ))
-          }
-        </div>
-      </div>
 
       <div
-        class="mt-14 grid gap-12 lg:grid-cols-[420px_1fr] lg:items-start lg:gap-24"
+        id="Brando-visual"
+        class="relative mx-auto mt-10 w-full max-w-6xl scroll-mt-28"
+        aria-label="Brando delivered through IBOM visualisation"
       >
-        <div
-          class="relative overflow-hidden rounded-2xl bg-slate shadow-outline"
-        >
-          <div class="aspect-square">
-            {
-              usesTabs.map((t) => (
-                <img
-                  src={t.image}
-                  alt=""
-                  aria-hidden="true"
-                  data-visual={t.key}
-                  hidden={t.key === defaultUsesKey ? undefined : true}
-                  class="h-full w-full object-cover"
-                  decoding="async"
-                  loading="lazy"
-                />
-              ))
-            }
-          </div>
-        </div>
-
-        <div class="max-w-prose pt-2">
-          {
-            usesTabs.map((t) => (
-              <div
-                role="tabpanel"
-                id={`uses-panel-${t.key}`}
-                aria-labelledby={`uses-tab-${t.key}`}
-                data-panel={t.key}
-                hidden={t.key === defaultUsesKey ? undefined : true}
-              >
-                <div class="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-steel">
-                  <span>{t.stage}</span>
-                  <span class="h-1 w-1 rounded-full bg-[#14B8A6]/50" />
-                  <span>{t.phase}</span>
-                </div>
-                <div class="mt-4 text-2xl font-semibold uppercase tracking-[0.08em] text-[#14B8A6] md:text-3xl">
-                  {t.heading}
-                </div>
-                <div class="mt-6 text-lg font-medium leading-snug text-ink md:text-xl">
-                  {t.subheading}
-                </div>
-                <p class="mt-5 text-base leading-relaxed text-ink/80">
-                  {t.body}
-                </p>
-
-                <button
-                  type="button"
-                  data-scroll-target={
-                    t.href.startsWith("#") ? t.href.slice(1) : undefined
-                  }
-                  class="mt-12 inline-flex items-center gap-2 text-base font-semibold uppercase tracking-[0.14em] text-ink transition-colors hover:text-[#14B8A6]"
-                >
-                  {t.cta}
-                  <svg
-                    class="h-4 w-4"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
-                  >
-                    <path d="M4 10h12" />
-                    <path d="M12 6l4 4-4 4" />
-                  </svg>
-                </button>
-              </div>
-            ))
-          }
-        </div>
+        <AiceGatewayCluster />
       </div>
 
-      <!-- Closing paragraph -->
-      <p class="mx-auto mt-16 max-w-4xl text-center text-lg font-light leading-relaxed text-steel md:text-xl">
-        Brando doesn't stop at brand. Once your Brand Brain is live as an interconnected data asset, you repeat the IBOM process across other business functions - product, customer experience, operations, marketing. Each iteration builds on the foundation of branded knowledge already in place. Brand becomes the intelligence layer that informs your entire organisation. Every function, every workflow, every AI system operating from the same governed model. That is where compound intelligence emerges.
-      </p>
-
-      <div class="mt-12 flex items-center justify-center">
-        <a
-          href="#engine"
-          class="inline-flex items-center justify-center gap-3 rounded-md bg-[#14B8A6] px-8 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper shadow-outline transition-colors hover:bg-[#0F766E]"
-          aria-label="See the control layer"
-        >
-          <span>See the control layer</span>
-          <svg
-            class="h-6 w-6 text-paper"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"
-            ></path>
-          </svg>
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+        <a href="/how-it-works/" class="home-dark-outline-cta">
+          See How It Works
         </a>
-      </div>
-    </div>
-
-    <script is:inline define:vars={{ defaultUsesKey }}>
-      (() => {
-        const tablist = document.getElementById("uses-tabs");
-        if (!tablist) return;
-
-        const tabs = Array.from(tablist.querySelectorAll('[role="tab"]'));
-        const panels = new Map(
-          Array.from(document.querySelectorAll("[data-panel]")).map((el) => [
-            el.getAttribute("data-panel"),
-            el,
-          ]),
-        );
-        const visuals = new Map(
-          Array.from(document.querySelectorAll("[data-visual]")).map((el) => [
-            el.getAttribute("data-visual"),
-            el,
-          ]),
-        );
-
-        const activate = (key, focus = false) => {
-          tabs.forEach((t) => {
-            const selected = t.getAttribute("data-tab") === key;
-            t.setAttribute("aria-selected", selected ? "true" : "false");
-            t.tabIndex = selected ? 0 : -1;
-          });
-          panels.forEach((panel, panelKey) => {
-            panel.hidden = panelKey !== key;
-          });
-          visuals.forEach((visual, visualKey) => {
-            visual.hidden = visualKey !== key;
-          });
-          if (focus)
-            tabs.find((t) => t.getAttribute("data-tab") === key)?.focus();
-        };
-
-        const selected =
-          tabs.find((t) => t.getAttribute("aria-selected") === "true") ||
-          tabs[0];
-        activate(selected?.getAttribute("data-tab") || defaultUsesKey);
-
-        tabs.forEach((t) => {
-          t.addEventListener("click", () =>
-            activate(t.getAttribute("data-tab"), true),
-          );
-          t.addEventListener("keydown", (e) => {
-            if (
-              e.key !== "ArrowLeft" &&
-              e.key !== "ArrowRight" &&
-              e.key !== "Home" &&
-              e.key !== "End"
-            )
-              return;
-            e.preventDefault();
-            const currentIndex = tabs.indexOf(t);
-            const nextIndex =
-              e.key === "Home"
-                ? 0
-                : e.key === "End"
-                  ? tabs.length - 1
-                  : e.key === "ArrowRight"
-                    ? (currentIndex + 1) % tabs.length
-                    : (currentIndex - 1 + tabs.length) % tabs.length;
-            const next = tabs[nextIndex];
-            activate(next.getAttribute("data-tab"), true);
-          });
-        });
-      })();
-    </script>
-  </section>
-
-  <!-- 8. CONTROL LAYER -->
-  <section id="engine" class="bg-paper py-20 text-ink">
-    <div class="container-wide">
-      <div class="eyebrow mb-6 text-center">The Control Layer</div>
-
-      <div class="mx-auto max-w-5xl">
-        <h2
-          class="text-center text-[clamp(2.2rem,4vw,3.5rem)] font-semibold leading-[1.1] tracking-tight"
-        >
-          How controlled AI becomes operational
-        </h2>
-        <p
-          class="mx-auto mt-6 max-w-4xl text-center text-xl font-light leading-relaxed text-steel"
-        >
-          AI only becomes useful when it understands your business, follows your
-          rules, and acts within clear boundaries. Our control layer connects
-          people, policies, knowledge, brand standards, workflows, and AI agents
-          so every interaction is shaped by your business context.
-        </p>
-
-        <div class="mt-10 grid gap-5 sm:grid-cols-2">
-          <div class="rounded-2xl border border-ink/10 bg-fog p-6">
-            <h4 class="text-lg font-semibold text-[#14B8A6]">
-              Your AI understands intent
-            </h4>
-            <p class="mt-3 leading-relaxed text-steel">
-              Each request is translated into structured action shaped by your
-              rules, roles, permissions, and escalation paths.
-            </p>
-          </div>
-
-          <div class="rounded-2xl border border-ink/10 bg-fog p-6">
-            <h4 class="text-lg font-semibold text-[#14B8A6]">
-              Your agents stay within bounds
-            </h4>
-            <p class="mt-3 leading-relaxed text-steel">
-              The control layer defines what agents can see, what they can do,
-              when they must escalate, and what stays off limits.
-            </p>
-          </div>
-
-          <div class="rounded-2xl border border-ink/10 bg-fog p-6">
-            <h4 class="text-lg font-semibold text-[#14B8A6]">
-              Your knowledge becomes usable
-            </h4>
-            <p class="mt-3 leading-relaxed text-steel">
-              Standards, toolkits, assets, tickets, campaigns, policies, and
-              workflows are connected through one controlled model.
-            </p>
-          </div>
-
-          <div class="rounded-2xl border border-ink/10 bg-fog p-6">
-            <h4 class="text-lg font-semibold text-[#14B8A6]">
-              Your business keeps visibility
-            </h4>
-            <p class="mt-3 leading-relaxed text-steel">
-              Dialogue can be monitored, audited, and improved. You can see
-              where AI is aligned, risk is emerging, and what needs to change.
-            </p>
-          </div>
-        </div>
-
-        <div
-          id="Brando-visual"
-          class="relative mt-10 w-full scroll-mt-28"
-          aria-label="Brando delivered through IBOM visualisation"
-        >
-          <AiceGatewayCluster />
-        </div>
-
-        <div
-          class="mt-10 rounded-2xl border border-[#14B8A6]/20 bg-[#14B8A6]/5 p-6"
-        >
-          <div
-            class="text-sm font-semibold uppercase tracking-[0.16em] text-[#14B8A6]"
-          >
-            The Bottom Line
-          </div>
-          <p class="mt-3 text-lg leading-relaxed text-ink">
-            Without a control layer, AI remains a set of disconnected tools.
-            With one, it becomes a governed, brand-first operating capability
-            aligned to your business, your standards, and your responsibilities.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 9. WHAT IT DELIVERS -->
-  <section id="for" class="bg-slate text-paper">
-    <div class="container-wide py-20">
-      <div class="eyebrow mb-6 text-center">What It Delivers</div>
-      <h2
-        class="text-center text-[clamp(2.5rem,5vw,4.75rem)] font-semibold tracking-tight text-paper"
-      >
-        From brand knowledge to controlled operation
-      </h2>
-      <p
-        class="mx-auto mt-10 max-w-[80ch] text-center text-lg leading-relaxed text-paper/80 md:text-xl"
-      >
-        Once Brando has structured your knowledge and the control
-        layer has made it operational, you have a governed foundation your AI can
-        build on and your business can trust.
-      </p>
-
-      <div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        <div
-          class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur"
-        >
-          <div
-            class="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]"
-          >
-            Knowledge Asset
-          </div>
-          <div class="mt-4 text-2xl font-semibold tracking-tight text-paper">
-            Brand knowledge you can keep
-          </div>
-          <p class="mt-4 text-base font-medium leading-relaxed text-paper/80">
-            Your brand standards, rules, exceptions, and judgement are captured
-            in a structured format your business owns outright.
-          </p>
-        </div>
-
-        <div
-          class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur"
-        >
-          <div
-            class="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]"
-          >
-            Structure
-          </div>
-          <div class="mt-4 text-2xl font-semibold tracking-tight text-paper">
-            Rules AI can actually follow
-          </div>
-          <p class="mt-4 text-base font-medium leading-relaxed text-paper/80">
-            Your standards, approvals, and escalation paths become
-            specifications AI agents can interpret consistently.
-          </p>
-        </div>
-
-        <div
-          class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur"
-        >
-          <div
-            class="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]"
-          >
-            Control
-          </div>
-          <div class="mt-4 text-2xl font-semibold tracking-tight text-paper">
-            A controlled governance layer
-          </div>
-          <p class="mt-4 text-base font-medium leading-relaxed text-paper/80">
-            Access, behaviour, and execution are controlled through one layer
-            connecting your people, knowledge, and AI systems.
-          </p>
-        </div>
-
-        <div
-          class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur"
-        >
-          <div
-            class="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]"
-          >
-            Alignment
-          </div>
-          <div class="mt-4 text-2xl font-semibold tracking-tight text-paper">
-            One shared operating logic
-          </div>
-          <p class="mt-4 text-base font-medium leading-relaxed text-paper/80">
-            Brand and communication operations, and all other business functions
-            can work from the same governed knowledge base.
-          </p>
-        </div>
-
-        <div
-          class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur"
-        >
-          <div
-            class="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]"
-          >
-            Assurance
-          </div>
-          <div class="mt-4 text-2xl font-semibold tracking-tight text-paper">
-            Testable, traceable systems
-          </div>
-          <p class="mt-4 text-base font-medium leading-relaxed text-paper/80">
-            Specifications, controls, and runtime behaviour are all reviewable
-            so you can test the system and trace decisions.
-          </p>
-        </div>
-
-        <div
-          class="rounded-2xl border border-paper/15 bg-ink/30 p-10 shadow-outline backdrop-blur"
-        >
-          <div
-            class="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]"
-          >
-            Continuity
-          </div>
-          <div class="mt-4 text-2xl font-semibold tracking-tight text-paper">
-            Systems that can evolve safely
-          </div>
-          <p class="mt-4 text-base font-medium leading-relaxed text-paper/80">
-            As your needs, risks, tools, and models change, you can revise the
-            knowledge base and controls without losing alignment.
-          </p>
-        </div>
-      </div>
-
-      <div class="mt-12 flex items-center justify-center">
-        <a
-          href="#leaders"
-          class="inline-flex items-center justify-center gap-3 rounded-md bg-[#14B8A6] px-8 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper shadow-outline transition-colors hover:bg-[#0F766E]"
-          aria-label="Explore business entry points"
-        >
-          <span>Explore entry points</span>
-          <svg
-            class="h-6 w-6 text-paper"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"
-            ></path>
-          </svg>
+        <a href="/company/contact/" class="home-dark-cta">
+          Talk to Us
         </a>
       </div>
     </div>
   </section>
 
-  <!-- 10. BUSINESS ENTRY POINTS AND LATEST THINKING -->
-  <section id="leaders" class="bg-[#f3f0e8] text-ink">
+  <section class="bg-[#f3f0e8] text-ink">
     <div class="container-wide py-20">
-      <div class="eyebrow mb-6 text-center">Start Here</div>
-      <h2
-        class="text-center text-[clamp(2.4rem,5vw,4.5rem)] font-semibold tracking-tight text-ink"
-      >
-        Start with brand. It spans everything.
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Start Here</div>
+      <h2 class="mx-auto max-w-4xl text-center text-5xl font-extrabold tracking-tight text-ink">
+        Choose the path that gets you to a useful conversation.
       </h2>
-      <p
-        class="mx-auto mt-4 max-w-[80ch] text-center text-lg leading-relaxed text-ink/70 md:text-xl"
-      >
-        Most businesses are adding AI to existing processes and hoping control
-        will follow. It will not. We start with the brand because brand spans
-        the business. It shapes language, decisions, risk, trust, and customer
-        experience. Govern brand first, and you have an IBOM you can extend
-        into every business function where AI needs control.
-      </p>
 
-      <div class="mt-12 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-        {
-          businessFunctions.map((role) => (
-            <div class="rounded-2xl border border-ink/10 bg-fog p-8 shadow-outline">
-              <div class="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]">
-                {role.eyebrow}
-              </div>
-              <h3 class="mt-4 text-2xl font-semibold tracking-tight text-ink">
-                {role.heading}
-              </h3>
-              <p class="mt-4 text-base leading-relaxed text-steel">
-                {role.homeBody}
-              </p>
-              <div class="mt-8 flex flex-wrap gap-4">
-                <a
-                  href={`/functions/${role.slug}/`}
-                  class="inline-flex items-center justify-center gap-2 rounded-md border border-[#14B8A6] px-5 py-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#14B8A6] transition-colors hover:bg-[#0F766E] hover:text-paper"
-                >
-                  Explore this area
-                </a>
-              </div>
+      <div class="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        {pathways.map((item) => (
+          <a
+            href={item.href}
+            class="group flex min-h-full flex-col rounded-2xl border border-ink/10 bg-paper p-7 shadow-outline transition-all duration-200 hover:-translate-y-1 hover:border-[#14B8A6]/50"
+          >
+            <div class="eyebrow text-[#14B8A6]">
+              {item.eyebrow}
             </div>
-          ))
-        }
-      </div>
-
-      <div class="mt-20 border-t border-ink/10 pt-20">
-        <div class="eyebrow mb-6 text-center">Latest Thinking</div>
-        <h2
-          class="text-center text-[clamp(2.4rem,5vw,4.5rem)] font-semibold tracking-tight text-ink"
-        >
-          Latest Posts
-        </h2>
-        <p class="mt-4 text-center text-lg text-ink/70 md:text-xl">
-          The latest thinking on governed AI systems, operational control, and
-          knowledge-first delivery.
-        </p>
-      </div>
-
-      <style is:inline>
-        .home-post-filter[aria-pressed="true"] {
-          background: #14b8a6;
-          border-color: #14b8a6;
-          color: #fffaf5;
-        }
-
-        .home-post-card {
-          opacity: 0;
-          transform: translateY(14px);
-          transition:
-            opacity 520ms ease,
-            transform 520ms ease;
-          will-change: opacity, transform;
-        }
-
-        .home-post-card.home-post-card-in {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      </style>
-
-      <div
-        id="home-post-filters"
-        class="mt-12 flex flex-wrap items-center justify-center gap-3"
-        aria-label="Filter latest posts by topic"
-      >
-        {
-          postFilterChips.map((tag) => (
-            <button
-              type="button"
-              data-post-filter={tag.toLowerCase()}
-              aria-pressed={tag === "All" ? "true" : "false"}
-              class="home-post-filter inline-flex items-center justify-center rounded-full border border-[#14B8A6] px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#14B8A6] transition-colors hover:bg-[#0F766E] hover:text-paper"
-            >
-              {tag}
-            </button>
-          ))
-        }
-      </div>
-
-      <div id="home-posts-grid" class="mt-12 grid gap-8 lg:grid-cols-3">
-        {
-          latestPosts.map((post, idx) => (
-            <div
-              data-home-post={String(idx)}
-              data-post-tags={post.data.tags
-                .map((tag) => tag.toLowerCase())
-                .join("|")}
-              class={`home-post-card ${idx >= HOME_POST_INITIAL_COUNT ? "hidden" : "home-post-card-in"}`.trim()}
-            >
-              <PostCard post={post} />
+            <h3 class="mt-4 text-2xl font-semibold tracking-tight text-ink">
+              {item.title}
+            </h3>
+            <p class="mt-4 flex-1 text-base leading-relaxed text-steel">
+              {item.body}
+            </p>
+            <div class="mt-8 text-sm font-semibold uppercase tracking-[0.14em] text-[#0F766E]">
+              Read more <span aria-hidden="true">→</span>
             </div>
-          ))
-        }
+          </a>
+        ))}
       </div>
 
       <div class="mt-12 flex items-center justify-center">
-        <button
-          id="home-posts-load-more"
-          type="button"
-          class="inline-flex items-center justify-center gap-3 rounded-md bg-[#14B8A6] px-8 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper shadow-outline transition-colors hover:bg-[#0F766E]"
-          data-initial-count={String(HOME_POST_INITIAL_COUNT)}
-          data-batch-size={String(HOME_POST_BATCH_SIZE)}
-          aria-controls="home-posts-grid"
-          aria-label="Load more posts"
-          style={latestPosts.length > HOME_POST_INITIAL_COUNT
-            ? ""
-            : "display:none;"}
-        >
-          <span>Load More</span>
-          <svg
-            class="h-6 w-6 text-paper"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              d="M10 3a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4.007 4.007a1 1 0 0 1-1.414 0L6.279 13.707a1 1 0 1 1 1.414-1.414L10 14.586V4a1 1 0 0 1 1-1z"
-            ></path>
-          </svg>
-        </button>
+        <a href="/company/contact/" class="home-outline-cta">Talk to Us</a>
       </div>
     </div>
   </section>
 
-  <script is:inline>
-    (() => {
-      const button = document.getElementById("home-posts-load-more");
-      const grid = document.getElementById("home-posts-grid");
-      const filterBar = document.getElementById("home-post-filters");
-      if (!(button instanceof HTMLButtonElement) || !grid) return;
+  <section class="bg-paper text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-6 text-center text-[#14B8A6]">Latest Thinking</div>
+      <h2 class="text-center text-5xl font-extrabold tracking-tight text-ink">
+        Latest Posts
+      </h2>
+      <p class="mx-auto mt-5 max-w-[70ch] text-center text-lg leading-relaxed text-steel md:text-xl">
+        Recent thinking on governed AI systems, brand operations, and
+        knowledge-first delivery.
+      </p>
 
-      const cards = Array.from(grid.querySelectorAll("[data-home-post]"));
-      const filters = filterBar
-        ? Array.from(filterBar.querySelectorAll("[data-post-filter]"))
-        : [];
-      const initialCount = Number(
-        button.getAttribute("data-initial-count") || "0",
-      );
-      const batchSize = Number(button.getAttribute("data-batch-size") || "0");
-      if (!Number.isFinite(initialCount) || !Number.isFinite(batchSize)) return;
+      <div class="mt-12 grid gap-8 lg:grid-cols-3">
+        {latestPosts.slice(0, 3).map((post) => <PostCard post={post} />)}
+      </div>
 
-      let activeFilter = "all";
+      <div class="mt-12 flex flex-wrap items-center justify-center gap-4">
+        <a href="/opinions/" class="home-outline-cta">More Thinking</a>
+        <a href="/company/contact/" class="home-outline-cta">
+          Talk to Us
+        </a>
+      </div>
+    </div>
+  </section>
 
-      const getMatchingCards = () =>
-        cards.filter((el) => {
-          if (activeFilter === "all") return true;
-          const tags = (el.getAttribute("data-post-tags") || "").split("|");
-          return tags.includes(activeFilter);
-        });
-
-      const getVisibleCount = () =>
-        getMatchingCards().reduce(
-          (count, el) => (el.classList.contains("hidden") ? count : count + 1),
-          0,
-        );
-
-      const updateButton = () => {
-        const matchingCards = getMatchingCards();
-        button.style.display =
-          getVisibleCount() >= matchingCards.length ? "none" : "";
-      };
-
-      const renderCards = (count) => {
-        const matchingCards = getMatchingCards();
-
-        cards.forEach((el) => {
-          el.classList.add("hidden");
-          el.classList.remove("home-post-card-in");
-        });
-
-        matchingCards.slice(0, count).forEach((el, index) => {
-          el.classList.remove("hidden");
-          window.requestAnimationFrame(() => {
-            window.setTimeout(
-              () => el.classList.add("home-post-card-in"),
-              index * 55,
-            );
-          });
-        });
-
-        updateButton();
-      };
-
-      button.addEventListener("click", () => {
-        const matchingCards = getMatchingCards();
-        const visible = getVisibleCount();
-        const next = Math.min(matchingCards.length, visible + batchSize);
-
-        for (let i = visible; i < next; i++) {
-          const el = matchingCards[i];
-          if (!el) continue;
-          el.classList.remove("hidden");
-          window.requestAnimationFrame(() => {
-            window.setTimeout(
-              () => el.classList.add("home-post-card-in"),
-              (i - visible) * 55,
-            );
-          });
-        }
-
-        updateButton();
-      });
-
-      filters.forEach((filter) => {
-        filter.addEventListener("click", () => {
-          activeFilter = filter.getAttribute("data-post-filter") || "all";
-          filters.forEach((el) =>
-            el.setAttribute("aria-pressed", el === filter ? "true" : "false"),
-          );
-          renderCards(initialCount);
-        });
-      });
-
-      renderCards(initialCount);
-    })();
-
-    (() => {
-      const scrollButtons = Array.from(
-        document.querySelectorAll("[data-scroll-target]"),
-      );
-      if (!scrollButtons.length) return;
-
-      scrollButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-          const targetId = button.getAttribute("data-scroll-target");
-          if (!targetId) return;
-          const target = document.getElementById(targetId);
-          target?.scrollIntoView({ behavior: "smooth", block: "start" });
-          history.replaceState(null, "", `#${targetId}`);
-        });
-      });
-    })();
-  </script>
+  <section class="bg-slate text-paper">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Start The Conversation</div>
+      <div class="grid items-start gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+        <div>
+          <h2 class="text-5xl font-semibold tracking-tight text-paper">
+            Find out where AI is already operating your brand.
+          </h2>
+        </div>
+        <div class="max-w-prose text-lg leading-relaxed text-paper/78 md:text-xl">
+          <p>
+            The useful first step is not another deck. It is a clear view of
+            where your brand is exposed to AI now, which workflows carry risk,
+            and what needs to be governed first.
+          </p>
+          <p class="mt-6">
+            We can help you turn that into a practical route into Brando and the
+            IBOM Framework.
+          </p>
+          <div class="mt-8">
+            <a href="/company/contact/" class="home-dark-cta">Book a Conversation</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <style>
     .home-split-grid {
       display: grid;
       gap: 2.5rem;
-    }
-
-    .home-split-grid--center {
-      align-items: center;
     }
 
     .home-hero {
@@ -1389,16 +277,6 @@ const page = {
     .home-hero__inner {
       padding-top: 7rem;
       padding-bottom: 5rem;
-    }
-
-    .home-hero__eyebrow {
-      margin: 0 0 1.25rem;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      font-weight: 400;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: color-mix(in srgb, var(--color-ink) 30%, white);
     }
 
     .home-hero__title {
@@ -1431,14 +309,15 @@ const page = {
       flex-wrap: wrap;
     }
 
-    .home-hero__button {
+    .home-hero__button,
+    .home-dark-cta {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       padding: 15px 32px;
-      border: 1.5px solid #14B8A6;
+      border: 1.5px solid #14b8a6;
       border-radius: 0.875rem;
-      background: #14B8A6;
+      background: #14b8a6;
       color: #fff;
       font-family: var(--font-display);
       font-size: 1rem;
@@ -1452,28 +331,31 @@ const page = {
         box-shadow 180ms ease;
     }
 
-    .home-hero__button:hover {
-      background: #0F766E;
-      border-color: #0F766E;
+    .home-hero__button:hover,
+    .home-dark-cta:hover {
+      background: #0f766e;
+      border-color: #0f766e;
       transform: translateY(-1px);
       box-shadow:
         0 4px 6px -1px rgba(0, 0, 0, 0.1),
         0 2px 4px -2px rgba(0, 0, 0, 0.1);
     }
 
-    .home-hero__secondary {
+    .home-hero__secondary,
+    .home-outline-cta,
+    .home-dark-outline-cta {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 0.7rem;
       padding: 15px 32px;
-      border: 1.5px solid #14B8A6;
+      border: 1.5px solid #14b8a6;
       border-radius: 0.875rem;
       background: transparent;
       font-family: var(--font-display);
       font-size: 1rem;
       font-weight: 600;
-      color: #0F766E;
+      color: #0f766e;
       text-decoration: none;
       white-space: nowrap;
       transition:
@@ -1484,14 +366,33 @@ const page = {
         box-shadow 180ms ease;
     }
 
-    .home-hero__secondary:hover {
+    .home-dark-outline-cta {
+      color: #5eead4;
+    }
+
+    .home-hero__secondary:hover,
+    .home-outline-cta:hover,
+    .home-dark-outline-cta:hover {
       color: #ffffff;
-      background: #14B8A6;
-      border-color: #14B8A6;
+      background: #14b8a6;
+      border-color: #14b8a6;
       transform: translateY(-1px);
       box-shadow:
         0 4px 6px -1px rgba(0, 0, 0, 0.1),
         0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    }
+
+    .home-inline-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-weight: 700;
+      color: #0f766e;
+      text-decoration: none;
+    }
+
+    .home-inline-cta:hover {
+      color: #14b8a6;
     }
 
     @media (max-width: 960px) {
@@ -1503,6 +404,11 @@ const page = {
       .home-hero__title {
         max-width: 12ch;
       }
+
+      h2 {
+        font-size: 2.65rem;
+        line-height: 1.08;
+      }
     }
 
     @media (min-width: 1024px) {
@@ -1510,10 +416,6 @@ const page = {
         grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
         gap: 4.5rem;
         align-items: start;
-      }
-
-      .home-split-grid--center {
-        align-items: center;
       }
 
       .home-split-grid--hero {

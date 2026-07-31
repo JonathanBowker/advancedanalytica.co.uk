@@ -3,10 +3,10 @@ import { mkdirSync, readFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
 
 const root = process.cwd();
-const svgPath = join(root, "public/images/infrastructure/dots-brand-oracle.svg");
-const frameDir = join(root, ".tmp-brand-oracle-mark-frames");
+const svgPath = join(root, "public/images/infrastructure/dots-brand-operator.svg");
+const frameDir = join(root, ".tmp-brand-operator-mark-frames");
 const outputDir = join(root, "public/videos");
-const outputPath = join(outputDir, "brand-oracle-mark-dots.mp4");
+const outputPath = join(outputDir, "brand-operator-mark-dots.mp4");
 
 const width = 1920;
 const height = 1080;

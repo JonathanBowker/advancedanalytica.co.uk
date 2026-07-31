@@ -1,0 +1,152 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import AiceGatewayCluster from "../components/AiceGatewayCluster.astro";
+import { SITE_URL } from "../lib/seo/site";
+import { howItWorksCards } from "../lib/brandoContent";
+
+const title = "How Brando Works";
+const description =
+  "See how Advanced Analytica maps brand knowledge, models it as Brando, validates it through IBOM, and deploys it into governed AI workflows.";
+
+const page = {
+  title,
+  description,
+  url: `${SITE_URL}/how-it-works`,
+  breadcrumbs: [
+    { name: "Home", url: `${SITE_URL}/` },
+    { name: "How Brando Works", url: `${SITE_URL}/how-it-works` },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} page={page}>
+  <section class="bg-paper text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow text-[#14B8A6]">Delivery</div>
+      <div class="mt-8 grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
+        <h1 class="text-6xl font-black leading-none tracking-tight text-ink">
+          From brand disorder to controlled AI operation.
+        </h1>
+        <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
+          <p>
+            Most businesses cannot scale what they cannot codify. We move your
+            brand standards, expert judgement, and operating rules into a
+            governed intelligence layer your AI can use.
+          </p>
+          <p class="mt-6">
+            The work starts with mapping and ends with controlled workflows,
+            review paths, escalation rules, and audit visibility.
+          </p>
+          <div class="mt-8">
+            <a href="/company/contact/" class="aa-primary-cta">Talk to Us</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-slate text-paper">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-6 text-center text-[#14B8A6]">Control Layer</div>
+      <h2 class="mx-auto max-w-4xl text-center text-5xl font-semibold tracking-tight text-paper">
+        How controlled AI becomes operational
+      </h2>
+      <p class="mx-auto mt-8 max-w-[82ch] text-center text-lg leading-relaxed text-paper/80 md:text-xl">
+        The control layer connects people, policies, knowledge, brand standards,
+        workflows, and AI agents so every interaction is shaped by your business
+        context.
+      </p>
+      <div class="mx-auto mt-10 max-w-6xl">
+        <AiceGatewayCluster />
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-[#f3f0e8] text-ink">
+    <div class="container-wide py-20">
+      <div class="grid gap-6 lg:grid-cols-3">
+        {howItWorksCards.map((item) => (
+          <article class="rounded-2xl border border-ink/10 bg-paper p-7 shadow-outline">
+            <h2 class="text-2xl font-semibold tracking-tight text-ink">
+              {item.heading}
+            </h2>
+            <p class="mt-4 text-base leading-relaxed text-steel">
+              {item.body}
+            </p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-paper text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Role-Intent Testing</div>
+      <div class="grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
+        <div>
+          <h2 class="text-5xl font-extrabold tracking-tight text-ink">
+            We test the moments where AI can damage trust.
+          </h2>
+        </div>
+        <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
+          <p>
+            Customers ask for reassurance. Journalists ask for proof.
+            Regulators expect precision. Sales teams push for conversion. AI
+            agents summarise, rewrite, compare, recommend, and respond.
+          </p>
+          <p class="mt-6">
+            We build role-intent scenarios around those moments, then test where
+            your rules hold, where ambiguity appears, and where stronger
+            controls are needed before agents go live.
+          </p>
+          <div class="mt-8">
+            <a href="/company/contact/" class="aa-primary-cta">Talk to Us</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-slate text-paper">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Put It To Work</div>
+      <div class="grid items-start gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+        <div>
+          <h2 class="text-5xl font-semibold tracking-tight text-paper">
+            Find the first workflow where Brando should govern AI.
+          </h2>
+        </div>
+        <div class="max-w-prose text-lg leading-relaxed text-paper/78 md:text-xl">
+          <p>
+            The implementation starts by choosing a live moment where AI touches
+            brand trust: content creation, approvals, service responses,
+            campaign adaptation, or internal assistants.
+          </p>
+          <p class="mt-6">
+            We can help you map that workflow, define the controls, and decide
+            what needs to be true before the agent is safe enough to use.
+          </p>
+          <div class="mt-8">
+            <a href="/company/contact/" class="aa-dark-cta">Book a Conversation</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .aa-primary-cta,
+    .aa-dark-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px solid #14b8a6;
+      border-radius: 0.875rem;
+      background: #14b8a6;
+      padding: 15px 32px;
+      color: #fff;
+      font-weight: 700;
+      text-decoration: none;
+    }
+  </style>
+</BaseLayout>

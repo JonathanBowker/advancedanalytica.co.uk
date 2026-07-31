@@ -1,0 +1,126 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE_URL } from "../lib/seo/site";
+import { ibomStages } from "../lib/brandoContent";
+
+const title = "IBOM Framework";
+const description =
+  "IBOM is the Intelligent Business Operating Model that delivers Brando through staged architecture, specification, validation, execution, and governed implementation.";
+
+const page = {
+  title,
+  description,
+  url: `${SITE_URL}/ibom`,
+  breadcrumbs: [
+    { name: "Home", url: `${SITE_URL}/` },
+    { name: "IBOM Framework", url: `${SITE_URL}/ibom` },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} page={page}>
+  <section class="bg-paper text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow text-[#14B8A6]">Framework</div>
+      <div class="mt-8 grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
+        <h1 class="text-6xl font-black leading-none tracking-tight text-ink">
+          IBOM delivers Brando.
+        </h1>
+        <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
+          <p>
+            IBOM is the Intelligent Business Operating Model: the delivery and
+            operating model around Brando. It defines how organisational intent
+            moves from documents and judgement into structured knowledge,
+            governed controls, and live operation.
+          </p>
+          <p class="mt-6">
+            The point is practical: get from brand knowledge to controlled AI
+            operations with enough speed to show progress and enough method to
+            stand behind the work.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-4">
+            <a href="/company/contact/" class="aa-primary-cta">Talk to Us</a>
+            <a href="/ibom-way/" class="aa-outline-cta">See the Visual</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-[#f3f0e8] text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Six Stages</div>
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {ibomStages.map((stage) => (
+          <article class="rounded-2xl border border-ink/10 bg-paper p-7 shadow-outline">
+            <div class="eyebrow text-[#14B8A6]">
+              {stage.stage} · {stage.phase}
+            </div>
+            <h2 class="mt-4 text-2xl font-semibold tracking-tight text-ink">
+              {stage.heading}
+            </h2>
+            <p class="mt-3 text-base font-semibold text-ink/75">
+              {stage.subheading}
+            </p>
+            <p class="mt-4 text-base leading-relaxed text-steel">
+              {stage.body}
+            </p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-slate text-paper">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Next Step</div>
+      <div class="grid items-start gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+        <div>
+          <h2 class="text-5xl font-semibold tracking-tight text-paper">
+            Work out what stage your brand is really at.
+          </h2>
+        </div>
+        <div class="max-w-prose text-lg leading-relaxed text-paper/78 md:text-xl">
+          <p>
+            A short conversation is usually enough to understand whether you
+            need a readiness audit, a Brando build, or a wider IBOM programme.
+          </p>
+          <p class="mt-6">
+            We will help you identify the first useful move: what to map, what
+            to structure, and what needs governance before AI starts operating
+            from your brand.
+          </p>
+          <div class="mt-8">
+            <a href="/company/contact/" class="aa-dark-cta">Book a Conversation</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .aa-primary-cta,
+    .aa-dark-cta,
+    .aa-outline-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.875rem;
+      padding: 15px 32px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .aa-primary-cta,
+    .aa-dark-cta {
+      border: 1.5px solid #14b8a6;
+      background: #14b8a6;
+      color: #fff;
+    }
+
+    .aa-outline-cta {
+      border: 1.5px solid #14b8a6;
+      color: #0f766e;
+    }
+  </style>
+</BaseLayout>

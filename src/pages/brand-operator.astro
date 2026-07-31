@@ -5,19 +5,19 @@ import cmoPersona from "../data/persona-cmo.json";
 import headOfBrandPersona from "../data/persona-head-of-brand.json";
 import generalCounselPersona from "../data/persona-general-counsel.json";
 
-const title = "Brand Brain";
+const title = "Brand Operator";
 const description =
-  "A persona-driven Brand Brain landing page for brand governance, machine-readable controls, and qualified sales context.";
+  "A persona-driven Brand Operator landing page for brand governance, machine-readable controls, and qualified sales context.";
 const leadEndpoint =
   "https://advancedanalytica-co-uk-omj3v.ondigitalocean.app/api/leads/contact";
 
 const page = {
   title,
   description,
-  url: `${SITE_URL}/brand-oracle`,
+  url: `${SITE_URL}/brand-operator`,
   breadcrumbs: [
     { name: "Home", url: `${SITE_URL}/` },
-    { name: title, url: `${SITE_URL}/brand-oracle` },
+    { name: title, url: `${SITE_URL}/brand-operator` },
   ],
 };
 
@@ -80,19 +80,19 @@ const countries = [
       scroll-behavior: smooth;
     }
 
-    .brand-oracle-panel {
+    .brand-operator-panel {
       border: 1px solid rgba(255, 255, 255, 0.14);
       background: rgba(255, 255, 255, 0.02);
       backdrop-filter: blur(12px);
     }
 
-    .brand-oracle-panel-light {
+    .brand-operator-panel-light {
       border: 1px solid rgba(5, 5, 5, 0.12);
       background: rgba(255, 255, 255, 0.82);
       backdrop-filter: blur(12px);
     }
 
-    .brand-oracle-option {
+    .brand-operator-option {
       width: min(100%, 36rem);
       border: 1px solid rgba(255, 255, 255, 0.16);
       background: transparent;
@@ -103,44 +103,44 @@ const countries = [
         background-color 180ms ease;
     }
 
-    .brand-oracle-option:hover,
-    .brand-oracle-option:focus-visible {
+    .brand-operator-option:hover,
+    .brand-operator-option:focus-visible {
       transform: translateY(-1px);
       border-color: rgba(255, 255, 255, 0.38);
       background: rgba(255, 255, 255, 0.05);
       outline: none;
     }
 
-    .brand-oracle-option-contrast {
+    .brand-operator-option-contrast {
       border-width: 2px;
       border-color: rgba(255, 255, 255, 0.82);
     }
 
-    .brand-oracle-option-contrast:hover,
-    .brand-oracle-option-contrast:focus-visible {
+    .brand-operator-option-contrast:hover,
+    .brand-operator-option-contrast:focus-visible {
       border-color: #ffffff;
     }
 
-    .brand-oracle-option-light {
+    .brand-operator-option-light {
       border-color: rgba(5, 5, 5, 0.16);
       color: #050505;
     }
 
-    .brand-oracle-option-light:hover,
-    .brand-oracle-option-light:focus-visible {
+    .brand-operator-option-light:hover,
+    .brand-operator-option-light:focus-visible {
       border-color: rgba(5, 5, 5, 0.38);
       background: rgba(5, 5, 5, 0.04);
     }
 
-    .brand-oracle-reveal[hidden] {
+    .brand-operator-reveal[hidden] {
       display: none;
     }
 
-    .brand-oracle-reveal.is-visible {
-      animation: brand-oracle-rise 360ms ease-out;
+    .brand-operator-reveal.is-visible {
+      animation: brand-operator-rise 360ms ease-out;
     }
 
-    @keyframes brand-oracle-rise {
+    @keyframes brand-operator-rise {
       from {
         opacity: 0;
         transform: translateY(18px);
@@ -157,8 +157,8 @@ const countries = [
         scroll-behavior: auto;
       }
 
-      .brand-oracle-option,
-      .brand-oracle-reveal.is-visible {
+      .brand-operator-option,
+      .brand-operator-reveal.is-visible {
         transition: none;
         animation: none;
       }
@@ -175,7 +175,7 @@ const countries = [
         preload="auto"
         aria-hidden="true"
       >
-        <source src="/videos/brand-oracle-full-dots.mp4" type="video/mp4" />
+        <source src="/videos/brand-operator-full-dots.mp4" type="video/mp4" />
       </video>
       <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(5,5,5,0.18),rgba(5,5,5,0.74)_58%,#050505_100%)]"></div>
       <div class="container-wide relative z-10 flex min-h-[calc(88vh-12rem)] items-center justify-center text-center">
@@ -184,7 +184,7 @@ const countries = [
           Your brand means different things to different people.
         </h1>
         <p class="mx-auto mt-8 max-w-[46rem] text-[clamp(1.05rem,2.2vw,1.55rem)] leading-relaxed text-white/74">
-          It shouldn't. Brand Brain makes your brand machine-readable, continuously governed, always current.
+          It shouldn't. Brand Operator makes your brand machine-readable, continuously governed, always current.
         </p>
         <p class="mt-6 text-[clamp(1.2rem,2.8vw,1.9rem)] font-semibold uppercase tracking-[0.22em] text-white">
           One meaning. Everywhere.
@@ -205,14 +205,14 @@ const countries = [
         <div class="mt-12 flex w-full flex-col items-center gap-4">
           <button
             type="button"
-            class="brand-oracle-option brand-oracle-option-light rounded-full px-8 py-5 text-lg font-semibold"
+            class="brand-operator-option brand-operator-option-light rounded-full px-8 py-5 text-lg font-semibold"
             data-qualification="yes"
           >
             Yes
           </button>
           <button
             type="button"
-            class="brand-oracle-option brand-oracle-option-light rounded-full px-8 py-5 text-lg font-semibold"
+            class="brand-operator-option brand-operator-option-light rounded-full px-8 py-5 text-lg font-semibold"
             data-qualification="no"
           >
             No
@@ -223,7 +223,7 @@ const countries = [
 
     <section
       id="pain-point"
-      class="brand-oracle-reveal border-b border-white/10 bg-[#14B8A6] py-24 text-paper"
+      class="brand-operator-reveal border-b border-white/10 bg-[#14B8A6] py-24 text-paper"
       hidden
     >
       <div class="container-wide flex flex-col items-center text-center">
@@ -237,21 +237,21 @@ const countries = [
         <div class="mt-12 flex w-full flex-col items-center gap-4">
           <button
             type="button"
-            class="brand-oracle-option brand-oracle-option-contrast rounded-[2rem] px-8 py-5 text-xl leading-relaxed"
+            class="brand-operator-option brand-operator-option-contrast rounded-[2rem] px-8 py-5 text-xl leading-relaxed"
             data-pain-point="consistency"
           >
             Keeping our brand consistent across markets
           </button>
           <button
             type="button"
-            class="brand-oracle-option brand-oracle-option-contrast rounded-[2rem] px-8 py-5 text-xl leading-relaxed"
+            class="brand-operator-option brand-operator-option-contrast rounded-[2rem] px-8 py-5 text-xl leading-relaxed"
             data-pain-point="enforcement"
           >
             Enforcing brand guidelines reliably
           </button>
           <button
             type="button"
-            class="brand-oracle-option brand-oracle-option-contrast rounded-[2rem] px-8 py-5 text-xl leading-relaxed"
+            class="brand-operator-option brand-operator-option-contrast rounded-[2rem] px-8 py-5 text-xl leading-relaxed"
             data-pain-point="compliance"
           >
             Managing compliance and regulatory risk
@@ -262,7 +262,7 @@ const countries = [
 
     <section
       id="maturity-section"
-      class="brand-oracle-reveal border-b border-[#050505]/10 bg-[#14B8A6] py-24 text-[#050505]"
+      class="brand-operator-reveal border-b border-[#050505]/10 bg-[#14B8A6] py-24 text-[#050505]"
       hidden
     >
       <div class="container-wide">
@@ -274,7 +274,7 @@ const countries = [
             Your brand is harmonised. Here's how to scale it.
           </h2>
           <p class="mx-auto mt-8 max-w-[46rem] text-lg leading-relaxed text-[#050505]/74">
-            Brand Brain turns good governance into a live control layer. We make brand rules machine-operable, keep them current, and give your teams governed workflows with traceable decisions as your system scales.
+            Brand Operator turns good governance into a live control layer. We make brand rules machine-operable, keep them current, and give your teams governed workflows with traceable decisions as your system scales.
           </p>
         </div>
       </div>
@@ -282,11 +282,11 @@ const countries = [
 
     <section
       id="persona-section"
-      class="brand-oracle-reveal border-b border-white/10 bg-[#050505] py-24 text-paper"
+      class="brand-operator-reveal border-b border-white/10 bg-[#050505] py-24 text-paper"
       hidden
     >
       <div class="container-wide">
-        <div class="brand-oracle-panel rounded-[2rem] p-8 sm:p-12">
+        <div class="brand-operator-panel rounded-[2rem] p-8 sm:p-12">
           <div class="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-white/58" data-persona-label>
             Persona
           </div>
@@ -326,18 +326,18 @@ const countries = [
         </div>
 
         <form
-          id="brand-oracle-form"
+          id="brand-operator-form"
           action={leadEndpoint}
           method="POST"
           data-lead-form
           data-lead-endpoint={leadEndpoint}
-          data-lead-type="brand_oracle"
-          data-lead-name="Brand Brain"
-          data-form-location="brand_oracle_page"
-          data-status-target="brand-oracle-status"
-          data-success-message="Thanks. Your Brand Brain enquiry has been sent."
+          data-lead-type="brand_operator"
+          data-lead-name="Brand Operator"
+          data-form-location="brand_operator_page"
+          data-status-target="brand-operator-status"
+          data-success-message="Thanks. Your Brand Operator enquiry has been sent."
           data-success-copy="We will review your context and come back with the right next step."
-          class="brand-oracle-panel rounded-[2rem] p-8 sm:p-12"
+          class="brand-operator-panel rounded-[2rem] p-8 sm:p-12"
           novalidate
         >
           <input
@@ -349,16 +349,16 @@ const countries = [
             aria-hidden="true"
           />
           <input type="hidden" name="language" value="en" />
-          <input type="hidden" name="topic" value="Brand Brain" />
+          <input type="hidden" name="topic" value="Brand Operator" />
           <input type="hidden" name="clickstream_data" value="" data-summary-label="Clickstream data" />
           <input type="hidden" name="persona_inferred" value="" data-summary-label="Persona inferred" />
           <input type="hidden" name="pain_point" value="" data-summary-label="Pain point" />
 
           <div class="grid gap-6 sm:grid-cols-2">
             <div class="grid gap-2">
-              <label for="brand-oracle-name" class="text-sm font-semibold uppercase tracking-[0.12em] text-white/78">Name</label>
+              <label for="brand-operator-name" class="text-sm font-semibold uppercase tracking-[0.12em] text-white/78">Name</label>
               <input
-                id="brand-oracle-name"
+                id="brand-operator-name"
                 name="name"
                 type="text"
                 autocomplete="name"
@@ -369,9 +369,9 @@ const countries = [
             </div>
 
             <div class="grid gap-2">
-              <label for="brand-oracle-email" class="text-sm font-semibold uppercase tracking-[0.12em] text-white/78">Email</label>
+              <label for="brand-operator-email" class="text-sm font-semibold uppercase tracking-[0.12em] text-white/78">Email</label>
               <input
-                id="brand-oracle-email"
+                id="brand-operator-email"
                 name="email"
                 type="email"
                 autocomplete="email"
@@ -383,9 +383,9 @@ const countries = [
             </div>
 
             <div class="grid gap-2">
-              <label for="brand-oracle-company" class="text-sm font-semibold uppercase tracking-[0.12em] text-white/78">Company</label>
+              <label for="brand-operator-company" class="text-sm font-semibold uppercase tracking-[0.12em] text-white/78">Company</label>
               <input
-                id="brand-oracle-company"
+                id="brand-operator-company"
                 name="company"
                 type="text"
                 autocomplete="organization"
@@ -396,9 +396,9 @@ const countries = [
             </div>
 
             <div class="grid gap-2">
-              <label for="brand-oracle-role" class="text-sm font-semibold uppercase tracking-[0.12em] text-white/78">Role / Title</label>
+              <label for="brand-operator-role" class="text-sm font-semibold uppercase tracking-[0.12em] text-white/78">Role / Title</label>
               <input
-                id="brand-oracle-role"
+                id="brand-operator-role"
                 name="role"
                 type="text"
                 required
@@ -408,9 +408,9 @@ const countries = [
             </div>
 
             <div class="grid gap-2">
-              <label for="brand-oracle-company-size" class="text-sm font-semibold uppercase tracking-[0.12em] text-white/78">Company size</label>
+              <label for="brand-operator-company-size" class="text-sm font-semibold uppercase tracking-[0.12em] text-white/78">Company size</label>
               <select
-                id="brand-oracle-company-size"
+                id="brand-operator-company-size"
                 name="company_size"
                 required
                 class="w-full rounded-none border-0 border-b border-white/22 bg-black px-0 py-3 text-base text-white outline-none transition-colors focus:border-white"
@@ -426,9 +426,9 @@ const countries = [
             </div>
 
             <div class="grid gap-2">
-              <label for="brand-oracle-country" class="text-sm font-semibold uppercase tracking-[0.12em] text-white/78">Country</label>
+              <label for="brand-operator-country" class="text-sm font-semibold uppercase tracking-[0.12em] text-white/78">Country</label>
               <select
-                id="brand-oracle-country"
+                id="brand-operator-country"
                 name="country"
                 required
                 class="w-full rounded-none border-0 border-b border-white/22 bg-black px-0 py-3 text-base text-white outline-none transition-colors focus:border-white"
@@ -442,11 +442,11 @@ const countries = [
           </div>
 
           <div class="mt-8 grid gap-2">
-            <label for="brand-oracle-message" class="text-sm font-semibold uppercase tracking-[0.12em] text-white/78">
+            <label for="brand-operator-message" class="text-sm font-semibold uppercase tracking-[0.12em] text-white/78">
               Brief note on your challenge
             </label>
             <textarea
-              id="brand-oracle-message"
+              id="brand-operator-message"
               name="message"
               rows="5"
               placeholder="Optional"
@@ -463,7 +463,7 @@ const countries = [
                 required
                 class="mt-1 h-4 w-4 border border-white/30 bg-transparent accent-white"
               />
-              <span>I agree to receive information about Brand Brain deployments under confidentiality.</span>
+              <span>I agree to receive information about Brand Operator deployments under confidentiality.</span>
             </label>
           </div>
 
@@ -474,7 +474,7 @@ const countries = [
             >
               Talk to Us
             </button>
-            <div id="brand-oracle-status" class="text-sm text-white/68" aria-live="polite"></div>
+            <div id="brand-operator-status" class="text-sm text-white/68" aria-live="polite"></div>
           </div>
 
           <noscript>
@@ -489,7 +489,7 @@ const countries = [
 
   <script define:vars={{ personaConfigs }} is:inline>
     (() => {
-      const form = document.getElementById("brand-oracle-form");
+      const form = document.getElementById("brand-operator-form");
       const painPointSection = document.getElementById("pain-point");
       const maturitySection = document.getElementById("maturity-section");
       const personaSection = document.getElementById("persona-section");
@@ -509,8 +509,8 @@ const countries = [
       const painPointField = form.querySelector('[name="pain_point"]');
       if (!(clickstreamField instanceof HTMLInputElement)) return;
 
-      const cookieName = "aa_brand_oracle_session";
-      const storagePrefix = "brand_oracle_clickstream:";
+      const cookieName = "aa_brand_operator_session";
+      const storagePrefix = "brand_operator_clickstream:";
 
       const readCookie = (name) => {
         return document.cookie

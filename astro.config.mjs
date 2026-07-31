@@ -15,6 +15,13 @@ export default defineConfig({
     mode: 'standalone'
   }),
   site: 'https://advancedanalytica.co.uk',
+  redirects: {
+    '/brand-oracle': '/brand-operator',
+    '/dots-brand-oracle-animation': '/dots-brand-operator-animation',
+    '/dots-brand-oracle-wordmark-animation': '/dots-brand-operator-wordmark-animation',
+    '/use-cases/financial-services-brand-brain': '/use-cases/financial-services-brand-operator',
+    '/case-studies/financial-services-brand-brain': '/case-studies/financial-services-brand-operator',
+  },
   vite: {
     optimizeDeps: {
       include: ['d3']

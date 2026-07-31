@@ -1,0 +1,148 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE_URL } from "../lib/seo/site";
+import { businessFunctions } from "../lib/businessFunctions";
+import { personaPositioningCards } from "../lib/brandoContent";
+
+const title = "Brando for Leaders";
+const description =
+  "See why Brando matters to CMOs, brand leaders, legal, AI, technology, finance, and transformation teams responsible for governed AI adoption.";
+
+const page = {
+  title,
+  description,
+  url: `${SITE_URL}/for-leaders`,
+  breadcrumbs: [
+    { name: "Home", url: `${SITE_URL}/` },
+    { name: "For Leaders", url: `${SITE_URL}/for-leaders` },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} page={page}>
+  <section class="bg-paper text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow text-[#14B8A6]">For Leaders</div>
+      <div class="mt-8 grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
+        <h1 class="text-6xl font-black leading-none tracking-tight text-ink">
+          Brando gives every owner a reason to act.
+        </h1>
+        <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
+          <p>
+            Brand governance is no longer only a brand team concern. Once AI
+            begins creating, summarising, routing, approving, and responding,
+            the same operating asset matters to marketing, legal, AI,
+            technology, finance, and transformation leaders.
+          </p>
+          <p class="mt-6">
+            The fastest way to understand the opportunity is to map where AI is
+            already touching your brand and which leader owns the risk.
+          </p>
+          <div class="mt-8">
+            <a href="/company/contact/" class="aa-primary-cta">Talk to Us</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-[#f3f0e8] text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Why Each Leader Cares</div>
+      <div class="grid gap-6 lg:grid-cols-3">
+        {personaPositioningCards.map((card) => (
+          <article class="flex min-h-full flex-col rounded-2xl border border-ink/10 bg-paper p-7 shadow-outline">
+            <div class="eyebrow text-[#14B8A6]">
+              {card.role}
+            </div>
+            <h2 class="mt-4 text-2xl font-semibold tracking-tight text-ink">
+              {card.heading}
+            </h2>
+            <p class="mt-5 text-base leading-relaxed text-steel">
+              {card.body}
+            </p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-paper text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Business Entry Points</div>
+      <h2 class="mx-auto max-w-4xl text-center text-5xl font-extrabold tracking-tight text-ink">
+        Start with brand. Extend into the business.
+      </h2>
+      <div class="mt-12 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+        {businessFunctions.map((role) => (
+          <div class="rounded-2xl border border-ink/10 bg-fog p-8 shadow-outline">
+            <div class="eyebrow text-[#14B8A6]">
+              {role.eyebrow}
+            </div>
+            <h3 class="mt-4 text-2xl font-semibold tracking-tight text-ink">
+              {role.heading}
+            </h3>
+            <p class="mt-4 text-base leading-relaxed text-steel">
+              {role.homeBody}
+            </p>
+            <div class="mt-8">
+              <a
+                href={`/functions/${role.slug}/`}
+                class="inline-flex items-center justify-center rounded-md border border-[#14B8A6] px-5 py-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#14B8A6] transition-colors hover:bg-[#0F766E] hover:text-paper"
+              >
+                Explore this area
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div class="mt-12 flex items-center justify-center">
+        <a href="/company/contact/" class="aa-primary-cta">Talk to Us</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-slate text-paper">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Leadership Decision</div>
+      <div class="grid items-start gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+        <div>
+          <h2 class="text-5xl font-semibold tracking-tight text-paper">
+            Turn scattered AI concern into a shared operating plan.
+          </h2>
+        </div>
+        <div class="max-w-prose text-lg leading-relaxed text-paper/78 md:text-xl">
+          <p>
+            Different leaders feel the risk in different places: brand drift,
+            approval delay, legal exposure, technical integration, or hidden
+            operating cost.
+          </p>
+          <p class="mt-6">
+            The first conversation connects those concerns to the same asset:
+            the Brand Operator your teams can own, govern, and use across AI
+            workflows.
+          </p>
+          <div class="mt-8">
+            <a href="/company/contact/" class="aa-dark-cta">Book a Conversation</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .aa-primary-cta,
+    .aa-dark-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px solid #14b8a6;
+      border-radius: 0.875rem;
+      background: #14b8a6;
+      padding: 15px 32px;
+      color: #fff;
+      font-weight: 700;
+      text-decoration: none;
+    }
+  </style>
+</BaseLayout>

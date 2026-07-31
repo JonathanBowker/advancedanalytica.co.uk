@@ -37,7 +37,7 @@ const defaultRightData: ClusterNode = {
 };
 
 const {
-  title = 'Brando - AI Brand Brain',
+  title = 'Brando - AI Brand Operator',
   leftData = defaultLeftData,
   rightData = defaultRightData,
   agentOrder = ['Brand Team', 'Support Team', 'Marketing Team', 'Other Teams'],
@@ -51,7 +51,7 @@ const {
   controlLayer = 'CONTROLLED BRAND COMMUNICATIONS',
   tagline = '',
   leftColumnOffset = 0,
-  ariaLabel = 'Brando AI Brand Brain controlled AI communications diagram'
+  ariaLabel = 'Brando AI Brand Operator controlled AI communications diagram'
 } = Astro.props as {
   title?: string;
   leftData?: ClusterNode;
@@ -243,7 +243,7 @@ const diagramConfig = JSON.stringify({
       .attr('fill', '#ffffff')
       .attr('font-size', 26)
       .attr('font-weight', 700)
-      .text(config.title || 'Brando - AI Brand Brain');
+      .text(config.title || 'Brando - AI Brand Operator');
 
     const glow = defs
       .append('filter')
