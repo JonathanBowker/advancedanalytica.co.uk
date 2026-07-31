@@ -5,7 +5,8 @@ const authLabel = signedIn ? 'Sign out' : 'Sign in';
 type NavItem = {
   label: string;
   href: string;
-  children?: { label: string; href: string }[];
+  registered?: 'brando' | 'ibom-framework' | 'ibom-way';
+  children?: { label: string; href: string; group?: string; registered?: 'brando' | 'ibom-framework' | 'ibom-way' }[];
 };
 
 const nav: NavItem[] = [
@@ -14,16 +15,47 @@ const nav: NavItem[] = [
     label: 'Brando',
     href: '/brando/',
     children: [
-      { label: 'Brando', href: '/brando/' },
-      { label: 'IBOM Framework', href: '/ibom/' },
-      { label: 'The IBOM Way', href: '/ibom-way/' },
-      { label: 'How It Works', href: '/how-it-works/' },
-      { label: 'For Leaders', href: '/for-leaders/' },
-      { label: 'AI Drift Audit', href: '/brand-ai-drift-audit/' }
+      { label: 'Brando', href: '/brando/', group: 'Product', registered: 'brando' },
+      { label: 'How It Works', href: '/how-it-works/', group: 'Product' },
+      { label: 'For Leaders', href: '/for-leaders/', group: 'Product' },
+      { label: 'IBOM Framework', href: '/ibom/', group: 'Framework', registered: 'ibom-framework' },
+      { label: 'The IBOM Way', href: '/ibom-way/', group: 'Framework', registered: 'ibom-way' },
+      { label: 'AI Drift Audit', href: '/brand-ai-drift-audit/', group: 'Framework' },
+      { label: 'Book a Conversation', href: '/company/contact/', group: 'Explore' },
     ]
   },
-  { label: 'Use Cases', href: '/use-cases' },
-  { label: 'Opinions', href: '/opinions' },
+  {
+    label: 'Use Cases',
+    href: '/use-cases',
+    children: [
+      { label: 'Brand & Marketing', href: '/functions/brand-marketing/', group: 'By Function' },
+      { label: 'Legal, Risk & Compliance', href: '/functions/legal-risk-compliance/', group: 'By Function' },
+      { label: 'Product & Engineering', href: '/functions/product-engineering/', group: 'By Function' },
+      { label: 'Leadership', href: '/functions/leadership/', group: 'By Function' },
+      { label: 'Sales, Operations & Service', href: '/functions/sales-operations-service/', group: 'By Function' },
+      { label: 'AI brand governance', href: '/use-cases/tag/Governance/', group: 'Common Problems' },
+      { label: 'Approval bottlenecks', href: '/use-cases/tag/Approvals/', group: 'Common Problems' },
+      { label: 'Policy control', href: '/use-cases/tag/Policy/', group: 'Common Problems' },
+      { label: 'MCP and agent guardrails', href: '/use-cases/tag/MCP/', group: 'Common Problems' },
+      { label: 'View all use cases', href: '/use-cases/', group: 'Explore' },
+    ]
+  },
+  {
+    label: 'Opinions',
+    href: '/opinions',
+    children: [
+      { label: 'AI Agents', href: '/opinions/series/AI Agents/', group: 'By Series' },
+      { label: 'AI Brand Governance', href: '/opinions/series/AI Brand Governance/', group: 'By Series' },
+      { label: 'Brand-as-Code', href: '/opinions/series/Brand-as-Code/', group: 'By Series' },
+      { label: 'Machine-Readable Brand Policy', href: '/opinions/series/Machine-Readable Brand Policy/', group: 'By Series' },
+      { label: 'The Tokenised Brand', href: '/opinions/series/The Tokenised Brand/', group: 'By Series' },
+      { label: 'Governance', href: '/opinions/tag/Governance/', group: 'Key Topics' },
+      { label: 'Policy', href: '/opinions/tag/Policy/', group: 'Key Topics' },
+      { label: 'MCP', href: '/opinions/tag/MCP/', group: 'Key Topics' },
+      { label: 'Operating Model', href: '/opinions/tag/Operating Model/', group: 'Key Topics' },
+      { label: 'View all opinions', href: '/opinions/', group: 'Explore' },
+    ]
+  },
   { label: 'Resources', href: '/resources' },
   { label: 'About', href: '/company/about' }
 ];
@@ -113,7 +145,9 @@ const nav: NavItem[] = [
                   class="inline-flex items-center gap-2 hover:text-ink transition-colors"
                   aria-haspopup="true"
                 >
-                  {item.label}
+                  {item.registered === 'brando' ? (
+                    <>Brando<sup class="ml-0.5 align-super text-[0.58em] leading-none">®</sup></>
+                  ) : item.label}
                   <svg
                     class="h-4 w-4 opacity-45 transition-transform group-hover:rotate-180 group-focus-within:rotate-180"
                     viewBox="0 0 20 20"
@@ -124,24 +158,93 @@ const nav: NavItem[] = [
                   </svg>
                 </a>
 
-                <div class="absolute left-1/2 top-full z-50 mt-2 w-[320px] -translate-x-1/2 translate-y-2 scale-[0.98] opacity-0 pointer-events-none transition-all duration-200 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:scale-100 group-focus-within:opacity-100 group-focus-within:pointer-events-auto">
+                <div
+                  class:list={[
+                    "absolute left-1/2 top-full z-50 mt-2 -translate-x-1/2 translate-y-2 scale-[0.98] opacity-0 pointer-events-none transition-all duration-200 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:scale-100 group-focus-within:opacity-100 group-focus-within:pointer-events-auto",
+                    item.label === 'Brando' || item.label === 'Use Cases' || item.label === 'Opinions' ? "w-[560px]" : "w-[320px]",
+                  ]}
+                >
                   <div class="rounded-xl border border-[#e7e0d4] bg-white p-3 shadow-outline">
-                    <div class="grid">
-                      {item.children.map((child: { label: string; href: string }) => (
-                        <a
-                          href={child.href}
-                          class="rounded-lg px-5 py-4 text-sm font-semibold text-ink/88 hover:bg-[#f5f1e8] hover:text-ink transition-colors"
-                        >
-                          {child.label}
-                        </a>
-                      ))}
-                    </div>
+                    {item.label === 'Brando' || item.label === 'Use Cases' || item.label === 'Opinions' ? (
+                      <div class="grid gap-3 md:grid-cols-[1fr_1fr]">
+                        {(item.label === 'Brando'
+                          ? ['Product', 'Framework']
+                          : item.label === 'Use Cases'
+                            ? ['By Function', 'Common Problems']
+                            : ['By Series', 'Key Topics']
+                        ).map((group) => (
+                          <div>
+                            <div class="px-4 pb-2 pt-2 text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[#14B8A6]">
+                              {group}
+                            </div>
+                            <div class="grid">
+                              {item.children
+                                .filter((child) => child.group === group)
+                                .map((child) => (
+                                  <a
+                                    href={child.href}
+                                    class="rounded-lg px-4 py-3 text-sm font-semibold text-ink/88 transition-colors hover:bg-[#f5f1e8] hover:text-ink"
+                                  >
+                                    {child.registered === 'brando' ? (
+                                      <>Brando<sup class="ml-0.5 align-super text-[0.58em] leading-none">®</sup></>
+                                    ) : child.registered === 'ibom-framework' ? (
+                                      <>IBOM<sup class="ml-0.5 align-super text-[0.58em] leading-none">®</sup> Framework</>
+                                    ) : child.registered === 'ibom-way' ? (
+                                      <>The IBOM<sup class="ml-0.5 align-super text-[0.58em] leading-none">®</sup> Way</>
+                                    ) : child.label}
+                                  </a>
+                                ))}
+                            </div>
+                          </div>
+                        ))}
+                        <div class="md:col-span-2">
+                          {item.children
+                            .filter((child) => child.group === 'Explore')
+                            .map((child) => (
+                              <a
+                                href={child.href}
+                                class="mt-1 flex items-center justify-between rounded-lg border border-[#d7efe9] bg-[#f0fbf8] px-4 py-3 text-sm font-bold text-[#0F766E] transition-colors hover:border-[#14B8A6] hover:bg-[#e4f8f3]"
+                              >
+                                <span>
+                                  {child.registered === 'brando' ? (
+                                    <>Brando<sup class="ml-0.5 align-super text-[0.58em] leading-none">®</sup></>
+                                  ) : child.registered === 'ibom-framework' ? (
+                                    <>IBOM<sup class="ml-0.5 align-super text-[0.58em] leading-none">®</sup> Framework</>
+                                  ) : child.registered === 'ibom-way' ? (
+                                    <>The IBOM<sup class="ml-0.5 align-super text-[0.58em] leading-none">®</sup> Way</>
+                                  ) : child.label}
+                                </span>
+                                <span aria-hidden="true">→</span>
+                              </a>
+                            ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <div class="grid">
+                        {item.children.map((child) => (
+                          <a
+                            href={child.href}
+                            class="rounded-lg px-5 py-4 text-sm font-semibold text-ink/88 hover:bg-[#f5f1e8] hover:text-ink transition-colors"
+                          >
+                            {child.registered === 'brando' ? (
+                              <>Brando<sup class="ml-0.5 align-super text-[0.58em] leading-none">®</sup></>
+                            ) : child.registered === 'ibom-framework' ? (
+                              <>IBOM<sup class="ml-0.5 align-super text-[0.58em] leading-none">®</sup> Framework</>
+                            ) : child.registered === 'ibom-way' ? (
+                              <>The IBOM<sup class="ml-0.5 align-super text-[0.58em] leading-none">®</sup> Way</>
+                            ) : child.label}
+                          </a>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
             ) : (
               <a href={item.href} class="inline-flex items-center hover:text-ink transition-colors">
-                {item.label}
+                {item.registered === 'brando' ? (
+                  <>Brando<sup class="ml-0.5 align-super text-[0.58em] leading-none">®</sup></>
+                ) : item.label}
               </a>
             )
           )}
@@ -249,12 +352,26 @@ const nav: NavItem[] = [
   >
     <nav class="container-nav grid gap-1 py-4 text-base font-medium text-ink/78" aria-label="Mobile navigation">
       {nav.map((item) => (
-        <a
-          href={item.href}
-          class="rounded-md px-3 py-3 transition-colors hover:bg-[#f1ece2] hover:text-ink"
-        >
-          {item.label}
-        </a>
+        <>
+          <a
+            href={item.href}
+            class="rounded-md px-3 py-3 transition-colors hover:bg-[#f1ece2] hover:text-ink"
+          >
+            {item.label}
+          </a>
+          {item.children && (
+            <div class="-mt-1 grid gap-1 border-l border-[#d7efe9] pl-4">
+              {item.children.map((child) => (
+                <a
+                  href={child.href}
+                  class="rounded-md px-3 py-2 text-sm text-ink/64 transition-colors hover:bg-[#f1ece2] hover:text-ink"
+                >
+                  {child.label}
+                </a>
+              ))}
+            </div>
+          )}
+        </>
       ))}
       <a
         href="/search"

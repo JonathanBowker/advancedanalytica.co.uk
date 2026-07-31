@@ -22,7 +22,7 @@ const page = {
 <BaseLayout title={title} description={description} page={page}>
   <section class="bg-paper text-ink">
     <div class="container-wide py-20">
-      <div class="eyebrow text-[#14B8A6]">For Leaders</div>
+      <div class="eyebrow text-[#14B8A6]">MOVE FAST. STAY SAFE.</div>
       <div class="mt-8 grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
         <h1 class="text-6xl font-black leading-none tracking-tight text-ink">
           Brando gives every owner a reason to act.
@@ -49,20 +49,61 @@ const page = {
   <section class="bg-[#f3f0e8] text-ink">
     <div class="container-wide py-20">
       <div class="eyebrow mb-10 text-center text-[#14B8A6]">Why Each Leader Cares</div>
-      <div class="grid gap-6 lg:grid-cols-3">
-        {personaPositioningCards.map((card) => (
-          <article class="flex min-h-full flex-col rounded-2xl border border-ink/10 bg-paper p-7 shadow-outline">
-            <div class="eyebrow text-[#14B8A6]">
-              {card.role}
-            </div>
-            <h2 class="mt-4 text-2xl font-semibold tracking-tight text-ink">
-              {card.heading}
-            </h2>
-            <p class="mt-5 text-base leading-relaxed text-steel">
-              {card.body}
-            </p>
-          </article>
-        ))}
+      <div class="leader-carousel" data-leader-carousel>
+        <div class="leader-carousel__viewport">
+          <div class="leader-carousel__track" data-leader-carousel-track>
+            {personaPositioningCards.map((card, index) => (
+              <article
+                class="leader-carousel__slide"
+                data-leader-carousel-slide
+                aria-hidden={index === 0 ? "false" : "true"}
+              >
+                <div class="leader-carousel__panel">
+                  <div>
+                    <div class="eyebrow text-[#14B8A6]">
+                      {card.role}
+                    </div>
+                    <h2 class="mt-5 text-[clamp(2.4rem,4vw,4.75rem)] font-extrabold leading-[0.98] tracking-tight text-ink">
+                      {card.heading}
+                    </h2>
+                  </div>
+                  <div class="leader-carousel__body">
+                    <p>
+                      {card.body}
+                    </p>
+                    <a href="/company/contact/" class="leader-carousel__cta">
+                      Talk to Us
+                    </a>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div class="leader-carousel__footer">
+          <div class="leader-carousel__dots" aria-label="Choose a leader">
+            {personaPositioningCards.map((card, index) => (
+              <button
+                type="button"
+                class="leader-carousel__dot"
+                data-leader-carousel-dot
+                aria-label={`Show ${card.heading}`}
+                aria-current={index === 0 ? "true" : "false"}
+              >
+                {card.role}
+              </button>
+            ))}
+          </div>
+          <div class="leader-carousel__controls">
+            <button type="button" class="leader-carousel__control" data-leader-carousel-prev aria-label="Previous leader">
+              ←
+            </button>
+            <button type="button" class="leader-carousel__control" data-leader-carousel-next aria-label="Next leader">
+              →
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -102,16 +143,16 @@ const page = {
     </div>
   </section>
 
-  <section class="bg-slate text-paper">
+  <section class="bg-[#f3f0e8] text-ink">
     <div class="container-wide py-20">
       <div class="eyebrow mb-10 text-center text-[#14B8A6]">Leadership Decision</div>
       <div class="grid items-start gap-10 lg:grid-cols-[0.9fr_1.1fr]">
         <div>
-          <h2 class="text-5xl font-semibold tracking-tight text-paper">
+          <h2 class="text-5xl font-extrabold tracking-tight text-ink">
             Turn scattered AI concern into a shared operating plan.
           </h2>
         </div>
-        <div class="max-w-prose text-lg leading-relaxed text-paper/78 md:text-xl">
+        <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
           <p>
             Different leaders feel the risk in different places: brand drift,
             approval delay, legal exposure, technical integration, or hidden
@@ -123,7 +164,7 @@ const page = {
             workflows.
           </p>
           <div class="mt-8">
-            <a href="/company/contact/" class="aa-dark-cta">Book a Conversation</a>
+            <a href="/company/contact/" class="aa-primary-cta">Book a Conversation</a>
           </div>
         </div>
       </div>
@@ -131,6 +172,147 @@ const page = {
   </section>
 
   <style>
+    .leader-carousel {
+      position: relative;
+    }
+
+    .leader-carousel__viewport {
+      overflow: hidden;
+      border: 1px solid color-mix(in srgb, var(--color-ink) 10%, transparent);
+      border-radius: 2rem;
+      background:
+        radial-gradient(circle at 12% 18%, rgba(20, 184, 166, 0.14), transparent 30rem),
+        var(--color-paper);
+      box-shadow: var(--shadow-outline);
+    }
+
+    .leader-carousel__track {
+      display: flex;
+      transition: transform 420ms cubic-bezier(0.2, 0.8, 0.2, 1);
+      will-change: transform;
+    }
+
+    .leader-carousel__slide {
+      min-width: 100%;
+    }
+
+    .leader-carousel__panel {
+      display: grid;
+      min-height: 26rem;
+      gap: 3rem;
+      padding: clamp(2rem, 5vw, 4.5rem);
+    }
+
+    .leader-carousel__body {
+      display: flex;
+      max-width: 46rem;
+      flex-direction: column;
+      justify-content: center;
+      font-size: clamp(1.15rem, 1.8vw, 1.45rem);
+      line-height: 1.55;
+      color: var(--color-steel);
+    }
+
+    .leader-carousel__cta {
+      margin-top: 2rem;
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px solid #14b8a6;
+      border-radius: 0.875rem;
+      background: #14b8a6;
+      padding: 15px 32px;
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .leader-carousel__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .leader-carousel__dots {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.625rem;
+    }
+
+    .leader-carousel__dot,
+    .leader-carousel__control {
+      border: 1px solid rgba(20, 184, 166, 0.35);
+      background: rgba(255, 255, 255, 0.7);
+      color: #0f766e;
+      font-weight: 800;
+      text-transform: uppercase;
+      transition:
+        background 180ms ease,
+        border-color 180ms ease,
+        color 180ms ease,
+        transform 180ms ease;
+    }
+
+    .leader-carousel__dot {
+      border-radius: 999px;
+      padding: 0.7rem 1rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+    }
+
+    .leader-carousel__dot[aria-current="true"],
+    .leader-carousel__control:hover,
+    .leader-carousel__dot:hover {
+      border-color: #14b8a6;
+      background: #14b8a6;
+      color: #fff;
+    }
+
+    .leader-carousel__control {
+      display: inline-flex;
+      width: 3rem;
+      height: 3rem;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      font-size: 1.25rem;
+    }
+
+    .leader-carousel__control:hover {
+      transform: translateY(-1px);
+    }
+
+    .leader-carousel__controls {
+      display: flex;
+      gap: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    @media (min-width: 1024px) {
+      .leader-carousel__panel {
+        grid-template-columns: 0.9fr 1.1fr;
+        align-items: center;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .leader-carousel__footer {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .leader-carousel__controls {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+
     .aa-primary-cta,
     .aa-dark-cta {
       display: inline-flex;
@@ -145,4 +327,45 @@ const page = {
       text-decoration: none;
     }
   </style>
+
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-leader-carousel]');
+      if (!(root instanceof HTMLElement)) return;
+
+      const track = root.querySelector('[data-leader-carousel-track]');
+      const slides = Array.from(root.querySelectorAll('[data-leader-carousel-slide]'));
+      const dots = Array.from(root.querySelectorAll('[data-leader-carousel-dot]'));
+      const prev = root.querySelector('[data-leader-carousel-prev]');
+      const next = root.querySelector('[data-leader-carousel-next]');
+
+      if (!(track instanceof HTMLElement)) return;
+      if (!(prev instanceof HTMLButtonElement)) return;
+      if (!(next instanceof HTMLButtonElement)) return;
+      if (!slides.length) return;
+
+      let activeIndex = 0;
+
+      const setActive = (nextIndex) => {
+        activeIndex = (nextIndex + slides.length) % slides.length;
+        track.style.transform = `translateX(-${activeIndex * 100}%)`;
+
+        slides.forEach((slide, index) => {
+          slide.setAttribute('aria-hidden', String(index !== activeIndex));
+        });
+
+        dots.forEach((dot, index) => {
+          dot.setAttribute('aria-current', String(index === activeIndex));
+        });
+      };
+
+      prev.addEventListener('click', () => setActive(activeIndex - 1));
+      next.addEventListener('click', () => setActive(activeIndex + 1));
+
+      dots.forEach((dot, index) => {
+        if (!(dot instanceof HTMLButtonElement)) return;
+        dot.addEventListener('click', () => setActive(index));
+      });
+    })();
+  </script>
 </BaseLayout>

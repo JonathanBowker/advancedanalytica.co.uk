@@ -97,6 +97,16 @@
     margin-inline: auto;
   }
 
+  button,
+  input[type="button"],
+  input[type="reset"],
+  input[type="submit"],
+  a[class*="cta"],
+  a[class*="button"],
+  .button {
+    text-transform: uppercase;
+  }
+
   .eyebrow {
     letter-spacing: 0.2em;
     text-transform: uppercase;
