@@ -1,25 +1,16 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { SITE_URL } from '../lib/seo/site';
+import PortalLayout from '../layouts/PortalLayout.astro';
+import { getPortalAccess } from '../lib/portalAccess';
 import { getTenantPortalServices } from '../lib/tenants';
 import { PortalApp } from '../components/auth/AuthViews.jsx';
 
 const tenant = Astro.locals.tenant;
+const user = Astro.locals.user;
+const access = getPortalAccess(user);
 const services = getTenantPortalServices(tenant);
 const title = `${tenant.name} Portal`;
 const description = `Protected portal access for authenticated ${tenant.name} users.`;
-const page = {
-  title,
-  description,
-  url: `${SITE_URL}/portal`,
-  schemaType: 'WebPage',
-  noindex: true,
-  breadcrumbs: [
-    { name: 'Home', url: `${SITE_URL}/` },
-    { name: 'Portal', url: `${SITE_URL}/portal` },
-  ],
-};
 ---
-<BaseLayout title={title} description={description} page={page} hideFooterContactCta={true}>
+<PortalLayout title={title} description={description} tenant={tenant} signedIn={Boolean(user)} access={access}>
   <PortalApp client:only="react" tenantName={tenant.name} tenantSlug={tenant.slug} services={services} />
-</BaseLayout>
+</PortalLayout>

@@ -53,7 +53,7 @@ async function requestJson(path, options = {}) {
   const payload = await response.json().catch(() => null);
 
   if (!response.ok) {
-    throw new Error(payload?.error || 'The sheet request failed.');
+    throw new Error(payload?.error || 'The offer request failed.');
   }
 
   return payload;
@@ -104,7 +104,7 @@ export default function InternalSheetsBuilder({ initialSheetId = '', view = 'ind
   const [activeId, setActiveId] = useState(initialSheetId);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
-  const [status, setStatus] = useState('Sheets are stored in the protected database and governed by internal access rules.');
+  const [status, setStatus] = useState('Offers are stored in the protected database and governed by internal access rules.');
 
   useEffect(() => {
     let mounted = true;
@@ -120,10 +120,10 @@ export default function InternalSheetsBuilder({ initialSheetId = '', view = 'ind
           if (currentId && nextSheets.some((sheet) => sheet.slug === currentId)) return currentId;
           return nextSheets[0]?.slug || '';
         });
-        setStatus('Loaded secure sheets from the protected database.');
+        setStatus('Loaded secure offers from the protected database.');
       } catch (error) {
         if (!mounted) return;
-        setStatus(error?.message || 'Could not load internal sheets.');
+        setStatus(error?.message || 'Could not load internal offers.');
       } finally {
         if (mounted) setLoading(false);
       }
@@ -187,12 +187,12 @@ export default function InternalSheetsBuilder({ initialSheetId = '', view = 'ind
       const sheet = normalizeSheet(payload.sheet);
       setSheets((currentSheets) => [sheet, ...currentSheets]);
       setActiveId(sheet.slug);
-      setStatus('New sheet created in the protected database.');
+      setStatus('New offer created in the protected database.');
       if (view === 'index') {
         window.location.href = getSheetPath(sheet.slug);
       }
     } catch (error) {
-      setStatus(error?.message || 'Could not create sheet.');
+      setStatus(error?.message || 'Could not create offer.');
     } finally {
       setBusy(false);
     }
@@ -206,7 +206,7 @@ export default function InternalSheetsBuilder({ initialSheetId = '', view = 'ind
         body: JSON.stringify({
           ...activeSheet,
           slug: slugifySheet(`${activeSheet.title || 'internal-sheet'} copy ${Date.now()}`),
-          title: `${activeSheet.title || 'Untitled sheet'} copy`,
+          title: `${activeSheet.title || 'Untitled offer'} copy`,
         }),
       });
       const sheet = normalizeSheet(payload.sheet);
@@ -214,7 +214,7 @@ export default function InternalSheetsBuilder({ initialSheetId = '', view = 'ind
       setActiveId(sheet.slug);
       setStatus('Sheet duplicated in the protected database.');
     } catch (error) {
-      setStatus(error?.message || 'Could not duplicate sheet.');
+      setStatus(error?.message || 'Could not duplicate offer.');
     } finally {
       setBusy(false);
     }
@@ -237,7 +237,7 @@ export default function InternalSheetsBuilder({ initialSheetId = '', view = 'ind
         window.history.replaceState(null, '', getSheetPath(savedSheet.slug));
       }
     } catch (error) {
-      setStatus(error?.message || 'Could not save sheet.');
+      setStatus(error?.message || 'Could not save offer.');
     } finally {
       setBusy(false);
     }
@@ -251,7 +251,7 @@ export default function InternalSheetsBuilder({ initialSheetId = '', view = 'ind
     anchor.download = `${slugifySheet(activeSheet.title || activeSheet.slug || 'internal-sheet')}.json`;
     anchor.click();
     URL.revokeObjectURL(url);
-    setStatus('Exported the active sheet as JSON.');
+    setStatus('Exported the active offer as JSON.');
   }
 
   const populatedRows = activeSheet.pricingRows.filter(
@@ -261,7 +261,7 @@ export default function InternalSheetsBuilder({ initialSheetId = '', view = 'ind
   if (loading) {
     return (
       <section className="rounded-[2rem] border border-slate-200 bg-white p-8 text-slate-600 shadow-[0_24px_70px_rgba(15,23,42,0.08)]">
-        Loading secure sheets...
+        Loading secure offers...
       </section>
     );
   }
@@ -272,10 +272,10 @@ export default function InternalSheetsBuilder({ initialSheetId = '', view = 'ind
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 px-6 py-5 md:px-8">
           <div>
             <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">
-              Sheet register
+              Offer library
             </div>
             <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">
-              Internal product and service sheets
+              Internal product and service offers
             </h2>
           </div>
           <button
@@ -284,7 +284,7 @@ export default function InternalSheetsBuilder({ initialSheetId = '', view = 'ind
             disabled={busy}
             className="rounded-md bg-[#14B8A6] px-5 py-3 text-xs font-bold uppercase tracking-[0.08em] text-white transition hover:bg-[#0f9288]"
           >
-            {busy ? 'Creating...' : 'New Sheet'}
+            {busy ? 'Creating...' : 'New Offer'}
           </button>
         </div>
 
@@ -292,7 +292,7 @@ export default function InternalSheetsBuilder({ initialSheetId = '', view = 'ind
           <table className="w-full min-w-[980px] border-collapse text-left">
             <thead className="bg-slate-50 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-slate-500">
               <tr>
-                <th className="px-6 py-4 md:px-8">Sheet</th>
+                <th className="px-6 py-4 md:px-8">Offer</th>
                 <th className="px-6 py-4">Type</th>
                 <th className="px-6 py-4">Audience</th>
                 <th className="px-6 py-4">Pricing</th>
@@ -312,7 +312,7 @@ export default function InternalSheetsBuilder({ initialSheetId = '', view = 'ind
                     <td className="px-6 py-5 md:px-8">
                       <div className="max-w-md">
                         <div className="text-base font-semibold text-slate-950">
-                          {sheet.title || 'Untitled sheet'}
+                          {sheet.title || 'Untitled offer'}
                         </div>
                         <div className="mt-1 line-clamp-2 text-sm leading-relaxed text-slate-500">
                           {sheet.strapline || 'No positioning line added yet.'}
@@ -321,7 +321,7 @@ export default function InternalSheetsBuilder({ initialSheetId = '', view = 'ind
                     </td>
                     <td className="px-6 py-5">
                       <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-slate-600">
-                        {sheet.type || 'Sheet'}
+                        {sheet.type || 'Offer'}
                       </span>
                     </td>
                     <td className="px-6 py-5 text-slate-600">{sheet.audience || 'Consultants and partners'}</td>
@@ -346,7 +346,7 @@ export default function InternalSheetsBuilder({ initialSheetId = '', view = 'ind
                         href={getSheetPath(sheet.slug)}
                         className="inline-flex items-center justify-center rounded-md border border-[#14B8A6] px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] text-[#0f766e] transition hover:bg-[#14B8A6] hover:text-white"
                       >
-                        Open Sheet
+                        Open Offer
                       </a>
                     </td>
                   </tr>
@@ -371,7 +371,7 @@ export default function InternalSheetsBuilder({ initialSheetId = '', view = 'ind
           className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.08em] text-[#0f766e] transition hover:text-[#0b5f58]"
         >
           <span aria-hidden="true">←</span>
-          Back to Sheet Register
+          Back to Offer Library
         </a>
         <div className="text-sm text-slate-500">{status}</div>
       </div>
@@ -381,7 +381,7 @@ export default function InternalSheetsBuilder({ initialSheetId = '', view = 'ind
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">
-              Sheet editor
+              Offer editor
             </div>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
               Edit the consultant version.
@@ -393,7 +393,7 @@ export default function InternalSheetsBuilder({ initialSheetId = '', view = 'ind
             disabled={busy}
             className="rounded-full bg-[#14B8A6] px-5 py-3 text-xs font-bold uppercase tracking-[0.08em] text-white transition hover:bg-[#0f9288]"
           >
-            {busy ? 'Creating...' : 'New Sheet'}
+            {busy ? 'Creating...' : 'New Offer'}
           </button>
         </div>
 
@@ -407,7 +407,7 @@ export default function InternalSheetsBuilder({ initialSheetId = '', view = 'ind
             >
               {sheets.map((sheet) => (
                 <option key={sheet.slug} value={sheet.slug}>
-                  {sheet.title || 'Untitled sheet'} · {sheet.type}
+                  {sheet.title || 'Untitled offer'} · {sheet.type}
                 </option>
               ))}
             </select>
@@ -438,7 +438,7 @@ export default function InternalSheetsBuilder({ initialSheetId = '', view = 'ind
             label="Title"
             value={activeSheet.title}
             onChange={(value) => updateActive({ title: value })}
-            placeholder="e.g. AI-Ready Knowledge Pack"
+            placeholder="e.g. AI Knowledge Pack"
           />
           <Field
             label="Strapline"
@@ -546,10 +546,10 @@ export default function InternalSheetsBuilder({ initialSheetId = '', view = 'ind
           <div className="flex flex-wrap items-start justify-between gap-4 border-b border-slate-200 pb-6">
             <div>
               <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">
-                Internal {activeSheet.type || 'Sheet'}
+                Internal {activeSheet.type || 'Offer'}
               </div>
               <h2 className="mt-3 text-4xl font-semibold tracking-tight">
-                {activeSheet.title || 'Untitled product or service sheet'}
+                {activeSheet.title || 'Untitled product or service offer'}
               </h2>
               <p className="mt-3 max-w-2xl text-lg leading-relaxed text-slate-600">
                 {activeSheet.strapline || 'Add a memorable positioning line for consultants and partners.'}

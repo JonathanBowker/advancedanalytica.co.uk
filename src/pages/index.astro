@@ -45,6 +45,12 @@ const solvedProblems = [
 
 const pathways = [
   {
+    eyebrow: "First Step",
+    title: "AI Knowledge Packs",
+    body: "Prepare scattered documents, screenshots, policies, and expert knowledge for reliable chatbot testing before committing to a full agent build.",
+    href: "/services/ai-ready-knowledge-packs/",
+  },
+  {
     eyebrow: "Product",
     title: "Brando",
     body: "Understand the AI Brand Operator: what it is, what your business owns, and why static brand guidance is not enough for AI.",
@@ -251,7 +257,7 @@ const pathways = [
         Choose the path that gets you to a useful conversation.
       </h2>
 
-      <div class="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+      <div class="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-5">
         {pathways.map((item) => (
           <a
             href={item.href}
@@ -350,10 +356,11 @@ const pathways = [
       margin: 0;
       font-family: var(--font-display);
       font-size: clamp(38px, 4.5vw, 62px);
-      font-weight: 900;
-      letter-spacing: -0.055em;
+      font-weight: 1000;
+      letter-spacing: -0.016em;
       line-height: 1.12;
       color: var(--color-ink);
+      -webkit-text-stroke: 0.3px var(--color-ink);
       text-wrap: balance;
     }
 

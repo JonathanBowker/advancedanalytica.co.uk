@@ -3,6 +3,22 @@
 @config "../../tailwind.config.js";
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Neue Montreal";
+  src: url("/fonts/PPNeueMontreal-Book.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Neue Montreal";
+  src: url("/fonts/PPNeueMontreal-Regular.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   *, *::before, *::after {
     box-sizing: border-box;
@@ -43,6 +59,11 @@
   h6 {
     font-family: var(--font-display);
     font-weight: 700;
+    letter-spacing: -0.008em;
+  }
+
+  h2 {
+    letter-spacing: 0.004em;
   }
 
   h1 {

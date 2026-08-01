@@ -36,8 +36,15 @@ const portalAreas = [
     label: `${services.length} service${services.length === 1 ? '' : 's'}`,
   },
   {
-    title: 'Product and service sheets',
-    description: 'Create internal product sheets, pricing tables, and consultant material.',
+    title: 'Products',
+    description: 'Review the product, framework, service, and protected internal tools available to this account.',
+    href: '/portal/products/',
+    allowed: true,
+    label: 'Product catalogue',
+  },
+  {
+    title: 'Offer Builder',
+    description: 'Create internal product offers, pricing tables, and consultant material.',
     href: '/portal/sheets/',
     allowed: access.isInternal,
     label: 'Internal roles only',
@@ -51,7 +58,7 @@ const portalAreas = [
   },
 ];
 ---
-<PortalLayout title={title} description={description} tenant={tenant} signedIn={Boolean(user)}>
+<PortalLayout title={title} description={description} tenant={tenant} signedIn={Boolean(user)} access={access}>
   <section class="mx-auto w-[min(1240px,92vw)] py-10 lg:py-14">
     <div class="rounded-[2rem] border border-[color:var(--color-fog)] bg-[#111927] p-8 text-paper shadow-[0_30px_90px_rgba(0,0,0,0.2)] md:p-10">
       <div class="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">
@@ -125,7 +132,7 @@ const portalAreas = [
           </div>
 
           <p class="mt-6 max-w-3xl text-base leading-relaxed text-slate-600">
-            Client accounts can access provisioned service workflows. Internal roles can also open the sheet builder. Superadmins can manage users and roles.
+            Client accounts can access provisioned service workflows. Internal roles can also open the Offer Builder. Superadmins can manage users and roles.
           </p>
         </section>
 

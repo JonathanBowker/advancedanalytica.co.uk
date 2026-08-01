@@ -1,0 +1,338 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { SITE_URL } from "../../lib/seo/site";
+
+const title = "AI Knowledge Packs";
+const description =
+  "Prepare scattered documents, policies, screenshots, and expert knowledge for reliable enterprise chatbot use, then turn successful workflows into governed agent-ready foundations.";
+
+const page = {
+  title,
+  description,
+  url: `${SITE_URL}/services/ai-ready-knowledge-packs/`,
+  breadcrumbs: [
+    { name: "Home", url: `${SITE_URL}/` },
+    { name: "Services", url: `${SITE_URL}/services/` },
+    {
+      name: "AI Knowledge Packs",
+      url: `${SITE_URL}/services/ai-ready-knowledge-packs/`,
+    },
+  ],
+};
+
+const packElements = [
+  {
+    num: "01",
+    heading: "Source preparation",
+    body: "We review, organise, extract, and prepare the material the chatbot needs: web pages, PDFs, documents, screenshots, slide decks, images, and local expert knowledge.",
+  },
+  {
+    num: "02",
+    heading: "Scope and structure",
+    body: "We create the naming rules, folder structure, manifest, and scope controls that help users stay inside the right context and reduce avoidable errors.",
+  },
+  {
+    num: "03",
+    heading: "Workflow instructions",
+    body: "We write the prompts, model guidance, and non-technical README instructions that make the pack usable by real teams rather than AI specialists.",
+  },
+  {
+    num: "04",
+    heading: "Validation and handoff",
+    body: "We test the pack against sample source material, record known limits, and hand over a working package ready for live user testing.",
+  },
+] as const;
+
+const questions = [
+  {
+    heading: "Reliability",
+    body: "Can this workflow be done reliably with a chatbot, and what source files does the model actually need?",
+  },
+  {
+    heading: "Failure modes",
+    body: "Where does the model get confused, and which instructions or guardrails improve the output?",
+  },
+  {
+    heading: "User demand",
+    body: "What do users ask once the source material is in context, and where does the workflow create real value?",
+  },
+  {
+    heading: "Automation case",
+    body: "What should become an agent, what should stay as a controlled chatbot workflow, and what governance is needed?",
+  },
+] as const;
+
+const stages = [
+  {
+    num: "01",
+    heading: "AI knowledge pack",
+    body: "Prepare the focused source material, prompts, scope rules, and user guidance needed for immediate chatbot testing.",
+  },
+  {
+    num: "02",
+    heading: "Tested workflow pilot",
+    body: "Put the pack in front of real users, capture failure modes, and learn what the workflow needs before automation.",
+  },
+  {
+    num: "03",
+    heading: "Repeatable production process",
+    body: "Turn the first pack into a reusable pattern for related pages, policies, standards, or knowledge areas.",
+  },
+  {
+    num: "04",
+    heading: "Agent-readiness data room",
+    body: "Assemble the inventory, prompts, test cases, assumptions, risks, and architecture required for a governed agent build.",
+  },
+  {
+    num: "05",
+    heading: "Governed agent foundation",
+    body: "Use the working pack evidence as the blueprint for Brando, an internal AI tool, or a governed agent workflow.",
+  },
+] as const;
+
+---
+
+<BaseLayout title={title} description={description} page={page}>
+  <section class="bg-paper text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow text-center text-[#14B8A6]">AI KNOWLEDGE PACKS.</div>
+      <div class="mt-8 grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
+        <h1 class="text-6xl font-black leading-none tracking-tight text-ink">
+          Make your knowledge ready before you build the agent.
+        </h1>
+        <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
+          <p>
+            Organisations are moving fast with enterprise chatbots, but most
+            internal knowledge is not ready for reliable AI use. AI Knowledge
+            Packs compress the right domain material and expert context, into focused bundles that give AI the context it needs.
+          </p>
+          <p class="mt-6">
+            That makes the first step lighter and safer: less token waste, less
+            dependence on heavy retrieval infrastructure, and more accurate
+            answers in specialised fields. Teams can test quickly, then decide
+            what deserves to become a governed agent.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-4">
+            <a href="/company/contact/" class="aa-primary-cta">Talk to Us</a>
+            <a href="/ibom-way/" class="aa-outline-cta">See the IBOM Way</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="bg-[#f3f0e8] text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Business Need</div>
+      <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+        <h2 class="text-5xl font-extrabold tracking-tight text-ink">
+          A chatbot can only be as reliable as the knowledge you give it.
+        </h2>
+        <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
+          <p>
+            Uploading raw source material into a chatbot creates inconsistent
+            answers, mixed context, weak evidence, and outputs that are hard to
+            trust.
+          </p>
+          <p class="mt-6">
+            Before a business invests in a full AI agent, it needs to prove that
+            the source material can be prepared reliably, the workflow creates
+            useful answers, and the use case is valuable enough to automate.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-paper text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">What We Provide</div>
+      <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+        <div>
+          <h2 class="text-5xl font-extrabold tracking-tight text-ink">
+            Not just a prompt. An AI-ready workflow pack.
+          </h2>
+          <p class="mt-6 max-w-prose text-lg leading-relaxed text-steel md:text-xl">
+            The work is to make knowledge usable, bounded, and testable before
+            anyone asks a chatbot to reason over it. Each pack gives users a
+            clear workflow and gives leaders evidence about whether the use case
+            should become an agent.
+          </p>
+        </div>
+
+        <div class="knowledge-pack-list">
+          {packElements.map((item) => (
+            <article class="knowledge-pack-list__item">
+              <div class="eyebrow text-[#14B8A6]">{item.num}</div>
+              <div>
+                <h3 class="text-2xl font-semibold tracking-tight text-ink">
+                  {item.heading}
+                </h3>
+                <p class="mt-3 text-base leading-relaxed text-steel">
+                  {item.body}
+                </p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="bg-slate text-paper">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Why It Matters</div>
+      <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+        <div>
+          <h2 class="text-5xl font-semibold tracking-tight text-paper">
+            Reduce uncertainty before the larger AI build.
+          </h2>
+          <p class="mt-6 max-w-prose text-lg leading-relaxed text-paper/72 md:text-xl">
+            The pack is a decision instrument. It shows what the business can
+            trust, what users actually need, and what deserves the cost and
+            governance of an agent.
+          </p>
+        </div>
+        <div class="knowledge-decision-panel">
+          <div class="knowledge-decision-panel__label">
+            What the pack proves
+          </div>
+          <div class="grid gap-0">
+            {questions.map((question) => (
+              <article class="knowledge-decision-panel__item">
+                <h3 class="text-xl font-semibold tracking-tight text-paper">
+                  {question.heading}
+                </h3>
+                <p class="mt-3 text-base leading-relaxed text-paper/72">
+                  {question.body}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="bg-[#f3f0e8] text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Agent-Readiness Path</div>
+      <h2 class="mx-auto max-w-4xl text-center text-5xl font-extrabold tracking-tight text-ink">
+        Prove the workflow before you automate it.
+      </h2>
+      <div class="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-5">
+        {stages.map((stage) => (
+          <article class="rounded-2xl border border-ink/10 bg-paper p-6 shadow-outline">
+            <div class="eyebrow text-[#14B8A6]">{stage.num}</div>
+            <h3 class="mt-4 text-xl font-semibold tracking-tight text-ink">
+              {stage.heading}
+            </h3>
+            <p class="mt-4 text-sm leading-relaxed text-steel">
+              {stage.body}
+            </p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-paper text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Ready When You Are</div>
+      <div class="grid items-start gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+        <h2 class="text-5xl font-extrabold tracking-tight text-ink">
+          Start with the knowledge your teams already use.
+        </h2>
+        <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
+          <p>
+            The useful first conversation is simple: which knowledge set matters,
+            who needs to use it, and what would need to be true before the
+            workflow becomes agent-ready.
+          </p>
+          <p class="mt-6">
+            We can scope a focused pack, test it with users, and show whether
+            the use case should become a governed agent or stay as a controlled
+            chatbot workflow.
+          </p>
+          <div class="mt-8">
+            <a href="/company/contact/" class="aa-primary-cta">Book a Conversation</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .aa-primary-cta,
+    .aa-outline-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.875rem;
+      padding: 15px 32px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .aa-primary-cta {
+      border: 1.5px solid #14b8a6;
+      background: #14b8a6;
+      color: #fff;
+    }
+
+    .aa-outline-cta {
+      border: 1.5px solid #14b8a6;
+      color: #0f766e;
+    }
+
+    .knowledge-pack-list {
+      border-top: 1px solid color-mix(in srgb, var(--color-ink) 12%, transparent);
+    }
+
+    .knowledge-pack-list__item {
+      display: grid;
+      gap: 1.5rem;
+      border-bottom: 1px solid color-mix(in srgb, var(--color-ink) 12%, transparent);
+      padding: 1.75rem 0;
+    }
+
+    @media (min-width: 768px) {
+      .knowledge-pack-list__item {
+        grid-template-columns: 4.5rem minmax(0, 1fr);
+      }
+    }
+
+    .knowledge-decision-panel {
+      overflow: hidden;
+      border: 1px solid color-mix(in srgb, white 16%, transparent);
+      border-radius: 1.5rem;
+      background:
+        linear-gradient(135deg, rgba(20, 184, 166, 0.16), transparent 42%),
+        rgba(255, 255, 255, 0.06);
+      box-shadow: var(--shadow-outline);
+    }
+
+    .knowledge-decision-panel__label {
+      border-bottom: 1px solid color-mix(in srgb, white 14%, transparent);
+      padding: 1.25rem 1.5rem;
+      color: #5eead4;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .knowledge-decision-panel__item {
+      border-bottom: 1px solid color-mix(in srgb, white 12%, transparent);
+      padding: 1.5rem;
+    }
+
+    .knowledge-decision-panel__item:last-child {
+      border-bottom: 0;
+    }
+
+  </style>
+</BaseLayout>

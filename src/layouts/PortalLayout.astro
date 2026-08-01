@@ -1,18 +1,118 @@
 ---
 import '../styles/global.css';
 import { getTenantThemeCss, type ResolvedTenant } from '../lib/tenants';
+import { getPortalAccess } from '../lib/portalAccess';
 
 const {
   title,
   description,
   tenant,
   signedIn = false,
+  access = null,
 } = Astro.props as {
   title: string;
   description: string;
   tenant: ResolvedTenant;
   signedIn?: boolean;
+  access?: ReturnType<typeof getPortalAccess> | null;
 };
+
+const currentPath = Astro.url.pathname;
+const materialIcons = {
+  workspace: [
+    'M4 5.5h7',
+    'M4 10.5h7',
+    'M13 5.5h7',
+    'M13 10.5h7',
+    'M4 13.5h7',
+    'M4 18.5h7',
+    'M13 13.5h7',
+    'M13 18.5h7',
+  ],
+  account: [
+    'M12 12a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z',
+    'M5 20a7 7 0 0 1 14 0',
+  ],
+  products: [
+    'M6 7.5 12 4l6 3.5v7L12 18l-6-3.5v-7Z',
+    'M6 7.5 12 11l6-3.5',
+    'M12 11v7',
+  ],
+  sheets: [
+    'M7 3.5h7l4 4v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-15a1 1 0 0 1 1-1Z',
+    'M14 3.5v4h4',
+    'M9 12h6',
+    'M9 15.5h6',
+  ],
+  users: [
+    'M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z',
+    'M15.5 10a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z',
+    'M3.5 19a5.5 5.5 0 0 1 11 0',
+    'M14 19a4.5 4.5 0 0 1 6.5-4',
+  ],
+  search: [
+    'M10.5 17a6.5 6.5 0 1 0 0-13 6.5 6.5 0 0 0 0 13Z',
+    'M15.5 15.5 20 20',
+  ],
+  panel: [
+    'M4 5.5h16',
+    'M4 12h16',
+    'M4 18.5h16',
+  ],
+  logout: [
+    'M10 6H6.5A1.5 1.5 0 0 0 5 7.5v9A1.5 1.5 0 0 0 6.5 18H10',
+    'M13 8.5 17 12l-4 3.5',
+    'M17 12H9',
+  ],
+} as const;
+
+const navItems = signedIn
+  ? [
+      {
+        href: '/portal',
+        label: 'Workspace',
+        note: 'Home and service flows',
+        icon: 'workspace',
+        active: currentPath === '/portal' || currentPath === '/portal/',
+      },
+      {
+        href: '/portal/products/',
+        label: 'Products',
+        note: 'Product catalogue',
+        icon: 'products',
+        active: currentPath.startsWith('/portal/products'),
+      },
+      {
+        href: '/portal/account/',
+        label: 'Account',
+        note: 'Profile and access',
+        icon: 'account',
+        active: currentPath.startsWith('/portal/account'),
+      },
+      ...(access?.isInternal
+        ? [
+            {
+              href: '/portal/sheets/',
+              label: 'Offer Builder',
+              note: 'Internal offer library',
+              icon: 'sheets',
+              active: currentPath.startsWith('/portal/sheets'),
+            },
+          ]
+        : []),
+      ...(access?.isAdmin
+        ? [
+            {
+              href: '/portal/admin/users/',
+              label: 'Users',
+              note: 'Roles and provisioning',
+              icon: 'users',
+              active: currentPath.startsWith('/portal/admin/users'),
+            },
+          ]
+        : []),
+    ]
+  : [];
 
 ---
 <!doctype html>
@@ -33,53 +133,396 @@ const {
   </head>
   <body class="tenant-shell bg-background text-ink">
     <div class="min-h-screen">
-      <header class="border-b border-[color:var(--color-fog)]/80 bg-surface/90 backdrop-blur">
-        <div class="mx-auto flex w-[min(1120px,92vw)] items-center justify-between gap-4 py-5">
-          <div class="flex items-center gap-4">
-            <a href={signedIn ? '/portal' : '/login'} class="tenant-logo-mark" aria-label={tenant.name}></a>
-            <div>
-              <div class="text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--color-accent)]">
-                Multi-tenant portal
+      {!signedIn ? (
+        <header class="border-b border-[color:var(--color-fog)]/80 bg-surface/90 backdrop-blur">
+          <div class="mx-auto flex w-[min(1120px,92vw)] items-center justify-between gap-4 py-5">
+            <div class="flex items-center gap-4">
+              <a href="/login" class="tenant-logo-mark" aria-label={tenant.name}></a>
+              <div>
+                <div class="text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--color-accent)]">
+                  Portal
+                </div>
+                <div class="text-sm font-semibold text-ink">{tenant.name}</div>
               </div>
-              <div class="text-sm text-slate">{tenant.name}</div>
             </div>
-          </div>
-          <nav class="flex items-center gap-3 text-sm font-semibold">
-            {signedIn ? (
-              <>
-                <a
-                  href="/portal"
-                  class="rounded-full border border-[color:var(--color-fog)] bg-surface px-4 py-2 text-ink transition hover:border-[color:var(--color-accent)]"
-                >
-                  Portal home
-                </a>
-                <a
-                  href="/portal/account/"
-                  class="rounded-full border border-[color:var(--color-fog)] bg-surface px-4 py-2 text-ink transition hover:border-[color:var(--color-accent)]"
-                >
-                  Account
-                </a>
-                <a
-                  href="/logout"
-                  class="rounded-full bg-[color:var(--color-accent)] px-4 py-2 text-paper transition hover:bg-[color:var(--color-accent-deep)]"
-                >
-                  Sign out
-                </a>
-              </>
-            ) : (
+            <nav class="flex items-center gap-3 text-sm font-semibold">
               <a
                 href="/login"
                 class="rounded-full bg-[color:var(--color-accent)] px-4 py-2 text-paper transition hover:bg-[color:var(--color-accent-deep)]"
               >
                 Sign in
               </a>
-            )}
-          </nav>
+            </nav>
+          </div>
+        </header>
+      ) : null}
+
+      {signedIn ? (
+        <div class="portal-console lg:grid lg:grid-cols-[16.25rem_minmax(0,1fr)]">
+          <input id="portal-nav-toggle" type="checkbox" class="peer sr-only lg:hidden" />
+          <input id="portal-rail-collapse" type="checkbox" class="portal-rail__collapse-toggle sr-only" />
+
+          <div class="border-b border-[color:var(--color-fog)]/70 bg-background/96 px-4 py-3 lg:hidden">
+            <label
+              for="portal-nav-toggle"
+              class="inline-flex cursor-pointer items-center gap-3 rounded-full border border-[color:var(--color-fog)] bg-surface px-4 py-2 text-sm font-semibold text-ink transition hover:border-[color:var(--color-accent)]"
+            >
+              <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[color:var(--color-accent)]/12 text-[color:var(--color-accent)]">
+                ≡
+              </span>
+              <span>Portal menu</span>
+            </label>
+          </div>
+
+          <label
+            for="portal-nav-toggle"
+            class="pointer-events-none fixed inset-0 z-40 bg-slate-950/45 opacity-0 transition peer-checked:pointer-events-auto peer-checked:opacity-100 lg:hidden"
+            aria-hidden="true"
+          ></label>
+
+          <aside class="portal-rail fixed inset-y-0 left-0 z-50 flex w-[86vw] max-w-[20rem] -translate-x-full flex-col border-r border-[color:var(--color-fog)] bg-[#f7fafc] shadow-[0_30px_80px_rgba(15,23,42,0.18)] transition duration-300 peer-checked:translate-x-0 lg:sticky lg:top-0 lg:z-10 lg:h-screen lg:max-h-screen lg:w-auto lg:max-w-none lg:translate-x-0 lg:shadow-none">
+            <div class="portal-rail__header flex items-center justify-between px-4 py-5">
+              <a href="/portal" class="portal-rail__project min-w-0">
+                <span class="block truncate text-sm font-semibold text-[#171717]">{tenant.name}</span>
+                <span class="mt-1 block text-xs text-[#777]">Organization</span>
+              </a>
+              <label
+                for="portal-rail-collapse"
+                class="portal-rail__collapse-control hidden h-8 w-8 cursor-pointer items-center justify-center rounded-md text-[#555] transition hover:bg-[#e8e8e8] lg:inline-flex"
+                aria-label="Collapse portal navigation"
+                title="Collapse portal navigation"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true" class="h-[1.05rem] w-[1.05rem]">
+                  <rect
+                    x="4.5"
+                    y="5"
+                    width="15"
+                    height="14"
+                    rx="3"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                  />
+                  <path
+                    d="M10 5.5v13"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-width="1.7"
+                  />
+                </svg>
+              </label>
+              <label
+                for="portal-nav-toggle"
+                class="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-[color:var(--color-fog)] text-slate transition hover:border-[color:var(--color-accent)] lg:hidden"
+                aria-label="Close portal navigation"
+              >
+                ×
+              </label>
+            </div>
+
+            <div class="portal-rail__search-wrap px-2 pb-3">
+              <label
+                for="portal-rail-search"
+                class="portal-rail__search flex cursor-text items-center gap-2 rounded-lg border border-[#ddd] bg-white px-3 py-2 text-sm text-[#666]"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true" class="h-4 w-4 shrink-0">
+                  {materialIcons.search.map((path) => (
+                    <path
+                      d={path}
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.85"
+                    />
+                  ))}
+                </svg>
+                <input
+                  id="portal-rail-search"
+                  type="search"
+                  placeholder="Search"
+                  class="portal-rail__search-input portal-rail__text min-w-0 flex-1 bg-transparent text-sm text-[#333] outline-none placeholder:text-[#666]"
+                />
+                <span class="portal-rail__text ml-auto rounded-md bg-[#f0f0f0] px-1.5 py-0.5 text-[0.68rem] text-[#999]">⌘K</span>
+              </label>
+            </div>
+
+            <div class="portal-rail__nav-wrap flex-1 overflow-y-auto px-2 pb-4">
+              <nav class="grid gap-1">
+                {navItems.map((item) => (
+                  <a
+                    href={item.href}
+                    title={item.label}
+                    data-portal-search-item
+                    data-search-label={`${item.label} ${item.note}`}
+                    class:list={[
+                      'portal-rail__link group rounded-lg px-3 py-2 transition',
+                      item.active
+                        ? 'bg-[#e9e9e9] text-[#171717]'
+                        : 'text-[#333] hover:bg-[#ededed]',
+                    ]}
+                  >
+                    <div class="flex items-center gap-2.5">
+                      <span class:list={[
+                        'inline-flex h-5 w-5 shrink-0 items-center justify-center text-sm transition',
+                        item.active
+                          ? 'text-[#111]'
+                          : 'text-[#444]',
+                      ]}>
+                        <svg viewBox="0 0 24 24" aria-hidden="true" class="h-[1.05rem] w-[1.05rem]">
+                          {materialIcons[item.icon as keyof typeof materialIcons].map((path) => (
+                            <path
+                              d={path}
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="1.85"
+                            />
+                          ))}
+                        </svg>
+                      </span>
+                      <span class="portal-rail__text min-w-0">
+                        <span class:list={['block truncate text-sm tracking-tight', item.active ? 'font-medium text-[#171717]' : 'font-normal text-[#333]']}>
+                          {item.label}
+                        </span>
+                        <span class="sr-only">
+                          {item.note}
+                        </span>
+                      </span>
+                    </div>
+                  </a>
+                ))}
+              </nav>
+              <div
+                data-portal-search-empty
+                hidden
+                class="portal-rail__text px-3 py-2 text-sm text-[#777]"
+              >
+                No matches
+              </div>
+            </div>
+
+            <div class="portal-rail__footer mt-auto border-t border-[#dedede] px-2 py-3">
+              <div class="portal-rail__account mb-2 flex items-center gap-2 rounded-lg px-2 py-2">
+                <span class="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#171717] text-xs font-semibold text-white">
+                  {tenant.name.charAt(0)}
+                </span>
+                <span class="portal-rail__text min-w-0">
+                  <span class="block truncate text-sm font-medium text-[#222]">{tenant.name}</span>
+                  <span class="block truncate text-xs text-[#777]">{access?.audienceLabel ?? 'Portal access'}</span>
+                </span>
+              </div>
+              <a
+                href="/logout"
+                class="portal-rail__signout inline-flex w-full items-center rounded-lg px-2 py-2 text-sm text-[#333] transition hover:bg-[#ededed]"
+              >
+                <span class="portal-rail__signout-icon inline-flex h-5 w-5 shrink-0 items-center justify-center">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" class="h-[1.05rem] w-[1.05rem]">
+                    {materialIcons.logout.map((path) => (
+                      <path
+                        d={path}
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.85"
+                      />
+                    ))}
+                  </svg>
+                </span>
+                <span class="portal-rail__text">Sign out</span>
+              </a>
+            </div>
+          </aside>
+
+          <main class="min-w-0">
+            <slot />
+          </main>
         </div>
-      </header>
-      <main>
-        <slot />
-      </main>
+      ) : (
+        <main>
+          <slot />
+        </main>
+      )}
     </div>
   </body>
 </html>
+
+<script is:inline>
+  (() => {
+    const collapseToggle = document.getElementById('portal-rail-collapse');
+    const searchInput = document.getElementById('portal-rail-search');
+    const searchableItems = Array.from(document.querySelectorAll('[data-portal-search-item]'));
+    const emptyState = document.querySelector('[data-portal-search-empty]');
+
+    if (!collapseToggle || !searchInput) return;
+
+    searchInput.addEventListener('pointerdown', () => {
+      if (collapseToggle.checked) {
+        collapseToggle.checked = false;
+        window.setTimeout(() => searchInput.focus(), 180);
+      }
+    });
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.trim().toLowerCase();
+
+      searchableItems.forEach((item) => {
+        const label = String(item.dataset.searchLabel || item.textContent || '').toLowerCase();
+        const isMatch = !query || label.includes(query);
+        item.hidden = !isMatch;
+      });
+
+      if (emptyState) {
+        emptyState.hidden = !query || searchableItems.some((item) => !item.hidden);
+      }
+    });
+
+    searchInput.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter') return;
+
+      const firstMatch = searchableItems.find((item) => !item.hidden);
+      if (!firstMatch) return;
+
+      event.preventDefault();
+      firstMatch.click();
+    });
+  })();
+</script>
+
+<style is:inline>
+  .portal-console {
+    background: #ffffff;
+  }
+
+  @media (min-width: 1024px) {
+    .portal-console:has(.portal-rail__collapse-toggle:checked) {
+      grid-template-columns: 3.75rem minmax(0, 1fr);
+    }
+
+    .portal-rail {
+      width: 100%;
+      background: #f3f3f3;
+      color: #171717;
+    }
+
+    .portal-console,
+    .portal-rail,
+    .portal-rail__text,
+    .portal-rail__project,
+    .portal-rail__link,
+    .portal-rail__search,
+    .portal-rail__account,
+    .portal-rail__signout {
+      transition:
+        grid-template-columns 180ms ease,
+        width 180ms ease,
+        opacity 150ms ease,
+        padding 180ms ease,
+        background-color 150ms ease;
+    }
+
+    .portal-console:has(.portal-rail__collapse-toggle:checked) .portal-rail__project,
+    .portal-console:has(.portal-rail__collapse-toggle:checked) .portal-rail__text {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .portal-console:has(.portal-rail__collapse-toggle:checked) .portal-rail__project {
+      width: 0;
+      overflow: hidden;
+    }
+
+    .portal-console:has(.portal-rail__collapse-toggle:checked) .portal-rail__collapse-control {
+      margin: 0 auto;
+    }
+
+    .portal-console:has(.portal-rail__collapse-toggle:checked) .portal-rail__header {
+      justify-content: center;
+      padding-left: 0.625rem;
+      padding-right: 0.625rem;
+    }
+
+    .portal-console:has(.portal-rail__collapse-toggle:checked) .portal-rail__search-wrap,
+    .portal-console:has(.portal-rail__collapse-toggle:checked) .portal-rail__nav-wrap {
+      padding-left: 0.625rem;
+      padding-right: 0.625rem;
+    }
+
+    .portal-console:has(.portal-rail__collapse-toggle:checked) .portal-rail__nav-wrap {
+      padding-top: 0.5rem;
+    }
+
+    .portal-console:has(.portal-rail__collapse-toggle:checked) .portal-rail__search,
+    .portal-console:has(.portal-rail__collapse-toggle:checked) .portal-rail__link,
+    .portal-console:has(.portal-rail__collapse-toggle:checked) .portal-rail__account,
+    .portal-console:has(.portal-rail__collapse-toggle:checked) .portal-rail__signout {
+      align-items: center;
+      justify-content: center;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .portal-console:has(.portal-rail__collapse-toggle:checked) .portal-rail__link {
+      height: 2.25rem;
+      width: 2.25rem;
+      margin: 0 auto;
+      border-radius: 0.625rem;
+    }
+
+    .portal-console:has(.portal-rail__collapse-toggle:checked) .portal-rail__search {
+      height: 2.25rem;
+      width: 2.25rem;
+      margin: 0 auto;
+      border-radius: 0.625rem;
+      border-color: transparent;
+      background: transparent;
+    }
+
+    .portal-console:has(.portal-rail__collapse-toggle:checked) .portal-rail__link > div {
+      width: 100%;
+      gap: 0;
+    }
+
+    .portal-console:has(.portal-rail__collapse-toggle:checked) .portal-rail__link > div,
+    .portal-console:has(.portal-rail__collapse-toggle:checked) .portal-rail__account {
+      align-items: center;
+      justify-content: center;
+    }
+
+    .portal-console:has(.portal-rail__collapse-toggle:checked) .portal-rail__link > div > span:first-child,
+    .portal-console:has(.portal-rail__collapse-toggle:checked) .portal-rail__signout-icon {
+      margin: 0 auto;
+    }
+
+    .portal-console:has(.portal-rail__collapse-toggle:checked) .portal-rail__signout {
+      height: 2.25rem;
+      width: 2.25rem;
+      margin: 0 auto;
+    }
+
+    .portal-console:has(.portal-rail__collapse-toggle:checked) .portal-rail__account {
+      height: 2.25rem;
+      width: 2.25rem;
+      margin: 0 auto 0.375rem;
+      padding: 0;
+    }
+
+    .portal-console:has(.portal-rail__collapse-toggle:checked) .portal-rail__footer {
+      padding-left: 0.625rem;
+      padding-right: 0.625rem;
+    }
+
+    .portal-console:has(.portal-rail__collapse-toggle:checked) .portal-rail__account > span:first-child {
+      height: 1.75rem;
+      width: 1.75rem;
+      font-size: 0.7rem;
+    }
+
+    .portal-console:has(.portal-rail__collapse-toggle:checked) .portal-rail__signout {
+      border-radius: 0.625rem;
+    }
+  }
+</style>

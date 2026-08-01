@@ -907,7 +907,7 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
                   <span className="text-[#14B8A6]">suite of services</span>
                 </div>
                 <p className="mx-auto mt-8 max-w-xl text-lg text-white/70">
-                  Access protected service workflows, partner materials, pricing sheets, and the operating tools that help teams move quickly without losing control.
+                  Access protected service workflows, partner materials, offer material, and the operating tools that help teams move quickly without losing control.
                 </p>
                 <p className="mx-auto mt-6 max-w-xl text-sm uppercase tracking-[0.22em] text-white/45">
                   {tenantSlug}{tenantHost ? ` • ${tenantHost}` : ''}
@@ -962,7 +962,7 @@ function PortalInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced
   const serviceOfferings = [
     {
       eyebrow: 'First step',
-      title: 'AI-Ready Knowledge Packs',
+      title: 'AI Knowledge Packs',
       description:
         'Prepare documents, policy, screenshots, expert knowledge, and operating context for reliable AI use before committing to a governed agent build.',
       href: '/services/ai-ready-knowledge-packs/',
@@ -1006,90 +1006,140 @@ function PortalInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced
   });
 
   return (
-    <section className="min-h-screen bg-[#edf1f5] text-slate-950">
-      <div className="mx-auto w-[min(1360px,94vw)] py-8 lg:py-10">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#0f9288]">Workspace</div>
-            <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950 md:text-4xl">
-              Service operations
-            </h1>
-          </div>
-          <div className="flex flex-wrap items-center gap-2 text-sm">
-            <span className="rounded-md border border-slate-200 bg-white px-3 py-2 text-slate-600">
-              {tenantName}
-            </span>
-            <span className="rounded-md border border-[#14B8A6]/25 bg-[#14B8A6]/10 px-3 py-2 font-semibold text-[#0f766e]">
-              {access.audienceLabel}
-            </span>
+    <section className="min-h-screen bg-white text-[#202123]">
+      <div className="mx-auto w-[min(1352px,calc(100vw-3rem))] py-10 lg:py-12">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <h1 className="text-4xl font-semibold tracking-[-0.035em] text-[#202123]">Home</h1>
+          <div className="inline-flex rounded-full bg-[#ececec] p-1 text-sm font-medium text-[#666]">
+            {['24h', '7d', '30d', '90d'].map((range, index) => (
+              <button
+                key={range}
+                type="button"
+                className={`rounded-full px-3 py-1.5 transition ${index === 0 ? 'bg-white text-[#202123] shadow-sm' : 'hover:text-[#202123]'}`}
+              >
+                {range}
+              </button>
+            ))}
           </div>
         </div>
 
-        <div className="mt-6 grid gap-3 md:grid-cols-3">
-          <div className="rounded-lg border border-slate-200 bg-white p-4">
-            <div className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">Signed in</div>
-            <div className="mt-2 truncate text-sm font-semibold text-slate-900">{user.email}</div>
-          </div>
-          <div className="rounded-lg border border-slate-200 bg-white p-4">
-            <div className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">Roles</div>
-            <div className="mt-2 truncate text-sm font-semibold text-slate-900">
-              {access.roles.length ? access.roles.join(', ') : 'client'}
-            </div>
-          </div>
-          <div className="rounded-lg border border-slate-200 bg-white p-4">
-            <div className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">Session</div>
-            <div className="mt-2 text-sm font-semibold text-slate-900">
-              {session.access_token ? 'Verified' : 'Token unavailable'}
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-6 grid gap-6 xl:grid-cols-[1.35fr_0.65fr]">
-          <section className="rounded-lg border border-slate-200 bg-white">
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-5 py-4">
-              <div>
-                <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[#0f9288]">Protected workflows</div>
-                <h2 className="mt-1 text-xl font-semibold tracking-tight text-slate-950">Start structured intake</h2>
-              </div>
-              <span className="rounded-md bg-slate-100 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                {workflowCards.length} available
-              </span>
-            </div>
-            <div className="divide-y divide-slate-200">
-              {workflowCards.map((card, index) => (
-                <a
-                  key={`${card.href}-${index}`}
-                  href={card.href}
-                  className="group grid gap-3 px-5 py-4 transition hover:bg-[#f5fbfa] md:grid-cols-[1fr_auto] md:items-center"
-                >
-                  <div>
-                    <div className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0f9288]">{card.eyebrow}</div>
-                    <h3 className="mt-1 text-base font-semibold text-slate-950">{card.title}</h3>
-                    <p className="mt-1 max-w-3xl text-sm leading-relaxed text-slate-600">{card.description}</p>
-                  </div>
-                  <div className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.08em] text-[#0f766e]">
-                    {card.cta}
-                    <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
-                  </div>
+        <section className="mt-20 overflow-hidden rounded-xl border border-[#e2e2e2] bg-white">
+          <div className="grid min-h-[12rem] lg:grid-cols-[1.1fr_0.9fr]">
+            <div className="flex flex-col justify-center p-8">
+              <h2 className="text-2xl font-medium tracking-[-0.02em] text-[#111]">
+                Your Advanced Analytica services workspace
+              </h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-[#5f6368]">
+                Launch protected workflows, review service offers, and create internal client material from one controlled portal.
+              </p>
+              <div className="mt-5">
+                <a href="/portal/products/" className="inline-flex rounded-md bg-[#171717] px-3 py-2 text-sm font-medium text-white transition hover:bg-[#2a2a2a]">
+                  View products
                 </a>
-              ))}
+              </div>
+            </div>
+            <div className="relative hidden bg-[radial-gradient(circle_at_25%_35%,rgba(20,184,166,0.2),transparent_34%),linear-gradient(115deg,#ffffff_0%,#f6f7fb_38%,#eaf9f6_72%,#f7f2db_100%)] lg:block">
+              <div className="absolute right-8 top-1/2 flex h-16 w-16 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-[0_18px_60px_rgba(15,23,42,0.14)]">
+                <span className="text-2xl font-semibold text-[#111]">AA</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="mt-10 overflow-hidden rounded-xl border border-[#e2e2e2] bg-white">
+          <div className="grid md:grid-cols-3">
+            <div className="border-b border-[#e2e2e2] p-5 md:border-b-0 md:border-r">
+              <div className="text-sm text-[#555]">Protected workflows ›</div>
+              <div className="mt-2 text-2xl font-medium text-[#202123]">{workflowCards.length}</div>
+              <div className="mt-10 h-px bg-[#14B8A6]" />
+            </div>
+            <div className="border-b border-[#e2e2e2] p-5 md:border-b-0 md:border-r">
+              <div className="text-sm text-[#555]">Access level ›</div>
+              <div className="mt-2 truncate text-2xl font-medium text-[#202123]">{access.audienceLabel}</div>
+              <div className="mt-10 h-px border-t border-dashed border-[#b8bec8]" />
+            </div>
+            <div className="p-5">
+              <div className="text-sm text-[#555]">Session status ›</div>
+              <div className="mt-2 text-2xl font-medium text-[#202123]">
+                {session.access_token ? 'Verified' : 'Pending'}
+              </div>
+              <div className="mt-10 h-px bg-[#14B8A6]" />
+            </div>
+            <div className="border-t border-[#e2e2e2] p-5 md:border-r">
+              <div className="text-sm text-[#555]">Signed in</div>
+              <div className="mt-6 truncate text-sm font-medium text-[#202123]">{user.email}</div>
+            </div>
+            <div className="border-t border-[#e2e2e2] p-5 md:border-r">
+              <div className="text-sm text-[#555]">Roles</div>
+              <div className="mt-6 truncate text-sm font-medium text-[#202123]">
+                {access.roles.length ? access.roles.join(', ') : 'client'}
+              </div>
+            </div>
+            <div className="border-t border-[#e2e2e2] p-5">
+              <div className="text-sm text-[#555]">Tenant</div>
+              <div className="mt-6 truncate text-sm font-medium text-[#202123]">{tenantName}</div>
+            </div>
+          </div>
+        </section>
+
+        <div className="mt-12 grid gap-10 xl:grid-cols-[1.35fr_0.65fr]">
+          <section>
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+              <h2 className="text-xl font-semibold tracking-[-0.02em] text-[#202123]">Protected workflows</h2>
+              <span className="text-sm text-[#666]">{workflowCards.length} available</span>
+            </div>
+            <div className="overflow-hidden rounded-xl border border-[#e2e2e2] bg-white">
+              <div className="divide-y divide-[#e8e8e8]">
+                {workflowCards.map((card, index) => (
+                  <a
+                    key={`${card.href}-${index}`}
+                    href={card.href}
+                    className="group grid gap-3 px-5 py-4 transition hover:bg-[#f7f7f7] md:grid-cols-[1fr_auto] md:items-center"
+                  >
+                    <div>
+                      <div className="text-xs font-medium uppercase tracking-[0.12em] text-[#0f9288]">{card.eyebrow}</div>
+                      <h3 className="mt-1 text-base font-medium text-[#202123]">{card.title}</h3>
+                      <p className="mt-1 max-w-3xl text-sm leading-6 text-[#5f6368]">{card.description}</p>
+                    </div>
+                    <div className="inline-flex items-center gap-2 text-sm font-medium text-[#202123]">
+                      {card.cta}
+                      <span className="transition-transform duration-200 group-hover:translate-x-1">›</span>
+                    </div>
+                  </a>
+                ))}
+              </div>
             </div>
           </section>
 
-          <aside className="grid gap-4">
+          <aside className="grid content-start gap-3">
+            <a
+              href="/portal/products/"
+              className="group rounded-xl border border-[#e2e2e2] bg-white p-5 transition hover:bg-[#f7f7f7]"
+            >
+              <div className="text-xs font-medium uppercase tracking-[0.12em] text-[#0f9288]">Catalogue</div>
+              <h2 className="mt-2 text-lg font-medium tracking-[-0.02em] text-[#202123]">Products</h2>
+              <p className="mt-3 text-sm leading-6 text-[#5f6368]">
+                Explore the products, frameworks, services, and protected tools available to your account.
+              </p>
+              <div className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-[#202123]">
+                Open products
+                <span className="transition-transform duration-200 group-hover:translate-x-1">›</span>
+              </div>
+            </a>
+
             {access.isInternal ? (
               <a
                 href="/portal/sheets/"
-                className="group rounded-lg border border-slate-200 bg-white p-5 transition hover:border-[#14B8A6]/45 hover:bg-[#f5fbfa]"
+                className="group rounded-xl border border-[#e2e2e2] bg-white p-5 transition hover:bg-[#f7f7f7]"
               >
-                <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[#0f9288]">Internal tool</div>
-                <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-950">Product and service sheets</h2>
-                <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                <div className="text-xs font-medium uppercase tracking-[0.12em] text-[#0f9288]">Internal tool</div>
+                <h2 className="mt-2 text-lg font-medium tracking-[-0.02em] text-[#202123]">Offer Builder</h2>
+                <p className="mt-3 text-sm leading-6 text-[#5f6368]">
                   Pricing tables, delivery notes, assumptions, and partner-ready material.
                 </p>
-                <div className="mt-5 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.08em] text-[#0f766e]">
-                  Open sheet builder
-                  <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+                <div className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-[#202123]">
+                  Open offer builder
+                  <span className="transition-transform duration-200 group-hover:translate-x-1">›</span>
                 </div>
               </a>
             ) : null}
@@ -1097,66 +1147,68 @@ function PortalInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced
             {access.isAdmin ? (
               <a
                 href="/portal/admin/users/"
-                className="group rounded-lg border border-slate-200 bg-white p-5 transition hover:border-[#14B8A6]/45 hover:bg-[#f5fbfa]"
+                className="group rounded-xl border border-[#e2e2e2] bg-white p-5 transition hover:bg-[#f7f7f7]"
               >
-                <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[#0f9288]">Superadmin</div>
-                <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-950">Users and roles</h2>
-                <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                <div className="text-xs font-medium uppercase tracking-[0.12em] text-[#0f9288]">Superadmin</div>
+                <h2 className="mt-2 text-lg font-medium tracking-[-0.02em] text-[#202123]">Users and roles</h2>
+                <p className="mt-3 text-sm leading-6 text-[#5f6368]">
                   Invite provisioned users, assign roles, disable access, and remove accounts.
                 </p>
-                <div className="mt-5 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.08em] text-[#0f766e]">
+                <div className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-[#202123]">
                   Manage users
-                  <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+                  <span className="transition-transform duration-200 group-hover:translate-x-1">›</span>
                 </div>
               </a>
             ) : null}
 
             <a
               href="/portal/account/"
-              className="group rounded-lg border border-slate-200 bg-white p-5 transition hover:border-[#14B8A6]/45 hover:bg-[#f5fbfa]"
+              className="group rounded-xl border border-[#e2e2e2] bg-white p-5 transition hover:bg-[#f7f7f7]"
             >
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[#0f9288]">Account</div>
-              <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-950">Profile and access</h2>
-              <p className="mt-3 text-sm leading-relaxed text-slate-600">
+              <div className="text-xs font-medium uppercase tracking-[0.12em] text-[#0f9288]">Account</div>
+              <h2 className="mt-2 text-lg font-medium tracking-[-0.02em] text-[#202123]">Profile and access</h2>
+              <p className="mt-3 text-sm leading-6 text-[#5f6368]">
                 Review your tenant, roles, and enabled portal areas.
               </p>
-              <div className="mt-5 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.08em] text-[#0f766e]">
+              <div className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-[#202123]">
                 View profile
-                <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+                <span className="transition-transform duration-200 group-hover:translate-x-1">›</span>
               </div>
             </a>
           </aside>
         </div>
 
-        <section className="mt-6 rounded-lg border border-slate-200 bg-white">
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-5 py-4">
+        <section className="mt-12">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <div>
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[#0f9288]">Service offerings</div>
-              <h2 className="mt-1 text-xl font-semibold tracking-tight text-slate-950">Public offers to discuss with clients</h2>
+              <h2 className="text-xl font-semibold tracking-[-0.02em] text-[#202123]">Service offerings</h2>
+              <p className="mt-1 text-sm text-[#666]">Public offers to discuss with clients.</p>
             </div>
-            <a href="/services/" className="text-sm font-bold uppercase tracking-[0.08em] text-[#0f766e] transition hover:text-[#0b5f58]">
+            <a href="/services/" className="text-sm font-medium text-[#202123] transition hover:text-[#0f9288]">
               Public services
             </a>
           </div>
 
-          <div className="divide-y divide-slate-200">
+          <div className="overflow-hidden rounded-xl border border-[#e2e2e2] bg-white">
+          <div className="divide-y divide-[#e8e8e8]">
             {serviceOfferings.map((offering) => (
               <a
                 key={offering.title}
                 href={offering.href}
-                className="group grid gap-3 px-5 py-4 transition hover:bg-[#f8fafc] lg:grid-cols-[0.7fr_1fr_auto] lg:items-center"
+                className="group grid gap-3 px-5 py-4 transition hover:bg-[#f7f7f7] lg:grid-cols-[0.7fr_1fr_auto] lg:items-center"
               >
                 <div>
-                  <div className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0f9288]">{offering.eyebrow}</div>
-                  <h3 className="mt-1 text-base font-semibold text-slate-950">{offering.title}</h3>
+                  <div className="text-xs font-medium uppercase tracking-[0.12em] text-[#0f9288]">{offering.eyebrow}</div>
+                  <h3 className="mt-1 text-base font-medium text-[#202123]">{offering.title}</h3>
                 </div>
-                <p className="text-sm leading-relaxed text-slate-600">{offering.description}</p>
-                <div className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.08em] text-[#0f766e]">
+                <p className="text-sm leading-6 text-[#5f6368]">{offering.description}</p>
+                <div className="inline-flex items-center gap-2 text-sm font-medium text-[#202123]">
                   {offering.cta}
-                  <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+                  <span className="transition-transform duration-200 group-hover:translate-x-1">›</span>
                 </div>
               </a>
             ))}
+          </div>
           </div>
         </section>
       </div>

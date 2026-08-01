@@ -1,11 +1,13 @@
 ---
 import PortalLayout from '../../../layouts/PortalLayout.astro';
+import { getPortalAccess } from '../../../lib/portalAccess';
 import { getTenantPortalService } from '../../../lib/tenants';
 
 export const prerender = false;
 
 const tenant = Astro.locals.tenant;
 const user = Astro.locals.user;
+const access = getPortalAccess(user);
 const slug = Astro.params.slug ?? '';
 const service = getTenantPortalService(tenant, slug);
 
@@ -35,6 +37,7 @@ if (Astro.request.method === 'POST') {
   description={service.summary}
   tenant={tenant}
   signedIn={Boolean(user)}
+  access={access}
 >
   <section class="mx-auto w-[min(1120px,92vw)] py-10 lg:py-14">
     <div class="grid gap-8 lg:grid-cols-[0.85fr_1.15fr]">

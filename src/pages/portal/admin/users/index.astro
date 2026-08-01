@@ -15,7 +15,7 @@ if (!access.isAdmin) {
   return Astro.redirect('/portal');
 }
 ---
-<PortalLayout title={title} description={description} tenant={tenant} signedIn={Boolean(user)}>
+<PortalLayout title={title} description={description} tenant={tenant} signedIn={Boolean(user)} access={access}>
   <section class="mx-auto w-[min(1240px,92vw)] py-10 lg:py-14">
     <div class="mb-8 rounded-[2rem] border border-[color:var(--color-fog)] bg-[#111927] p-8 text-paper shadow-[0_30px_90px_rgba(0,0,0,0.2)] md:p-10">
       <div class="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">

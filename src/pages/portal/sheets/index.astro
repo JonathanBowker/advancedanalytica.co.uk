@@ -8,15 +8,15 @@ export const prerender = false;
 const tenant = Astro.locals.tenant;
 const user = Astro.locals.user;
 const access = getPortalAccess(user);
-const title = `Internal Product and Service Sheets | ${tenant.name}`;
+const title = `Offer Builder | ${tenant.name}`;
 const description =
-  'Protected workspace for creating consultant and partner product sheets, service sheets, and pricing tables.';
+  'Protected workspace for creating consultant and partner offer material, pricing tables, and service notes.';
 
 if (!access.isInternal) {
   return Astro.redirect('/portal');
 }
 ---
-<PortalLayout title={title} description={description} tenant={tenant} signedIn={Boolean(user)}>
+<PortalLayout title={title} description={description} tenant={tenant} signedIn={Boolean(user)} access={access}>
   <section class="mx-auto w-[min(1240px,92vw)] py-10 lg:py-14">
     <div class="mb-8 rounded-[2rem] border border-[color:var(--color-fog)] bg-[#111927] p-8 text-paper shadow-[0_30px_90px_rgba(0,0,0,0.2)] md:p-10">
       <div class="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">
@@ -25,15 +25,15 @@ if (!access.isInternal) {
       <div class="mt-5 grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
         <div>
           <h1 class="font-display text-[clamp(2.4rem,4vw,4.7rem)] font-semibold leading-[0.98] tracking-tight">
-            Product and service sheets.
+            Offer Builder.
           </h1>
         </div>
         <div>
           <p class="max-w-2xl text-lg leading-relaxed text-paper/72 md:text-xl">
-            Create internal offer sheets with pricing tables for consultants and partners. Keep public pages clean, and keep commercial details in the protected portal.
+            Create internal offer material with pricing tables for consultants and partners. Keep public pages clean, and keep commercial details in the protected portal.
           </p>
           <p class="mt-4 text-sm leading-relaxed text-paper/52">
-            Sheets are stored in the protected database, guarded by internal roles, and still support JSON export or print-to-PDF for approved use.
+            Offers are stored in the protected database, guarded by internal roles, and still support JSON export or print-to-PDF for approved use.
           </p>
         </div>
       </div>

@@ -38,6 +38,9 @@ export default {
       boxShadow: {
         soft: 'var(--shadow-soft)',
         outline: 'var(--shadow-outline)'
+      },
+      letterSpacing: {
+        tight: '-0.012em'
       }
     }
   }

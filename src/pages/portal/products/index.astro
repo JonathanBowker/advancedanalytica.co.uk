@@ -1,0 +1,255 @@
+---
+import PortalLayout from '../../../layouts/PortalLayout.astro';
+import { getPortalAccess } from '../../../lib/portalAccess';
+
+export const prerender = false;
+
+const tenant = Astro.locals.tenant;
+const user = Astro.locals.user;
+const access = getPortalAccess(user);
+const title = `Products | ${tenant.name}`;
+const description = `Product catalogue and protected offer access for ${tenant.name}.`;
+
+const products = [
+  {
+    eyebrow: 'Product',
+    name: 'Brando',
+    type: 'AI Brand Operator',
+    access: 'Public product',
+    status: 'Available',
+    href: '/brando/',
+    cta: 'View product',
+    description:
+      'Understand how Brando® turns brand knowledge into an AI-operated asset that can govern content at the point of creation.',
+    audience: 'Brand, marketing, legal, AI, and technology leaders',
+    available: true,
+  },
+  {
+    eyebrow: 'Framework',
+    name: 'IBOM Framework',
+    type: 'Intelligent Business Operating Model',
+    access: 'Public framework',
+    status: 'Available',
+    href: '/ibom-way/',
+    cta: 'View framework',
+    description:
+      'See how the IBOM® Framework scopes, specifies, validates, builds, and evolves AI-ready business systems with expert supervision.',
+    audience: 'Executives, delivery leads, AI teams, and transformation owners',
+    available: true,
+  },
+  {
+    eyebrow: 'Service',
+    name: 'AI Knowledge Packs',
+    type: 'Knowledge asset offer',
+    access: 'Public service',
+    status: 'Available',
+    href: '/services/ai-ready-knowledge-packs/',
+    cta: 'View service',
+    description:
+      'Package existing organisational knowledge into governed, AI-ready systems that teams and agents can use with confidence.',
+    audience: 'Teams preparing knowledge domains for AI-assisted operations',
+    available: true,
+  },
+  {
+    eyebrow: 'Internal tool',
+    name: 'Offer Builder',
+    type: 'Partner and consultant material',
+    access: 'Internal roles only',
+    status: access.isInternal ? 'Enabled' : 'Locked',
+    href: '/portal/sheets/',
+    cta: 'Open builder',
+    description:
+      'Create protected offer material, pricing tables, assumptions, and PDF-ready service notes for consultants and partners.',
+    audience: 'Advanced Analytica internal teams, consultants, and partners',
+    available: access.isInternal,
+  },
+];
+---
+<PortalLayout title={title} description={description} tenant={tenant} signedIn={Boolean(user)} access={access}>
+  <section class="mx-auto w-[min(1352px,calc(100vw-3rem))] py-10 lg:py-12">
+    <div class="flex flex-wrap items-end justify-between gap-5">
+      <div>
+        <p class="text-xs font-medium uppercase tracking-[0.16em] text-[#0f9288]">
+          Product catalogue
+        </p>
+        <h1 class="mt-4 text-4xl font-semibold tracking-[-0.035em] text-[#202123]">
+          Products
+        </h1>
+        <p class="mt-3 max-w-2xl text-sm leading-6 text-[#5f6368]">
+          The product, framework, service, and protected internal tools available through your Advanced Analytica portal.
+        </p>
+      </div>
+      <div class="inline-flex rounded-full bg-[#ececec] p-1 text-sm font-medium text-[#666]">
+        <span class="rounded-full bg-white px-3 py-1.5 text-[#202123] shadow-sm">{products.length} items</span>
+        <span class="px-3 py-1.5">{access.audienceLabel}</span>
+      </div>
+    </div>
+
+    <section class="mt-12 overflow-hidden rounded-xl border border-[#e2e2e2] bg-white">
+      <div class="grid min-h-[13rem] lg:grid-cols-[1.05fr_0.95fr]">
+        <div class="flex flex-col justify-center p-8">
+          <p class="text-xs font-medium uppercase tracking-[0.14em] text-[#0f9288]">
+            Service suite
+          </p>
+          <h2 class="mt-4 max-w-2xl text-2xl font-medium tracking-[-0.02em] text-[#111]">
+            Use this page as the clean front door to what we sell, deliver, and operate.
+          </h2>
+          <p class="mt-3 max-w-2xl text-sm leading-6 text-[#5f6368]">
+            Public pages explain the offer. Protected tools help the team create the commercial and delivery material that should stay inside the portal.
+          </p>
+        </div>
+        <div class="relative hidden bg-[radial-gradient(circle_at_20%_35%,rgba(20,184,166,0.18),transparent_32%),linear-gradient(115deg,#ffffff_0%,#f6f7fb_40%,#eaf9f6_72%,#f7f2db_100%)] lg:block">
+          <div class="absolute right-8 top-1/2 grid h-20 w-20 -translate-y-1/2 place-items-center rounded-2xl border border-[#e2e2e2] bg-white shadow-[0_18px_60px_rgba(15,23,42,0.14)]">
+            <span class="text-3xl font-semibold tracking-[-0.04em] text-[#111]">AA</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="mt-10 flex flex-wrap items-center justify-between gap-4">
+      <div>
+        <h2 class="text-xl font-semibold tracking-[-0.02em] text-[#202123]">
+          Product list
+        </h2>
+        <p class="mt-1 text-sm text-[#666]">
+          Switch views depending on whether you want to scan or browse.
+        </p>
+      </div>
+      <div
+        class="inline-flex rounded-full bg-[#ececec] p-1 text-sm font-medium text-[#666]"
+        aria-label="Product view options"
+      >
+        <button
+          type="button"
+          data-products-view-button="table"
+          aria-pressed="true"
+          class="rounded-full bg-white px-3 py-1.5 text-[#202123] shadow-sm transition"
+        >
+          Table
+        </button>
+        <button
+          type="button"
+          data-products-view-button="cards"
+          aria-pressed="false"
+          class="rounded-full px-3 py-1.5 transition hover:text-[#202123]"
+        >
+          Cards
+        </button>
+      </div>
+    </div>
+
+    <section data-products-view="table" class="mt-4 overflow-hidden rounded-xl border border-[#e2e2e2] bg-white">
+      <div class="grid border-b border-[#e2e2e2] bg-[#fafafa] px-5 py-3 text-xs font-medium uppercase tracking-[0.14em] text-[#777] md:grid-cols-[1.1fr_0.7fr_0.7fr_auto]">
+        <div>Product</div>
+        <div class="hidden md:block">Type</div>
+        <div class="hidden md:block">Access</div>
+        <div class="hidden text-right md:block">Action</div>
+      </div>
+      <div class="divide-y divide-[#e8e8e8]">
+        {products.map((product) => (
+          <article class="grid gap-4 px-5 py-5 transition hover:bg-[#f7f7f7] md:grid-cols-[1.1fr_0.7fr_0.7fr_auto] md:items-center">
+            <div>
+              <div class="text-xs font-medium uppercase tracking-[0.12em] text-[#0f9288]">{product.eyebrow}</div>
+              <h2 class="mt-1 text-lg font-medium tracking-[-0.02em] text-[#202123]">{product.name}</h2>
+              <p class="mt-2 max-w-2xl text-sm leading-6 text-[#5f6368]">{product.description}</p>
+              <p class="mt-2 text-xs font-medium uppercase tracking-[0.12em] text-[#8a8f98]">{product.audience}</p>
+            </div>
+            <div class="text-sm leading-6 text-[#4b5563]">{product.type}</div>
+            <div>
+              <span
+                class={product.available
+                  ? 'inline-flex rounded-full bg-[#14B8A6]/12 px-3 py-1 text-xs font-medium uppercase tracking-[0.1em] text-[#0f766e]'
+                  : 'inline-flex rounded-full bg-[#eeeeee] px-3 py-1 text-xs font-medium uppercase tracking-[0.1em] text-[#777]'}
+              >
+                {product.status}
+              </span>
+              <p class="mt-2 text-xs text-[#777]">{product.access}</p>
+            </div>
+            <div class="md:text-right">
+              {product.available ? (
+                <a
+                  href={product.href}
+                  class="inline-flex items-center justify-center rounded-md border border-[#d6d6d6] bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] text-[#202123] transition hover:border-[#14B8A6] hover:text-[#0f766e]"
+                >
+                  {product.cta}
+                </a>
+              ) : (
+                <span class="inline-flex items-center justify-center rounded-md border border-[#e0e0e0] px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] text-[#999]">
+                  Locked
+                </span>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section data-products-view="cards" hidden class="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      {products.map((product) => (
+        <article class="group flex min-h-[21rem] flex-col rounded-xl border border-[#e2e2e2] bg-white p-5 transition hover:-translate-y-0.5 hover:border-[#14B8A6]/45 hover:shadow-[0_18px_50px_rgba(15,23,42,0.08)]">
+          <div class="flex items-start justify-between gap-3">
+            <div class="text-xs font-medium uppercase tracking-[0.12em] text-[#0f9288]">{product.eyebrow}</div>
+            <span
+              class={product.available
+                ? 'shrink-0 rounded-full bg-[#14B8A6]/12 px-2.5 py-1 text-[0.68rem] font-medium uppercase tracking-[0.1em] text-[#0f766e]'
+                : 'shrink-0 rounded-full bg-[#eeeeee] px-2.5 py-1 text-[0.68rem] font-medium uppercase tracking-[0.1em] text-[#777]'}
+            >
+              {product.status}
+            </span>
+          </div>
+          <h2 class="mt-4 text-xl font-medium tracking-[-0.025em] text-[#202123]">{product.name}</h2>
+          <p class="mt-1 text-sm font-medium text-[#4b5563]">{product.type}</p>
+          <p class="mt-4 flex-1 text-sm leading-6 text-[#5f6368]">{product.description}</p>
+          <div class="mt-5 border-t border-[#e8e8e8] pt-4">
+            <p class="text-xs font-medium uppercase tracking-[0.12em] text-[#8a8f98]">{product.audience}</p>
+            <p class="mt-2 text-xs text-[#777]">{product.access}</p>
+          </div>
+          <div class="mt-5">
+            {product.available ? (
+              <a
+                href={product.href}
+                class="inline-flex w-full items-center justify-center rounded-md border border-[#d6d6d6] bg-white px-4 py-2.5 text-xs font-bold uppercase tracking-[0.08em] text-[#202123] transition hover:border-[#14B8A6] hover:text-[#0f766e]"
+              >
+                {product.cta}
+              </a>
+            ) : (
+              <span class="inline-flex w-full items-center justify-center rounded-md border border-[#e0e0e0] px-4 py-2.5 text-xs font-bold uppercase tracking-[0.08em] text-[#999]">
+                Locked
+              </span>
+            )}
+          </div>
+        </article>
+      ))}
+    </section>
+  </section>
+</PortalLayout>
+
+<script is:inline>
+  (() => {
+    const buttons = Array.from(document.querySelectorAll('[data-products-view-button]'));
+    const views = Array.from(document.querySelectorAll('[data-products-view]'));
+
+    if (!buttons.length || !views.length) return;
+
+    const setView = (viewName) => {
+      views.forEach((view) => {
+        view.hidden = view.dataset.productsView !== viewName;
+      });
+
+      buttons.forEach((button) => {
+        const isActive = button.dataset.productsViewButton === viewName;
+        button.setAttribute('aria-pressed', String(isActive));
+        button.classList.toggle('bg-white', isActive);
+        button.classList.toggle('text-[#202123]', isActive);
+        button.classList.toggle('shadow-sm', isActive);
+        button.classList.toggle('hover:text-[#202123]', !isActive);
+      });
+    };
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        setView(button.dataset.productsViewButton || 'table');
+      });
+    });
+  })();
+</script>

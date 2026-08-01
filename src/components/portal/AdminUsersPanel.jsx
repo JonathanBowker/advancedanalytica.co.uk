@@ -1,6 +1,27 @@
 import { useEffect, useState } from 'react';
 
 const roleOptions = ['admin', 'operator', 'developer', 'consultant', 'partner', 'client'];
+const actionIcons = {
+  save: [
+    'M5 4h12l2 2v14H5V4Z',
+    'M8 4v6h8V4',
+    'M8 17h8',
+  ],
+  disable: [
+    'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z',
+    'M7.5 7.5 16.5 16.5',
+  ],
+  enable: [
+    'M20 6 9 17l-5-5',
+  ],
+  delete: [
+    'M4 7h16',
+    'M10 11v6',
+    'M14 11v6',
+    'M6 7l1 13h10l1-13',
+    'M9 7V4h6v3',
+  ],
+};
 
 async function requestJson(path, options = {}) {
   const response = await fetch(path, {
@@ -64,6 +85,40 @@ function RoleCheckboxes({ value, onChange }) {
         </label>
       ))}
     </div>
+  );
+}
+
+function ActionIconButton({ label, icon, tone = 'neutral', disabled = false, onClick }) {
+  const toneClass =
+    tone === 'danger'
+      ? 'border-red-200 text-red-600 hover:border-red-300 hover:bg-red-50'
+      : tone === 'primary'
+        ? 'border-slate-950 bg-slate-950 text-white hover:bg-slate-800'
+        : 'border-slate-300 text-slate-700 hover:border-slate-400 hover:bg-slate-50';
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={label}
+      title={label}
+      className={`inline-flex h-9 w-9 items-center justify-center rounded-md border transition disabled:cursor-not-allowed disabled:opacity-60 ${toneClass}`}
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4">
+        {actionIcons[icon].map((path) => (
+          <path
+            key={path}
+            d={path}
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="1.9"
+          />
+        ))}
+      </svg>
+    </button>
   );
 }
 
@@ -247,30 +302,26 @@ export default function AdminUsersPanel() {
                   <td className="px-6 py-5 text-slate-600">{formatDate(user.lastSignInAt)}</td>
                   <td className="px-6 py-5 text-right md:px-8">
                     <div className="flex justify-end gap-2">
-                      <button
-                        type="button"
+                      <ActionIconButton
+                        label={`Save changes for ${user.email}`}
+                        icon="save"
+                        tone="primary"
                         onClick={() => saveUser(user)}
                         disabled={busyId === user.id}
-                        className="rounded-md bg-slate-950 px-3 py-2 text-xs font-bold uppercase tracking-[0.08em] text-white disabled:cursor-not-allowed disabled:opacity-60"
-                      >
-                        Save
-                      </button>
-                      <button
-                        type="button"
+                      />
+                      <ActionIconButton
+                        label={`${user.disabled ? 'Enable' : 'Disable'} ${user.email}`}
+                        icon={user.disabled ? 'enable' : 'disable'}
                         onClick={() => saveUser(user, { disabled: !user.disabled })}
                         disabled={busyId === user.id}
-                        className="rounded-md border border-slate-300 px-3 py-2 text-xs font-bold uppercase tracking-[0.08em] text-slate-700 disabled:cursor-not-allowed disabled:opacity-60"
-                      >
-                        {user.disabled ? 'Enable' : 'Disable'}
-                      </button>
-                      <button
-                        type="button"
+                      />
+                      <ActionIconButton
+                        label={`Delete ${user.email}`}
+                        icon="delete"
+                        tone="danger"
                         onClick={() => deleteUser(user)}
                         disabled={busyId === user.id}
-                        className="rounded-md border border-red-200 px-3 py-2 text-xs font-bold uppercase tracking-[0.08em] text-red-600 disabled:cursor-not-allowed disabled:opacity-60"
-                      >
-                        Delete
-                      </button>
+                      />
                     </div>
                   </td>
                 </tr>

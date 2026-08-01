@@ -9,19 +9,19 @@ const tenant = Astro.locals.tenant;
 const user = Astro.locals.user;
 const access = getPortalAccess(user);
 const id = Astro.params.id || '';
-const title = `Internal Sheet | ${tenant.name}`;
+const title = `Offer Builder | ${tenant.name}`;
 const description =
-  'Protected internal product and service sheet editor for consultants and partners.';
+  'Protected internal offer editor for consultants and partners.';
 
 if (!access.isInternal) {
   return Astro.redirect('/portal');
 }
 ---
-<PortalLayout title={title} description={description} tenant={tenant} signedIn={Boolean(user)}>
+<PortalLayout title={title} description={description} tenant={tenant} signedIn={Boolean(user)} access={access}>
   <section class="mx-auto w-[min(1240px,92vw)] py-10 lg:py-14">
     <div class="mb-8 rounded-[2rem] border border-[color:var(--color-fog)] bg-[#111927] p-8 text-paper shadow-[0_30px_90px_rgba(0,0,0,0.2)] md:p-10">
       <div class="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">
-        Internal sheet
+        Internal offer
       </div>
       <div class="mt-5 grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
         <div>
@@ -31,7 +31,7 @@ if (!access.isInternal) {
         </div>
         <div>
           <p class="max-w-2xl text-lg leading-relaxed text-paper/72 md:text-xl">
-            Edit the consultant-facing offer sheet, pricing table, assumptions, and PDF-ready preview.
+            Edit the consultant-facing offer, pricing table, assumptions, and PDF-ready preview.
           </p>
           <p class="mt-4 text-sm leading-relaxed text-paper/52">
             Drafts are stored in the protected database. Save before exporting or printing.
