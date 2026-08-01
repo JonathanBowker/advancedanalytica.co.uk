@@ -572,6 +572,7 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
   const [now, setNow] = useState(() => Date.now());
   const turnstileContainerRef = useRef(null);
   const turnstileWidgetRef = useRef(null);
+  const heroVideoRef = useRef(null);
 
   const nextUrl = getNextUrl();
   const cooldownSeconds = Math.max(0, Math.ceil((cooldownUntil - now) / 1000));
@@ -646,6 +647,32 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
     const intervalId = window.setInterval(() => setNow(Date.now()), 250);
     return () => window.clearInterval(intervalId);
   }, [inCooldown]);
+
+  useEffect(() => {
+    const video = heroVideoRef.current;
+    if (!video) return undefined;
+
+    const applyPlaybackSettings = () => {
+      video.playbackRate = 0.78;
+      video.defaultPlaybackRate = 0.78;
+    };
+
+    const holdFinalFrame = () => {
+      if (!Number.isNaN(video.duration) && Number.isFinite(video.duration)) {
+        video.currentTime = Math.max(0, video.duration - 0.05);
+      }
+      video.pause();
+    };
+
+    applyPlaybackSettings();
+    video.addEventListener('loadedmetadata', applyPlaybackSettings);
+    video.addEventListener('ended', holdFinalFrame);
+
+    return () => {
+      video.removeEventListener('loadedmetadata', applyPlaybackSettings);
+      video.removeEventListener('ended', holdFinalFrame);
+    };
+  }, []);
 
   async function signIn(event, requestedMethod = method) {
     event.preventDefault();
@@ -1035,8 +1062,18 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
         </div>
 
         <div className="relative hidden overflow-hidden lg:col-span-7 lg:block">
-          <div className="absolute inset-0 bg-gradient-to-br from-black via-[#0b0e14] to-[#171b24]" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/50" />
+          <video
+            ref={heroVideoRef}
+            className="absolute inset-0 h-full w-full object-cover"
+            autoPlay
+            muted
+            playsInline
+            aria-hidden="true"
+          >
+            <source src="/videos/brando.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-br from-black/72 via-[#0b0e14]/66 to-[#171b24]/74" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/18 via-transparent to-black/55" />
           <div className="absolute -left-24 top-16 h-72 w-72 rounded-full bg-[#14B8A6]/10 blur-3xl" />
           <div className="absolute right-0 top-10 h-80 w-80 rounded-full bg-[#14B8A6]/10 blur-3xl" />
 
@@ -1064,7 +1101,7 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
                   Access protected service workflows, partner materials, offer material, and the operating tools that help teams move quickly without losing control.
                 </p>
                 <p className="mx-auto mt-6 max-w-xl text-sm uppercase tracking-[0.22em] text-white/45">
-                  {tenantSlug}{tenantHost ? ` • ${tenantHost}` : ''}
+                  Brando - AI Brand Operator
                 </p>
                 <p className="mx-auto mt-10 max-w-xl text-base text-white/60">
                   Trusted by some of the world&apos;s largest brands
