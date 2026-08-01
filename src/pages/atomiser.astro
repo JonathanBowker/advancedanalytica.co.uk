@@ -1,0 +1,248 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE_URL } from "../lib/seo/site";
+
+const title = "Content Atomiser";
+const description =
+  "Content Atomiser deconstructs documents and websites into structured, reusable units so they can be packaged into AI Knowledge Packs and tested safely before agent build.";
+
+const page = {
+  title,
+  description,
+  url: `${SITE_URL}/atomiser`,
+  breadcrumbs: [
+    { name: "Home", url: `${SITE_URL}/` },
+    { name: "Products", url: `${SITE_URL}/brando` },
+    { name: "Content Atomiser", url: `${SITE_URL}/atomiser` },
+  ],
+};
+
+const capabilities = [
+  {
+    num: "01",
+    heading: "Deconstruct source material",
+    body: "Break websites, PDFs, slide decks, policies, screenshots, and working documents into usable knowledge units instead of uploading whole files and hoping the model copes.",
+  },
+  {
+    num: "02",
+    heading: "Keep meaning and provenance",
+    body: "Preserve context, hierarchy, and source references so teams can see where an answer came from and which material still needs expert judgement.",
+  },
+  {
+    num: "03",
+    heading: "Prepare pack-ready outputs",
+    body: "Shape the extracted material into the structure, naming logic, and boundaries needed for AI Knowledge Packs rather than leaving teams with a pile of disconnected fragments.",
+  },
+  {
+    num: "04",
+    heading: "Support repeatable rollout",
+    body: "Create a reusable preparation workflow that can be applied across knowledge domains, not just one one-off chatbot experiment.",
+  },
+] as const;
+
+const steps = [
+  {
+    num: "01",
+    heading: "Gather the source set",
+    body: "Identify the websites, documents, standards, policies, examples, and assets that actually matter for the workflow you want to test.",
+  },
+  {
+    num: "02",
+    heading: "Atomise the material",
+    body: "Split that source set into coherent, reusable units that AI can handle with less waste, less confusion, and less hidden ambiguity.",
+  },
+  {
+    num: "03",
+    heading: "Package for AI use",
+    body: "Organise the atoms into a controlled structure that can become an AI Knowledge Pack with prompts, scope rules, and user instructions.",
+  },
+  {
+    num: "04",
+    heading: "Test the value safely",
+    body: "Put the pack in front of real users, learn where the workflow works or fails, and decide what deserves a governed agent build.",
+  },
+] as const;
+---
+
+<BaseLayout title={title} description={description} page={page}>
+  <section class="bg-paper text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow text-center text-[#14B8A6]">CONTENT ATOMISER.</div>
+      <div class="mt-8 grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
+        <h1 class="text-6xl font-black leading-none tracking-tight text-ink">
+          Atomise your content so you can package your knowledge.
+        </h1>
+        <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
+          <p>
+            Content Atomiser turns bulky source material into structured, reusable
+            knowledge units. Instead of uploading whole documents and hoping a
+            model can navigate them, you get content prepared in a form AI can
+            use more reliably.
+          </p>
+          <p class="mt-6">
+            That preparation step is what makes AI Knowledge Packs possible.
+            First atomise the source, then package the right material, test the
+            workflow, and decide what should become a governed agent.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-4">
+            <a href="/company/contact/" class="aa-primary-cta">Talk to Us</a>
+            <a href="/services/ai-ready-knowledge-packs/" class="aa-outline-cta">See AI Knowledge Packs</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-[#f3f0e8] text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">What It Does</div>
+      <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+        <div>
+          <h2 class="text-5xl font-extrabold tracking-tight text-ink">
+            Prepare knowledge properly before AI gets involved.
+          </h2>
+          <p class="mt-6 max-w-prose text-lg leading-relaxed text-steel md:text-xl">
+            The work is not just extraction. It is turning messy source material
+            into bounded, reusable components that can be packaged, tested, and
+            governed.
+          </p>
+        </div>
+
+        <div class="atomiser-list">
+          {capabilities.map((item) => (
+            <article class="atomiser-list__item">
+              <div class="eyebrow text-[#14B8A6]">{item.num}</div>
+              <div>
+                <h3 class="text-2xl font-semibold tracking-tight text-ink">
+                  {item.heading}
+                </h3>
+                <p class="mt-3 text-base leading-relaxed text-steel">
+                  {item.body}
+                </p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-paper text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Why It Matters</div>
+      <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+        <div>
+          <h2 class="text-5xl font-semibold tracking-tight text-ink">
+            Reliable AI starts with better-prepared source material.
+          </h2>
+        </div>
+        <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
+          <p>
+            Most AI failures blamed on the model are really preparation
+            failures. Raw websites, sprawling PDFs, and inconsistent documents
+            create mixed context, weak evidence, and answers that cannot be
+            trusted.
+          </p>
+          <p class="mt-6">
+            Content Atomiser gives you a cleaner first layer. It reduces waste,
+            sharpens context, and creates the material structure needed for AI
+            Knowledge Packs, Brando, and any later agent work.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-slate text-paper">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">From Source To Value</div>
+      <h2 class="mx-auto max-w-4xl text-center text-5xl font-extrabold tracking-tight text-paper">
+        Atomise first. Package second. Automate only when the value is proven.
+      </h2>
+      <div class="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        {steps.map((step) => (
+          <article class="rounded-2xl border border-paper/12 bg-paper/8 p-6 shadow-outline">
+            <div class="eyebrow text-[#14B8A6]">{step.num}</div>
+            <h3 class="mt-4 text-xl font-semibold tracking-tight text-paper">
+              {step.heading}
+            </h3>
+            <p class="mt-4 text-sm leading-relaxed text-paper/72">
+              {step.body}
+            </p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-[#f3f0e8] text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Next Step</div>
+      <div class="grid items-start gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+        <h2 class="text-5xl font-extrabold tracking-tight text-ink">
+          Start with the material you already have.
+        </h2>
+        <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
+          <p>
+            The useful first conversation is simple: which knowledge set matters,
+            what format it exists in, and whether it should be atomised into a
+            controlled pack before anyone builds a larger AI workflow around it.
+          </p>
+          <p class="mt-6">
+            We can scope the source set, atomise the material, package it for
+            testing, and show where the real value sits before the agent build
+            begins.
+          </p>
+          <div class="mt-8">
+            <a href="/company/contact/" class="aa-primary-cta">Book a Conversation</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .aa-primary-cta,
+    .aa-outline-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.875rem;
+      padding: 15px 32px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .aa-primary-cta {
+      border: 1.5px solid #14b8a6;
+      background: #14b8a6;
+      color: #fff;
+    }
+
+    .aa-outline-cta {
+      border: 1.5px solid #14b8a6;
+      color: #0f766e;
+    }
+
+    .atomiser-list {
+      display: grid;
+      gap: 0;
+      border-top: 1px solid rgba(15, 23, 42, 0.12);
+    }
+
+    .atomiser-list__item {
+      display: grid;
+      gap: 0.75rem;
+      border-bottom: 1px solid rgba(15, 23, 42, 0.12);
+      padding: 1.4rem 0;
+    }
+
+    @media (min-width: 768px) {
+      .atomiser-list__item {
+        grid-template-columns: 5rem 1fr;
+        gap: 1.25rem;
+        align-items: start;
+      }
+    }
+  </style>
+</BaseLayout>
