@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { promises as dns } from 'node:dns';
 import { createSupabaseServerClient, isSupabaseConfigured } from '../../../lib/supabaseServer';
-import { getRequestOrigin, getTenantHomePath } from '../../../lib/tenants';
+import { getPublicSiteOrigin, getTenantHomePath } from '../../../lib/tenants';
 
 export const prerender = false;
 
@@ -121,7 +121,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       });
     }
 
-    const redirectTo = new URL('/auth/callback', getRequestOrigin(request));
+    const redirectTo = new URL('/auth/callback', getPublicSiteOrigin(request));
     redirectTo.searchParams.set('next', nextUrl.startsWith('/') ? nextUrl : getTenantHomePath());
 
     const supabase = createSupabaseServerClient({ request, cookies });

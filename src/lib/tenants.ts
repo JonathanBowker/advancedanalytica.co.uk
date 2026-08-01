@@ -68,6 +68,26 @@ export function getRequestOrigin(request: Request) {
   return `${protocol}://${authority}`;
 }
 
+export function getPublicSiteOrigin(request?: Request) {
+  const configured = String(import.meta.env.PUBLIC_SITE_URL || '').trim().replace(/\/+$/, '');
+
+  if (!request) {
+    return configured;
+  }
+
+  const hostname = getRequestHostname(request);
+  const isLocalHost =
+    hostname === 'localhost' ||
+    hostname === '127.0.0.1' ||
+    hostname === '::1';
+
+  if (isLocalHost) {
+    return getRequestOrigin(request);
+  }
+
+  return configured || getRequestOrigin(request);
+}
+
 export function getTenantThemeCss(tenant: TenantDefinition) {
   const baseCss = themeFiles['../themes/base.css'] ?? '';
   const tenantCss = themeFiles[toThemeKey(tenant.theme)] ?? '';

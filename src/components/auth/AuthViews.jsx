@@ -42,7 +42,14 @@ const subtleButtonClass =
   'inline-flex items-center justify-center rounded-md border border-white/14 px-4 py-2 text-sm font-semibold text-paper transition hover:border-white/28';
 
 function getCallbackUrlFor(nextPath) {
-  const url = new URL('/auth/callback', window.location.origin);
+  const configuredOrigin = String(import.meta.env.PUBLIC_SITE_URL || '').trim().replace(/\/+$/, '');
+  const hostname = window.location.hostname;
+  const isLocalHost =
+    hostname === 'localhost' ||
+    hostname === '127.0.0.1' ||
+    hostname === '::1';
+  const baseOrigin = !isLocalHost && configuredOrigin ? configuredOrigin : window.location.origin;
+  const url = new URL('/auth/callback', baseOrigin);
   url.searchParams.set('next', nextPath || defaultPortalPath);
   return url.toString();
 }

@@ -1,7 +1,7 @@
 ---
 import type { EmailOtpType } from '@supabase/supabase-js';
 import { createSupabaseServerClient, isSupabaseConfigured } from '../../lib/supabaseServer';
-import { getRequestOrigin } from '../../lib/tenants';
+import { getPublicSiteOrigin } from '../../lib/tenants';
 
 if (!isSupabaseConfigured) {
   return Astro.redirect('/login?error=config');
@@ -41,7 +41,7 @@ if (success) {
   );
 }
 
-const loginErrorUrl = new URL('/login', getRequestOrigin(Astro.request));
+const loginErrorUrl = new URL('/login', getPublicSiteOrigin(Astro.request));
 loginErrorUrl.searchParams.set('error', 'callback');
 if (callbackError) {
   loginErrorUrl.searchParams.set('error_description', callbackError);
