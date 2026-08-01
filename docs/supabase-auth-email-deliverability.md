@@ -109,12 +109,12 @@ Use the checked-in templates in this repo:
 - [Magic link template](./templates/applications/supabase-magic-link-email.html)
 - [Reset password template](./templates/applications/supabase-reset-password-email.html)
 
-Those templates use the callback-based SSR flow the site expects:
+Those templates should use Supabase's generated confirmation URL directly:
 
 - magic link
-  - `{{ .SiteURL }}/auth/callback?token_hash={{ .TokenHash }}&type=email&next=/portal`
+  - `{{ .ConfirmationURL }}`
 - password reset
-  - `{{ .SiteURL }}/auth/callback?token_hash={{ .TokenHash }}&type=recovery&next=/auth/reset`
+  - `{{ .ConfirmationURL }}`
 
 ## Operational Checks
 
