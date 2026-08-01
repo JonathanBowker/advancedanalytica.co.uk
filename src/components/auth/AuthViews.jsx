@@ -4,7 +4,9 @@ import { isSupabaseConfigured, supabase } from '../../lib/supabaseClient';
 import { getPortalAccess } from '../../lib/portalAccess';
 import './login.css';
 
-const databaseLabel = 'MasterDB';
+const authServiceLabel = 'Advanced Analytica sign-in service';
+const authConfigMessage =
+  'Sign-in is not configured correctly for this environment. Please contact Advanced Analytica.';
 const resendCooldownMs = 60_000;
 const magicLinkRequestTimeoutMs = 10_000;
 const captchaTimeoutMs = 8_000;
@@ -85,7 +87,7 @@ function getPasswordErrorMessage(err) {
   if (lower.includes('invalid login credentials')) return 'Invalid email or password.';
   if (lower.includes('email not confirmed')) return 'This email address is not confirmed yet.';
   if (lower.includes('failed to fetch') || lower.includes('network')) {
-    return `Could not reach ${databaseLabel}. Check the project URL, network connection, and service status.`;
+    return `Could not reach the ${authServiceLabel}. Please try again in a few minutes.`;
   }
 
   return rawMessage;
@@ -107,7 +109,7 @@ function getEmailFlowErrorMessage(err, fallback) {
   if (lower.includes('user not found')) {
     return {
       message:
-        `${databaseLabel} did not find a provisioned account for that address. Ask Advanced Analytica to create access first.`,
+        'We could not find a provisioned account for that address. Ask Advanced Analytica to create access first.',
       isRateLimit: false,
     };
   }
@@ -119,7 +121,7 @@ function getEmailFlowErrorMessage(err, fallback) {
   ) {
     return {
       message:
-        `${databaseLabel} did not find a provisioned account for that address. Ask Advanced Analytica to create access first.`,
+        'We could not find a provisioned account for that address. Ask Advanced Analytica to create access first.',
       isRateLimit: false,
     };
   }
@@ -127,6 +129,17 @@ function getEmailFlowErrorMessage(err, fallback) {
   if (lower.includes('user already registered') || lower.includes('already been registered')) {
     return {
       message: 'An account already exists for that email. Use Password or Magic link to sign in.',
+      isRateLimit: false,
+    };
+  }
+
+  if (
+    lower.includes('supabase is not configured') ||
+    lower.includes('not configured') ||
+    lower.includes('public_supabase')
+  ) {
+    return {
+      message: authConfigMessage,
       isRateLimit: false,
     };
   }
@@ -142,7 +155,7 @@ function getEmailFlowErrorMessage(err, fallback) {
   ) {
     return {
       message:
-        `Auth email could not be sent. Check the ${databaseLabel} SMTP settings and sender verification status.`,
+        'The sign-in email could not be sent. Please contact Advanced Analytica so we can check the mail service.',
       isRateLimit: false,
     };
   }
@@ -154,7 +167,7 @@ function getEmailFlowErrorMessage(err, fallback) {
   ) {
     return {
       message:
-        `${databaseLabel} rejected this request because captcha protection is enabled and no valid captcha token was sent.`,
+        'The verification check did not complete. Refresh the page and try again.',
       isRateLimit: false,
     };
   }
@@ -166,14 +179,14 @@ function getEmailFlowErrorMessage(err, fallback) {
   ) {
     return {
       message:
-        `${databaseLabel} could not find the requested auth resource. Check the ${databaseLabel} project URL and auth configuration for this environment.`,
+        authConfigMessage,
       isRateLimit: false,
     };
   }
 
   if (lower.includes('failed to fetch') || lower.includes('network')) {
     return {
-      message: `Could not reach ${databaseLabel}. Check the project URL, network connection, and service status.`,
+      message: `Could not reach the ${authServiceLabel}. Please try again in a few minutes.`,
       isRateLimit: false,
     };
   }
@@ -195,7 +208,7 @@ function getLoginErrorMessage(errorCode, errorDescription) {
 
   if (normalizedCode === 'callback') {
     if (normalizedDescription.includes('requested resource does not exist')) {
-      return `${databaseLabel} could not find the requested auth resource. Check the GitHub provider and redirect URL configuration for this ${databaseLabel} project.`;
+      return authConfigMessage;
     }
 
     if (errorDescription) {
@@ -213,7 +226,7 @@ function getLoginErrorMessage(errorCode, errorDescription) {
     normalizedCode === 'unexpected_failure' &&
     normalizedDescription.includes('multiple accounts with the same email address')
   ) {
-    return `${databaseLabel} found more than one account using this email address. Merge or remove the duplicate user/identity in ${databaseLabel}, then try GitHub sign-in again.`;
+    return 'More than one account is using this email address. Please contact Advanced Analytica so we can tidy up your access.';
   }
 
   if (errorDescription) {
@@ -484,10 +497,10 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
     event.preventDefault();
     setStatus({ state: 'idle', message: '' });
 
-    if (!isSupabaseConfigured || !supabase) {
+    if (requestedMethod !== 'magic_link' && (!isSupabaseConfigured || !supabase)) {
       setStatus({
         state: 'error',
-        message: `${databaseLabel} is not configured. Set PUBLIC_SUPABASE_URL and PUBLIC_SUPABASE_ANON_KEY.`,
+        message: authConfigMessage,
       });
       return;
     }
@@ -581,7 +594,7 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
     if (!isSupabaseConfigured || !supabase) {
       setStatus({
         state: 'error',
-        message: `${databaseLabel} is not configured. Set PUBLIC_SUPABASE_URL and PUBLIC_SUPABASE_ANON_KEY.`,
+        message: authConfigMessage,
       });
       return;
     }
@@ -626,7 +639,7 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
     if (!isSupabaseConfigured || !supabase) {
       setStatus({
         state: 'error',
-        message: `${databaseLabel} is not configured. Set PUBLIC_SUPABASE_URL and PUBLIC_SUPABASE_ANON_KEY.`,
+        message: authConfigMessage,
       });
       return;
     }
@@ -836,12 +849,6 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
                 ) : null}
               </form>
 
-              {!isSupabaseConfigured ? (
-                <div className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
-                  {databaseLabel} not configured. Set <code>PUBLIC_SUPABASE_URL</code> and <code>PUBLIC_SUPABASE_ANON_KEY</code>.
-                </div>
-              ) : null}
-
               <div className="flex items-center gap-3 py-2">
                 <div className="h-px flex-1 bg-slate-200" />
                 <div className="text-xs uppercase tracking-wider text-slate-400">or</div>
@@ -999,184 +1006,159 @@ function PortalInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced
   });
 
   return (
-    <section className="min-h-screen bg-[#edf1f5]">
-      <div className="container-wide py-12 lg:py-16">
-        <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-stretch">
-          <div className="rounded-[2rem] border border-[#d7dde5] bg-[#111927] p-8 text-paper shadow-[0_30px_90px_rgba(0,0,0,0.22)] md:p-10">
-            <div className="flex flex-wrap items-start justify-between gap-4">
-              <div className="max-w-3xl">
-                <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">Protected services</div>
-                <h1 className="mt-4 text-4xl font-semibold leading-[0.98] tracking-tight text-paper md:text-6xl">
-                  Choose the next service workflow.
-                </h1>
-                <p className="mt-6 max-w-2xl text-base leading-relaxed text-paper/70 md:text-lg">
-                  This is the logged-in workspace for {tenantName}: service offers, intake workflows, and internal material for consultants and partners.
-                </p>
-              </div>
-              <button className={buttonClass} type="button" onClick={signOut} disabled={signingOut}>
-                {signingOut ? 'Signing out...' : 'Sign out'}
-              </button>
-            </div>
-
-            <div className="mt-8 flex flex-wrap gap-3 text-sm">
-              <div className="rounded-full border border-white/10 bg-white/6 px-4 py-2 text-paper/78">
-                Signed in as <span className="font-semibold text-paper">{user.email}</span>
-              </div>
-              <div className="rounded-full border border-white/10 bg-white/6 px-4 py-2 text-paper/78">
-                <span className="font-semibold text-paper">{access.audienceLabel}</span>
-                {access.roles.length ? ` / ${access.roles.join(', ')}` : ' / default view'}
-              </div>
-            </div>
+    <section className="min-h-screen bg-[#edf1f5] text-slate-950">
+      <div className="mx-auto w-[min(1360px,94vw)] py-8 lg:py-10">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#0f9288]">Workspace</div>
+            <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950 md:text-4xl">
+              Service operations
+            </h1>
           </div>
-
-          <aside className="flex flex-col justify-between rounded-[2rem] border border-[#cfd8e3] bg-white p-8 text-slate-950 shadow-[0_24px_70px_rgba(15,23,42,0.08)] md:p-10">
-            <div>
-              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">Internal tool</div>
-              <h2 className="mt-4 text-3xl font-semibold tracking-tight">Product and service sheets</h2>
-              <p className="mt-4 text-base leading-relaxed text-slate-600">
-                Create partner-ready sheets with pricing tables, delivery notes, assumptions, and print/PDF output.
-              </p>
-            </div>
-            <div className="mt-8">
-              <a
-                href="/portal/sheets/"
-                className="inline-flex items-center justify-center rounded-md bg-[#14B8A6] px-5 py-3 text-sm font-bold uppercase tracking-[0.08em] text-white transition hover:bg-[#0f9288]"
-              >
-                Open sheet builder
-              </a>
-            </div>
-          </aside>
-        </div>
-
-        {access.isAdmin ? (
-          <div className="mt-8 rounded-[2rem] border border-[#cfd8e3] bg-white p-8 text-slate-950 shadow-[0_24px_70px_rgba(15,23,42,0.08)] md:p-10">
-            <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
-              <div>
-                <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">
-                  Superadmin
-                </div>
-                <h2 className="mt-4 text-3xl font-semibold tracking-tight">Manage users and roles.</h2>
-              </div>
-              <div>
-                <p className="text-base leading-relaxed text-slate-600">
-                  Invite provisioned users, assign portal roles, and disable access without leaving the portal.
-                </p>
-                <a
-                  href="/portal/admin/users/"
-                  className="mt-6 inline-flex items-center justify-center rounded-md bg-[#14B8A6] px-5 py-3 text-sm font-bold uppercase tracking-[0.08em] text-white transition hover:bg-[#0f9288]"
-                >
-                  Open User Management
-                </a>
-              </div>
-            </div>
-          </div>
-        ) : null}
-
-        <div className="mt-8 rounded-[2rem] border border-[#d7dde5] bg-white p-6 shadow-[0_24px_70px_rgba(15,23,42,0.08)] md:p-8">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">Service offerings</div>
-              <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">What we can put in front of a client.</h2>
-            </div>
-            <a href="/services/" className="text-sm font-semibold uppercase tracking-[0.08em] text-[#0f766e] transition hover:text-[#0b5f58]">
-              Public services
-            </a>
-          </div>
-
-          <div className="mt-7 grid gap-5 lg:grid-cols-3">
-            {serviceOfferings.map((offering) => (
-              <a
-                key={offering.title}
-                href={offering.href}
-                className="group flex min-h-[21rem] flex-col rounded-[1.75rem] border border-slate-200 bg-[#f8fafc] p-6 transition duration-200 hover:-translate-y-1 hover:border-[#14B8A6]/50 hover:bg-[#f0fbf8]"
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <div className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">
-                    {offering.eyebrow}
-                  </div>
-                  <div className="rounded-full border border-slate-200 bg-white px-3 py-1 text-[0.66rem] font-bold uppercase tracking-[0.14em] text-slate-500">
-                    {offering.stage}
-                  </div>
-                </div>
-                <h3 className="mt-5 text-3xl font-semibold leading-tight tracking-tight text-slate-950">
-                  {offering.title}
-                </h3>
-                <p className="mt-4 text-base leading-relaxed text-slate-600">{offering.description}</p>
-                <div className="mt-auto inline-flex items-center gap-2 pt-8 text-sm font-bold uppercase tracking-[0.08em] text-[#0f766e]">
-                  {offering.cta}
-                  <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
-                </div>
-              </a>
-            ))}
+          <div className="flex flex-wrap items-center gap-2 text-sm">
+            <span className="rounded-md border border-slate-200 bg-white px-3 py-2 text-slate-600">
+              {tenantName}
+            </span>
+            <span className="rounded-md border border-[#14B8A6]/25 bg-[#14B8A6]/10 px-3 py-2 font-semibold text-[#0f766e]">
+              {access.audienceLabel}
+            </span>
           </div>
         </div>
 
-        <div className="mt-8 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
-          <section className="rounded-[2rem] border border-[#d7dde5] bg-[#111927] p-6 text-paper shadow-[0_30px_90px_rgba(0,0,0,0.18)] md:p-8">
-            <div className="flex flex-wrap items-end justify-between gap-4">
-              <div>
-                <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">Protected workflows</div>
-                <h2 className="mt-3 text-3xl font-semibold tracking-tight text-paper">Start structured intake.</h2>
-              </div>
-              <div className="text-sm text-paper/52">Tenant: {tenantSlug}</div>
+        <div className="mt-6 grid gap-3 md:grid-cols-3">
+          <div className="rounded-lg border border-slate-200 bg-white p-4">
+            <div className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">Signed in</div>
+            <div className="mt-2 truncate text-sm font-semibold text-slate-900">{user.email}</div>
+          </div>
+          <div className="rounded-lg border border-slate-200 bg-white p-4">
+            <div className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">Roles</div>
+            <div className="mt-2 truncate text-sm font-semibold text-slate-900">
+              {access.roles.length ? access.roles.join(', ') : 'client'}
             </div>
+          </div>
+          <div className="rounded-lg border border-slate-200 bg-white p-4">
+            <div className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">Session</div>
+            <div className="mt-2 text-sm font-semibold text-slate-900">
+              {session.access_token ? 'Verified' : 'Token unavailable'}
+            </div>
+          </div>
+        </div>
 
-            <div className="mt-7 grid gap-5 md:grid-cols-2">
+        <div className="mt-6 grid gap-6 xl:grid-cols-[1.35fr_0.65fr]">
+          <section className="rounded-lg border border-slate-200 bg-white">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-5 py-4">
+              <div>
+                <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[#0f9288]">Protected workflows</div>
+                <h2 className="mt-1 text-xl font-semibold tracking-tight text-slate-950">Start structured intake</h2>
+              </div>
+              <span className="rounded-md bg-slate-100 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                {workflowCards.length} available
+              </span>
+            </div>
+            <div className="divide-y divide-slate-200">
               {workflowCards.map((card, index) => (
                 <a
                   key={`${card.href}-${index}`}
                   href={card.href}
-                  className="group relative min-h-[16rem] overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/6 p-6 transition duration-200 hover:-translate-y-1 hover:border-white/18 hover:bg-white/8"
+                  className="group grid gap-3 px-5 py-4 transition hover:bg-[#f5fbfa] md:grid-cols-[1fr_auto] md:items-center"
                 >
-                  <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${card.accent}`} />
-                  <div className="relative flex h-full flex-col">
-                    <div className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">
-                      {card.eyebrow}
-                    </div>
-                    <h3 className="mt-3 text-2xl font-semibold tracking-tight text-paper">{card.title}</h3>
-                    <p className="mt-3 text-sm leading-relaxed text-paper/68">{card.description}</p>
-                    <div className="mt-auto inline-flex items-center gap-2 pt-6 text-sm font-semibold text-paper">
-                      {card.cta}
-                      <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
-                    </div>
+                  <div>
+                    <div className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0f9288]">{card.eyebrow}</div>
+                    <h3 className="mt-1 text-base font-semibold text-slate-950">{card.title}</h3>
+                    <p className="mt-1 max-w-3xl text-sm leading-relaxed text-slate-600">{card.description}</p>
+                  </div>
+                  <div className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.08em] text-[#0f766e]">
+                    {card.cta}
+                    <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
                   </div>
                 </a>
               ))}
             </div>
           </section>
 
-          <aside className="rounded-[2rem] border border-[#d7dde5] bg-white p-6 text-slate-950 shadow-[0_24px_70px_rgba(15,23,42,0.08)] md:p-8">
-            <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">Account context</div>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight">Access details</h2>
-            <dl className="mt-6 grid gap-4 text-sm">
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                <dt className="font-semibold uppercase tracking-[0.12em] text-slate-400">Audience</dt>
-                <dd className="mt-2 text-base text-slate-800">{access.audienceLabel}</dd>
-              </div>
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                <dt className="font-semibold uppercase tracking-[0.12em] text-slate-400">Roles</dt>
-                <dd className="mt-2 text-base text-slate-800">{access.roles.length ? access.roles.join(', ') : 'client'}</dd>
-              </div>
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                <dt className="font-semibold uppercase tracking-[0.12em] text-slate-400">Session</dt>
-                <dd className="mt-2 text-base text-slate-800">
-                  {session.access_token ? 'Verified server-protected session' : 'Session token unavailable'}
-                </dd>
-              </div>
-            </dl>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <a href="/portal/account/" className="inline-flex items-center justify-center rounded-md border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-800 transition hover:border-[#14B8A6]">
-                Account profile
+          <aside className="grid gap-4">
+            {access.isInternal ? (
+              <a
+                href="/portal/sheets/"
+                className="group rounded-lg border border-slate-200 bg-white p-5 transition hover:border-[#14B8A6]/45 hover:bg-[#f5fbfa]"
+              >
+                <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[#0f9288]">Internal tool</div>
+                <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-950">Product and service sheets</h2>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                  Pricing tables, delivery notes, assumptions, and partner-ready material.
+                </p>
+                <div className="mt-5 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.08em] text-[#0f766e]">
+                  Open sheet builder
+                  <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+                </div>
               </a>
-              <a href="/" className="inline-flex items-center justify-center rounded-md border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-800 transition hover:border-[#14B8A6]">
-                Back to site
+            ) : null}
+
+            {access.isAdmin ? (
+              <a
+                href="/portal/admin/users/"
+                className="group rounded-lg border border-slate-200 bg-white p-5 transition hover:border-[#14B8A6]/45 hover:bg-[#f5fbfa]"
+              >
+                <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[#0f9288]">Superadmin</div>
+                <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-950">Users and roles</h2>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                  Invite provisioned users, assign roles, disable access, and remove accounts.
+                </p>
+                <div className="mt-5 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.08em] text-[#0f766e]">
+                  Manage users
+                  <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+                </div>
               </a>
-              <button className="inline-flex items-center justify-center rounded-md bg-slate-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800" type="button" onClick={signOut} disabled={signingOut}>
-                {signingOut ? 'Signing out...' : 'Sign out'}
-              </button>
-            </div>
+            ) : null}
+
+            <a
+              href="/portal/account/"
+              className="group rounded-lg border border-slate-200 bg-white p-5 transition hover:border-[#14B8A6]/45 hover:bg-[#f5fbfa]"
+            >
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[#0f9288]">Account</div>
+              <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-950">Profile and access</h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                Review your tenant, roles, and enabled portal areas.
+              </p>
+              <div className="mt-5 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.08em] text-[#0f766e]">
+                View profile
+                <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+              </div>
+            </a>
           </aside>
         </div>
+
+        <section className="mt-6 rounded-lg border border-slate-200 bg-white">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-5 py-4">
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[#0f9288]">Service offerings</div>
+              <h2 className="mt-1 text-xl font-semibold tracking-tight text-slate-950">Public offers to discuss with clients</h2>
+            </div>
+            <a href="/services/" className="text-sm font-bold uppercase tracking-[0.08em] text-[#0f766e] transition hover:text-[#0b5f58]">
+              Public services
+            </a>
+          </div>
+
+          <div className="divide-y divide-slate-200">
+            {serviceOfferings.map((offering) => (
+              <a
+                key={offering.title}
+                href={offering.href}
+                className="group grid gap-3 px-5 py-4 transition hover:bg-[#f8fafc] lg:grid-cols-[0.7fr_1fr_auto] lg:items-center"
+              >
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0f9288]">{offering.eyebrow}</div>
+                  <h3 className="mt-1 text-base font-semibold text-slate-950">{offering.title}</h3>
+                </div>
+                <p className="text-sm leading-relaxed text-slate-600">{offering.description}</p>
+                <div className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.08em] text-[#0f766e]">
+                  {offering.cta}
+                  <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
       </div>
     </section>
   );
@@ -1195,7 +1177,7 @@ function ResetInner() {
     if (!isSupabaseConfigured || !supabase) {
       setStatus({
         state: 'error',
-        message: `${databaseLabel} is not configured. Set PUBLIC_SUPABASE_URL and PUBLIC_SUPABASE_ANON_KEY.`,
+        message: authConfigMessage,
       });
       return;
     }
@@ -1227,7 +1209,7 @@ function ResetInner() {
   return (
     <AuthFrame
       title="Reset the account password."
-      intro={`This page completes the ${databaseLabel} recovery flow on the main production domain.`}
+      intro="This page completes the secure account recovery flow on the main production domain."
       aside={<div className="rounded-3xl border border-white/10 bg-white/6 p-5">The callback route exchanges the recovery code on the server before this page is rendered.</div>}
     >
       <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">Password reset</div>
