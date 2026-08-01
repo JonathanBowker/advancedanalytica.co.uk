@@ -30,6 +30,153 @@ const portalServiceCardCatalog = {
   },
 };
 
+function createPortalPersonalization({ access, services, tenantName, portalContent = [] }) {
+  const workflowCards = services.map((service) => {
+    const visual = portalServiceCardCatalog[service.slug] || {
+      eyebrow: 'Protected workflow',
+      accent: 'from-[#59b3e4]/24 to-transparent',
+      cta: 'Open service',
+    };
+
+    return {
+      eyebrow: visual.eyebrow,
+      title: service.name,
+      href: `/portal/services/${service.slug}`,
+      description: service.summary,
+      accent: visual.accent,
+      cta: visual.cta,
+    };
+  });
+
+  const featuredContent = portalContent[0] || null;
+  const normalizedFeaturedContent = featuredContent
+    ? {
+        eyebrow: 'Protected content',
+        title: featuredContent.title,
+        href: featuredContent.href,
+        description: featuredContent.summary,
+        cta: featuredContent.ctaLabel,
+      }
+    : null;
+
+  const defaultFocus = workflowCards[0] || normalizedFeaturedContent || {
+    eyebrow: 'Start here',
+    title: 'Products',
+    href: '/portal/products/',
+    description: 'Explore the products, frameworks, services, and protected tools available to your account.',
+    cta: 'Open products',
+  };
+
+  const tailoredGuides = [];
+  let hero = {
+    eyebrow: 'Recommended next step',
+    title: 'Start with the most relevant protected content.',
+    description: `This ${tenantName} workspace can now route you to the right workflow, product, or internal material based on your access.`,
+    primaryHref: defaultFocus.href,
+    primaryLabel: defaultFocus.cta,
+    secondaryHref: '/portal/products/',
+    secondaryLabel: 'Browse all products',
+    featureLabel: defaultFocus.eyebrow,
+    featureTitle: defaultFocus.title,
+    featureBody: defaultFocus.description,
+  };
+
+  if (access.isAdmin) {
+    hero = {
+      eyebrow: 'Admin priority',
+      title: 'Govern access, then direct people into the right service flow.',
+      description: 'Provisioning, permissions, and internal tool visibility should be set first so each signed-in user lands on the right material automatically.',
+      primaryHref: '/portal/admin/users/',
+      primaryLabel: 'Manage users and roles',
+      secondaryHref: '/portal/sheets/',
+      secondaryLabel: 'Open offer builder',
+      featureLabel: 'Superadmin',
+      featureTitle: 'Users and roles',
+      featureBody: 'Control who sees internal tools, which workflows are available, and what the signed-in homepage should prioritise next.',
+    };
+    tailoredGuides.push(
+      {
+        eyebrow: 'Provisioning',
+        title: 'Route each account by role',
+        description: 'Assign access cleanly so clients, operators, partners, and admins each land on content that matches what they actually need.',
+        href: '/portal/admin/users/',
+        cta: 'Review access',
+      },
+      {
+        eyebrow: 'Internal tool',
+        title: 'Prepare client-ready material',
+        description: 'Use the offer builder to create controlled pricing tables, delivery notes, and assumptions once access is in place.',
+        href: '/portal/sheets/',
+        cta: 'Open offer builder',
+      },
+    );
+  } else if (access.isInternal) {
+    hero = {
+      eyebrow: 'Internal priority',
+      title: 'Move the work forward from one signed-in workspace.',
+      description: 'You now have access to protected workflows, public-facing offers, and internal delivery material. The home page should push you into the next useful asset, not make you hunt for it.',
+      primaryHref: '/portal/sheets/',
+      primaryLabel: 'Open offer builder',
+      secondaryHref: defaultFocus.href,
+      secondaryLabel: defaultFocus.cta,
+      featureLabel: 'Internal workflow',
+      featureTitle: 'Offer Builder',
+      featureBody: 'Create partner-ready and consultant-ready material without leaving the portal, then route into the right service or product page.',
+    };
+    tailoredGuides.push(
+      {
+        eyebrow: 'Protected workflow',
+        title: defaultFocus.title,
+        description: defaultFocus.description,
+        href: defaultFocus.href,
+        cta: defaultFocus.cta,
+      },
+      {
+        eyebrow: 'Service content',
+        title: featuredContent?.title || 'AI Knowledge Packs briefing',
+        description:
+          featuredContent?.summary ||
+          'Use the signed-in workspace to move from offer material into the content that explains where structured AI-ready assets fit first.',
+        href: featuredContent?.href || '/portal/content/ai-knowledge-packs-briefing/',
+        cta: featuredContent?.ctaLabel || 'Open briefing',
+      },
+    );
+  } else {
+    hero = {
+      eyebrow: 'Recommended next step',
+      title: 'Start with the content built for your account.',
+      description: 'After sign-in, the portal should move you straight into the material most relevant to your role, then give you a clear path into the next protected workflow.',
+      primaryHref: defaultFocus.href,
+      primaryLabel: defaultFocus.cta,
+      secondaryHref: '/portal/account/',
+      secondaryLabel: 'Review your access',
+      featureLabel: defaultFocus.eyebrow,
+      featureTitle: defaultFocus.title,
+      featureBody: defaultFocus.description,
+    };
+    tailoredGuides.push(
+      {
+        eyebrow: 'Protected workflow',
+        title: defaultFocus.title,
+        description: defaultFocus.description,
+        href: defaultFocus.href,
+        cta: defaultFocus.cta,
+      },
+      {
+        eyebrow: 'Background',
+        title: featuredContent?.title || 'Understand Brando',
+        description:
+          featuredContent?.summary ||
+          'See how the product and the IBOM framework fit together before you move into a live service request.',
+        href: featuredContent?.href || '/brando/',
+        cta: featuredContent?.ctaLabel || 'Open Brando',
+      },
+    );
+  }
+
+  return { workflowCards, hero, tailoredGuides };
+}
+
 const shellClass =
   'min-h-screen w-screen bg-slate-100';
 const cardClass =
@@ -931,7 +1078,7 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
   );
 }
 
-function PortalInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-analytica', services = [] }) {
+function PortalInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-analytica', services = [], portalContent = [] }) {
   const { session, loading } = useAuth();
   const [signingOut, setSigningOut] = useState(false);
 
@@ -995,21 +1142,11 @@ function PortalInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced
       stage: 'Deliver',
     },
   ];
-  const workflowCards = services.map((service) => {
-    const visual = portalServiceCardCatalog[service.slug] || {
-      eyebrow: 'Protected workflow',
-      accent: 'from-[#59b3e4]/24 to-transparent',
-      cta: 'Open service',
-    };
-
-    return {
-      eyebrow: visual.eyebrow,
-      title: service.name,
-      href: `/portal/services/${service.slug}`,
-      description: service.summary,
-      accent: visual.accent,
-      cta: visual.cta,
-    };
+  const { workflowCards, hero, tailoredGuides } = createPortalPersonalization({
+    access,
+    services,
+    tenantName,
+    portalContent,
   });
 
   return (
@@ -1030,24 +1167,32 @@ function PortalInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced
           </div>
         </div>
 
-        <section className="mt-20 overflow-hidden rounded-xl border border-[#e2e2e2] bg-white">
-          <div className="grid min-h-[12rem] lg:grid-cols-[1.1fr_0.9fr]">
-            <div className="flex flex-col justify-center p-8">
-              <h2 className="text-2xl font-medium tracking-[-0.02em] text-[#111]">
-                Your Advanced Analytica services workspace
+        <section className="mt-20 overflow-hidden rounded-[1.5rem] border border-[#e2e2e2] bg-white">
+          <div className="grid lg:grid-cols-[1.15fr_0.85fr]">
+            <div className="border-b border-[#e7eaef] p-8 lg:border-b-0 lg:border-r lg:p-10">
+              <div className="text-xs font-medium uppercase tracking-[0.16em] text-[#0f9288]">{hero.eyebrow}</div>
+              <h2 className="mt-4 max-w-3xl text-[clamp(2rem,4vw,3.6rem)] font-medium leading-[1.02] tracking-[-0.045em] text-[#111]">
+                {hero.title}
               </h2>
-              <p className="mt-2 max-w-2xl text-sm leading-6 text-[#5f6368]">
-                Launch protected workflows, review service offers, and create internal client material from one controlled portal.
+              <p className="mt-4 max-w-2xl text-base leading-7 text-[#5f6368]">
+                {hero.description}
               </p>
-              <div className="mt-5">
-                <a href="/portal/products/" className="inline-flex rounded-md bg-[#171717] px-3 py-2 text-sm font-medium text-white transition hover:bg-[#2a2a2a]">
-                  View products
+              <div className="mt-8 flex flex-wrap gap-3">
+                <a href={hero.primaryHref} className="inline-flex rounded-md bg-[#171717] px-4 py-2.5 text-sm font-medium text-white transition hover:bg-[#2a2a2a]">
+                  {hero.primaryLabel}
+                </a>
+                <a href={hero.secondaryHref} className="inline-flex rounded-md border border-[#d3d7df] px-4 py-2.5 text-sm font-medium text-[#202123] transition hover:bg-[#f6f7f9]">
+                  {hero.secondaryLabel}
                 </a>
               </div>
             </div>
-            <div className="relative hidden bg-[radial-gradient(circle_at_25%_35%,rgba(20,184,166,0.2),transparent_34%),linear-gradient(115deg,#ffffff_0%,#f6f7fb_38%,#eaf9f6_72%,#f7f2db_100%)] lg:block">
-              <div className="absolute right-8 top-1/2 flex h-16 w-16 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-[0_18px_60px_rgba(15,23,42,0.14)]">
-                <span className="text-2xl font-semibold text-[#111]">AA</span>
+            <div className="relative overflow-hidden bg-[radial-gradient(circle_at_20%_20%,rgba(20,184,166,0.18),transparent_30%),linear-gradient(140deg,#fbfbfc_0%,#f2f6fb_52%,#eef8f5_100%)] p-8 lg:p-10">
+              <div className="text-xs font-medium uppercase tracking-[0.16em] text-[#0f9288]">{hero.featureLabel}</div>
+              <h3 className="mt-3 text-2xl font-medium tracking-[-0.03em] text-[#111]">{hero.featureTitle}</h3>
+              <p className="mt-4 max-w-lg text-sm leading-7 text-[#5f6368]">{hero.featureBody}</p>
+              <div className="mt-8 inline-flex items-center gap-2 rounded-full border border-white/70 bg-white/85 px-4 py-2 text-sm font-medium text-[#202123] shadow-[0_18px_50px_rgba(15,23,42,0.08)]">
+                <span className="inline-flex h-2.5 w-2.5 rounded-full bg-[#14B8A6]" />
+                Signed-in content can now adapt by role
               </div>
             </div>
           </div>
@@ -1119,6 +1264,27 @@ function PortalInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced
           </section>
 
           <aside className="grid content-start gap-3">
+            <div className="rounded-xl border border-[#e2e2e2] bg-white p-5">
+              <div className="text-xs font-medium uppercase tracking-[0.12em] text-[#0f9288]">Tailored next</div>
+              <div className="mt-3 space-y-3">
+                {tailoredGuides.map((guide) => (
+                  <a
+                    key={guide.href}
+                    href={guide.href}
+                    className="group block rounded-lg border border-[#edf0f3] px-4 py-4 transition hover:bg-[#f7f7f7]"
+                  >
+                    <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[#0f9288]">{guide.eyebrow}</div>
+                    <h3 className="mt-1 text-sm font-medium text-[#202123]">{guide.title}</h3>
+                    <p className="mt-2 text-sm leading-6 text-[#5f6368]">{guide.description}</p>
+                    <div className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-[#202123]">
+                      {guide.cta}
+                      <span className="transition-transform duration-200 group-hover:translate-x-1">›</span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+
             <a
               href="/portal/products/"
               className="group rounded-xl border border-[#e2e2e2] bg-white p-5 transition hover:bg-[#f7f7f7]"
@@ -1133,6 +1299,23 @@ function PortalInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced
                 <span className="transition-transform duration-200 group-hover:translate-x-1">›</span>
               </div>
             </a>
+
+            {portalContent.length ? (
+              <a
+                href={portalContent[0].href}
+                className="group rounded-xl border border-[#e2e2e2] bg-white p-5 transition hover:bg-[#f7f7f7]"
+              >
+                <div className="text-xs font-medium uppercase tracking-[0.12em] text-[#0f9288]">Protected content</div>
+                <h2 className="mt-2 text-lg font-medium tracking-[-0.02em] text-[#202123]">{portalContent[0].title}</h2>
+                <p className="mt-3 text-sm leading-6 text-[#5f6368]">
+                  {portalContent[0].summary}
+                </p>
+                <div className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-[#202123]">
+                  {portalContent[0].ctaLabel}
+                  <span className="transition-transform duration-200 group-hover:translate-x-1">›</span>
+                </div>
+              </a>
+            ) : null}
 
             {access.isInternal ? (
               <a

@@ -1,0 +1,90 @@
+---
+import { getCollection } from 'astro:content';
+import PortalLayout from '../../../layouts/PortalLayout.astro';
+import { getPortalAccess } from '../../../lib/portalAccess';
+import { canAccessPortalContent, getPortalContentAccessLabel } from '../../../lib/portalContent';
+
+export const prerender = false;
+
+const tenant = Astro.locals.tenant;
+const user = Astro.locals.user;
+const access = getPortalAccess(user);
+const title = `Content Library | ${tenant.name}`;
+const description = `Protected brochures, presentations, briefings, and downloads for signed-in ${tenant.name} users.`;
+
+const items = (await getCollection('portalContent', ({ data }) => !data.draft))
+  .filter((item) => canAccessPortalContent(item.data.access, access))
+  .sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title));
+---
+<PortalLayout title={title} description={description} tenant={tenant} signedIn={Boolean(user)} access={access}>
+  <section class="mx-auto w-[min(1352px,calc(100vw-3rem))] py-10 lg:py-12">
+    <div class="flex flex-wrap items-end justify-between gap-5">
+      <div>
+        <p class="text-xs font-medium uppercase tracking-[0.16em] text-[#0f9288]">
+          Protected content
+        </p>
+        <h1 class="mt-4 text-4xl font-semibold tracking-[-0.035em] text-[#202123]">
+          Content library
+        </h1>
+        <p class="mt-3 max-w-3xl text-sm leading-6 text-[#5f6368]">
+          Send signed-in users to a specific brochure, presentation, briefing, or download. If they are not authenticated, they will be asked to sign in first and then returned to the exact content page.
+        </p>
+      </div>
+      <div class="inline-flex rounded-full bg-[#ececec] p-1 text-sm font-medium text-[#666]">
+        <span class="rounded-full bg-white px-3 py-1.5 text-[#202123] shadow-sm">{items.length} items</span>
+        <span class="px-3 py-1.5">{access.audienceLabel}</span>
+      </div>
+    </div>
+
+    <section class="mt-12 overflow-hidden rounded-[1.5rem] border border-[#e2e2e2] bg-white">
+      <div class="grid lg:grid-cols-[1.05fr_0.95fr]">
+        <div class="flex flex-col justify-center p-8 lg:p-10">
+          <p class="text-xs font-medium uppercase tracking-[0.14em] text-[#0f9288]">
+            Shareable deep links
+          </p>
+          <h2 class="mt-4 max-w-2xl text-2xl font-medium tracking-[-0.02em] text-[#111]">
+            Point someone straight to the content they should see after sign-in.
+          </h2>
+          <p class="mt-3 max-w-2xl text-sm leading-6 text-[#5f6368]">
+            Use these protected pages when a public page is too broad and you want a cleaner next step: a brochure, a deck-style explainer, a briefing, or a gated download.
+          </p>
+        </div>
+        <div class="relative hidden bg-[radial-gradient(circle_at_20%_35%,rgba(20,184,166,0.18),transparent_32%),linear-gradient(115deg,#ffffff_0%,#f6f7fb_40%,#eaf9f6_72%,#f7f2db_100%)] lg:block">
+          <div class="absolute right-8 top-1/2 grid h-20 w-20 -translate-y-1/2 place-items-center rounded-2xl border border-[#e2e2e2] bg-white shadow-[0_18px_60px_rgba(15,23,42,0.14)]">
+            <span class="text-3xl font-semibold tracking-[-0.04em] text-[#111]">AA</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-10 overflow-hidden rounded-xl border border-[#e2e2e2] bg-white">
+      <div class="grid border-b border-[#e2e2e2] bg-[#fafafa] px-5 py-3 text-xs font-medium uppercase tracking-[0.14em] text-[#777] md:grid-cols-[1fr_0.55fr_0.55fr_auto]">
+        <div>Content</div>
+        <div class="hidden md:block">Format</div>
+        <div class="hidden md:block">Access</div>
+        <div class="hidden text-right md:block">Action</div>
+      </div>
+      <div class="divide-y divide-[#e8e8e8]">
+        {items.map((item) => (
+          <article class="grid gap-4 px-5 py-5 transition hover:bg-[#f7f7f7] md:grid-cols-[1fr_0.55fr_0.55fr_auto] md:items-center">
+            <div>
+              <div class="text-xs font-medium uppercase tracking-[0.12em] text-[#0f9288]">{item.data.format}</div>
+              <h2 class="mt-1 text-lg font-medium tracking-[-0.02em] text-[#202123]">{item.data.title}</h2>
+              <p class="mt-2 max-w-2xl text-sm leading-6 text-[#5f6368]">{item.data.summary}</p>
+            </div>
+            <div class="text-sm leading-6 text-[#4b5563]">{item.data.format}</div>
+            <div class="text-sm leading-6 text-[#4b5563]">{getPortalContentAccessLabel(item.data.access)}</div>
+            <div class="md:text-right">
+              <a
+                href={`/portal/content/${item.slug}/`}
+                class="inline-flex items-center justify-center rounded-md border border-[#d6d6d6] bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] text-[#202123] transition hover:border-[#14B8A6] hover:text-[#0f766e]"
+              >
+                {item.data.ctaLabel}
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  </section>
+</PortalLayout>

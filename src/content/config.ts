@@ -42,6 +42,22 @@ const resources = defineCollection({
   })
 });
 
+const portalContent = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: plainTitle(),
+    description: plainText('description'),
+    summary: plainText('summary'),
+    format: z.enum(['Brochure', 'Presentation', 'Briefing', 'Download', 'Guide']),
+    access: z.enum(['all', 'internal', 'admin']).default('all'),
+    downloadUrl: z.string().optional(),
+    ctaLabel: z.string().default('Open content'),
+    order: z.number().default(0),
+    tags: z.array(z.string()).default([]),
+    draft: z.boolean().default(false)
+  })
+});
+
 const products = defineCollection({
   type: 'content',
   schema: z.object({
@@ -119,6 +135,7 @@ const personas = defineCollection({
 export const collections = {
   blog,
   resources,
+  portalContent,
   products,
   'use-cases': useCases,
   roles,

@@ -38,6 +38,12 @@ const materialIcons = {
     'M6 7.5 12 11l6-3.5',
     'M12 11v7',
   ],
+  content: [
+    'M6.5 4.5h10a1.5 1.5 0 0 1 1.5 1.5v12a1.5 1.5 0 0 1-1.5 1.5h-10A1.5 1.5 0 0 1 5 18V6a1.5 1.5 0 0 1 1.5-1.5Z',
+    'M8.5 8h7',
+    'M8.5 11.5h7',
+    'M8.5 15h4.5',
+  ],
   sheets: [
     'M7 3.5h7l4 4v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-15a1 1 0 0 1 1-1Z',
     'M14 3.5v4h4',
@@ -81,6 +87,13 @@ const navItems = signedIn
         note: 'Product catalogue',
         icon: 'products',
         active: currentPath.startsWith('/portal/products'),
+      },
+      {
+        href: '/portal/content/',
+        label: 'Content',
+        note: 'Brochures and decks',
+        icon: 'content',
+        active: currentPath.startsWith('/portal/content'),
       },
       {
         href: '/portal/account/',

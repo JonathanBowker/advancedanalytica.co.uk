@@ -3,14 +3,27 @@ import PortalLayout from '../layouts/PortalLayout.astro';
 import { getPortalAccess } from '../lib/portalAccess';
 import { getTenantPortalServices } from '../lib/tenants';
 import { PortalApp } from '../components/auth/AuthViews.jsx';
+import { getCollection } from 'astro:content';
+import { canAccessPortalContent } from '../lib/portalContent';
 
 const tenant = Astro.locals.tenant;
 const user = Astro.locals.user;
 const access = getPortalAccess(user);
 const services = getTenantPortalServices(tenant);
+const portalContent = (await getCollection('portalContent', ({ data }) => !data.draft))
+  .filter((item) => canAccessPortalContent(item.data.access, access))
+  .sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title))
+  .map((item) => ({
+    slug: item.slug,
+    title: item.data.title,
+    summary: item.data.summary,
+    format: item.data.format,
+    ctaLabel: item.data.ctaLabel,
+    href: `/portal/content/${item.slug}/`,
+  }));
 const title = `${tenant.name} Portal`;
 const description = `Protected portal access for authenticated ${tenant.name} users.`;
 ---
 <PortalLayout title={title} description={description} tenant={tenant} signedIn={Boolean(user)} access={access}>
-  <PortalApp client:only="react" tenantName={tenant.name} tenantSlug={tenant.slug} services={services} />
+  <PortalApp client:only="react" tenantName={tenant.name} tenantSlug={tenant.slug} services={services} portalContent={portalContent} />
 </PortalLayout>
