@@ -4,6 +4,24 @@ import { getDefaultTenant, getTenantHomePath, getTenantLoginPath, resolveTenantF
 
 const protectedPaths = ['/portal'];
 const authPages = ['/login'];
+const legacyRedirects: Record<string, string> = {
+  '/activate': '/brando/',
+  '/activate/': '/brando/',
+  '/agronomy': '/use-cases/agriculture-regulatory-knowledge/',
+  '/agronomy/': '/use-cases/agriculture-regulatory-knowledge/',
+  '/brand-sematics-analysis': '/brand-ai-drift-audit/',
+  '/brand-sematics-analysis/': '/brand-ai-drift-audit/',
+  '/dots-brand-operator-animation': '/brando/',
+  '/dots-brand-operator-animation/': '/brando/',
+  '/dots-brand-operator-wordmark-animation': '/brando/',
+  '/dots-brand-operator-wordmark-animation/': '/brando/',
+  '/products/ibom': '/ibom/',
+  '/products/ibom/': '/ibom/',
+  '/services/IBOM': '/ibom/',
+  '/services/IBOM/': '/ibom/',
+  '/services/ibom': '/ibom/',
+  '/services/ibom/': '/ibom/',
+};
 
 export const onRequest = defineMiddleware(async (context, next) => {
   if (context.isPrerendered) {
@@ -26,6 +44,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
   if (pathname === '/index.html') {
     const rewriteTarget = search ? `/${search}` : '/';
     return context.rewrite(rewriteTarget);
+  }
+
+  const legacyTarget = legacyRedirects[pathname];
+  if (legacyTarget) {
+    return context.redirect(legacyTarget, 301);
   }
 
   if (

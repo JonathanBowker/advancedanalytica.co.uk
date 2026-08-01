@@ -17,8 +17,8 @@ export default defineConfig({
   site: 'https://advancedanalytica.co.uk',
   redirects: {
     '/brand-oracle': '/brand-operator',
-    '/dots-brand-oracle-animation': '/dots-brand-operator-animation',
-    '/dots-brand-oracle-wordmark-animation': '/dots-brand-operator-wordmark-animation',
+    '/dots-brand-oracle-animation': '/brando/',
+    '/dots-brand-oracle-wordmark-animation': '/brando/',
     '/use-cases/financial-services-brand-brain': '/use-cases/financial-services-brand-operator',
     '/case-studies/financial-services-brand-brain': '/case-studies/financial-services-brand-operator',
   },
@@ -46,7 +46,6 @@ export default defineConfig({
 
         if (
           new Set([
-            '/activate/',
             '/auth/callback/',
             '/auth/reset/',
             '/login/',

@@ -52,7 +52,7 @@ export async function GET() {
     {
       title: 'IBOM',
       description: 'Intelligent Brand Operating Model overview.',
-      url: '/services/IBOM',
+      url: '/ibom',
       type: 'Page',
       snippet:
         'Overview of the Intelligent Brand Operating Model, designed to turn brand rules and policy into operational systems that AI can execute and teams can govern.'

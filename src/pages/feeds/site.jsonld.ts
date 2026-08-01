@@ -48,7 +48,7 @@ export async function GET() {
       tags: ['Security', 'Governance']
     },
     {
-      url: `${SITE_URL}/services/IBOM/`,
+      url: `${SITE_URL}/ibom/`,
       title: 'IBOM',
       description:
         'The Intelligent Business Operating Model for turning brand meaning, policy, and operational logic into executable systems.',
