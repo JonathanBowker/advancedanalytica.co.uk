@@ -12,6 +12,8 @@ const turnstileScriptId = 'cloudflare-turnstile-script';
 const turnstileScriptSrc = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
 const fallbackTurnstileSiteKey = '0x4AAAAAADKxAX20w3kRuz5A';
 const turnstileMountClass = 'fixed bottom-0 right-0 h-px w-px overflow-hidden pointer-events-none';
+const allowSelfSignup = false;
+const authCaptchaEnabled = false;
 const portalServiceCardCatalog = {
   'brand-readiness-assessment': {
     eyebrow: 'Assessment',
@@ -110,6 +112,8 @@ function getCallbackUrlFor(nextPath) {
 }
 
 function getTurnstileSiteKey() {
+  if (!authCaptchaEnabled) return '';
+
   const envKey = String(import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '').trim();
   if (envKey) return envKey;
 
@@ -169,7 +173,7 @@ function getEmailFlowErrorMessage(err, fallback) {
   if (lower.includes('user not found')) {
     return {
       message:
-        `${databaseLabel} did not find an email magic-link account for that address in this project. If the user exists, check the local ${databaseLabel} project or use the provider the account was created with.`,
+        `${databaseLabel} did not find a provisioned account for that address. Ask Advanced Analytica to create access first.`,
       isRateLimit: false,
     };
   }
@@ -181,7 +185,7 @@ function getEmailFlowErrorMessage(err, fallback) {
   ) {
     return {
       message:
-        `${databaseLabel} did not find an email magic-link account for that address in this project. If the user exists, check the local ${databaseLabel} project or use the provider the account was created with.`,
+        `${databaseLabel} did not find a provisioned account for that address. Ask Advanced Analytica to create access first.`,
       isRateLimit: false,
     };
   }
@@ -459,7 +463,7 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
   const [session, setSession] = useState(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [method, setMethod] = useState('password');
+  const [method, setMethod] = useState('magic_link');
   const [showPassword, setShowPassword] = useState(false);
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState({ state: 'idle', message: '' });
@@ -480,6 +484,10 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
   }
 
   async function getCaptchaToken() {
+    if (!authCaptchaEnabled) {
+      return '';
+    }
+
     if (canBypassTurnstileForLocalDev()) {
       return '';
     }
@@ -555,7 +563,7 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
       return;
     }
 
-    if ((requestedMethod === 'magic_link' || requestedMethod === 'request_access') && inCooldown) {
+    if ((requestedMethod === 'magic_link' || (allowSelfSignup && requestedMethod === 'request_access')) && inCooldown) {
       setStatus({
         state: 'error',
         message: `Please wait ${cooldownSeconds}s before trying again.`,
@@ -572,7 +580,7 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
 
     try {
       const captchaToken = await getCaptchaToken();
-      if (!captchaToken && !canBypassTurnstileForLocalDev()) {
+      if (authCaptchaEnabled && !captchaToken && !canBypassTurnstileForLocalDev()) {
         setStatus((current) =>
           current.state === 'error' && current.message
             ? current
@@ -594,7 +602,7 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
         return;
       }
 
-      if (requestedMethod === 'request_access') {
+      if (allowSelfSignup && requestedMethod === 'request_access') {
         await requestMagicLink({
           email: email.trim(),
           captchaToken,
@@ -621,7 +629,7 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
       window.location.replace(nextUrl);
     } catch (err) {
       const { message, isRateLimit } =
-        requestedMethod === 'magic_link' || requestedMethod === 'request_access'
+        requestedMethod === 'magic_link' || (allowSelfSignup && requestedMethod === 'request_access')
           ? getEmailFlowErrorMessage(err, 'Failed to send magic link.')
           : { message: getPasswordErrorMessage(err), isRateLimit: false };
 
@@ -650,7 +658,7 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
     }
 
     const captchaToken = await getCaptchaToken();
-    if (!captchaToken && !canBypassTurnstileForLocalDev()) {
+    if (authCaptchaEnabled && !captchaToken && !canBypassTurnstileForLocalDev()) {
       setStatus((current) =>
         current.state === 'error' && current.message
           ? current
@@ -734,20 +742,19 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
                   <path d="M15 18l-6-6 6-6" />
                 </svg>
               </a>
-              <h1 className="text-3xl font-semibold tracking-tight text-slate-900">Sign in</h1>
+              <div>
+                <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">
+                  Move Fast. Stay Safe.
+                </div>
+                <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-900">
+                  Sign in to our services suite
+                </h1>
+              </div>
             </div>
 
             <div className="space-y-4 auth-card pt-0">
               <div className="space-y-2">
                 <div className="tabs">
-                  <button
-                    type="button"
-                    onClick={() => setMethod('password')}
-                    disabled={busy}
-                    className={`flex-1 rounded-[10px] border px-4 py-2 text-sm font-medium transition ${method === 'password' ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-200 bg-white text-slate-900 hover:bg-slate-50'}`}
-                  >
-                    Password
-                  </button>
                   <button
                     type="button"
                     onClick={() => setMethod('magic_link')}
@@ -756,15 +763,21 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
                   >
                     Magic link
                   </button>
+                  <button
+                    type="button"
+                    onClick={() => setMethod('password')}
+                    disabled={busy}
+                    className={`flex-1 rounded-[10px] border px-4 py-2 text-sm font-medium transition ${method === 'password' ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-200 bg-white text-slate-900 hover:bg-slate-50'}`}
+                  >
+                    Password
+                  </button>
                 </div>
                 <p className="text-sm text-slate-500">
-                  {method === 'password'
-                    ? 'Sign in with your email and password.'
-                    : method === 'request_access'
+                  {method === 'magic_link'
+                    ? 'Enter your work email and we’ll send a secure one-time sign-in link.'
+                    : allowSelfSignup && method === 'request_access'
                       ? 'We’ll email you a sign-in link and create your portal account if one does not exist yet.'
-                      : method === 'magic_link'
-                      ? 'We’ll email you a one-time sign-in link for an existing account.'
-                      : 'Sign in with your email and password.'}
+                      : 'Use password sign-in if your account has one set.'}
                 </p>
               </div>
 
@@ -858,33 +871,35 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
                   >
                     {busy
                       ? 'Working…'
-                      : method === 'magic_link' || method === 'request_access'
+                      : method === 'magic_link' || (allowSelfSignup && method === 'request_access')
                         ? inCooldown
                           ? `Try again in ${cooldownSeconds}s`
-                          : method === 'request_access'
+                          : allowSelfSignup && method === 'request_access'
                             ? 'Request access link'
-                            : 'Send magic link'
+                            : 'Send secure link'
                         : 'Sign in'}
                   </button>
                 </div>
 
-                <div>
-                  <button
-                    type="button"
-                    onClick={(event) => {
-                      setMethod('request_access');
-                      signIn(event, 'request_access');
-                    }}
-                    className="w-full rounded-[10px] border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
-                    disabled={busy || inCooldown}
-                  >
-                    {busy && method === 'request_access'
-                      ? 'Working…'
-                      : inCooldown && method === 'request_access'
-                        ? `Try again in ${cooldownSeconds}s`
-                        : 'Sign up'}
-                  </button>
-                </div>
+                {allowSelfSignup ? (
+                  <div>
+                    <button
+                      type="button"
+                      onClick={(event) => {
+                        setMethod('request_access');
+                        signIn(event, 'request_access');
+                      }}
+                      className="w-full rounded-[10px] border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
+                      disabled={busy || inCooldown}
+                    >
+                      {busy && method === 'request_access'
+                        ? 'Working...'
+                        : inCooldown && method === 'request_access'
+                          ? `Try again in ${cooldownSeconds}s`
+                          : 'Sign up'}
+                    </button>
+                  </div>
+                ) : null}
               </form>
 
               {!isSupabaseConfigured ? (
@@ -918,7 +933,7 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
               </div>
 
               <div className="pt-2 text-center text-sm text-slate-500">
-                Don&apos;t have an account? <span className="text-slate-400">Use the Sign up button above.</span>
+                Access is provisioned by Advanced Analytica. Use the email address we created for you.
               </div>
             </div>
           </div>
@@ -942,14 +957,16 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
 
             <div className="flex flex-1 items-start justify-center pt-24">
               <div className="max-w-2xl text-center">
-                <div className="text-6xl font-bold leading-[1.05] tracking-tight">
-                  Connect to {tenantName}
+                <div className="text-sm font-semibold uppercase tracking-[0.28em] text-[#14B8A6]">
+                  Move Fast. Stay Safe.
+                </div>
+                <div className="mt-6 text-6xl font-bold leading-[1.05] tracking-tight">
+                  Log in to our
                   <br />
-                  <span className="text-[#14B8A6]">#withBRANDO</span>
+                  <span className="text-[#14B8A6]">suite of services</span>
                 </div>
                 <p className="mx-auto mt-8 max-w-xl text-lg text-white/70">
-                  Use Brando to turn brand knowledge into controlled AI communications, governed workflows, and
-                  machine-operable controls.
+                  Access protected service workflows, partner materials, pricing sheets, and the operating tools that help teams move quickly without losing control.
                 </p>
                 <p className="mx-auto mt-6 max-w-xl text-sm uppercase tracking-[0.22em] text-white/45">
                   {tenantSlug}{tenantHost ? ` • ${tenantHost}` : ''}
@@ -1001,15 +1018,43 @@ function PortalInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced
 
   const user = session.user;
   const access = getPortalAccess(user);
-  const visibleServiceCards = services.map((service) => {
+  const serviceOfferings = [
+    {
+      eyebrow: 'First step',
+      title: 'AI-Ready Knowledge Packs',
+      description:
+        'Prepare documents, policy, screenshots, expert knowledge, and operating context for reliable AI use before committing to a governed agent build.',
+      href: '/services/ai-ready-knowledge-packs/',
+      cta: 'View offer',
+      stage: 'Readiness',
+    },
+    {
+      eyebrow: 'Core product',
+      title: 'Brando',
+      description:
+        'Turn brand intent into an AI Brand Operator: structured knowledge, controls, approval logic, and evidence that can operate inside live workflows.',
+      href: '/brando/',
+      cta: 'Open Brando',
+      stage: 'Operate',
+    },
+    {
+      eyebrow: 'Delivery model',
+      title: 'IBOM Framework',
+      description:
+        'Scope, define, design, checkpoint, build, and evolve AI-ready operating assets with expert-supervised specification and validation.',
+      href: '/ibom-way/',
+      cta: 'See IBOM',
+      stage: 'Deliver',
+    },
+  ];
+  const workflowCards = services.map((service) => {
     const visual = portalServiceCardCatalog[service.slug] || {
-      eyebrow: 'Service',
+      eyebrow: 'Protected workflow',
       accent: 'from-[#59b3e4]/24 to-transparent',
       cta: 'Open service',
     };
 
     return {
-      type: 'service',
       eyebrow: visual.eyebrow,
       title: service.name,
       href: `/portal/services/${service.slug}`,
@@ -1018,65 +1063,112 @@ function PortalInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced
       cta: visual.cta,
     };
   });
-  const utilityCards = [
-    {
-      type: 'meta',
-      eyebrow: 'Account',
-      title: 'Signed-in account',
-      description: user.email,
-      body: `Audience: ${access.audienceLabel} • Tenant: ${tenantName}`,
-    },
-    {
-      type: 'meta',
-      eyebrow: 'Roles',
-      title: access.roles.length ? access.roles.join(', ') : 'client',
-      description: `Resolved from ${databaseLabel} metadata and internal account fallback.`,
-      body: `User ID: ${user.id}`,
-    },
-    {
-      type: 'action',
-      eyebrow: 'Session',
-      title: 'Manage access',
-      description: 'Protected access is enforced on the server before this page renders.',
-      body: session.access_token ? 'Access token present.' : 'Access token missing.',
-    },
-  ];
-  const portalCards = [...visibleServiceCards, ...utilityCards].slice(0, 6);
 
   return (
-    <section className="min-h-screen bg-slate-100">
+    <section className="min-h-screen bg-[#edf1f5]">
       <div className="container-wide py-12 lg:py-16">
-        <div className="rounded-[2rem] border border-[#d7dde5] bg-[#111927] p-8 text-paper shadow-[0_30px_90px_rgba(0,0,0,0.24)] md:p-10">
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div className="max-w-[48rem]">
-              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">Protected portal</div>
-              <h1 className="mt-2 text-3xl font-semibold tracking-tight text-paper md:text-4xl">{tenantName} services dashboard</h1>
-              <p className="mt-3 text-sm leading-relaxed text-paper/68 md:text-base">
-                Start from one of the service cards below. This tenant view is resolved from the request hostname and only exposes the services assigned to {tenantSlug}.
+        <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-stretch">
+          <div className="rounded-[2rem] border border-[#d7dde5] bg-[#111927] p-8 text-paper shadow-[0_30px_90px_rgba(0,0,0,0.22)] md:p-10">
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div className="max-w-3xl">
+                <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">Protected services</div>
+                <h1 className="mt-4 text-4xl font-semibold leading-[0.98] tracking-tight text-paper md:text-6xl">
+                  Choose the next service workflow.
+                </h1>
+                <p className="mt-6 max-w-2xl text-base leading-relaxed text-paper/70 md:text-lg">
+                  This is the logged-in workspace for {tenantName}: service offers, intake workflows, and internal material for consultants and partners.
+                </p>
+              </div>
+              <button className={buttonClass} type="button" onClick={signOut} disabled={signingOut}>
+                {signingOut ? 'Signing out...' : 'Sign out'}
+              </button>
+            </div>
+
+            <div className="mt-8 flex flex-wrap gap-3 text-sm">
+              <div className="rounded-full border border-white/10 bg-white/6 px-4 py-2 text-paper/78">
+                Signed in as <span className="font-semibold text-paper">{user.email}</span>
+              </div>
+              <div className="rounded-full border border-white/10 bg-white/6 px-4 py-2 text-paper/78">
+                <span className="font-semibold text-paper">{access.audienceLabel}</span>
+                {access.roles.length ? ` / ${access.roles.join(', ')}` : ' / default view'}
+              </div>
+            </div>
+          </div>
+
+          <aside className="flex flex-col justify-between rounded-[2rem] border border-[#cfd8e3] bg-white p-8 text-slate-950 shadow-[0_24px_70px_rgba(15,23,42,0.08)] md:p-10">
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">Internal tool</div>
+              <h2 className="mt-4 text-3xl font-semibold tracking-tight">Product and service sheets</h2>
+              <p className="mt-4 text-base leading-relaxed text-slate-600">
+                Create partner-ready sheets with pricing tables, delivery notes, assumptions, and print/PDF output.
               </p>
             </div>
-            <button className={buttonClass} type="button" onClick={signOut} disabled={signingOut}>
-              {signingOut ? 'Signing out…' : 'Sign out'}
-            </button>
+            <div className="mt-8">
+              <a
+                href="/portal/sheets/"
+                className="inline-flex items-center justify-center rounded-md bg-[#14B8A6] px-5 py-3 text-sm font-bold uppercase tracking-[0.08em] text-white transition hover:bg-[#0f9288]"
+              >
+                Open sheet builder
+              </a>
+            </div>
+          </aside>
+        </div>
+
+        <div className="mt-8 rounded-[2rem] border border-[#d7dde5] bg-white p-6 shadow-[0_24px_70px_rgba(15,23,42,0.08)] md:p-8">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">Service offerings</div>
+              <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">What we can put in front of a client.</h2>
+            </div>
+            <a href="/services/" className="text-sm font-semibold uppercase tracking-[0.08em] text-[#0f766e] transition hover:text-[#0b5f58]">
+              Public services
+            </a>
           </div>
 
-          <div className="mt-6 flex flex-wrap gap-3 text-sm">
-            <div className="rounded-full border border-white/10 bg-white/6 px-4 py-2 text-paper/78">
-              Signed in as <span className="font-semibold text-paper">{user.email}</span>
-            </div>
-            <div className="rounded-full border border-white/10 bg-white/6 px-4 py-2 text-paper/78">
-              <span className="font-semibold text-paper">{access.audienceLabel}</span>
-              {access.roles.length ? ` • ${access.roles.join(', ')}` : ' • default client view'}
-            </div>
+          <div className="mt-7 grid gap-5 lg:grid-cols-3">
+            {serviceOfferings.map((offering) => (
+              <a
+                key={offering.title}
+                href={offering.href}
+                className="group flex min-h-[21rem] flex-col rounded-[1.75rem] border border-slate-200 bg-[#f8fafc] p-6 transition duration-200 hover:-translate-y-1 hover:border-[#14B8A6]/50 hover:bg-[#f0fbf8]"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <div className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">
+                    {offering.eyebrow}
+                  </div>
+                  <div className="rounded-full border border-slate-200 bg-white px-3 py-1 text-[0.66rem] font-bold uppercase tracking-[0.14em] text-slate-500">
+                    {offering.stage}
+                  </div>
+                </div>
+                <h3 className="mt-5 text-3xl font-semibold leading-tight tracking-tight text-slate-950">
+                  {offering.title}
+                </h3>
+                <p className="mt-4 text-base leading-relaxed text-slate-600">{offering.description}</p>
+                <div className="mt-auto inline-flex items-center gap-2 pt-8 text-sm font-bold uppercase tracking-[0.08em] text-[#0f766e]">
+                  {offering.cta}
+                  <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+                </div>
+              </a>
+            ))}
           </div>
+        </div>
 
-          <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {portalCards.map((card, index) =>
-              card.type === 'service' ? (
+        <div className="mt-8 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+          <section className="rounded-[2rem] border border-[#d7dde5] bg-[#111927] p-6 text-paper shadow-[0_30px_90px_rgba(0,0,0,0.18)] md:p-8">
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">Protected workflows</div>
+                <h2 className="mt-3 text-3xl font-semibold tracking-tight text-paper">Start structured intake.</h2>
+              </div>
+              <div className="text-sm text-paper/52">Tenant: {tenantSlug}</div>
+            </div>
+
+            <div className="mt-7 grid gap-5 md:grid-cols-2">
+              {workflowCards.map((card, index) => (
                 <a
-                  key={`${card.type}-${card.href}-${index}`}
+                  key={`${card.href}-${index}`}
                   href={card.href}
-                  className="group relative min-h-[18rem] overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/6 p-6 transition duration-200 hover:-translate-y-1 hover:border-white/18 hover:bg-white/8"
+                  className="group relative min-h-[16rem] overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/6 p-6 transition duration-200 hover:-translate-y-1 hover:border-white/18 hover:bg-white/8"
                 >
                   <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${card.accent}`} />
                   <div className="relative flex h-full flex-col">
@@ -1091,30 +1183,38 @@ function PortalInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced
                     </div>
                   </div>
                 </a>
-              ) : (
-                <section
-                  key={`${card.type}-${card.title}-${index}`}
-                  className="min-h-[18rem] rounded-[1.75rem] border border-white/10 bg-white/6 p-6"
-                >
-                  <div className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">
-                    {card.eyebrow}
-                  </div>
-                  <h3 className="mt-3 text-2xl font-semibold tracking-tight text-paper">{card.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-paper/68">{card.description}</p>
-                  <div className="mt-6 text-sm leading-relaxed text-paper/60">{card.body}</div>
+              ))}
+            </div>
+          </section>
 
-                  {card.type === 'action' ? (
-                    <div className="mt-6 flex flex-wrap gap-3">
-                      <a href="/" className={subtleButtonClass}>Back to site</a>
-                      <button className={buttonClass} type="button" onClick={signOut} disabled={signingOut}>
-                        {signingOut ? 'Signing out…' : 'Sign out'}
-                      </button>
-                    </div>
-                  ) : null}
-                </section>
-              ),
-            )}
-          </div>
+          <aside className="rounded-[2rem] border border-[#d7dde5] bg-white p-6 text-slate-950 shadow-[0_24px_70px_rgba(15,23,42,0.08)] md:p-8">
+            <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">Account context</div>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight">Access details</h2>
+            <dl className="mt-6 grid gap-4 text-sm">
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                <dt className="font-semibold uppercase tracking-[0.12em] text-slate-400">Audience</dt>
+                <dd className="mt-2 text-base text-slate-800">{access.audienceLabel}</dd>
+              </div>
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                <dt className="font-semibold uppercase tracking-[0.12em] text-slate-400">Roles</dt>
+                <dd className="mt-2 text-base text-slate-800">{access.roles.length ? access.roles.join(', ') : 'client'}</dd>
+              </div>
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                <dt className="font-semibold uppercase tracking-[0.12em] text-slate-400">Session</dt>
+                <dd className="mt-2 text-base text-slate-800">
+                  {session.access_token ? 'Verified server-protected session' : 'Session token unavailable'}
+                </dd>
+              </div>
+            </dl>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <a href="/" className="inline-flex items-center justify-center rounded-md border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-800 transition hover:border-[#14B8A6]">
+                Back to site
+              </a>
+              <button className="inline-flex items-center justify-center rounded-md bg-slate-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800" type="button" onClick={signOut} disabled={signingOut}>
+                {signingOut ? 'Signing out...' : 'Sign out'}
+              </button>
+            </div>
+          </aside>
         </div>
       </div>
     </section>
@@ -1226,6 +1326,10 @@ function RoleMagicLinkInner({ role }) {
   }
 
   async function getCaptchaToken() {
+    if (!authCaptchaEnabled) {
+      return '';
+    }
+
     return executeInvisibleTurnstile({
       container: turnstileContainerRef,
       widgetRef: turnstileWidgetRef,
@@ -1249,7 +1353,7 @@ function RoleMagicLinkInner({ role }) {
     setBusy(true);
     try {
       const captchaToken = await getCaptchaToken();
-      if (!captchaToken) {
+      if (authCaptchaEnabled && !captchaToken) {
         setStatus((current) => current.state === 'error' && current.message ? current : { state: 'error', message: 'The verification check did not complete. Try again.' });
         return;
       }
@@ -1258,10 +1362,10 @@ function RoleMagicLinkInner({ role }) {
         email: email.trim(),
         captchaToken,
         nextUrl,
-        shouldCreateUser: true,
+        shouldCreateUser: false,
       });
       setEmail('');
-      setStatus({ state: 'sent', message: 'Check your email to complete registration and sign in.' });
+      setStatus({ state: 'sent', message: 'Check your email for your secure sign-in link.' });
     } catch (err) {
       const { message } = getEmailFlowErrorMessage(err, 'Failed to send magic link.');
       setStatus({ state: 'error', message });

@@ -5,8 +5,9 @@ import { getTenantThemeCss } from '../lib/tenants';
 
 const tenant = Astro.locals.tenant;
 const turnstileSiteKey =
-  String(import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "").trim() ||
-  "0x4AAAAAADKxAX20w3kRuz5A";
+  String(import.meta.env.PUBLIC_AUTH_CAPTCHA_ENABLED ?? "").trim() === "true"
+    ? String(import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "").trim()
+    : "";
 ---
 <!doctype html>
 <html

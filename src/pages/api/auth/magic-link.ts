@@ -6,6 +6,7 @@ import { getRequestOrigin, getTenantHomePath } from '../../../lib/tenants';
 export const prerender = false;
 
 const mxLookupTimeoutMs = 5_000;
+const allowSelfSignup = false;
 
 const freeEmailDomains = new Set([
   'aol.com',
@@ -89,7 +90,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const email = String(body?.email || '').trim().toLowerCase();
     const captchaToken = String(body?.captchaToken || '').trim();
     const nextUrl = String(body?.nextUrl || getTenantHomePath()).trim();
-    const shouldCreateUser = Boolean(body?.shouldCreateUser);
+    const shouldCreateUser = allowSelfSignup && Boolean(body?.shouldCreateUser);
 
     if (!isValidEmail(email)) {
       return new Response(JSON.stringify({ error: 'Enter a valid email address.' }), {
@@ -120,15 +121,6 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       });
     }
 
-    if (!isLocalDevelopment && !captchaToken) {
-      return new Response(JSON.stringify({ error: 'The verification check did not complete. Try again.' }), {
-        status: 400,
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-        },
-      });
-    }
-
     const redirectTo = new URL('/auth/callback', getRequestOrigin(request));
     redirectTo.searchParams.set('next', nextUrl.startsWith('/') ? nextUrl : getTenantHomePath());
 
@@ -136,9 +128,9 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        captchaToken,
         emailRedirectTo: redirectTo.toString(),
         shouldCreateUser,
+        ...(captchaToken ? { captchaToken } : {}),
       },
     });
 

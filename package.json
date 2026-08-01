@@ -8,6 +8,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "auth:check": "node scripts/check-auth-config.mjs",
     "ga:report": "node scripts/ga4-report.mjs"
   },
   "dependencies": {
