@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { AuthProvider, useAuth } from './AuthProvider';
 import { isSupabaseConfigured, supabase } from '../../lib/supabaseClient';
+import { getPortalAccess } from '../../lib/portalAccess';
 import './login.css';
 
 const databaseLabel = 'MasterDB';
@@ -37,73 +38,6 @@ const buttonClass =
   'inline-flex items-center justify-center rounded-md bg-ink px-5 py-3 text-sm font-semibold text-paper transition hover:bg-[#122033] disabled:cursor-not-allowed disabled:opacity-60';
 const subtleButtonClass =
   'inline-flex items-center justify-center rounded-md border border-white/14 px-4 py-2 text-sm font-semibold text-paper transition hover:border-white/28';
-
-function slugifyRole(value) {
-  return String(value || '')
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '_')
-    .replace(/^_+|_+$/g, '');
-}
-
-function normalizeRoleValues(value) {
-  if (!value) return [];
-
-  if (Array.isArray(value)) {
-    return value.map(slugifyRole).filter(Boolean);
-  }
-
-  if (typeof value === 'string') {
-    return value
-      .split(/[,\s]+/)
-      .map(slugifyRole)
-      .filter(Boolean);
-  }
-
-  return [];
-}
-
-function getPortalAccess(user) {
-  const email = (user?.email || '').toLowerCase();
-  const appMetadata = user?.app_metadata || {};
-  const userMetadata = user?.user_metadata || {};
-
-  const roles = Array.from(
-    new Set([
-      ...normalizeRoleValues(appMetadata.roles),
-      ...normalizeRoleValues(appMetadata.role),
-      ...normalizeRoleValues(userMetadata.roles),
-      ...normalizeRoleValues(userMetadata.role),
-    ]),
-  );
-
-  if (email.endsWith('@advancedanalytica.co.uk')) {
-    roles.push('operator');
-  }
-
-  if (roles.includes('admin')) {
-    roles.push('operator', 'developer', 'client');
-  }
-
-  const uniqueRoles = Array.from(new Set(roles));
-  const isOperator = uniqueRoles.includes('operator');
-  const isDeveloper = uniqueRoles.includes('developer');
-  const isClient = uniqueRoles.includes('client') || uniqueRoles.length === 0;
-
-  const audienceLabel = isOperator
-    ? 'Operator access'
-    : isDeveloper
-      ? 'Developer access'
-      : 'Client access';
-
-  return {
-    roles: uniqueRoles,
-    isOperator,
-    isDeveloper,
-    isClient,
-    audienceLabel,
-  };
-}
 
 function getCallbackUrlFor(nextPath) {
   const url = new URL('/auth/callback', window.location.origin);

@@ -41,13 +41,6 @@ if (success) {
   );
 }
 
-console.error('[auth/callback] Failed to complete auth callback', {
-  hasCode: Boolean(authCode),
-  hasTokenHash: Boolean(tokenHash),
-  type: type || '',
-  error: callbackError || 'Missing auth callback parameters',
-});
-
 const loginErrorUrl = new URL('/login', getRequestOrigin(Astro.request));
 loginErrorUrl.searchParams.set('error', 'callback');
 if (callbackError) {

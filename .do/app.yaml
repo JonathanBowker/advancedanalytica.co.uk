@@ -8,6 +8,11 @@ ingress:
         path:
           prefix: /api/auth
     - component:
+        name: web
+      match:
+        path:
+          prefix: /api/portal
+    - component:
         name: lead-api
       match:
         path:
