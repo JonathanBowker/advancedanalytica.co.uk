@@ -1165,6 +1165,9 @@ function PortalInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced
               </div>
             </dl>
             <div className="mt-6 flex flex-wrap gap-3">
+              <a href="/portal/account/" className="inline-flex items-center justify-center rounded-md border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-800 transition hover:border-[#14B8A6]">
+                Account profile
+              </a>
               <a href="/" className="inline-flex items-center justify-center rounded-md border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-800 transition hover:border-[#14B8A6]">
                 Back to site
               </a>
