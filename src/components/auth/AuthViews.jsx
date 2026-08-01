@@ -1048,6 +1048,30 @@ function PortalInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced
           </aside>
         </div>
 
+        {access.isAdmin ? (
+          <div className="mt-8 rounded-[2rem] border border-[#cfd8e3] bg-white p-8 text-slate-950 shadow-[0_24px_70px_rgba(15,23,42,0.08)] md:p-10">
+            <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
+              <div>
+                <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">
+                  Superadmin
+                </div>
+                <h2 className="mt-4 text-3xl font-semibold tracking-tight">Manage users and roles.</h2>
+              </div>
+              <div>
+                <p className="text-base leading-relaxed text-slate-600">
+                  Invite provisioned users, assign portal roles, and disable access without leaving the portal.
+                </p>
+                <a
+                  href="/portal/admin/users/"
+                  className="mt-6 inline-flex items-center justify-center rounded-md bg-[#14B8A6] px-5 py-3 text-sm font-bold uppercase tracking-[0.08em] text-white transition hover:bg-[#0f9288]"
+                >
+                  Open User Management
+                </a>
+              </div>
+            </div>
+          </div>
+        ) : null}
+
         <div className="mt-8 rounded-[2rem] border border-[#d7dde5] bg-white p-6 shadow-[0_24px_70px_rgba(15,23,42,0.08)] md:p-8">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>

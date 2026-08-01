@@ -1,0 +1,43 @@
+---
+import PortalLayout from '../../../../layouts/PortalLayout.astro';
+import AdminUsersPanel from '../../../../components/portal/AdminUsersPanel.jsx';
+import { getPortalAccess } from '../../../../lib/portalAccess';
+
+export const prerender = false;
+
+const tenant = Astro.locals.tenant;
+const user = Astro.locals.user;
+const access = getPortalAccess(user);
+const title = `User Management | ${tenant.name}`;
+const description = 'Superadmin-only user provisioning and role management for the Advanced Analytica portal.';
+
+if (!access.isAdmin) {
+  return Astro.redirect('/portal');
+}
+---
+<PortalLayout title={title} description={description} tenant={tenant} signedIn={Boolean(user)}>
+  <section class="mx-auto w-[min(1240px,92vw)] py-10 lg:py-14">
+    <div class="mb-8 rounded-[2rem] border border-[color:var(--color-fog)] bg-[#111927] p-8 text-paper shadow-[0_30px_90px_rgba(0,0,0,0.2)] md:p-10">
+      <div class="text-xs font-semibold uppercase tracking-[0.22em] text-[#14B8A6]">
+        Superadmin
+      </div>
+      <div class="mt-5 grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+        <div>
+          <h1 class="font-display text-[clamp(2.4rem,4vw,4.7rem)] font-semibold leading-[0.98] tracking-tight">
+            Manage portal users.
+          </h1>
+        </div>
+        <div>
+          <p class="max-w-2xl text-lg leading-relaxed text-paper/72 md:text-xl">
+            Provision users, assign roles, disable access, and keep internal tools away from client-only accounts.
+          </p>
+          <p class="mt-4 text-sm leading-relaxed text-paper/52">
+            This page uses the Supabase Admin API only from the server. The service-role key is never sent to the browser.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <AdminUsersPanel client:load />
+  </section>
+</PortalLayout>

@@ -53,13 +53,16 @@ export function getPortalAccess(user: PortalAccessUser | null | undefined) {
 
   const uniqueRoles = Array.from(new Set(roles));
   const isOperator = uniqueRoles.includes('operator');
+  const isAdmin = uniqueRoles.includes('admin');
   const isDeveloper = uniqueRoles.includes('developer');
   const isConsultant = uniqueRoles.includes('consultant');
   const isPartner = uniqueRoles.includes('partner');
   const isClient = uniqueRoles.includes('client') || uniqueRoles.length === 0;
-  const isInternal = isOperator || isDeveloper || isConsultant || isPartner;
+  const isInternal = isAdmin || isOperator || isDeveloper || isConsultant || isPartner;
 
-  const audienceLabel = isOperator
+  const audienceLabel = isAdmin
+    ? 'Admin access'
+    : isOperator
     ? 'Operator access'
     : isDeveloper
       ? 'Developer access'
@@ -71,6 +74,7 @@ export function getPortalAccess(user: PortalAccessUser | null | undefined) {
 
   return {
     roles: uniqueRoles,
+    isAdmin,
     isOperator,
     isDeveloper,
     isConsultant,
