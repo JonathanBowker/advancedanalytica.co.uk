@@ -14,6 +14,7 @@ const supabase = createSupabaseServerClient({
 
 const requestUrl = new URL(Astro.request.url);
 const authCode = requestUrl.searchParams.get('code');
+const flowId = requestUrl.searchParams.get('sb_flow_id');
 const tokenHash = requestUrl.searchParams.get('token_hash');
 const type = requestUrl.searchParams.get('type') as EmailOtpType | null;
 
@@ -21,7 +22,10 @@ let success = false;
 let callbackError = '';
 
 if (authCode) {
-  const { error } = await supabase.auth.exchangeCodeForSession(authCode);
+  const { error } = await supabase.auth.exchangeCodeForSession(
+    authCode,
+    flowId ? { flowId } : undefined
+  );
   success = !error;
   callbackError = error?.message || '';
 } else if (tokenHash && type) {
