@@ -1,5 +1,5 @@
 import { defaultTenantHost, portalServices, tenants, type PortalService, type TenantDefinition } from '../config/tenants';
-import { normalizeHostname } from './hosts';
+import { isLocalHostname, normalizeHostname } from './hosts';
 
 const themeFiles = import.meta.glob('../themes/*.css', {
   eager: true,
@@ -65,6 +65,31 @@ export function getRequestOrigin(request: Request) {
   return `${protocol}://${authority}`;
 }
 
+function getTrustedBrowserOrigin(request: Request, configuredOrigin: string) {
+  const rawOrigin = request.headers.get('origin')?.trim();
+  if (!rawOrigin) return '';
+
+  try {
+    const originUrl = new URL(rawOrigin);
+    const requestHostname = getRequestHostname(request);
+    const configuredHostname = configuredOrigin ? new URL(configuredOrigin).hostname : '';
+    const originHostname = normalizeHostname(originUrl.hostname);
+    const isKnownOrigin =
+      Boolean(tenants[originHostname]) ||
+      isLocalHostname(originHostname) ||
+      originHostname === requestHostname ||
+      originHostname === configuredHostname;
+
+    if ((originUrl.protocol === 'https:' || originUrl.protocol === 'http:') && isKnownOrigin) {
+      return `${originUrl.protocol}//${originUrl.host.toLowerCase()}`;
+    }
+  } catch {
+    return '';
+  }
+
+  return '';
+}
+
 export function getPublicSiteOrigin(request?: Request) {
   const configured = String(import.meta.env.PUBLIC_SITE_URL || '').trim().replace(/\/+$/, '');
 
@@ -72,7 +97,7 @@ export function getPublicSiteOrigin(request?: Request) {
     return configured;
   }
 
-  return getRequestOrigin(request) || configured;
+  return getTrustedBrowserOrigin(request, configured) || getRequestOrigin(request) || configured;
 }
 
 export function getTenantThemeCss(tenant: TenantDefinition) {
