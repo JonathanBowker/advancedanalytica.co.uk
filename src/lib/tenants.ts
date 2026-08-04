@@ -1,4 +1,5 @@
 import { defaultTenantHost, portalServices, tenants, type PortalService, type TenantDefinition } from '../config/tenants';
+import { isLocalHostname, normalizeHostname } from './hosts';
 
 const themeFiles = import.meta.glob('../themes/*.css', {
   eager: true,
@@ -6,17 +7,13 @@ const themeFiles = import.meta.glob('../themes/*.css', {
   import: 'default',
 }) as Record<string, string>;
 
-function normalizeHost(rawHost: string) {
-  return rawHost.trim().toLowerCase().replace(/:\d+$/, '');
-}
-
 function getRequestHostname(request: Request) {
   const forwardedHost = request.headers.get('x-forwarded-host')?.split(',')[0];
   const host = forwardedHost || request.headers.get('host');
 
-  if (host) return normalizeHost(host);
+  if (host) return normalizeHostname(host);
 
-  return normalizeHost(new URL(request.url).hostname);
+  return normalizeHostname(new URL(request.url).hostname);
 }
 
 function getRequestProtocol(request: Request) {
@@ -76,12 +73,8 @@ export function getPublicSiteOrigin(request?: Request) {
   }
 
   const hostname = getRequestHostname(request);
-  const isLocalHost =
-    hostname === 'localhost' ||
-    hostname === '127.0.0.1' ||
-    hostname === '::1';
 
-  if (isLocalHost) {
+  if (isLocalHostname(hostname)) {
     return getRequestOrigin(request);
   }
 

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { AuthProvider, useAuth } from './AuthProvider';
+import { isLocalHostname } from '../../lib/hosts';
 import { isSupabaseConfigured, supabase } from '../../lib/supabaseClient';
 import { getPortalAccess } from '../../lib/portalAccess';
 import './login.css';
@@ -191,10 +192,7 @@ const subtleButtonClass =
 function getCallbackUrlFor(nextPath) {
   const configuredOrigin = String(import.meta.env.PUBLIC_SITE_URL || '').trim().replace(/\/+$/, '');
   const hostname = window.location.hostname;
-  const isLocalHost =
-    hostname === 'localhost' ||
-    hostname === '127.0.0.1' ||
-    hostname === '::1';
+  const isLocalHost = isLocalHostname(hostname);
   const baseOrigin = !isLocalHost && configuredOrigin ? configuredOrigin : window.location.origin;
   const url = new URL('/auth/callback', baseOrigin);
   url.searchParams.set('next', nextPath || defaultPortalPath);
@@ -218,11 +216,7 @@ function getTurnstileSiteKey() {
 function canBypassTurnstileForLocalDev() {
   if (typeof window === 'undefined') return false;
 
-  const hostname = window.location.hostname;
-  const isLocalHost =
-    hostname === 'localhost' ||
-    hostname === '127.0.0.1' ||
-    hostname === '::1';
+  const isLocalHost = isLocalHostname(window.location.hostname);
 
   return isLocalHost && !getTurnstileSiteKey();
 }

@@ -1,6 +1,7 @@
 ---
 import '../../styles/global.css';
 import { TypebotStandardEmbed } from '../../components/forms/TypebotStandardEmbed.jsx';
+import { isLocalHostname } from '../../lib/hosts';
 import { getTenantPortalService, getTenantThemeCss } from '../../lib/tenants';
 
 export const prerender = false;
@@ -23,8 +24,7 @@ function getTypebotId(embedUrl?: string) {
 }
 
 function isLocalPreviewRequest(request: Request) {
-  const hostname = new URL(request.url).hostname;
-  return hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1';
+  return isLocalHostname(new URL(request.url).hostname);
 }
 
 if (!service) {

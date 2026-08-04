@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { promises as dns } from 'node:dns';
+import { isLocalHostname } from '../../../lib/hosts';
 import { createSupabaseServerClient, isSupabaseConfigured } from '../../../lib/supabaseServer';
 import { getPublicSiteOrigin, getTenantHomePath } from '../../../lib/tenants';
 
@@ -71,8 +72,7 @@ async function hasMxRecords(email: string) {
 }
 
 function isLocalDevelopmentRequest(request: Request) {
-  const hostname = new URL(request.url).hostname;
-  return hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1';
+  return isLocalHostname(new URL(request.url).hostname);
 }
 
 export const POST: APIRoute = async ({ request, cookies }) => {

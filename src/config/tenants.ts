@@ -144,6 +144,18 @@ export const tenants: Record<string, TenantDefinition> = {
     theme: './themes/base.css',
     services: ['brand-readiness-assessment', 'policy-intake'],
   },
+  '0.0.0.0': {
+    slug: 'advanced-analytica',
+    name: 'Advanced Analytica',
+    theme: './themes/base.css',
+    services: ['brand-readiness-assessment', 'policy-intake'],
+  },
+  '::1': {
+    slug: 'advanced-analytica',
+    name: 'Advanced Analytica',
+    theme: './themes/base.css',
+    services: ['brand-readiness-assessment', 'policy-intake'],
+  },
 };
 
 export const defaultTenantHost = 'advancedanalytica.co.uk';
