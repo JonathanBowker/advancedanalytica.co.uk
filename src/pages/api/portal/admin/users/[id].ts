@@ -1,10 +1,11 @@
 import type { APIRoute } from 'astro';
 import { createSupabaseAdminClient, isSupabaseAdminConfigured } from '../../../../../lib/supabaseAdmin';
 import { requirePortalAdmin, portalJson } from '../../../../../lib/portalAdmin';
+import { portalAssignableRoles } from '../../../../../lib/portalAccess';
 
 export const prerender = false;
 
-const allowedRoles = new Set(['admin', 'operator', 'developer', 'consultant', 'partner', 'client']);
+const allowedRoles = new Set(portalAssignableRoles);
 
 function normalizeRoles(value: unknown) {
   const roles = Array.isArray(value)

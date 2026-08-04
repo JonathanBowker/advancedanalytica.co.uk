@@ -23,6 +23,18 @@ function normalizeRoleValues(value: unknown) {
   return [];
 }
 
+export const portalAssignableRoles = [
+  'admin',
+  'operator',
+  'developer',
+  'consultant',
+  'partner',
+  'client',
+  'page_viewer',
+] as const;
+
+const portalEntryRoles = new Set(['admin', 'operator', 'developer', 'consultant', 'partner', 'client']);
+
 export type PortalAccessUser = {
   email?: string | null;
   app_metadata?: Record<string, unknown>;
@@ -59,18 +71,18 @@ export function getPortalAccess(user: PortalAccessUser | null | undefined) {
   const isPartner = uniqueRoles.includes('partner');
   const isClient = uniqueRoles.includes('client') || uniqueRoles.length === 0;
   const isInternal = isAdmin || isOperator || isDeveloper || isConsultant || isPartner;
+  const isPageViewer = uniqueRoles.includes('page_viewer');
+  const hasPortalEntryRole = uniqueRoles.length === 0 || uniqueRoles.some((role) => portalEntryRoles.has(role));
+  const isPageViewerOnly = isPageViewer && !hasPortalEntryRole;
+  const canAccessPortal = !isPageViewerOnly;
 
-  const audienceLabel = isAdmin
-    ? 'Admin access'
-    : isOperator
-    ? 'Operator access'
-    : isDeveloper
-      ? 'Developer access'
-      : isConsultant
-        ? 'Consultant access'
-        : isPartner
-          ? 'Partner access'
-          : 'Client access';
+  let audienceLabel = 'Client access';
+  if (isPartner) audienceLabel = 'Partner access';
+  if (isConsultant) audienceLabel = 'Consultant access';
+  if (isDeveloper) audienceLabel = 'Developer access';
+  if (isOperator) audienceLabel = 'Operator access';
+  if (isAdmin) audienceLabel = 'Admin access';
+  if (isPageViewerOnly) audienceLabel = 'Page-only access';
 
   return {
     roles: uniqueRoles,
@@ -81,6 +93,9 @@ export function getPortalAccess(user: PortalAccessUser | null | undefined) {
     isPartner,
     isClient,
     isInternal,
+    isPageViewer,
+    isPageViewerOnly,
+    canAccessPortal,
     audienceLabel,
   };
 }

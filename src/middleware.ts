@@ -1,4 +1,5 @@
 import { defineMiddleware } from 'astro:middleware';
+import { getPortalAccess } from './lib/portalAccess';
 import { createSupabaseServerClient, isSupabaseConfigured } from './lib/supabaseServer';
 import { getDefaultTenant, getTenantHomePath, getTenantLoginPath, resolveTenantFromRequest } from './lib/tenants';
 
@@ -91,16 +92,21 @@ export const onRequest = defineMiddleware(async (context, next) => {
   } = await supabase.auth.getUser();
 
   context.locals.user = user ?? null;
+  const access = getPortalAccess(user);
 
   if (protectedPaths.some((path) => pathname === path || pathname.startsWith(`${path}/`))) {
     if (!user) {
       const nextPath = pathname === '/portal' && !search ? pathname : `${pathname}${search}`;
       return context.redirect(getTenantLoginPath(nextPath));
     }
+
+    if (!access.canAccessPortal) {
+      return context.redirect('/auth/confirmed?portal=restricted');
+    }
   }
 
   if (authPages.includes(pathname) && user) {
-    return context.redirect(getTenantHomePath());
+    return context.redirect(access.canAccessPortal ? getTenantHomePath() : '/auth/confirmed');
   }
 
   return next();

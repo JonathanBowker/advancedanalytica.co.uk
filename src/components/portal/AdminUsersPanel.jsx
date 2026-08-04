@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
+import { portalAssignableRoles } from '../../lib/portalAccess';
 
-const roleOptions = ['admin', 'operator', 'developer', 'consultant', 'partner', 'client'];
+const roleOptions = portalAssignableRoles;
+const roleLabels = {
+  page_viewer: 'page viewer',
+};
 const actionIcons = {
   save: [
     'M5 4h12l2 2v14H5V4Z',
@@ -81,7 +85,7 @@ function RoleCheckboxes({ value, onChange }) {
             checked={roles.includes(role)}
             onChange={() => toggle(role)}
           />
-          {role}
+          {roleLabels[role] || role}
         </label>
       ))}
     </div>
