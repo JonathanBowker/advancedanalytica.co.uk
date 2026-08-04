@@ -728,7 +728,7 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
         await requestMagicLink({
           email: email.trim(),
           captchaToken,
-          nextUrl,
+          nextUrl: '/auth/confirmed',
           shouldCreateUser: true,
         });
 

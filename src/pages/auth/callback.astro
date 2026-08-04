@@ -17,6 +17,7 @@ const authCode = requestUrl.searchParams.get('code');
 const flowId = requestUrl.searchParams.get('sb_flow_id');
 const tokenHash = requestUrl.searchParams.get('token_hash');
 const type = requestUrl.searchParams.get('type') as EmailOtpType | null;
+const newAccountTypes = new Set(['invite', 'signup']);
 
 let success = false;
 let callbackError = '';
@@ -38,6 +39,10 @@ if (authCode) {
 }
 
 if (success) {
+  if (type && newAccountTypes.has(type)) {
+    return Astro.redirect('/auth/confirmed');
+  }
+
   return Astro.redirect(
     requestUrl.searchParams.get('next')?.startsWith('/')
       ? String(requestUrl.searchParams.get('next'))

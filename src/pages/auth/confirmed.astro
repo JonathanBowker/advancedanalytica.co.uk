@@ -1,0 +1,79 @@
+---
+import '../../styles/global.css';
+import { createSupabaseServerClient, isSupabaseConfigured } from '../../lib/supabaseServer';
+import { getDefaultTenant, getTenantThemeCss } from '../../lib/tenants';
+
+export const prerender = false;
+
+if (!isSupabaseConfigured) {
+  return Astro.redirect('/login?error=config');
+}
+
+const supabase = createSupabaseServerClient({
+  request: Astro.request,
+  cookies: Astro.cookies,
+});
+
+const {
+  data: { user },
+} = await supabase.auth.getUser();
+
+if (!user) {
+  return Astro.redirect('/login');
+}
+
+const tenant = Astro.locals.tenant ?? getDefaultTenant();
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Account confirmed | {tenant.name}</title>
+    <meta name="description" content={`Your ${tenant.name} portal account is ready.`} />
+    <meta name="robots" content="noindex,nofollow" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate icon" href="/favicon.svg" sizes="any" />
+    <style is:inline set:html={getTenantThemeCss(tenant)}></style>
+  </head>
+  <body class="min-h-screen bg-[#f4f7fb] text-[#0b0e14]">
+    <main class="grid min-h-screen place-items-center px-6 py-10">
+      <section class="w-full max-w-xl">
+        <img
+          src="/images/infrastructure/logo-black-flipped.svg"
+          alt={tenant.name}
+          class="h-auto w-48"
+        />
+
+        <div class="mt-8 rounded-[1.5rem] border border-slate-200 bg-white p-8 shadow-[0_24px_80px_rgba(15,23,42,0.10)] md:p-10">
+          <div class="text-xs font-bold uppercase tracking-[0.22em] text-[#14b8a6]">
+            Account confirmed
+          </div>
+
+          <h1 class="mt-4 font-display text-4xl font-semibold leading-tight text-[#0b0e14] md:text-5xl">
+            Your access is ready.
+          </h1>
+
+          <p class="mt-4 text-base leading-7 text-slate-600 md:text-lg">
+            You are signed in as <strong class="font-semibold text-slate-950">{user.email}</strong>. Continue when you are ready to open your Advanced Analytica workspace.
+          </p>
+
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+            <a
+              href="/portal"
+              class="inline-flex items-center justify-center rounded-md bg-[#0b0e14] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#182235]"
+            >
+              Continue to portal
+            </a>
+            <a
+              href="/logout"
+              class="inline-flex items-center justify-center rounded-md border border-slate-300 px-5 py-3 text-sm font-bold text-slate-700 transition hover:border-[#14b8a6] hover:text-slate-950"
+            >
+              Sign out
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
