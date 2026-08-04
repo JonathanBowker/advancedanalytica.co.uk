@@ -1,5 +1,5 @@
 import { defaultTenantHost, portalServices, tenants, type PortalService, type TenantDefinition } from '../config/tenants';
-import { isLocalHostname, normalizeHostname } from './hosts';
+import { normalizeHostname } from './hosts';
 
 const themeFiles = import.meta.glob('../themes/*.css', {
   eager: true,
@@ -72,13 +72,7 @@ export function getPublicSiteOrigin(request?: Request) {
     return configured;
   }
 
-  const hostname = getRequestHostname(request);
-
-  if (isLocalHostname(hostname)) {
-    return getRequestOrigin(request);
-  }
-
-  return configured || getRequestOrigin(request);
+  return getRequestOrigin(request) || configured;
 }
 
 export function getTenantThemeCss(tenant: TenantDefinition) {
