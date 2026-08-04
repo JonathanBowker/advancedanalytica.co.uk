@@ -32,6 +32,9 @@ importers:
       '@tailwindcss/vite':
         specifier: ^4.1.18
         version: 4.1.18(vite@7.3.2(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.9.0))
+      '@typebot.io/react':
+        specifier: ^0.10.7
+        version: 0.10.7(react@19.2.5)
       astro:
         specifier: ^5.17.1
         version: 5.17.1(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.57.1)(typescript@6.0.3)(yaml@2.9.0)
@@ -1036,6 +1039,14 @@ packages:
     resolution: {integrity: sha512-jVA+/UpKL1vRLg6Hkao5jldawNmRo7mQYrZtNHMIVpLfLhDml5nMRUo/8MwoX2vNXvnaXNNMedrMfMugAVX1nA==}
     peerDependencies:
       vite: ^5.2.0 || ^6 || ^7
+
+  '@typebot.io/js@0.10.7':
+    resolution: {integrity: sha512-c5GKjgJlfSjOIhTm8kqohWE/daJeBWlnqK6Xi3AYlFu/3W0NkqsD+T6G+ehu2sDGv8po+FuMB/K6g12/zQVN2Q==}
+
+  '@typebot.io/react@0.10.7':
+    resolution: {integrity: sha512-f/2oIk7AupWIsTrB6QlP3jKNLC2HRvFRp9Nbo9DXczF6kLxBkyRoJyqsTT2uGY1WKtedlxa5Ar3yQS/oHcMxOg==}
+    peerDependencies:
+      react: '>=18'
 
   '@types/babel__core@7.20.5':
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
@@ -4024,6 +4035,13 @@ snapshots:
       '@tailwindcss/oxide': 4.1.18
       tailwindcss: 4.1.18
       vite: 7.3.2(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.9.0)
+
+  '@typebot.io/js@0.10.7': {}
+
+  '@typebot.io/react@0.10.7(react@19.2.5)':
+    dependencies:
+      '@typebot.io/js': 0.10.7
+      react: 19.2.5
 
   '@types/babel__core@7.20.5':
     dependencies:

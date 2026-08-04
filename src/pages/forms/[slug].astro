@@ -1,0 +1,358 @@
+---
+import '../../styles/global.css';
+import { TypebotStandardEmbed } from '../../components/forms/TypebotStandardEmbed.jsx';
+import { getTenantPortalService, getTenantThemeCss } from '../../lib/tenants';
+
+export const prerender = false;
+
+const tenant = Astro.locals.tenant;
+const user = Astro.locals.user;
+const slug = Astro.params.slug ?? '';
+const service = getTenantPortalService(tenant, slug);
+
+function getTypebotId(embedUrl?: string) {
+  if (!embedUrl) return '';
+
+  try {
+    const parsed = new URL(embedUrl);
+    if (!/(\.|^)typebot\.(co|com)$/i.test(parsed.hostname)) return '';
+    return parsed.pathname.split('/').filter(Boolean)[0] ?? '';
+  } catch {
+    return '';
+  }
+}
+
+function isLocalPreviewRequest(request: Request) {
+  const hostname = new URL(request.url).hostname;
+  return hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1';
+}
+
+if (!service) {
+  return Astro.redirect('/login');
+}
+
+const previewRequested = Astro.url.searchParams.get('preview') === '1';
+const previewMode = !user && previewRequested && isLocalPreviewRequest(Astro.request);
+const canViewEmbed = Boolean(user) || previewMode;
+const displayUserEmail = user?.email ?? (previewMode ? 'local-preview@advancedanalytica.test' : '');
+const nextPath = `/forms/${service.slug}`;
+const embeddedFormUrl = service.embeddedFormUrl ?? `/portal/services/${service.slug}`;
+const iframeTitle = `${service.name} embedded form`;
+const isExternalEmbed = Boolean(service.embeddedFormUrl);
+const typebotId = getTypebotId(service.embeddedFormUrl);
+const usesTypebotEmbed = Boolean(typebotId);
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{service.name} | {tenant.name}</title>
+    <meta name="description" content={service.summary} />
+    <meta name="robots" content="noindex,nofollow" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate icon" href="/favicon.svg" sizes="any" />
+    <style is:inline set:html={getTenantThemeCss(tenant)}></style>
+    <style is:inline>
+      :root {
+        color-scheme: light;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        background: #fff;
+      }
+
+      body {
+        font-family: var(--font-body, sans-serif);
+      }
+
+      .embed-shell {
+        min-height: 100vh;
+        background: #fff;
+      }
+
+      .embed-frame,
+      .embed-typebot {
+        width: 100%;
+        min-height: 100vh;
+        border: 0;
+        display: block;
+        background: #fff;
+      }
+
+      .access-shell {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        background:
+          radial-gradient(circle at top, rgba(20, 184, 166, 0.08), transparent 34%),
+          #f8fafc;
+      }
+
+      .access-card {
+        width: min(100%, 460px);
+        border-radius: 28px;
+        border: 1px solid rgba(148, 163, 184, 0.22);
+        background: rgba(255, 255, 255, 0.96);
+        padding: 32px;
+        box-shadow: 0 24px 80px rgba(15, 23, 42, 0.12);
+      }
+
+      .access-label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--color-accent);
+      }
+
+      .access-title {
+        margin: 14px 0 0;
+        font-family: var(--font-display, sans-serif);
+        font-size: clamp(2rem, 6vw, 3rem);
+        line-height: 0.98;
+        color: #0f172a;
+      }
+
+      .access-copy {
+        margin: 14px 0 0;
+        font-size: 0.98rem;
+        line-height: 1.75;
+        color: #475569;
+      }
+
+      .access-form {
+        margin-top: 28px;
+        display: grid;
+        gap: 16px;
+      }
+
+      .access-field {
+        display: grid;
+        gap: 8px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #0f172a;
+      }
+
+      .access-input {
+        width: 100%;
+        border-radius: 18px;
+        border: 1px solid rgba(148, 163, 184, 0.34);
+        background: #fff;
+        padding: 14px 16px;
+        font: inherit;
+        color: #0f172a;
+        outline: none;
+      }
+
+      .access-input:focus {
+        border-color: var(--color-accent);
+      }
+
+      .access-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .access-button,
+      .access-link {
+        border-radius: 999px;
+        padding: 13px 18px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .access-button {
+        border: 0;
+        background: var(--color-accent);
+        color: #fff;
+        cursor: pointer;
+      }
+
+      .access-button:disabled {
+        cursor: not-allowed;
+        opacity: 0.65;
+      }
+
+      .access-link {
+        border: 1px solid rgba(148, 163, 184, 0.34);
+        color: #0f172a;
+        background: #fff;
+      }
+
+      .access-status {
+        display: none;
+        border-radius: 18px;
+        border: 1px solid transparent;
+        padding: 14px 16px;
+        font-size: 0.92rem;
+        line-height: 1.6;
+      }
+
+      .access-status.is-visible {
+        display: block;
+      }
+
+      .access-status.is-success {
+        border-color: #a7f3d0;
+        background: #ecfdf5;
+        color: #065f46;
+      }
+
+      .access-status.is-error {
+        border-color: #fecaca;
+        background: #fff1f2;
+        color: #9f1239;
+      }
+
+      .preview-chip {
+        position: fixed;
+        top: 14px;
+        right: 14px;
+        z-index: 20;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.88);
+        color: #fff;
+        padding: 8px 12px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+    </style>
+  </head>
+  <body>
+    {canViewEmbed ? (
+      <main class="embed-shell">
+        {previewMode ? <div class="preview-chip">Local preview</div> : null}
+        {usesTypebotEmbed ? (
+          <div class="embed-typebot">
+            <TypebotStandardEmbed client:only="react" typebot={typebotId} />
+          </div>
+        ) : (
+          <iframe
+            src={embeddedFormUrl}
+            title={iframeTitle}
+            class="embed-frame"
+            loading="eager"
+            referrerpolicy={isExternalEmbed ? 'strict-origin-when-cross-origin' : 'same-origin'}
+          ></iframe>
+        )}
+      </main>
+    ) : (
+      <main class="access-shell">
+        <section class="access-card">
+          <div class="access-label">Magic link access</div>
+          <h1 class="access-title">{service.name}</h1>
+          <p class="access-copy">
+            Enter your work email and we’ll send a tenant-aware magic link that brings you straight back to this form.
+          </p>
+
+          <form id="embedded-form-access" class="access-form">
+            <label class="access-field">
+              Work email
+              <input
+                id="embedded-form-email"
+                type="email"
+                name="email"
+                autocomplete="email"
+                required
+                placeholder="name@company.com"
+                class="access-input"
+              />
+            </label>
+
+            <div class="access-actions">
+              <button
+                id="embedded-form-submit"
+                type="submit"
+                class="access-button"
+              >
+                Send magic link
+              </button>
+              <a
+                href={`/login?next=${encodeURIComponent(nextPath)}`}
+                class="access-link"
+              >
+                Open full login
+              </a>
+            </div>
+
+            <p id="embedded-form-status" class="access-status"></p>
+          </form>
+        </section>
+      </main>
+    )}
+
+    {!canViewEmbed ? (
+      <script is:inline define:vars={{ nextPath }}>
+        const form = document.getElementById('embedded-form-access');
+        const emailInput = document.getElementById('embedded-form-email');
+        const submitButton = document.getElementById('embedded-form-submit');
+        const status = document.getElementById('embedded-form-status');
+
+        if (
+          form instanceof HTMLFormElement &&
+          emailInput instanceof HTMLInputElement &&
+          submitButton instanceof HTMLButtonElement &&
+          status instanceof HTMLElement
+        ) {
+          const setStatus = (message, tone) => {
+            status.textContent = message;
+            status.classList.remove('is-success', 'is-error');
+            status.classList.add('is-visible', tone === 'success' ? 'is-success' : 'is-error');
+          };
+
+          form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const email = emailInput.value.trim();
+            if (!email) {
+              setStatus('Enter a work email address.', 'error');
+              return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.textContent = 'Sending...';
+            status.classList.remove('is-visible', 'is-success', 'is-error');
+
+            try {
+              const response = await fetch('/auth/magic-link', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  email,
+                  nextUrl: nextPath,
+                }),
+              });
+
+              const payload = await response.json().catch(() => null);
+
+              if (!response.ok) {
+                throw new Error(payload?.error || 'Failed to send magic link.');
+              }
+
+              setStatus('Check your email for the sign-in link, then return here to open the form.', 'success');
+              form.reset();
+            } catch (error) {
+              const message = error instanceof Error ? error.message : 'Failed to send magic link.';
+              setStatus(message, 'error');
+            } finally {
+              submitButton.disabled = false;
+              submitButton.textContent = 'Send magic link';
+            }
+          });
+        }
+      </script>
+    ) : null}
+  </body>
+</html>
