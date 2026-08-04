@@ -23,28 +23,28 @@
               </div>
 
               <h1 style="margin:0 0 16px; font-size:36px; line-height:1.1; color:#ffffff; font-weight:800;">
-                Reset your password
+                Confirm your email
               </h1>
 
               <p style="margin:0 0 28px; font-size:18px; line-height:1.6; color:#b8c4d6;">
-                We received a request to reset your password. Use the secure link below to choose a new one.
+                Confirm this email address to finish creating your account and unlock access to your workspace.
               </p>
 
               <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 28px;">
                 <tr>
                   <td align="center" bgcolor="#14b8a6" style="border-radius:12px; background:#14b8a6;">
                     <a
-                      href="{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=recovery"
+                      href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=email"
                       style="display:inline-block; padding:16px 28px; font-size:16px; line-height:1.2; font-weight:700; color:#041014; text-decoration:none;"
                     >
-                      Reset your password
+                      Confirm email
                     </a>
                   </td>
                 </tr>
               </table>
 
               <p style="margin:0; font-size:13px; line-height:1.6; color:#6f8096;">
-                If you did not request this reset, you can safely ignore it.
+                If you did not start this signup, you can safely ignore this email.
               </p>
             </td>
           </tr>

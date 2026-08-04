@@ -161,15 +161,12 @@ site_url = "https://advancedanalytica.co.uk"
 # external_url = ""
 # A list of *exact* URLs that auth providers are permitted to redirect to post authentication.
 additional_redirect_urls = [
-  "https://advancedanalytica.co.uk/auth/callback",
-  "https://advancedanalytica.co.uk/auth/callback?next=/portal",
-  "https://advancedanalytica.co.uk/auth/callback?next=/auth/reset",
-  "http://localhost:4321/auth/callback",
-  "http://localhost:4321/auth/callback?next=/portal",
-  "http://localhost:4321/auth/callback?next=/auth/reset",
-  "http://127.0.0.1:4321/auth/callback",
-  "http://127.0.0.1:4321/auth/callback?next=/portal",
-  "http://127.0.0.1:4321/auth/callback?next=/auth/reset"
+  "https://advancedanalytica.co.uk/**",
+  "https://www.advancedanalytica.co.uk/**",
+  "https://advancedanalytica-co-uk-omj3v.ondigitalocean.app/**",
+  "http://localhost:4321/**",
+  "http://127.0.0.1:4321/**",
+  "http://0.0.0.0:4321/**"
 ]
 # How long tokens are valid for, in seconds. Defaults to 3600 (1 hour), maximum 604,800 (1 week).
 jwt_expiry = 3600
@@ -253,10 +250,13 @@ otp_expiry = 3600
 # admin_email = "admin@email.com"
 # sender_name = "Admin"
 
-# Uncomment to customize email template
-# [auth.email.template.invite]
-# subject = "You have been invited"
-# content_path = "./supabase/templates/invite.html"
+[auth.email.template.invite]
+subject = "You have been invited"
+content_path = "./supabase/templates/invite.html"
+
+[auth.email.template.confirmation]
+subject = "Confirm your email address"
+content_path = "./supabase/templates/confirmation.html"
 
 [auth.email.template.magic_link]
   subject = "Your secure sign-in link is ready"
@@ -266,11 +266,44 @@ content_path = "./supabase/templates/magic-link.html"
 subject = "Reset your password"
 content_path = "./supabase/templates/reset-password.html"
 
-# Uncomment to customize notification email template
-# [auth.email.notification.password_changed]
-# enabled = true
-# subject = "Your password has been changed"
-# content_path = "./templates/password_changed_notification.html"
+[auth.email.template.email_change]
+subject = "Confirm your new email address"
+content_path = "./supabase/templates/email-change.html"
+
+[auth.email.notification.password_changed]
+enabled = true
+subject = "Your password was changed"
+content_path = "./templates/password-changed-notification.html"
+
+[auth.email.notification.email_changed]
+enabled = true
+subject = "Your email address was changed"
+content_path = "./templates/email-changed-notification.html"
+
+[auth.email.notification.phone_changed]
+enabled = true
+subject = "Your phone number was changed"
+content_path = "./templates/phone-changed-notification.html"
+
+[auth.email.notification.mfa_factor_enrolled]
+enabled = true
+subject = "A verification method was added to your account"
+content_path = "./templates/mfa-factor-enrolled-notification.html"
+
+[auth.email.notification.mfa_factor_unenrolled]
+enabled = true
+subject = "A verification method was removed from your account"
+content_path = "./templates/mfa-factor-unenrolled-notification.html"
+
+[auth.email.notification.identity_linked]
+enabled = true
+subject = "A sign-in method was linked to your account"
+content_path = "./templates/identity-linked-notification.html"
+
+[auth.email.notification.identity_unlinked]
+enabled = true
+subject = "A sign-in method was removed from your account"
+content_path = "./templates/identity-unlinked-notification.html"
 
 [auth.sms]
 # Allow/disallow new user signups via SMS to your project.
