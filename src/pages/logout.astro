@@ -10,5 +10,8 @@ if (isSupabaseConfigured) {
   await supabase.auth.signOut();
 }
 
-return Astro.redirect('/login');
+const next = Astro.url.searchParams.get('next');
+const redirectTo = next?.startsWith('/') ? next : '/login';
+
+return Astro.redirect(redirectTo);
 ---

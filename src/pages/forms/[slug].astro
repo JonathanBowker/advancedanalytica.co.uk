@@ -215,7 +215,6 @@ const usesTypebotEmbed = Boolean(typebotId);
       .preview-chip {
         position: fixed;
         top: 14px;
-        right: 14px;
         z-index: 20;
         border-radius: 999px;
         background: rgba(15, 23, 42, 0.88);
@@ -226,11 +225,50 @@ const usesTypebotEmbed = Boolean(typebotId);
         letter-spacing: 0.08em;
         text-transform: uppercase;
       }
+
+      .preview-chip {
+        right: 14px;
+      }
+
+      .embed-signout {
+        position: fixed;
+        top: 14px;
+        right: 14px;
+        z-index: 30;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 23, 42, 0.12);
+        background: rgba(255, 255, 255, 0.9);
+        color: rgba(15, 23, 42, 0.72);
+        padding: 8px 12px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-decoration: none;
+        text-transform: uppercase;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+        opacity: 0.34;
+        transition:
+          opacity 160ms ease,
+          color 160ms ease,
+          background 160ms ease;
+      }
+
+      .embed-signout:hover,
+      .embed-signout:focus-visible {
+        background: #fff;
+        color: #0f172a;
+        opacity: 1;
+      }
     </style>
   </head>
   <body>
     {canViewEmbed ? (
       <main class="embed-shell">
+        {user ? (
+          <a class="embed-signout" href={`/logout?next=${encodeURIComponent(nextPath)}`}>
+            Sign out
+          </a>
+        ) : null}
         {previewMode ? <div class="preview-chip">Local preview</div> : null}
         {usesTypebotEmbed ? (
           <div class="embed-typebot">
