@@ -33,7 +33,7 @@ export const portalServices: Record<string, PortalService> = {
     description:
       'Capture the governance model, operating constraints, and success criteria that should shape a brand-readiness review.',
     aiUse: 'This payload is intended for an assessment prompt that evaluates where policy, tooling, and operating controls need strengthening.',
-    embeddedFormUrl: 'https://typebot.co/disney-evaluator-qumlhm0',
+    embeddedFormUrl: 'https://typebot.co/disney-evaluator-upload-6kzx7zw',
     fields: [
       {
         name: 'businessContext',
