@@ -6,7 +6,7 @@ import { getPublicSiteOrigin, getTenantHomePath } from '../../../lib/tenants';
 export const prerender = false;
 
 const mxLookupTimeoutMs = 5_000;
-const allowSelfSignup = false;
+const allowSelfSignup = true;
 
 const freeEmailDomains = new Set([
   'aol.com',

@@ -15,7 +15,7 @@ const turnstileScriptId = 'cloudflare-turnstile-script';
 const turnstileScriptSrc = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
 const fallbackTurnstileSiteKey = '0x4AAAAAADKxAX20w3kRuz5A';
 const turnstileMountClass = 'fixed bottom-0 right-0 h-px w-px overflow-hidden pointer-events-none';
-const allowSelfSignup = false;
+const allowSelfSignup = true;
 const authCaptchaEnabled = false;
 const portalServiceCardCatalog = {
   'brand-readiness-assessment': {
