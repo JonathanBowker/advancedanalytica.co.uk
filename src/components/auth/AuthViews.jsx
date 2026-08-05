@@ -390,7 +390,7 @@ async function requestMagicLink({ email, captchaToken, nextUrl, shouldCreateUser
 
   let response;
   try {
-    response = await fetch('/auth/magic-link', {
+    response = await fetch('/api/auth/magic-link', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

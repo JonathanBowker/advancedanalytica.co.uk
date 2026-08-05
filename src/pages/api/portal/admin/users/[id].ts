@@ -60,6 +60,26 @@ function toClientUser(user: any) {
   };
 }
 
+export const GET: APIRoute = async ({ request, cookies, params }) => {
+  const auth = await requirePortalAdmin(request, cookies);
+  if ('error' in auth) return auth.error;
+
+  if (!isSupabaseAdminConfigured) {
+    return portalJson({ error: 'Supabase service-role admin client is not configured.' }, 500);
+  }
+
+  const id = String(params.id || '').trim();
+  if (!id) return portalJson({ error: 'Missing user id.' }, 400);
+
+  const admin = createSupabaseAdminClient();
+  const { data, error } = await admin.auth.admin.getUserById(id);
+
+  if (error) return portalJson({ error: error.message }, error.status || 400);
+  if (!data.user) return portalJson({ error: 'User not found.' }, 404);
+
+  return portalJson({ user: toClientUser(data.user) });
+};
+
 export const PATCH: APIRoute = async ({ request, cookies, params }) => {
   const auth = await requirePortalAdmin(request, cookies);
   if ('error' in auth) return auth.error;

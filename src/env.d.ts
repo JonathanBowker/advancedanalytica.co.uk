@@ -12,14 +12,6 @@ interface ImportMetaEnv {
   readonly PORTAL_SUPERADMIN_EMAILS?: string;
   readonly DISNEY_PIPELINE_INBOX_DIR?: string;
   readonly DISNEY_PIPELINE_INGEST_URL?: string;
-  readonly AWS_ACCESS_KEY_ID?: string;
-  readonly AWS_SECRET_ACCESS_KEY?: string;
-  readonly AWS_SESSION_TOKEN?: string;
-  readonly AWS_REGION?: string;
-  readonly AWS_SES_REGION?: string;
-  readonly TRANSACTIONAL_EMAIL_FROM?: string;
-  readonly MAGIKIT_EMAIL_FROM?: string;
-  readonly LEAD_EMAIL_FROM?: string;
 }
 
 interface ImportMeta {

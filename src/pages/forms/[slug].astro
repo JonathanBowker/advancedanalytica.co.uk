@@ -64,7 +64,7 @@ function companyFromEmail(email: string) {
 
 const displayUserName =
   firstProfileValue('full_name', 'name', 'display_name') ||
-  (previewMode ? 'Local preview user' : '');
+  (previewMode ? 'Local preview user' : displayUserEmail.split('@')[0] || '');
 const displayUserCompany =
   firstProfileValue('company', 'company_name', 'organisation', 'organization') ||
   (previewMode ? 'Advanced Analytica Preview' : companyFromEmail(displayUserEmail));
@@ -398,6 +398,43 @@ const formErrorMessage =
         line-height: 1.65;
       }
 
+      .native-profile-summary {
+        display: grid;
+        gap: 8px;
+        border: 1px solid rgba(148, 163, 184, 0.28);
+        border-radius: 18px;
+        background: #fff;
+        padding: 16px;
+      }
+
+      .native-profile-item {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        align-items: baseline;
+        margin: 0;
+      }
+
+      .native-profile-item dt {
+        color: #64748b;
+        font-size: 0.95rem;
+        font-weight: 850;
+        letter-spacing: 0;
+      }
+
+      .native-profile-item dt::after {
+        content: ":";
+      }
+
+      .native-profile-item dd {
+        margin: 0;
+        color: #0f172a;
+        font-size: 0.95rem;
+        font-weight: 800;
+        line-height: 1.4;
+        overflow-wrap: anywhere;
+      }
+
       .native-chat-question {
         display: grid;
         gap: 8px;
@@ -452,6 +489,7 @@ const formErrorMessage =
 
       .native-input,
       .native-select,
+      .native-textarea,
       .native-file {
         width: 100%;
         border: 1px solid rgba(148, 163, 184, 0.38);
@@ -473,9 +511,15 @@ const formErrorMessage =
 
       .native-input:focus,
       .native-select:focus,
+      .native-textarea:focus,
       .native-file:focus {
         border-color: #ed1b2f;
         box-shadow: 0 0 0 4px rgba(237, 27, 47, 0.13);
+      }
+
+      .native-textarea {
+        min-height: 140px;
+        resize: vertical;
       }
 
       .native-file {
@@ -629,18 +673,30 @@ const formErrorMessage =
 
       .native-file-name {
         margin: 0;
-        overflow: hidden;
         color: #0f172a;
         font-size: 0.95rem;
         font-weight: 850;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        line-height: 1.35;
+        overflow-wrap: anywhere;
+        word-break: break-word;
       }
 
       .native-file-detail {
         margin: 4px 0 0;
         color: #64748b;
         font-size: 0.82rem;
+      }
+
+      .native-file-warning {
+        margin: -8px 0 0;
+        color: #b91c1c;
+        font-size: 0.86rem;
+        font-weight: 750;
+        line-height: 1.45;
+      }
+
+      .native-file-warning[hidden] {
+        display: none;
       }
 
       .native-file-remove {
@@ -681,8 +737,121 @@ const formErrorMessage =
         color: #9f1239;
       }
 
+      .native-review {
+        display: grid;
+        gap: 18px;
+        border: 1px solid rgba(148, 163, 184, 0.28);
+        border-radius: 18px;
+        background: #fff;
+        padding: 16px;
+        box-shadow: 0 12px 34px rgba(15, 23, 42, 0.06);
+      }
+
+      .native-review[hidden] {
+        display: none;
+      }
+
+      .native-review-loader {
+        display: grid;
+        justify-items: center;
+        gap: 12px;
+        border: 1px solid rgba(148, 163, 184, 0.28);
+        border-radius: 18px;
+        background: #fff;
+        padding: 22px;
+        color: #64748b;
+        font-size: 0.92rem;
+        font-weight: 750;
+        text-align: center;
+        box-shadow: 0 16px 44px rgba(15, 23, 42, 0.08);
+      }
+
+      .native-review-loader[hidden] {
+        display: none;
+      }
+
+      .native-review-spinner {
+        width: 34px;
+        height: 34px;
+        border: 3px solid rgba(237, 27, 47, 0.16);
+        border-top-color: var(--magikit-red);
+        border-radius: 999px;
+        animation: native-spin 0.8s linear infinite;
+      }
+
+      @keyframes native-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .native-review h3 {
+        margin: 0;
+        color: #0f172a;
+        font-family: var(--font-display, sans-serif);
+        font-size: clamp(1.25rem, 3vw, 1.65rem);
+        letter-spacing: -0.035em;
+        line-height: 1.05;
+      }
+
+      .native-review p {
+        margin: 0;
+        color: #64748b;
+        font-size: 0.92rem;
+        line-height: 1.6;
+      }
+
+      .native-review-list {
+        display: grid;
+        gap: 18px;
+        margin: 0;
+      }
+
+      @media (min-width: 760px) {
+        .native-review-list {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .native-review-row.is-wide {
+          grid-column: 1 / -1;
+        }
+      }
+
+      .native-review-row {
+        display: grid;
+        gap: 8px;
+      }
+
+      .native-review-row dt {
+        color: #0f172a;
+        font-size: 0.9rem;
+        font-weight: 750;
+        letter-spacing: 0;
+        text-transform: none;
+      }
+
+      .native-review-row dd {
+        margin: 0;
+        min-height: 52px;
+        border: 1px solid rgba(148, 163, 184, 0.38);
+        border-radius: 18px;
+        background: #fff;
+        color: #0f172a;
+        font-size: 0.95rem;
+        font-weight: 750;
+        line-height: 1.45;
+        overflow-wrap: anywhere;
+        padding: 14px 16px;
+      }
+
+      .native-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+
       .native-submit {
-        justify-self: start;
         border: 0;
         border-radius: 999px;
         background: #ed1b2f;
@@ -702,6 +871,50 @@ const formErrorMessage =
       .native-submit:focus-visible {
         background: #c8102e;
         transform: translateY(-1px);
+      }
+
+      .native-reset {
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        border-radius: 999px;
+        background: #fff;
+        color: #334155;
+        cursor: pointer;
+        font: inherit;
+        font-size: 0.88rem;
+        font-weight: 850;
+        letter-spacing: 0.04em;
+        padding: 14px 20px;
+        text-transform: uppercase;
+        transition:
+          border-color 160ms ease,
+          color 160ms ease,
+          transform 160ms ease;
+      }
+
+      .native-reset:hover,
+      .native-reset:focus-visible {
+        border-color: #ed1b2f;
+        color: #b91c1c;
+        transform: translateY(-1px);
+      }
+
+      .native-edit {
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        border-radius: 999px;
+        background: #fff;
+        color: #334155;
+        cursor: pointer;
+        font: inherit;
+        font-size: 0.84rem;
+        font-weight: 850;
+        justify-self: start;
+        padding: 10px 14px;
+      }
+
+      .native-edit:hover,
+      .native-edit:focus-visible {
+        border-color: #ed1b2f;
+        color: #b91c1c;
       }
 
       .native-thanks h1 {
@@ -738,7 +951,9 @@ const formErrorMessage =
                   <div class="native-label">MagiKit received</div>
                   <h1>Thank you. Your creative is in the queue.</h1>
                   <p>
-                    MagiKit has received your Disney Brand Compliance pre-screening submission. We’ll process the creative work against the evidence-first pipeline and prepare the next review output.
+                    The brand team has received your Disney Brand Compliance upload for assessment.
+                    <br />
+                    We'll review the creative work against the brand rules and prepare a commented PDF with any issues and recommended amends.
                   </p>
                   {submissionId ? (
                     <p>
@@ -762,7 +977,7 @@ const formErrorMessage =
                     </p>
                   </header>
 
-                  <form class="native-form" action={`${nextPath}/submit`} method="post" enctype="multipart/form-data">
+                  <form class="native-form" action={`${nextPath}/submit`} method="post" enctype="multipart/form-data" data-native-form>
                     <input type="hidden" name="name" value={displayUserName} />
                     <input type="hidden" name="email" value={displayUserEmail} />
                     <input type="hidden" name="company" value={displayUserCompany} />
@@ -770,9 +985,16 @@ const formErrorMessage =
                     {formErrorMessage ? <div class="native-error">{formErrorMessage}</div> : null}
 
                     <section class="native-chat-step">
-                      <div class="native-chat-bubble">
-                        You are signed in as {signedInEmail} from {signedInCompany}. Let's add the creative context MagiKit needs for the expiry and rule checks.
-                      </div>
+                      <dl class="native-profile-summary" aria-label="Signed-in profile details">
+                        <div class="native-profile-item">
+                          <dt>User</dt>
+                          <dd>{displayUserName}</dd>
+                        </div>
+                        <div class="native-profile-item">
+                          <dt>Company</dt>
+                          <dd>{signedInCompany}</dd>
+                        </div>
+                      </dl>
                     </section>
 
                     <section class="native-chat-step">
@@ -823,7 +1045,7 @@ const formErrorMessage =
                     <section class="native-chat-step">
                       <div class="native-chat-question">
                         <h2>Upload the creative file.</h2>
-                        <p>Accepted files: PDF, DOCX, PNG, JPEG. Maximum upload size is 25MB. PDF thumbnails are shown where possible; larger PDFs may display a PDF badge instead.</p>
+                        <p>All fields are required. Upload one file only. Accepted files: PDF, DOCX, PNG, JPEG. Maximum upload size is 25MB. PDF thumbnails are shown where possible; larger PDFs may display a PDF badge instead.</p>
                       </div>
 
                       <label class="native-field native-upload-field">
@@ -839,11 +1061,15 @@ const formErrorMessage =
                           <span class="native-dropzone-content">
                             <span class="native-dropzone-text">
                               <span class="native-dropzone-title">Drag & drop files here, or click to select</span>
-                              <span class="native-dropzone-help">PDF, DOCX, PNG, or JPEG up to 25MB</span>
+                              <span class="native-dropzone-help">One PDF, DOCX, PNG, or JPEG up to 25MB</span>
                             </span>
                           </span>
                         </span>
                       </label>
+
+                      <p class="native-file-warning" data-file-warning hidden>
+                        Add one file only. Delete the current file if you need to replace it.
+                      </p>
 
                       <div class="native-file-preview" data-file-preview hidden>
                         <div class="native-file-thumb" data-file-thumb aria-hidden="true">FILE</div>
@@ -856,11 +1082,72 @@ const formErrorMessage =
                         </button>
                       </div>
 
-                      <div class="native-note">
-                        This is a pre-screening workflow, not final Disney approval.
+                      <div class="native-chat-question">
+                        <h2>Add any notes for the reviewer.</h2>
+                        <p>Include campaign context, known constraints, or anything the brand team should consider during assessment.</p>
                       </div>
 
-                      <button class="native-submit" type="submit">Send for Assessment</button>
+                      <label class="native-field">
+                        Notes
+                        <textarea
+                          class="native-textarea"
+                          name="notes"
+                          maxlength="300"
+                          placeholder="Add comments or context for the brand team."
+                        ></textarea>
+                      </label>
+
+                      <div class="native-review-loader" data-review-loader hidden aria-live="polite">
+                        <span class="native-review-spinner" aria-hidden="true"></span>
+                        <span>Preparing your review summary...</span>
+                      </div>
+
+                      <section class="native-review" data-review-panel hidden tabindex="-1" aria-live="polite">
+                        <div>
+                          <h3>Review before sending.</h3>
+                          <p>Check the completed submission below. You can edit anything before the file is uploaded.</p>
+                        </div>
+	                        <dl class="native-review-list">
+	                          <div class="native-review-row">
+	                            <dt>Name</dt>
+	                            <dd>{displayUserName}</dd>
+	                          </div>
+	                          <div class="native-review-row">
+	                            <dt>Company</dt>
+	                            <dd>{signedInCompany}</dd>
+	                          </div>
+	                          <div class="native-review-row">
+	                            <dt>Disney property</dt>
+	                            <dd data-review-property></dd>
+                          </div>
+                          <div class="native-review-row">
+                            <dt>Content type</dt>
+                            <dd data-review-content-type></dd>
+                          </div>
+                          <div class="native-review-row">
+                            <dt>Activity start date</dt>
+                            <dd data-review-start-date></dd>
+                          </div>
+                          <div class="native-review-row">
+                            <dt>Activity end date</dt>
+                            <dd data-review-end-date></dd>
+                          </div>
+                          <div class="native-review-row is-wide">
+                            <dt>Creative file</dt>
+                            <dd data-review-file></dd>
+                          </div>
+                          <div class="native-review-row is-wide">
+                            <dt>Notes</dt>
+                            <dd data-review-notes></dd>
+                          </div>
+                        </dl>
+                        <button class="native-edit" type="button" data-edit-review>Edit details</button>
+                      </section>
+
+                      <div class="native-actions">
+                        <button class="native-submit" type="submit" data-submit-button>Review submission</button>
+                        <button class="native-reset" type="reset" data-form-reset>Reset form</button>
+                      </div>
                     </section>
                   </form>
                 </>
@@ -995,15 +1282,30 @@ const formErrorMessage =
         const dropzone = document.querySelector('[data-dropzone]');
 
         if (dropzone instanceof HTMLElement) {
+          const form = document.querySelector('[data-native-form]');
           const input = dropzone.querySelector('input[type="file"]');
           const preview = document.querySelector('[data-file-preview]');
           const thumb = document.querySelector('[data-file-thumb]');
           const fileName = document.querySelector('[data-file-name]');
           const fileDetail = document.querySelector('[data-file-detail]');
+          const fileWarning = document.querySelector('[data-file-warning]');
           const removeButton = document.querySelector('[data-file-remove]');
+          const resetButton = document.querySelector('[data-form-reset]');
+          const submitButton = document.querySelector('[data-submit-button]');
+          const reviewLoader = document.querySelector('[data-review-loader]');
+          const reviewPanel = document.querySelector('[data-review-panel]');
+          const editReviewButton = document.querySelector('[data-edit-review]');
+          const reviewProperty = document.querySelector('[data-review-property]');
+          const reviewContentType = document.querySelector('[data-review-content-type]');
+          const reviewStartDate = document.querySelector('[data-review-start-date]');
+          const reviewEndDate = document.querySelector('[data-review-end-date]');
+          const reviewNotes = document.querySelector('[data-review-notes]');
+          const reviewFile = document.querySelector('[data-review-file]');
           let imagePreviewUrl = '';
           let previewToken = 0;
           let pdfJsPromise;
+          let reviewReady = false;
+          let reviewTimer = 0;
           const PDF_THUMBNAIL_MAX_BYTES = 10 * 1024 * 1024;
           const PDF_THUMBNAIL_TIMEOUT_MS = 12000;
 
@@ -1019,6 +1321,107 @@ const formErrorMessage =
             if (!imagePreviewUrl) return;
             URL.revokeObjectURL(imagePreviewUrl);
             imagePreviewUrl = '';
+          };
+
+          const setFileWarning = (message = '') => {
+            if (!(fileWarning instanceof HTMLElement)) return;
+            fileWarning.textContent = message;
+            fileWarning.hidden = !message;
+          };
+
+          const setReviewText = (node, value) => {
+            if (node instanceof HTMLElement) node.textContent = value;
+          };
+
+          const getFieldValue = (name) => {
+            if (!(form instanceof HTMLFormElement)) return '';
+            const field = form.elements.namedItem(name);
+            if (
+              field instanceof HTMLInputElement ||
+              field instanceof HTMLSelectElement ||
+              field instanceof HTMLTextAreaElement
+            ) {
+              return field.value.trim();
+            }
+
+            return '';
+          };
+
+          const getSelectedOptionText = (name) => {
+            if (!(form instanceof HTMLFormElement)) return '';
+            const field = form.elements.namedItem(name);
+            if (!(field instanceof HTMLSelectElement)) return '';
+            return field.selectedOptions[0]?.textContent?.trim() || field.value;
+          };
+
+          const formatDisplayDate = (value) => {
+            if (!value) return '';
+            const date = new Date(`${value}T00:00:00`);
+            if (Number.isNaN(date.valueOf())) return value;
+            return new Intl.DateTimeFormat('en-GB', {
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric',
+            }).format(date);
+          };
+
+          const resetReview = () => {
+            if (reviewTimer) {
+              window.clearTimeout(reviewTimer);
+              reviewTimer = 0;
+            }
+            reviewReady = false;
+            if (reviewLoader instanceof HTMLElement) reviewLoader.hidden = true;
+            if (reviewPanel instanceof HTMLElement) reviewPanel.hidden = true;
+            if (submitButton instanceof HTMLButtonElement) {
+              submitButton.disabled = false;
+              submitButton.textContent = 'Review submission';
+            }
+          };
+
+          const showReview = () => {
+            const selectedFile = input instanceof HTMLInputElement ? input.files?.[0] : null;
+            const startDate = formatDisplayDate(getFieldValue('activityStartDate'));
+            const endDate = formatDisplayDate(getFieldValue('activityEndDate'));
+            const notes = getFieldValue('notes');
+
+            setReviewText(reviewProperty, getSelectedOptionText('disneyProperty'));
+            setReviewText(reviewContentType, getSelectedOptionText('creativeType'));
+            setReviewText(reviewStartDate, startDate);
+            setReviewText(reviewEndDate, endDate);
+            setReviewText(reviewNotes, notes);
+            setReviewText(
+              reviewFile,
+              selectedFile ? `${selectedFile.name} (${formatFileSize(selectedFile.size)})` : '',
+            );
+
+            reviewReady = true;
+            if (reviewLoader instanceof HTMLElement) reviewLoader.hidden = true;
+            if (reviewPanel instanceof HTMLElement) {
+              reviewPanel.hidden = false;
+              reviewPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              reviewPanel.focus({ preventScroll: true });
+            }
+            if (submitButton instanceof HTMLButtonElement) submitButton.textContent = 'Send for Assessment';
+          };
+
+          const prepareReview = () => {
+            if (reviewTimer) window.clearTimeout(reviewTimer);
+            if (reviewPanel instanceof HTMLElement) reviewPanel.hidden = true;
+            if (reviewLoader instanceof HTMLElement) {
+              reviewLoader.hidden = false;
+              reviewLoader.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            if (submitButton instanceof HTMLButtonElement) {
+              submitButton.disabled = true;
+              submitButton.textContent = 'Preparing review...';
+            }
+
+            reviewTimer = window.setTimeout(() => {
+              reviewTimer = 0;
+              if (submitButton instanceof HTMLButtonElement) submitButton.disabled = false;
+              showReview();
+            }, 2000);
           };
 
           const withTimeout = (promise, timeoutMs) =>
@@ -1081,6 +1484,8 @@ const formErrorMessage =
           const resetPreview = () => {
             previewToken += 1;
             clearImagePreviewUrl();
+            setFileWarning();
+            resetReview();
             dropzone.classList.remove('has-file');
             if (preview instanceof HTMLElement) {
               preview.hidden = true;
@@ -1097,6 +1502,7 @@ const formErrorMessage =
           const setPreview = async (file) => {
             const token = previewToken + 1;
             previewToken = token;
+            resetReview();
 
             if (!file) {
               resetPreview();
@@ -1104,6 +1510,7 @@ const formErrorMessage =
             }
 
             clearImagePreviewUrl();
+            setFileWarning();
             dropzone.classList.add('has-file');
             if (fileName) fileName.textContent = file.name;
             if (fileDetail) fileDetail.textContent = formatFileSize(file.size);
@@ -1204,7 +1611,14 @@ const formErrorMessage =
             event.preventDefault();
             dropzone.classList.remove('is-dragging');
 
-            const file = event.dataTransfer?.files?.[0];
+            const files = event.dataTransfer?.files;
+            if (files && files.length > 1) {
+              resetReview();
+              setFileWarning('Add one file only. Delete the current file if you need to replace it.');
+              return;
+            }
+
+            const file = files?.[0];
             if (!(input instanceof HTMLInputElement) || !file) return;
 
             const transfer = new DataTransfer();
@@ -1220,6 +1634,40 @@ const formErrorMessage =
           removeButton?.addEventListener('click', () => {
             if (input instanceof HTMLInputElement) input.value = '';
             resetPreview();
+          });
+
+          resetButton?.addEventListener('click', () => {
+            window.requestAnimationFrame(resetPreview);
+          });
+
+          editReviewButton?.addEventListener('click', () => {
+            resetReview();
+            const firstVisibleField = form instanceof HTMLFormElement
+              ? form.querySelector('select, input:not([type="hidden"])')
+              : null;
+            if (firstVisibleField instanceof HTMLElement) {
+              firstVisibleField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              firstVisibleField.focus({ preventScroll: true });
+            }
+          });
+
+          form?.addEventListener('input', (event) => {
+            if (event.target instanceof HTMLInputElement && event.target.type === 'hidden') return;
+            if (reviewReady) resetReview();
+          });
+
+          form?.addEventListener('change', (event) => {
+            if (event.target instanceof HTMLInputElement && event.target.type === 'hidden') return;
+            if (reviewReady) resetReview();
+          });
+
+          form?.addEventListener('submit', (event) => {
+            if (!(form instanceof HTMLFormElement)) return;
+            if (reviewReady) return;
+
+            event.preventDefault();
+            if (!form.reportValidity()) return;
+            prepareReview();
           });
         }
       </script>

@@ -16,7 +16,6 @@
     "@astrojs/node": "^9.5.3",
     "@astrojs/react": "^5.0.4",
     "@astrojs/sitemap": "^3.7.0",
-    "@aws-sdk/client-sesv2": "^3.1103.0",
     "@google-analytics/data": "^5.2.1",
     "@supabase/ssr": "^0.10.2",
     "@supabase/supabase-js": "^2.105.3",
