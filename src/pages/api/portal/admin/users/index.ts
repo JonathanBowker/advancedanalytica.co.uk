@@ -49,6 +49,7 @@ function toClientUser(user: any) {
   return {
     id: user.id,
     email: user.email || '',
+    name: getProfileValue(userMetadata, 'full_name', 'name', 'display_name'),
     company: getProfileValue(userMetadata, 'company', 'company_name', 'organisation', 'organization'),
     roles,
     disabled: Boolean(user.banned_until),
@@ -88,6 +89,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
   const body = await request.json().catch(() => ({}));
   const email = String(body.email || '').trim().toLowerCase();
+  const name = cleanText(body.name);
   const company = cleanText(body.company);
   const roles = normalizeRoles(body.roles);
 
@@ -106,6 +108,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   const admin = createSupabaseAdminClient();
   const { data, error } = await admin.auth.admin.inviteUserByEmail(email, {
     data: {
+      ...(name ? { full_name: name, name, display_name: name } : {}),
       company,
       roles,
     },
@@ -121,6 +124,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       },
       user_metadata: {
         ...(data.user.user_metadata || {}),
+        ...(name ? { full_name: name, name, display_name: name } : {}),
         company,
       },
     });
@@ -132,7 +136,11 @@ export const POST: APIRoute = async ({ request, cookies }) => {
         ? toClientUser({
             ...data.user,
             app_metadata: { ...(data.user.app_metadata || {}), roles },
-            user_metadata: { ...(data.user.user_metadata || {}), company },
+            user_metadata: {
+              ...(data.user.user_metadata || {}),
+              ...(name ? { full_name: name, name, display_name: name } : {}),
+              company,
+            },
           })
         : null,
     },

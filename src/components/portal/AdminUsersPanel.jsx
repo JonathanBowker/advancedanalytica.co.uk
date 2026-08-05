@@ -5,27 +5,6 @@ const roleOptions = portalAssignableRoles;
 const roleLabels = {
   page_viewer: 'page viewer',
 };
-const actionIcons = {
-  save: [
-    'M5 4h12l2 2v14H5V4Z',
-    'M8 4v6h8V4',
-    'M8 17h8',
-  ],
-  disable: [
-    'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z',
-    'M7.5 7.5 16.5 16.5',
-  ],
-  enable: [
-    'M20 6 9 17l-5-5',
-  ],
-  delete: [
-    'M4 7h16',
-    'M10 11v6',
-    'M14 11v6',
-    'M6 7l1 13h10l1-13',
-    'M9 7V4h6v3',
-  ],
-};
 
 async function requestJson(path, options = {}) {
   const response = await fetch(path, {
@@ -92,7 +71,7 @@ function RoleCheckboxes({ value, onChange }) {
   );
 }
 
-function ActionIconButton({ label, icon, tone = 'neutral', disabled = false, onClick }) {
+function ActionButton({ children, tone = 'neutral', disabled = false, onClick }) {
   const toneClass =
     tone === 'danger'
       ? 'border-red-200 text-red-600 hover:border-red-300 hover:bg-red-50'
@@ -105,23 +84,9 @@ function ActionIconButton({ label, icon, tone = 'neutral', disabled = false, onC
       type="button"
       onClick={onClick}
       disabled={disabled}
-      aria-label={label}
-      title={label}
-      className={`inline-flex h-9 w-9 items-center justify-center rounded-md border transition disabled:cursor-not-allowed disabled:opacity-60 ${toneClass}`}
+      className={`inline-flex items-center justify-center rounded-md border px-3 py-2 text-xs font-bold uppercase tracking-[0.08em] transition disabled:cursor-not-allowed disabled:opacity-60 ${toneClass}`}
     >
-      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4">
-        {actionIcons[icon].map((path) => (
-          <path
-            key={path}
-            d={path}
-            fill="none"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="1.9"
-          />
-        ))}
-      </svg>
+      {children}
     </button>
   );
 }
@@ -129,8 +94,10 @@ function ActionIconButton({ label, icon, tone = 'neutral', disabled = false, onC
 export default function AdminUsersPanel() {
   const [users, setUsers] = useState([]);
   const [draftRoles, setDraftRoles] = useState({});
+  const [draftNames, setDraftNames] = useState({});
   const [draftCompanies, setDraftCompanies] = useState({});
   const [inviteEmail, setInviteEmail] = useState('');
+  const [inviteName, setInviteName] = useState('');
   const [inviteCompany, setInviteCompany] = useState('');
   const [inviteRoles, setInviteRoles] = useState(['client']);
   const [status, setStatus] = useState('Loading users...');
@@ -144,6 +111,9 @@ export default function AdminUsersPanel() {
       setUsers(payload.users || []);
       setDraftRoles(
         Object.fromEntries((payload.users || []).map((user) => [user.id, user.roles || []])),
+      );
+      setDraftNames(
+        Object.fromEntries((payload.users || []).map((user) => [user.id, user.name || ''])),
       );
       setDraftCompanies(
         Object.fromEntries((payload.users || []).map((user) => [user.id, user.company || ''])),
@@ -168,11 +138,13 @@ export default function AdminUsersPanel() {
         method: 'POST',
         body: JSON.stringify({
           email: inviteEmail,
+          name: inviteName,
           company: inviteCompany,
           roles: inviteRoles,
         }),
       });
       setInviteEmail('');
+      setInviteName('');
       setInviteCompany('');
       setInviteRoles(['client']);
       setStatus(`Invitation sent to ${payload.user?.email || 'the new user'}.`);
@@ -190,6 +162,7 @@ export default function AdminUsersPanel() {
       const payload = await requestJson(`/api/portal/admin/users/${encodeURIComponent(user.id)}/`, {
         method: 'PATCH',
         body: JSON.stringify({
+          name: draftNames[user.id] ?? user.name ?? '',
           company: draftCompanies[user.id] ?? user.company ?? '',
           roles: draftRoles[user.id] || user.roles || [],
           disabled: user.disabled,
@@ -198,6 +171,7 @@ export default function AdminUsersPanel() {
       });
       setUsers((current) => current.map((item) => (item.id === user.id ? payload.user : item)));
       setDraftRoles((current) => ({ ...current, [user.id]: payload.user.roles || [] }));
+      setDraftNames((current) => ({ ...current, [user.id]: payload.user.name || '' }));
       setDraftCompanies((current) => ({ ...current, [user.id]: payload.user.company || '' }));
       setStatus(`Updated ${payload.user.email}.`);
     } catch (error) {
@@ -246,7 +220,7 @@ export default function AdminUsersPanel() {
           </button>
         </div>
 
-        <form onSubmit={inviteUser} className="mt-6 grid gap-4 lg:grid-cols-[0.85fr_0.85fr_1.1fr_auto] lg:items-end">
+        <form onSubmit={inviteUser} className="mt-6 grid gap-4 lg:grid-cols-[0.85fr_0.75fr_0.75fr_1.1fr_auto] lg:items-end">
           <label className="grid gap-2 text-sm font-semibold text-slate-900">
             Email
             <input
@@ -255,6 +229,16 @@ export default function AdminUsersPanel() {
               value={inviteEmail}
               onChange={(event) => setInviteEmail(event.target.value)}
               placeholder="name@company.com"
+              className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-950 outline-none transition focus:border-[#14B8A6] focus:ring-4 focus:ring-[#14B8A6]/12"
+            />
+          </label>
+          <label className="grid gap-2 text-sm font-semibold text-slate-900">
+            Name
+            <input
+              type="text"
+              value={inviteName}
+              onChange={(event) => setInviteName(event.target.value)}
+              placeholder="Display name"
               className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-950 outline-none transition focus:border-[#14B8A6] focus:ring-4 focus:ring-[#14B8A6]/12"
             />
           </label>
@@ -290,10 +274,11 @@ export default function AdminUsersPanel() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[1120px] border-collapse text-left">
+          <table className="w-full min-w-[1380px] border-collapse text-left">
             <thead className="bg-slate-50 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-slate-500">
               <tr>
                 <th className="px-6 py-4 md:px-8">User</th>
+                <th className="px-6 py-4">Name</th>
                 <th className="px-6 py-4">Company</th>
                 <th className="px-6 py-4">Roles</th>
                 <th className="px-6 py-4">Status</th>
@@ -308,6 +293,17 @@ export default function AdminUsersPanel() {
                     <div className="font-semibold text-slate-950">{user.email}</div>
                     <div className="mt-1 text-xs text-slate-400">{user.id}</div>
                     <div className="mt-2 text-xs text-slate-500">Created {formatDate(user.createdAt)}</div>
+                  </td>
+                  <td className="px-6 py-5">
+                    <input
+                      type="text"
+                      value={draftNames[user.id] ?? user.name ?? ''}
+                      onChange={(event) =>
+                        setDraftNames((current) => ({ ...current, [user.id]: event.target.value }))
+                      }
+                      placeholder="Display name"
+                      className="w-full rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition focus:border-[#14B8A6] focus:ring-4 focus:ring-[#14B8A6]/12"
+                    />
                   </td>
                   <td className="px-6 py-5">
                     <input
@@ -337,34 +333,34 @@ export default function AdminUsersPanel() {
                   </td>
                   <td className="px-6 py-5 text-slate-600">{formatDate(user.lastSignInAt)}</td>
                   <td className="px-6 py-5 text-right md:px-8">
-                    <div className="flex justify-end gap-2">
-                      <ActionIconButton
-                        label={`Save changes for ${user.email}`}
-                        icon="save"
+                    <div className="flex flex-wrap justify-end gap-2">
+                      <ActionButton
                         tone="primary"
                         onClick={() => saveUser(user)}
                         disabled={busyId === user.id}
-                      />
-                      <ActionIconButton
-                        label={`${user.disabled ? 'Enable' : 'Disable'} ${user.email}`}
-                        icon={user.disabled ? 'enable' : 'disable'}
+                      >
+                        Save
+                      </ActionButton>
+                      <ActionButton
                         onClick={() => saveUser(user, { disabled: !user.disabled })}
                         disabled={busyId === user.id}
-                      />
-                      <ActionIconButton
-                        label={`Delete ${user.email}`}
-                        icon="delete"
+                      >
+                        {user.disabled ? 'Enable' : 'Disable'}
+                      </ActionButton>
+                      <ActionButton
                         tone="danger"
                         onClick={() => deleteUser(user)}
                         disabled={busyId === user.id}
-                      />
+                      >
+                        Delete
+                      </ActionButton>
                     </div>
                   </td>
                 </tr>
               ))}
               {!users.length && !loading ? (
                 <tr>
-                  <td colSpan={6} className="px-6 py-8 text-center text-slate-500">
+                  <td colSpan={7} className="px-6 py-8 text-center text-slate-500">
                     No users found.
                   </td>
                 </tr>

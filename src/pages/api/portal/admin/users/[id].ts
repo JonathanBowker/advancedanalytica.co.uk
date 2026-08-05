@@ -49,6 +49,7 @@ function toClientUser(user: any) {
   return {
     id: user.id,
     email: user.email || '',
+    name: getProfileValue(userMetadata, 'full_name', 'name', 'display_name'),
     company: getProfileValue(userMetadata, 'company', 'company_name', 'organisation', 'organization'),
     roles,
     disabled: Boolean(user.banned_until),
@@ -69,6 +70,7 @@ export const PATCH: APIRoute = async ({ request, cookies, params }) => {
 
   const id = String(params.id || '').trim();
   const body = await request.json().catch(() => ({}));
+  const name = cleanText(body.name);
   const company = cleanText(body.company);
   const roles = normalizeRoles(body.roles);
 
@@ -88,6 +90,9 @@ export const PATCH: APIRoute = async ({ request, cookies, params }) => {
     },
     user_metadata: {
       ...(existingUser?.user_metadata || {}),
+      full_name: name,
+      name,
+      display_name: name,
       company,
     },
     ban_duration: body.disabled ? '876000h' : 'none',
