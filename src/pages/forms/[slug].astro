@@ -56,14 +56,20 @@ function firstProfileValue(...keys: string[]) {
   return '';
 }
 
+function companyFromEmail(email: string) {
+  const domain = email.split('@')[1] || '';
+  const company = domain.split('.')[0]?.replace(/[-_]+/g, ' ').trim();
+  return company || '';
+}
+
 const displayUserName =
   firstProfileValue('full_name', 'name', 'display_name') ||
   (previewMode ? 'Local preview user' : '');
 const displayUserCompany =
   firstProfileValue('company', 'company_name', 'organisation', 'organization') ||
-  (previewMode ? 'Advanced Analytica Preview' : '');
-const signedInName = displayUserName || displayUserEmail;
-const signedInCompany = displayUserCompany || 'your company';
+  (previewMode ? 'Advanced Analytica Preview' : companyFromEmail(displayUserEmail));
+const signedInEmail = displayUserEmail;
+const signedInCompany = displayUserCompany;
 const creativeWorkTypes = [
   ['social_media_post', 'Social media post'],
   ['email_campaign', 'Email campaign'],
@@ -310,8 +316,8 @@ const formErrorMessage =
       .native-shell {
         min-height: 100vh;
         background:
-          radial-gradient(circle at 12% 8%, rgba(20, 184, 166, 0.12), transparent 28%),
-          linear-gradient(135deg, #f8fafc 0%, #fff 48%, #eef7f6 100%);
+          radial-gradient(circle at 12% 8%, rgba(237, 27, 47, 0.12), transparent 28%),
+          linear-gradient(135deg, #f8fafc 0%, #fff 48%, #fff1f2 100%);
         padding: 28px 18px 48px;
       }
 
@@ -345,7 +351,7 @@ const formErrorMessage =
       }
 
       .native-label {
-        color: #14b8a6;
+        color: #ed1b2f;
         font-size: 0.72rem;
         font-weight: 800;
         letter-spacing: 0.22em;
@@ -385,8 +391,8 @@ const formErrorMessage =
         justify-self: start;
         max-width: 54ch;
         border-radius: 22px 22px 22px 6px;
-        background: #eef7f6;
-        color: #0f766e;
+        background: #fff1f2;
+        color: #b91c1c;
         padding: 16px 18px;
         font-size: 0.96rem;
         line-height: 1.65;
@@ -468,8 +474,8 @@ const formErrorMessage =
       .native-input:focus,
       .native-select:focus,
       .native-file:focus {
-        border-color: #14b8a6;
-        box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.13);
+        border-color: #ed1b2f;
+        box-shadow: 0 0 0 4px rgba(237, 27, 47, 0.13);
       }
 
       .native-file {
@@ -591,7 +597,7 @@ const formErrorMessage =
         width: 20px;
         height: 20px;
         border: 2px solid rgba(100, 116, 139, 0.28);
-        border-top-color: #0f766e;
+        border-top-color: #ed1b2f;
         border-radius: 999px;
         animation: native-file-spin 700ms linear infinite;
       }
@@ -664,9 +670,9 @@ const formErrorMessage =
       }
 
       .native-note {
-        border: 1px solid rgba(20, 184, 166, 0.2);
-        background: rgba(20, 184, 166, 0.08);
-        color: #0f766e;
+        border: 1px solid rgba(237, 27, 47, 0.2);
+        background: rgba(237, 27, 47, 0.08);
+        color: #b91c1c;
       }
 
       .native-error {
@@ -679,8 +685,8 @@ const formErrorMessage =
         justify-self: start;
         border: 0;
         border-radius: 999px;
-        background: #14b8a6;
-        color: #041311;
+        background: #ed1b2f;
+        color: #fff;
         cursor: pointer;
         font-size: 0.88rem;
         font-weight: 900;
@@ -694,7 +700,7 @@ const formErrorMessage =
 
       .native-submit:hover,
       .native-submit:focus-visible {
-        background: #2dd4bf;
+        background: #c8102e;
         transform: translateY(-1px);
       }
 
@@ -765,7 +771,7 @@ const formErrorMessage =
 
                     <section class="native-chat-step">
                       <div class="native-chat-bubble">
-                        You are signed in as {signedInName} from {signedInCompany}. Let's add the creative context MagiKit needs for the expiry and rule checks.
+                        You are signed in as {signedInEmail} from {signedInCompany}. Let's add the creative context MagiKit needs for the expiry and rule checks.
                       </div>
                     </section>
 
