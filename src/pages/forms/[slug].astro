@@ -973,7 +973,7 @@ const formErrorMessage =
                       />
                     </div>
                     <p class="native-copy">
-                      Upload creative work for MagiKit assessment and approval. Submit a PDF, DOCX, PNG, or JPEG creative and we'll package your profile details and intake context into the Disney compliance pipeline manifest.
+                      Upload creative work for MagiKit assessment and approval. Submit a PDF, DOCX, PNG, or JPEG creative and we'll package your profile details and intake context into the Disney compliance pipeline manifest
                     </p>
                   </header>
 
@@ -1099,13 +1099,13 @@ const formErrorMessage =
 
                       <div class="native-review-loader" data-review-loader hidden aria-live="polite">
                         <span class="native-review-spinner" aria-hidden="true"></span>
-                        <span>Preparing your review summary...</span>
+                        <span>Preparing your review. Nothing has been uploaded yet.</span>
                       </div>
 
                       <section class="native-review" data-review-panel hidden tabindex="-1" aria-live="polite">
                         <div>
                           <h3>Review before sending.</h3>
-                          <p>Check the completed submission below. You can edit anything before the file is uploaded.</p>
+                          <p>Your file has not been uploaded yet. Check the details below, edit anything you need, then choose Send for Assessment.</p>
                         </div>
 	                        <dl class="native-review-list">
 	                          <div class="native-review-row">
@@ -1145,7 +1145,7 @@ const formErrorMessage =
                       </section>
 
                       <div class="native-actions">
-                        <button class="native-submit" type="submit" data-submit-button>Review submission</button>
+                        <button class="native-submit" type="submit" data-submit-button>Review before sending</button>
                         <button class="native-reset" type="reset" data-form-reset>Reset form</button>
                       </div>
                     </section>
@@ -1375,7 +1375,7 @@ const formErrorMessage =
             if (reviewPanel instanceof HTMLElement) reviewPanel.hidden = true;
             if (submitButton instanceof HTMLButtonElement) {
               submitButton.disabled = false;
-              submitButton.textContent = 'Review submission';
+              submitButton.textContent = 'Review before sending';
             }
           };
 
