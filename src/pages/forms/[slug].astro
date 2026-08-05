@@ -514,6 +514,8 @@ const creativeWorkTypes = [
                               ? 'Choose a creative file to upload.'
                               : formError === 'pipeline'
                                 ? 'MagiKit could not queue that file for processing. Please try again.'
+                                : formError === 'date'
+                                  ? 'Enter valid activity start and end dates. The end date must be on or after the start date.'
                                 : 'We could not receive that submission. Please check the form and try again.'}
                       </div>
                     ) : null}
@@ -563,6 +565,26 @@ const creativeWorkTypes = [
                         <select class="native-select" name="disneyProperty" required>
                           <option value="disneyland_hotel" selected>Disneyland Hotel</option>
                         </select>
+                      </label>
+
+                      <label class="native-field">
+                        Activity start date
+                        <input
+                          class="native-input"
+                          type="date"
+                          name="activityStartDate"
+                          required
+                        />
+                      </label>
+
+                      <label class="native-field">
+                        Activity end date
+                        <input
+                          class="native-input"
+                          type="date"
+                          name="activityEndDate"
+                          required
+                        />
                       </label>
                     </div>
 

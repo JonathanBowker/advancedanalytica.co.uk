@@ -68,6 +68,13 @@ function getEnvValue(name: string) {
   return String((import.meta.env as Record<string, string | undefined>)[name] || process.env[name] || '').trim();
 }
 
+function isValidDateField(value: string) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+
+  const parsed = new Date(`${value}T00:00:00.000Z`);
+  return !Number.isNaN(parsed.valueOf()) && parsed.toISOString().slice(0, 10) === value;
+}
+
 async function forwardToPipeline({
   endpoint,
   file,
@@ -143,6 +150,16 @@ export const POST: APIRoute = async ({ request, cookies, params }) => {
     return redirectToForm(slug, { error: 'invalid' });
   }
 
+  const activityStartDate = cleanText(formData.get('activityStartDate'));
+  const activityEndDate = cleanText(formData.get('activityEndDate'));
+  if (
+    !isValidDateField(activityStartDate) ||
+    !isValidDateField(activityEndDate) ||
+    activityEndDate < activityStartDate
+  ) {
+    return redirectToForm(slug, { error: 'date' });
+  }
+
   const name = cleanText(formData.get('name'));
   const company = cleanText(formData.get('company'));
   const email = String(user.email || '').trim().toLowerCase();
@@ -167,6 +184,8 @@ export const POST: APIRoute = async ({ request, cookies, params }) => {
     channel: creativeTypeChannels[creativeType],
     market: 'UK & Ireland',
     intended_destinations: ['disneyland_paris'],
+    publication_date: activityStartDate,
+    campaign_end_date: activityEndDate,
     disney_template_used: false,
     magiKit_asset_ids: [],
     approval_records: [],
@@ -191,6 +210,12 @@ export const POST: APIRoute = async ({ request, cookies, params }) => {
       value: creativeType,
       label: creativeTypeLabels[creativeType],
       manifest_channel: creativeTypeChannels[creativeType],
+    },
+    activity: {
+      start_date: activityStartDate,
+      end_date: activityEndDate,
+      manifest_publication_date: activityStartDate,
+      manifest_campaign_end_date: activityEndDate,
     },
     file: {
       original_name: creative.name,
