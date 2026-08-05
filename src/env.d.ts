@@ -10,6 +10,8 @@ interface ImportMetaEnv {
   readonly SUPABASE_ANON_KEY?: string;
   readonly SUPABASE_SERVICE_ROLE_KEY?: string;
   readonly PORTAL_SUPERADMIN_EMAILS?: string;
+  readonly DISNEY_PIPELINE_INBOX_DIR?: string;
+  readonly DISNEY_PIPELINE_INGEST_URL?: string;
 }
 
 interface ImportMeta {

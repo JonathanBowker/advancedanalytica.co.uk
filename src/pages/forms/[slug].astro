@@ -41,6 +41,36 @@ const iframeTitle = `${service.name} embedded form`;
 const isExternalEmbed = Boolean(service.embeddedFormUrl);
 const typebotId = getTypebotId(service.embeddedFormUrl);
 const usesTypebotEmbed = Boolean(typebotId);
+const useNativeDisneyCapture = service.slug === 'brand-readiness-assessment';
+const submitted = Astro.url.searchParams.get('submitted') === '1';
+const submissionId = Astro.url.searchParams.get('submission') ?? '';
+const formError = Astro.url.searchParams.get('error') ?? '';
+const userMetadata = user?.user_metadata ?? {};
+
+function firstProfileValue(...keys: string[]) {
+  for (const key of keys) {
+    const value = userMetadata[key];
+    if (typeof value === 'string' && value.trim()) return value.trim();
+  }
+
+  return '';
+}
+
+const displayUserName =
+  firstProfileValue('full_name', 'name', 'display_name') ||
+  (previewMode ? 'Local preview user' : '');
+const displayUserCompany =
+  firstProfileValue('company', 'company_name', 'organisation', 'organization') ||
+  (previewMode ? 'Advanced Analytica Preview' : '');
+const creativeWorkTypes = [
+  ['social_media_post', 'Social media post'],
+  ['email_campaign', 'Email campaign'],
+  ['newsletter', 'Newsletter'],
+  ['brochure_print', 'Brochure / print'],
+  ['banner_display_ad', 'Banner / display ad'],
+  ['blog_vlog', 'Blog / Vlog'],
+  ['other', 'Other'],
+] as const;
 ---
 <!doctype html>
 <html lang="en">
@@ -259,6 +289,183 @@ const usesTypebotEmbed = Boolean(typebotId);
         color: #0f172a;
         opacity: 1;
       }
+
+      .native-shell {
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at 12% 8%, rgba(20, 184, 166, 0.12), transparent 28%),
+          linear-gradient(135deg, #f8fafc 0%, #fff 48%, #eef7f6 100%);
+        padding: 28px 18px 48px;
+      }
+
+      .native-card {
+        width: min(100%, 780px);
+        margin: 0 auto;
+        border: 1px solid rgba(15, 23, 42, 0.1);
+        border-radius: 30px;
+        background: rgba(255, 255, 255, 0.94);
+        box-shadow: 0 28px 90px rgba(15, 23, 42, 0.12);
+        overflow: hidden;
+      }
+
+      .native-header {
+        padding: clamp(28px, 6vw, 54px);
+        background: #080b10;
+        color: #fff;
+      }
+
+      .native-label {
+        color: #14b8a6;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+
+      .native-title {
+        margin: 16px 0 0;
+        font-family: var(--font-display, sans-serif);
+        font-size: clamp(2.4rem, 8vw, 5rem);
+        line-height: 0.92;
+        letter-spacing: -0.06em;
+      }
+
+      .native-copy {
+        max-width: 58ch;
+        margin: 20px 0 0;
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 1rem;
+        line-height: 1.75;
+      }
+
+      .native-form,
+      .native-thanks {
+        display: grid;
+        gap: 22px;
+        padding: clamp(24px, 5vw, 42px);
+      }
+
+      .native-grid {
+        display: grid;
+        gap: 18px;
+      }
+
+      @media (min-width: 760px) {
+        .native-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      .native-field {
+        display: grid;
+        gap: 8px;
+        color: #0f172a;
+        font-size: 0.9rem;
+        font-weight: 750;
+      }
+
+      .native-field span {
+        display: inline-flex;
+        gap: 6px;
+        align-items: baseline;
+      }
+
+      .native-field small {
+        color: #64748b;
+        font-size: 0.78rem;
+        font-weight: 600;
+      }
+
+      .native-input,
+      .native-select,
+      .native-file {
+        width: 100%;
+        border: 1px solid rgba(148, 163, 184, 0.38);
+        border-radius: 18px;
+        background: #fff;
+        color: #0f172a;
+        font: inherit;
+        padding: 14px 16px;
+        outline: none;
+        transition:
+          border-color 160ms ease,
+          box-shadow 160ms ease;
+      }
+
+      .native-input[readonly] {
+        color: #475569;
+        background: #f8fafc;
+      }
+
+      .native-input:focus,
+      .native-select:focus,
+      .native-file:focus {
+        border-color: #14b8a6;
+        box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.13);
+      }
+
+      .native-file {
+        padding: 13px;
+      }
+
+      .native-note,
+      .native-error {
+        border-radius: 18px;
+        padding: 14px 16px;
+        font-size: 0.92rem;
+        line-height: 1.6;
+      }
+
+      .native-note {
+        border: 1px solid rgba(20, 184, 166, 0.2);
+        background: rgba(20, 184, 166, 0.08);
+        color: #0f766e;
+      }
+
+      .native-error {
+        border: 1px solid #fecaca;
+        background: #fff1f2;
+        color: #9f1239;
+      }
+
+      .native-submit {
+        justify-self: start;
+        border: 0;
+        border-radius: 999px;
+        background: #14b8a6;
+        color: #041311;
+        cursor: pointer;
+        font-size: 0.88rem;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        padding: 15px 22px;
+        text-transform: uppercase;
+        transition:
+          background 160ms ease,
+          transform 160ms ease;
+      }
+
+      .native-submit:hover,
+      .native-submit:focus-visible {
+        background: #2dd4bf;
+        transform: translateY(-1px);
+      }
+
+      .native-thanks h1 {
+        margin: 0;
+        color: #0f172a;
+        font-family: var(--font-display, sans-serif);
+        font-size: clamp(2.1rem, 7vw, 4.4rem);
+        line-height: 0.95;
+        letter-spacing: -0.055em;
+      }
+
+      .native-thanks p {
+        margin: 0;
+        color: #475569;
+        font-size: 1rem;
+        line-height: 1.8;
+      }
     </style>
   </head>
   <body>
@@ -270,7 +477,127 @@ const usesTypebotEmbed = Boolean(typebotId);
           </a>
         ) : null}
         {previewMode ? <div class="preview-chip">Local preview</div> : null}
-        {usesTypebotEmbed ? (
+        {useNativeDisneyCapture ? (
+          <section class="native-shell">
+            <div class="native-card">
+              {submitted ? (
+                <div class="native-thanks">
+                  <div class="native-label">MagiKit received</div>
+                  <h1>Thank you. Your creative is in the queue.</h1>
+                  <p>
+                    MagiKit has received your Disney Brand Compliance pre-screening submission. We’ll process the creative work against the evidence-first pipeline and prepare the next review output.
+                  </p>
+                  {submissionId ? (
+                    <p>
+                      Submission reference: <strong>{submissionId}</strong>
+                    </p>
+                  ) : null}
+                </div>
+              ) : (
+                <>
+                  <header class="native-header">
+                    <div class="native-label">Disney creative pre-screen</div>
+                    <h1 class="native-title">Upload creative work for MagiKit.</h1>
+                    <p class="native-copy">
+                      Submit a PDF, DOCX, PNG, or JPEG creative. We’ll package your profile details and intake context into the Disney compliance pipeline manifest.
+                    </p>
+                  </header>
+
+                  <form class="native-form" action={`${nextPath}/submit`} method="post" enctype="multipart/form-data">
+                    {formError ? (
+                      <div class="native-error">
+                        {formError === 'file_type'
+                          ? 'Upload a PDF, DOCX, PNG, or JPEG file.'
+                          : formError === 'file_size'
+                            ? 'The file is too large. Upload a file under 25MB.'
+                            : formError === 'missing_file'
+                              ? 'Choose a creative file to upload.'
+                              : formError === 'pipeline'
+                                ? 'MagiKit could not queue that file for processing. Please try again.'
+                                : 'We could not receive that submission. Please check the form and try again.'}
+                      </div>
+                    ) : null}
+
+                    <div class="native-grid">
+                      <label class="native-field">
+                        <span>Name <small>from profile</small></span>
+                        <input
+                          class="native-input"
+                          type="text"
+                          name="name"
+                          autocomplete="name"
+                          required
+                          value={displayUserName}
+                          placeholder="Your name"
+                        />
+                      </label>
+
+                      <label class="native-field">
+                        <span>Email <small>signed in</small></span>
+                        <input
+                          class="native-input"
+                          type="email"
+                          name="email"
+                          autocomplete="email"
+                          required
+                          readonly
+                          value={displayUserEmail}
+                        />
+                      </label>
+
+                      <label class="native-field">
+                        <span>Company <small>from profile</small></span>
+                        <input
+                          class="native-input"
+                          type="text"
+                          name="company"
+                          autocomplete="organization"
+                          required
+                          value={displayUserCompany}
+                          placeholder="Company"
+                        />
+                      </label>
+
+                      <label class="native-field">
+                        Disney property
+                        <select class="native-select" name="disneyProperty" required>
+                          <option value="disneyland_hotel" selected>Disneyland Hotel</option>
+                        </select>
+                      </label>
+                    </div>
+
+                    <label class="native-field">
+                      Type of creative work
+                      <select class="native-select" name="creativeType" required>
+                        <option value="">Select a format</option>
+                        {creativeWorkTypes.map(([value, label]) => (
+                          <option value={value}>{label}</option>
+                        ))}
+                      </select>
+                    </label>
+
+                    <label class="native-field">
+                      Upload creative work
+                      <input
+                        class="native-file"
+                        type="file"
+                        name="creative"
+                        accept=".pdf,.docx,.png,.jpg,.jpeg,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/png,image/jpeg"
+                        required
+                      />
+                    </label>
+
+                    <div class="native-note">
+                      Accepted files: PDF, DOCX, PNG, JPEG. This is a pre-screening workflow, not final Disney approval.
+                    </div>
+
+                    <button class="native-submit" type="submit">Send to MagiKit</button>
+                  </form>
+                </>
+              )}
+            </div>
+          </section>
+        ) : usesTypebotEmbed ? (
           <div class="embed-typebot">
             <TypebotStandardEmbed client:only="react" typebot={typebotId} />
           </div>
