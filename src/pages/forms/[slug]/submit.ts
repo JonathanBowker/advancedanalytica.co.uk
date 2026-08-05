@@ -3,6 +3,7 @@ import { createHash, randomUUID } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { createSupabaseServerClient, isSupabaseConfigured } from '../../../lib/supabaseServer';
+import { sendTransactionalEmail } from '../../../lib/transactionalEmail';
 
 export const prerender = false;
 
@@ -68,11 +69,99 @@ function getEnvValue(name: string) {
   return String((import.meta.env as Record<string, string | undefined>)[name] || process.env[name] || '').trim();
 }
 
+function getProfileValue(metadata: Record<string, unknown>, ...keys: string[]) {
+  for (const key of keys) {
+    const value = metadata[key];
+    if (typeof value === 'string' && value.trim()) return value.trim();
+  }
+
+  return '';
+}
+
+function companyFromEmail(email: string) {
+  const domain = email.split('@')[1] || '';
+  const company = domain.split('.')[0]?.replace(/[-_]+/g, ' ').trim();
+  return company || 'Unknown company';
+}
+
 function isValidDateField(value: string) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
 
   const parsed = new Date(`${value}T00:00:00.000Z`);
   return !Number.isNaN(parsed.valueOf()) && parsed.toISOString().slice(0, 10) === value;
+}
+
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function buildSubmissionReferenceEmail({
+  name,
+  submissionId,
+  disneyProperty,
+  creativeType,
+  activityStartDate,
+  activityEndDate,
+  filename,
+}: {
+  name: string;
+  submissionId: string;
+  disneyProperty: string;
+  creativeType: string;
+  activityStartDate: string;
+  activityEndDate: string;
+  filename: string;
+}) {
+  const greeting = name ? `Hi ${name},` : 'Hi,';
+  const text = [
+    greeting,
+    '',
+    'MagiKit has received your Disney Brand Compliance pre-screening submission.',
+    '',
+    `Submission reference: ${submissionId}`,
+    `Disney property: ${disneyProperty}`,
+    `Content type: ${creativeType}`,
+    `Activity dates: ${activityStartDate} to ${activityEndDate}`,
+    `File: ${filename}`,
+    '',
+    'This is a pre-screening workflow for review support and does not replace final Disney approval.',
+    '',
+    'Advanced Analytica',
+  ].join('\n');
+
+  const html = `<!doctype html>
+<html>
+  <body style="margin:0;background:#f3f6fb;padding:28px;font-family:Arial,sans-serif;color:#0f172a;">
+    <div style="max-width:640px;margin:0 auto;">
+      <div style="padding:0 0 18px;">
+        <img src="https://advancedanalytica.co.uk/images/infrastructure/logo-black.svg" alt="Advanced Analytica" style="display:block;width:188px;height:auto;" />
+      </div>
+      <div style="border-radius:24px;background:#090d14;color:#ffffff;padding:34px;">
+        <div style="font-size:12px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#14b8a6;">MagiKit submission</div>
+        <h1 style="margin:18px 0 0;font-size:34px;line-height:1.05;">Your creative is in the queue</h1>
+        <p style="margin:18px 0 0;color:#cbd5e1;font-size:16px;line-height:1.65;">${escapeHtml(greeting)} MagiKit has received your Disney Brand Compliance pre-screening submission.</p>
+        <div style="margin:26px 0 0;border-radius:18px;background:#ffffff;color:#0f172a;padding:20px;">
+          <div style="font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#64748b;">Submission reference</div>
+          <div style="margin-top:8px;font-size:18px;font-weight:800;line-height:1.35;word-break:break-word;">${escapeHtml(submissionId)}</div>
+        </div>
+        <table role="presentation" style="width:100%;margin-top:22px;border-collapse:collapse;color:#cbd5e1;font-size:14px;line-height:1.5;">
+          <tr><td style="padding:6px 0;color:#94a3b8;">Disney property</td><td style="padding:6px 0;text-align:right;color:#ffffff;">${escapeHtml(disneyProperty)}</td></tr>
+          <tr><td style="padding:6px 0;color:#94a3b8;">Content type</td><td style="padding:6px 0;text-align:right;color:#ffffff;">${escapeHtml(creativeType)}</td></tr>
+          <tr><td style="padding:6px 0;color:#94a3b8;">Activity dates</td><td style="padding:6px 0;text-align:right;color:#ffffff;">${escapeHtml(activityStartDate)} to ${escapeHtml(activityEndDate)}</td></tr>
+          <tr><td style="padding:6px 0;color:#94a3b8;">File</td><td style="padding:6px 0;text-align:right;color:#ffffff;">${escapeHtml(filename)}</td></tr>
+        </table>
+        <p style="margin:24px 0 0;color:#94a3b8;font-size:13px;line-height:1.65;">This is a pre-screening workflow for review support and does not replace final Disney approval.</p>
+      </div>
+    </div>
+  </body>
+</html>`;
+
+  return { text, html };
 }
 
 async function forwardToPipeline({
@@ -160,9 +249,17 @@ export const POST: APIRoute = async ({ request, cookies, params }) => {
     return redirectToForm(slug, { error: 'date' });
   }
 
-  const name = cleanText(formData.get('name'));
-  const company = cleanText(formData.get('company'));
   const email = String(user.email || '').trim().toLowerCase();
+  const userMetadata = user.user_metadata || {};
+  const name =
+    cleanText(formData.get('name')) ||
+    getProfileValue(userMetadata, 'full_name', 'name', 'display_name') ||
+    email.split('@')[0] ||
+    'Signed-in user';
+  const company =
+    cleanText(formData.get('company')) ||
+    getProfileValue(userMetadata, 'company', 'company_name', 'organisation', 'organization') ||
+    companyFromEmail(email);
 
   if (!name || !company || !email) {
     return redirectToForm(slug, { error: 'invalid' });
@@ -253,6 +350,25 @@ export const POST: APIRoute = async ({ request, cookies, params }) => {
   } catch (error) {
     console.error('Failed to queue Disney creative submission', error);
     return redirectToForm(slug, { error: 'pipeline' });
+  }
+
+  const confirmationEmail = buildSubmissionReferenceEmail({
+    name,
+    submissionId,
+    disneyProperty: 'Disneyland Hotel',
+    creativeType: creativeTypeLabels[creativeType],
+    activityStartDate,
+    activityEndDate,
+    filename: creative.name,
+  });
+  const emailResult = await sendTransactionalEmail({
+    to: email,
+    subject: `MagiKit submission received: ${submissionId}`,
+    text: confirmationEmail.text,
+    html: confirmationEmail.html,
+  });
+  if (!emailResult.ok) {
+    console.error('Failed to send MagiKit submission confirmation', emailResult.error);
   }
 
   return redirectToForm(slug, {
