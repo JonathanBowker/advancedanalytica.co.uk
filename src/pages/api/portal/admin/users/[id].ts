@@ -28,6 +28,19 @@ function normalizeRoles(value: unknown) {
   );
 }
 
+function cleanText(value: unknown) {
+  return String(value || '').trim();
+}
+
+function getProfileValue(metadata: Record<string, unknown>, ...keys: string[]) {
+  for (const key of keys) {
+    const value = metadata[key];
+    if (typeof value === 'string' && value.trim()) return value.trim();
+  }
+
+  return '';
+}
+
 function toClientUser(user: any) {
   const appMetadata = user?.app_metadata || {};
   const userMetadata = user?.user_metadata || {};
@@ -36,6 +49,7 @@ function toClientUser(user: any) {
   return {
     id: user.id,
     email: user.email || '',
+    company: getProfileValue(userMetadata, 'company', 'company_name', 'organisation', 'organization'),
     roles,
     disabled: Boolean(user.banned_until),
     emailConfirmedAt: user.email_confirmed_at || '',
@@ -55,15 +69,26 @@ export const PATCH: APIRoute = async ({ request, cookies, params }) => {
 
   const id = String(params.id || '').trim();
   const body = await request.json().catch(() => ({}));
+  const company = cleanText(body.company);
   const roles = normalizeRoles(body.roles);
 
   if (!id) return portalJson({ error: 'Missing user id.' }, 400);
   if (!roles.length) return portalJson({ error: 'Choose at least one role.' }, 400);
 
   const admin = createSupabaseAdminClient();
+  const { data: existingData, error: existingError } = await admin.auth.admin.getUserById(id);
+
+  if (existingError) return portalJson({ error: existingError.message }, existingError.status || 400);
+
+  const existingUser = existingData.user;
   const { data, error } = await admin.auth.admin.updateUserById(id, {
     app_metadata: {
+      ...(existingUser?.app_metadata || {}),
       roles,
+    },
+    user_metadata: {
+      ...(existingUser?.user_metadata || {}),
+      company,
     },
     ban_duration: body.disabled ? '876000h' : 'none',
   });

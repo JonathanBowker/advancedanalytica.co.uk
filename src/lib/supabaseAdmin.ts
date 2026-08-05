@@ -7,8 +7,11 @@ function resolveEnvValue(publicValue: string | undefined, fallbackValue: string 
   return String(fallbackValue || '').trim();
 }
 
-const supabaseUrl = resolveEnvValue(import.meta.env.PUBLIC_SUPABASE_URL, import.meta.env.SUPABASE_URL);
-const serviceRoleKey = String(import.meta.env.SUPABASE_SERVICE_ROLE_KEY || '').trim();
+const supabaseUrl = resolveEnvValue(
+  import.meta.env.PUBLIC_SUPABASE_URL,
+  import.meta.env.SUPABASE_URL || process.env.SUPABASE_URL,
+);
+const serviceRoleKey = String(import.meta.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '').trim();
 
 export const isSupabaseAdminConfigured = Boolean(supabaseUrl && serviceRoleKey);
 

@@ -28,6 +28,19 @@ function normalizeRoles(value: unknown) {
   );
 }
 
+function cleanText(value: unknown) {
+  return String(value || '').trim();
+}
+
+function getProfileValue(metadata: Record<string, unknown>, ...keys: string[]) {
+  for (const key of keys) {
+    const value = metadata[key];
+    if (typeof value === 'string' && value.trim()) return value.trim();
+  }
+
+  return '';
+}
+
 function toClientUser(user: any) {
   const appMetadata = user?.app_metadata || {};
   const userMetadata = user?.user_metadata || {};
@@ -36,6 +49,7 @@ function toClientUser(user: any) {
   return {
     id: user.id,
     email: user.email || '',
+    company: getProfileValue(userMetadata, 'company', 'company_name', 'organisation', 'organization'),
     roles,
     disabled: Boolean(user.banned_until),
     emailConfirmedAt: user.email_confirmed_at || '',
@@ -74,10 +88,15 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
   const body = await request.json().catch(() => ({}));
   const email = String(body.email || '').trim().toLowerCase();
+  const company = cleanText(body.company);
   const roles = normalizeRoles(body.roles);
 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return portalJson({ error: 'Enter a valid email address.' }, 400);
+  }
+
+  if (!company) {
+    return portalJson({ error: 'Enter the user company.' }, 400);
   }
 
   if (!roles.length) {
@@ -87,6 +106,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   const admin = createSupabaseAdminClient();
   const { data, error } = await admin.auth.admin.inviteUserByEmail(email, {
     data: {
+      company,
       roles,
     },
   });
@@ -99,8 +119,23 @@ export const POST: APIRoute = async ({ request, cookies }) => {
         ...(data.user.app_metadata || {}),
         roles,
       },
+      user_metadata: {
+        ...(data.user.user_metadata || {}),
+        company,
+      },
     });
   }
 
-  return portalJson({ user: data.user ? toClientUser({ ...data.user, app_metadata: { ...(data.user.app_metadata || {}), roles } }) : null }, 201);
+  return portalJson(
+    {
+      user: data.user
+        ? toClientUser({
+            ...data.user,
+            app_metadata: { ...(data.user.app_metadata || {}), roles },
+            user_metadata: { ...(data.user.user_metadata || {}), company },
+          })
+        : null,
+    },
+    201,
+  );
 };

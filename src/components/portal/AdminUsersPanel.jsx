@@ -129,7 +129,9 @@ function ActionIconButton({ label, icon, tone = 'neutral', disabled = false, onC
 export default function AdminUsersPanel() {
   const [users, setUsers] = useState([]);
   const [draftRoles, setDraftRoles] = useState({});
+  const [draftCompanies, setDraftCompanies] = useState({});
   const [inviteEmail, setInviteEmail] = useState('');
+  const [inviteCompany, setInviteCompany] = useState('');
   const [inviteRoles, setInviteRoles] = useState(['client']);
   const [status, setStatus] = useState('Loading users...');
   const [busyId, setBusyId] = useState('');
@@ -142,6 +144,9 @@ export default function AdminUsersPanel() {
       setUsers(payload.users || []);
       setDraftRoles(
         Object.fromEntries((payload.users || []).map((user) => [user.id, user.roles || []])),
+      );
+      setDraftCompanies(
+        Object.fromEntries((payload.users || []).map((user) => [user.id, user.company || ''])),
       );
       setStatus('Loaded users from Supabase Auth.');
     } catch (error) {
@@ -163,10 +168,12 @@ export default function AdminUsersPanel() {
         method: 'POST',
         body: JSON.stringify({
           email: inviteEmail,
+          company: inviteCompany,
           roles: inviteRoles,
         }),
       });
       setInviteEmail('');
+      setInviteCompany('');
       setInviteRoles(['client']);
       setStatus(`Invitation sent to ${payload.user?.email || 'the new user'}.`);
       await loadUsers();
@@ -183,6 +190,7 @@ export default function AdminUsersPanel() {
       const payload = await requestJson(`/api/portal/admin/users/${encodeURIComponent(user.id)}/`, {
         method: 'PATCH',
         body: JSON.stringify({
+          company: draftCompanies[user.id] ?? user.company ?? '',
           roles: draftRoles[user.id] || user.roles || [],
           disabled: user.disabled,
           ...updates,
@@ -190,6 +198,7 @@ export default function AdminUsersPanel() {
       });
       setUsers((current) => current.map((item) => (item.id === user.id ? payload.user : item)));
       setDraftRoles((current) => ({ ...current, [user.id]: payload.user.roles || [] }));
+      setDraftCompanies((current) => ({ ...current, [user.id]: payload.user.company || '' }));
       setStatus(`Updated ${payload.user.email}.`);
     } catch (error) {
       setStatus(error?.message || 'Could not update user.');
@@ -237,7 +246,7 @@ export default function AdminUsersPanel() {
           </button>
         </div>
 
-        <form onSubmit={inviteUser} className="mt-6 grid gap-4 lg:grid-cols-[0.85fr_1.1fr_auto] lg:items-end">
+        <form onSubmit={inviteUser} className="mt-6 grid gap-4 lg:grid-cols-[0.85fr_0.85fr_1.1fr_auto] lg:items-end">
           <label className="grid gap-2 text-sm font-semibold text-slate-900">
             Email
             <input
@@ -246,6 +255,17 @@ export default function AdminUsersPanel() {
               value={inviteEmail}
               onChange={(event) => setInviteEmail(event.target.value)}
               placeholder="name@company.com"
+              className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-950 outline-none transition focus:border-[#14B8A6] focus:ring-4 focus:ring-[#14B8A6]/12"
+            />
+          </label>
+          <label className="grid gap-2 text-sm font-semibold text-slate-900">
+            Company
+            <input
+              type="text"
+              required
+              value={inviteCompany}
+              onChange={(event) => setInviteCompany(event.target.value)}
+              placeholder="Company name"
               className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-950 outline-none transition focus:border-[#14B8A6] focus:ring-4 focus:ring-[#14B8A6]/12"
             />
           </label>
@@ -274,6 +294,7 @@ export default function AdminUsersPanel() {
             <thead className="bg-slate-50 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-slate-500">
               <tr>
                 <th className="px-6 py-4 md:px-8">User</th>
+                <th className="px-6 py-4">Company</th>
                 <th className="px-6 py-4">Roles</th>
                 <th className="px-6 py-4">Status</th>
                 <th className="px-6 py-4">Last sign-in</th>
@@ -287,6 +308,17 @@ export default function AdminUsersPanel() {
                     <div className="font-semibold text-slate-950">{user.email}</div>
                     <div className="mt-1 text-xs text-slate-400">{user.id}</div>
                     <div className="mt-2 text-xs text-slate-500">Created {formatDate(user.createdAt)}</div>
+                  </td>
+                  <td className="px-6 py-5">
+                    <input
+                      type="text"
+                      value={draftCompanies[user.id] ?? user.company ?? ''}
+                      onChange={(event) =>
+                        setDraftCompanies((current) => ({ ...current, [user.id]: event.target.value }))
+                      }
+                      placeholder="Company name"
+                      className="w-full rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition focus:border-[#14B8A6] focus:ring-4 focus:ring-[#14B8A6]/12"
+                    />
                   </td>
                   <td className="px-6 py-5">
                     <RoleCheckboxes
@@ -332,7 +364,7 @@ export default function AdminUsersPanel() {
               ))}
               {!users.length && !loading ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-8 text-center text-slate-500">
+                  <td colSpan={6} className="px-6 py-8 text-center text-slate-500">
                     No users found.
                   </td>
                 </tr>
