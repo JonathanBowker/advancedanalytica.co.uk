@@ -776,6 +776,25 @@ const formErrorMessage =
         display: none;
       }
 
+      .native-processing {
+        display: grid;
+        justify-items: center;
+        gap: 12px;
+        border: 1px solid rgba(237, 27, 47, 0.18);
+        border-radius: 18px;
+        background: linear-gradient(135deg, rgba(237, 27, 47, 0.08), #fff 62%);
+        padding: 22px;
+        color: #475569;
+        font-size: 0.94rem;
+        font-weight: 750;
+        text-align: center;
+        box-shadow: 0 18px 48px rgba(237, 27, 47, 0.12);
+      }
+
+      .native-processing[hidden] {
+        display: none;
+      }
+
       .native-review-spinner {
         width: 34px;
         height: 34px;
@@ -805,6 +824,18 @@ const formErrorMessage =
         color: #64748b;
         font-size: 0.92rem;
         line-height: 1.6;
+      }
+
+      .native-processing strong {
+        color: #0f172a;
+        font-family: var(--font-display, sans-serif);
+        font-size: 1.15rem;
+        letter-spacing: -0.02em;
+      }
+
+      .native-processing span:last-child {
+        max-width: 42rem;
+        line-height: 1.65;
       }
 
       .native-review-list {
@@ -1156,6 +1187,15 @@ const formErrorMessage =
                         <button class="native-edit" type="button" data-edit-review>Edit details</button>
                       </section>
 
+                      <div class="native-processing" data-processing-panel hidden aria-live="assertive" aria-atomic="true">
+                        <span class="native-review-spinner" aria-hidden="true"></span>
+                        <strong>Submitting to Trailblazer.</strong>
+                        <span>
+                          We're uploading your file and processing the submission against the brand rules.
+                          This can take a few moments, so please keep this tab open until the thank-you message appears.
+                        </span>
+                      </div>
+
                       <div class="native-actions">
                         <button class="native-submit" type="submit" data-submit-button>Review before sending</button>
                         <button class="native-reset" type="reset" data-form-reset>Reset form</button>
@@ -1306,6 +1346,7 @@ const formErrorMessage =
           const submitButton = document.querySelector('[data-submit-button]');
           const reviewLoader = document.querySelector('[data-review-loader]');
           const reviewPanel = document.querySelector('[data-review-panel]');
+          const processingPanel = document.querySelector('[data-processing-panel]');
           const editReviewButton = document.querySelector('[data-edit-review]');
           const reviewProperty = document.querySelector('[data-review-property]');
           const reviewContentType = document.querySelector('[data-review-content-type]');
@@ -1318,6 +1359,7 @@ const formErrorMessage =
           let pdfJsPromise;
           let reviewReady = false;
           let reviewTimer = 0;
+          let isSubmitting = false;
           const PDF_THUMBNAIL_MAX_BYTES = 10 * 1024 * 1024;
           const PDF_THUMBNAIL_TIMEOUT_MS = 12000;
 
@@ -1385,10 +1427,13 @@ const formErrorMessage =
             reviewReady = false;
             if (reviewLoader instanceof HTMLElement) reviewLoader.hidden = true;
             if (reviewPanel instanceof HTMLElement) reviewPanel.hidden = true;
+            if (processingPanel instanceof HTMLElement) processingPanel.hidden = true;
             if (submitButton instanceof HTMLButtonElement) {
               submitButton.disabled = false;
               submitButton.textContent = 'Review before sending';
             }
+            if (resetButton instanceof HTMLButtonElement) resetButton.disabled = false;
+            if (editReviewButton instanceof HTMLButtonElement) editReviewButton.disabled = false;
           };
 
           const showReview = () => {
@@ -1434,6 +1479,22 @@ const formErrorMessage =
               if (submitButton instanceof HTMLButtonElement) submitButton.disabled = false;
               showReview();
             }, 2000);
+          };
+
+          const showProcessing = () => {
+            isSubmitting = true;
+            form.setAttribute('aria-busy', 'true');
+            if (reviewLoader instanceof HTMLElement) reviewLoader.hidden = true;
+            if (processingPanel instanceof HTMLElement) {
+              processingPanel.hidden = false;
+              processingPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            if (submitButton instanceof HTMLButtonElement) {
+              submitButton.disabled = true;
+              submitButton.textContent = 'Submitting...';
+            }
+            if (resetButton instanceof HTMLButtonElement) resetButton.disabled = true;
+            if (editReviewButton instanceof HTMLButtonElement) editReviewButton.disabled = true;
           };
 
           const withTimeout = (promise, timeoutMs) =>
@@ -1664,18 +1725,28 @@ const formErrorMessage =
           });
 
           form?.addEventListener('input', (event) => {
+            if (isSubmitting) return;
             if (event.target instanceof HTMLInputElement && event.target.type === 'hidden') return;
             if (reviewReady) resetReview();
           });
 
           form?.addEventListener('change', (event) => {
+            if (isSubmitting) return;
             if (event.target instanceof HTMLInputElement && event.target.type === 'hidden') return;
             if (reviewReady) resetReview();
           });
 
           form?.addEventListener('submit', (event) => {
             if (!(form instanceof HTMLFormElement)) return;
-            if (reviewReady) return;
+            if (isSubmitting) return;
+            if (reviewReady) {
+              event.preventDefault();
+              showProcessing();
+              window.requestAnimationFrame(() => {
+                window.setTimeout(() => form.submit(), 80);
+              });
+              return;
+            }
 
             event.preventDefault();
             if (!form.reportValidity()) return;
