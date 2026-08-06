@@ -811,6 +811,32 @@ async function runCompliancePipeline(params: OrchestrationParams): Promise<Orche
   }
 }
 
+function imageMatcherFromCompliance(compliance: OrchestrationStage): OrchestrationStage {
+  if (compliance.status !== 'completed') {
+    return {
+      status: 'skipped',
+      message: 'Skipped because compliance analysis did not complete.',
+    };
+  }
+
+  const evidence = compliance.evidence as any;
+  const matcher = evidence?.image_matcher;
+  const status = String(matcher?.status || '').toLowerCase();
+  if (status === 'completed' || status === 'skipped' || status === 'failed') {
+    return {
+      status,
+      endpoint: matcher.endpoint,
+      message: matcher.message || 'Compliance service returned image matcher evidence.',
+      evidence: matcher.evidence,
+    };
+  }
+
+  return {
+    status: 'skipped',
+    message: 'Skipped because the compliance service did not return image matcher evidence.',
+  };
+}
+
 async function runLegacyIngest(params: OrchestrationParams): Promise<OrchestrationStage> {
   const endpoint = params.getEnvValue('DISNEY_PIPELINE_INGEST_URL');
   if (!endpoint) {
@@ -857,11 +883,11 @@ async function runLegacyIngest(params: OrchestrationParams): Promise<Orchestrati
 }
 
 export async function orchestrateDisneySubmission(params: OrchestrationParams) {
-  const [imageMatcher, compliancePipeline, legacyIngest] = await Promise.all([
-    runImageMatcher(params),
+  const [compliancePipeline, legacyIngest] = await Promise.all([
     runCompliancePipeline(params),
     runLegacyIngest(params),
   ]);
+  const imageMatcher = imageMatcherFromCompliance(compliancePipeline);
 
   const resultWithoutMessage = {
     submission_id: params.submissionId,
