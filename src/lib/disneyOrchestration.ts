@@ -581,6 +581,7 @@ function buildFinalMessage(result: Omit<OrchestrationResult, 'final_message'>) {
   const matcherSummary = matcher.status === 'completed' ? summariseMatcherEvidence(matcher.evidence) : null;
   const complianceEvidence = compliance.evidence as any;
   const complianceStatus = complianceEvidence?.overall_status || complianceEvidence?.results?.overall_status;
+  const emailDelivery = complianceEvidence?.email_delivery;
   const ruleCounts = compliance.status === 'completed' ? countRuleStates(compliance.evidence) : null;
   const lines = [
     `Trailblazer test output for ${result.submission_id}`,
@@ -600,6 +601,11 @@ function buildFinalMessage(result: Omit<OrchestrationResult, 'final_message'>) {
     lines.push(
       `Pipeline status: ${complianceStatus}. Rules: ${ruleCounts.pass} pass, ${ruleCounts.fail} fail, ${ruleCounts.insufficient} insufficient evidence, ${ruleCounts.notApplicable} not applicable.`,
     );
+  }
+
+  if (emailDelivery?.status) {
+    const reason = emailDelivery.reason ? ` (${emailDelivery.reason})` : '';
+    lines.push(`Result email delivery: ${emailDelivery.status}${reason}.`);
   }
 
   lines.push('', 'This is a Trailblazer pre-screening test message, not final Disney approval.');

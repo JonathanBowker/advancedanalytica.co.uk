@@ -210,6 +210,10 @@ export const POST: APIRoute = async ({ request, cookies, params }) => {
       name: company,
       contact: `${name} <${email}>`,
     },
+    result_recipient: {
+      email,
+      display_name: name,
+    },
     source_asset: {
       original_name: creative.name,
       media_type: creative.type || 'application/octet-stream',
