@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { createHash, randomUUID } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { orchestrateDisneySubmission } from '../../../lib/disneyOrchestration';
 import { createSupabaseServerClient, isSupabaseConfigured } from '../../../lib/supabaseServer';
 
 export const prerender = false;
@@ -90,32 +91,6 @@ function isValidDateField(value: string) {
   return !Number.isNaN(parsed.valueOf()) && parsed.toISOString().slice(0, 10) === value;
 }
 
-async function forwardToPipeline({
-  endpoint,
-  file,
-  manifest,
-  submission,
-}: {
-  endpoint: string;
-  file: File;
-  manifest: Record<string, unknown>;
-  submission: Record<string, unknown>;
-}) {
-  const payload = new FormData();
-  payload.set('manifest', JSON.stringify(manifest));
-  payload.set('submission', JSON.stringify(submission));
-  payload.set('creative', file, file.name);
-
-  const response = await fetch(endpoint, {
-    method: 'POST',
-    body: payload,
-  });
-
-  if (!response.ok) {
-    throw new Error(`Pipeline ingest returned ${response.status}`);
-  }
-}
-
 export const POST: APIRoute = async ({ request, cookies, params }) => {
   const slug = String(params.slug || '').trim();
 
@@ -201,7 +176,8 @@ export const POST: APIRoute = async ({ request, cookies, params }) => {
   const safeOriginalName = safeFilename(creative.name);
   const storedFilename = `${submissionId}-${safeOriginalName}`;
   const uploadBuffer = Buffer.from(await creative.arrayBuffer());
-  const sha256 = createHash('sha256').update(uploadBuffer).digest('hex');
+  const uploadBytes = new Uint8Array(uploadBuffer);
+  const sha256 = createHash('sha256').update(uploadBytes).digest('hex');
 
   const manifest = {
     manifest_id: submissionId,
@@ -262,26 +238,34 @@ export const POST: APIRoute = async ({ request, cookies, params }) => {
 
   const inboxDir = getEnvValue('DISNEY_PIPELINE_INBOX_DIR') || defaultInboxDir;
   const submissionDir = join(inboxDir, submissionId);
+  const storedFilePath = join(submissionDir, storedFilename);
   try {
     await mkdir(submissionDir, { recursive: true });
     await Promise.all([
-      writeFile(join(submissionDir, storedFilename), uploadBuffer),
+      writeFile(storedFilePath, uploadBytes),
       writeFile(join(submissionDir, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n', 'utf8'),
       writeFile(join(submissionDir, 'submission.json'), JSON.stringify(submission, null, 2) + '\n', 'utf8'),
     ]);
-
-    const pipelineIngestUrl = getEnvValue('DISNEY_PIPELINE_INGEST_URL');
-    if (pipelineIngestUrl) {
-      await forwardToPipeline({
-        endpoint: pipelineIngestUrl,
-        file: creative,
-        manifest,
-        submission,
-      });
-    }
   } catch (error) {
     console.error('Failed to queue Disney creative submission', error);
     return redirectToForm(slug, { error: 'pipeline' });
+  }
+
+  try {
+    await orchestrateDisneySubmission({
+      submissionId,
+      submissionDir,
+      storedFilePath,
+      storedFilename,
+      originalFilename: creative.name,
+      mediaType: creative.type || 'application/octet-stream',
+      manifest,
+      submission,
+      creativeFile: creative,
+      getEnvValue,
+    });
+  } catch (error) {
+    console.error('Failed to orchestrate Disney creative submission', error);
   }
 
   return redirectToForm(slug, {

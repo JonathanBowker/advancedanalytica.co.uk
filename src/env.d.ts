@@ -12,6 +12,12 @@ interface ImportMetaEnv {
   readonly PORTAL_SUPERADMIN_EMAILS?: string;
   readonly DISNEY_PIPELINE_INBOX_DIR?: string;
   readonly DISNEY_PIPELINE_INGEST_URL?: string;
+  readonly DISNEY_IMAGE_MATCHER_URL?: string;
+  readonly DISNEY_IMAGE_MATCHER_SCAN_URL?: string;
+  readonly DISNEY_IMAGE_MATCHER_API_KEY?: string;
+  readonly DISNEY_COMPLIANCE_API_URL?: string;
+  readonly DISNEY_COMPLIANCE_AUDIT_URL?: string;
+  readonly DISNEY_COMPLIANCE_API_KEY?: string;
 }
 
 interface ImportMeta {
