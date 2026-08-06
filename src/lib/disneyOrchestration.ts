@@ -1,6 +1,6 @@
 import { execFile } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { access, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { access, mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { basename, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -55,6 +55,8 @@ type OrchestrationParams = {
 };
 
 const defaultTimeoutMs = 60_000;
+const defaultMaxPdfPagesForMatching = 12;
+const defaultMaxPdfImagesForMatching = 24;
 const pngSignature = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
 const jpegSofMarkers = new Set([0xc0, 0xc1, 0xc2, 0xc3, 0xc5, 0xc6, 0xc7, 0xc9, 0xca, 0xcb, 0xcd, 0xce, 0xcf]);
 
@@ -188,6 +190,30 @@ async function execFileBufferWithTimeout(command: string, args: string[], timeou
   });
 }
 
+function positiveIntFromEnv(value: string, fallback: number) {
+  const parsed = Number.parseInt(value, 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+}
+
+function mediaTypeFromImageFilename(filename: string) {
+  const lower = filename.toLowerCase();
+  if (lower.endsWith('.png')) return 'image/png';
+  if (lower.endsWith('.jpg') || lower.endsWith('.jpeg')) return 'image/jpeg';
+  return 'application/octet-stream';
+}
+
+async function getPdfPageCount(filePath: string) {
+  if (!(await commandExists('pdfinfo'))) return 0;
+
+  try {
+    const { stdout } = await execFileWithTimeout('pdfinfo', [filePath], 15_000);
+    const pages = stdout.match(/^Pages:\s+(\d+)/im);
+    return pages ? Number.parseInt(pages[1], 10) : 0;
+  } catch {
+    return 0;
+  }
+}
+
 async function writeMatcherVisualInput({
   buffer,
   filePath,
@@ -214,57 +240,165 @@ async function writeMatcherVisualInput({
   };
 }
 
-async function renderPdfFirstPage(params: OrchestrationParams, visualDir: string) {
+async function renderPdfPages(params: OrchestrationParams, visualDir: string, pageCount: number) {
   const events: ExtractionEvent[] = [];
   if (!(await commandExists('pdftoppm'))) {
     return {
       visuals: [],
       events: [
         {
-          stage: 'pdf_first_page_render',
+          stage: 'pdf_page_render',
           status: 'skipped' as const,
-          message: 'PDF visual matching was skipped because first-page rendering is not available on this host.',
+          message: 'PDF page visual matching was skipped because page rendering is not available on this host.',
         },
       ],
     };
   }
 
-  const outputPrefix = join(visualDir, `${params.submissionId}-pdf-page-001`);
-  const outputPath = `${outputPrefix}.png`;
+  const maxPages = positiveIntFromEnv(params.getEnvValue('DISNEY_MATCHER_MAX_PDF_PAGES'), defaultMaxPdfPagesForMatching);
+  const pagesToRender = Math.max(1, Math.min(pageCount || 1, maxPages));
+  const visuals: MatcherVisualInput[] = [];
+
   try {
-    await execFileWithTimeout(
-      'pdftoppm',
-      ['-png', '-f', '1', '-l', '1', '-singlefile', '-r', '144', params.storedFilePath, outputPrefix],
-      defaultTimeoutMs,
-    );
-    const buffer = await readFile(outputPath);
-    const visual = await writeMatcherVisualInput({
-      buffer,
-      filePath: outputPath,
-      inputId: 'visual-pdf-page-001-render',
-      sourceKind: 'pdf_rendered_page',
-      fallbackMediaType: 'image/png',
-    });
+    for (let page = 1; page <= pagesToRender; page += 1) {
+      const pageLabel = String(page).padStart(3, '0');
+      const outputPrefix = join(visualDir, `${params.submissionId}-pdf-page-${pageLabel}`);
+      const outputPath = `${outputPrefix}.png`;
+      await execFileWithTimeout(
+        'pdftoppm',
+        ['-png', '-f', String(page), '-l', String(page), '-singlefile', '-r', '144', params.storedFilePath, outputPrefix],
+        defaultTimeoutMs,
+      );
+      const buffer = await readFile(outputPath);
+      visuals.push(
+        await writeMatcherVisualInput({
+          buffer,
+          filePath: outputPath,
+          inputId: `visual-pdf-page-${pageLabel}-render`,
+          sourceKind: 'pdf_rendered_page',
+          fallbackMediaType: 'image/png',
+        }),
+      );
+    }
+
+    const pageLimitMessage = pageCount > pagesToRender ? ` Limited to the first ${pagesToRender} of ${pageCount} pages.` : '';
     events.push({
-      stage: 'pdf_first_page_render',
+      stage: 'pdf_page_render',
       status: 'completed',
       tool: 'pdftoppm',
-      message: 'Rendered the first PDF page for approved-image matching.',
+      message: `Rendered ${visuals.length} PDF page${visuals.length === 1 ? '' : 's'} for approved-image matching.${pageLimitMessage}`,
     });
-    return { visuals: [visual], events };
+    return { visuals, events };
+  } catch (error) {
+    return {
+      visuals,
+      events: [
+        {
+          stage: 'pdf_page_render',
+          status: visuals.length ? ('completed' as const) : ('failed' as const),
+          tool: 'pdftoppm',
+          message: visuals.length
+            ? `Rendered ${visuals.length} PDF page${visuals.length === 1 ? '' : 's'} before page rendering stopped.`
+            : error instanceof Error
+              ? error.message
+              : 'PDF page rendering failed.',
+        },
+      ],
+    };
+  }
+}
+
+async function extractPdfEmbeddedImages(params: OrchestrationParams, visualDir: string) {
+  if (!(await commandExists('pdfimages'))) {
+    return {
+      visuals: [],
+      events: [
+        {
+          stage: 'pdf_embedded_image_extract',
+          status: 'skipped' as const,
+          message: 'PDF embedded-image extraction was skipped because pdfimages is not available on this host.',
+        },
+      ],
+    };
+  }
+
+  const outputPrefixName = `${params.submissionId}-pdf-image`;
+  const outputPrefix = join(visualDir, outputPrefixName);
+  const maxImages = positiveIntFromEnv(params.getEnvValue('DISNEY_MATCHER_MAX_PDF_IMAGES'), defaultMaxPdfImagesForMatching);
+
+  try {
+    await execFileWithTimeout('pdfimages', ['-png', '-j', params.storedFilePath, outputPrefix], defaultTimeoutMs);
+    const files = (await readdir(visualDir))
+      .filter((name) => name.startsWith(`${outputPrefixName}-`) && /\.(png|jpe?g)$/i.test(name))
+      .sort();
+
+    if (files.length === 0) {
+      return {
+        visuals: [],
+        events: [
+          {
+            stage: 'pdf_embedded_image_extract',
+            status: 'skipped' as const,
+            tool: 'pdfimages',
+            message: 'No embedded raster images were found in the PDF, so page renders will be used for image matching.',
+          },
+        ],
+      };
+    }
+
+    const selectedFiles = files.slice(0, maxImages);
+    const visuals = await Promise.all(
+      selectedFiles.map(async (filename, index) => {
+        const imagePath = join(visualDir, filename);
+        const buffer = await readFile(imagePath);
+        return writeMatcherVisualInput({
+          buffer,
+          filePath: imagePath,
+          inputId: `visual-pdf-embedded-image-${String(index + 1).padStart(3, '0')}`,
+          sourceKind: 'pdf_embedded_image',
+          fallbackMediaType: mediaTypeFromImageFilename(filename),
+        });
+      }),
+    );
+    const limitMessage = files.length > selectedFiles.length ? ` Limited to the first ${selectedFiles.length} of ${files.length} images.` : '';
+
+    return {
+      visuals,
+      events: [
+        {
+          stage: 'pdf_embedded_image_extract',
+          status: 'completed' as const,
+          tool: 'pdfimages',
+          message: `Extracted ${visuals.length} embedded PDF image${visuals.length === 1 ? '' : 's'} for approved-image matching.${limitMessage}`,
+        },
+      ],
+    };
   } catch (error) {
     return {
       visuals: [],
       events: [
         {
-          stage: 'pdf_first_page_render',
+          stage: 'pdf_embedded_image_extract',
           status: 'failed' as const,
-          tool: 'pdftoppm',
-          message: error instanceof Error ? error.message : 'PDF first-page rendering failed.',
+          tool: 'pdfimages',
+          message: error instanceof Error ? error.message : 'PDF embedded-image extraction failed.',
         },
       ],
     };
   }
+}
+
+async function collectPdfVisualInputs(params: OrchestrationParams, visualDir: string) {
+  const pageCount = await getPdfPageCount(params.storedFilePath);
+  const [renderedPages, embeddedImages] = await Promise.all([
+    renderPdfPages(params, visualDir, pageCount),
+    extractPdfEmbeddedImages(params, visualDir),
+  ]);
+
+  return {
+    visuals: [...renderedPages.visuals, ...embeddedImages.visuals],
+    events: [...renderedPages.events, ...embeddedImages.events],
+  };
 }
 
 async function extractDocxEmbeddedImages(params: OrchestrationParams, visualDir: string) {
@@ -371,7 +505,7 @@ async function collectMatcherVisualInputs(params: OrchestrationParams) {
   }
 
   if (isPdf(params.mediaType, params.originalFilename)) {
-    return renderPdfFirstPage(params, visualDir);
+    return collectPdfVisualInputs(params, visualDir);
   }
 
   if (isDocx(params.mediaType, params.originalFilename)) {
