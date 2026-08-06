@@ -91,9 +91,11 @@ const formErrorMessage =
           ? 'MagiKit could not queue that file for processing. Please try again.'
           : formError === 'date'
             ? 'Enter valid activity start and end dates. The end date must be on or after the start date.'
-            : formError
-              ? 'We could not receive that submission. Please check the form and try again.'
-              : '';
+            : formError === 'origin'
+              ? 'Please submit the form from advancedanalytica.co.uk or the approved local test address.'
+              : formError
+                ? 'We could not receive that submission. Please check the form and try again.'
+                : '';
 ---
 <!doctype html>
 <html lang="en">

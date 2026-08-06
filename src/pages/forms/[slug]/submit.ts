@@ -10,6 +10,13 @@ export const prerender = false;
 const maxUploadBytes = 25 * 1024 * 1024;
 const defaultInboxDir = '/tmp/advanced-analytica/disney-submissions';
 const allowedExtensions = new Set(['pdf', 'docx', 'png', 'jpg', 'jpeg']);
+const allowedSubmitOrigins = new Set([
+  'https://advancedanalytica.co.uk',
+  'https://www.advancedanalytica.co.uk',
+  'https://advancedanalytica-co-uk-omj3v.ondigitalocean.app',
+  'http://localhost:4321',
+  'http://127.0.0.1:4321',
+]);
 const allowedMimeTypes = new Set([
   'application/pdf',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -78,6 +85,20 @@ function getProfileValue(metadata: Record<string, unknown>, ...keys: string[]) {
   return '';
 }
 
+function requestOriginIsAllowed(request: Request) {
+  const origin = request.headers.get('origin');
+  if (origin) return allowedSubmitOrigins.has(origin);
+
+  const referer = request.headers.get('referer');
+  if (!referer) return true;
+
+  try {
+    return allowedSubmitOrigins.has(new URL(referer).origin);
+  } catch {
+    return false;
+  }
+}
+
 function companyFromEmail(email: string) {
   const domain = email.split('@')[1] || '';
   const company = domain.split('.')[0]?.replace(/[-_]+/g, ' ').trim();
@@ -96,6 +117,10 @@ export const POST: APIRoute = async ({ request, cookies, params }) => {
 
   if (slug !== 'brand-readiness-assessment') {
     return new Response('Not found', { status: 404 });
+  }
+
+  if (!requestOriginIsAllowed(request)) {
+    return redirectToForm(slug, { error: 'origin' });
   }
 
   if (!isSupabaseConfigured) {

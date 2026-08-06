@@ -14,6 +14,9 @@ export default defineConfig({
   adapter: node({
     mode: 'standalone'
   }),
+  security: {
+    checkOrigin: false
+  },
   site: 'https://advancedanalytica.co.uk',
   redirects: {
     '/brand-oracle': '/brand-operator',
