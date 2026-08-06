@@ -973,7 +973,10 @@ const formErrorMessage =
                       />
                     </div>
                     <p class="native-copy">
-                      Upload creative work for MagiKit assessment and approval. Submit a PDF, DOCX, PNG, or JPEG creative and we'll package your profile details and intake context into the Disney compliance pipeline manifest
+                      Welcome to Trailblazer, our AI-powered Creative Approval agent.
+                    </p>
+                    <p class="native-copy">
+                      To get started, simply complete the form below to submit your marketing asset and we'll be in touch.
                     </p>
                   </header>
 
@@ -999,15 +1002,18 @@ const formErrorMessage =
 
                     <section class="native-chat-step">
                       <div class="native-chat-question">
-                        <h2>Start with the property and content type.</h2>
+                        <h2>Start with the property and content type:</h2>
                         <p>This routes the submission to the right Disney property and channel checks.</p>
                       </div>
 
                       <div class="native-grid">
                         <label class="native-field">
-                          Disney property
+                          Disney Destination
                           <select class="native-select" name="disneyProperty" required>
-                            <option value="disneyland_hotel" selected>Disneyland Hotel</option>
+                            <option value="disneyland_paris" selected>Disneyland Paris</option>
+                            <option value="walt_disney_world_resort" disabled>Walt Disney World Resort</option>
+                            <option value="disney_cruise_line" disabled>Disney Cruise Line</option>
+                            <option value="multi_brand" disabled>Multi-brand</option>
                           </select>
                         </label>
 
@@ -1117,7 +1123,7 @@ const formErrorMessage =
 	                            <dd>{signedInCompany}</dd>
 	                          </div>
 	                          <div class="native-review-row">
-	                            <dt>Disney property</dt>
+	                            <dt>Disney Destination</dt>
 	                            <dd data-review-property></dd>
                           </div>
                           <div class="native-review-row">

@@ -160,8 +160,8 @@ export const POST: APIRoute = async ({ request, cookies, params }) => {
     return redirectToForm(slug, { error: 'invalid' });
   }
 
-  const disneyProperty = cleanText(formData.get('disneyProperty')) || 'disneyland_hotel';
-  if (disneyProperty !== 'disneyland_hotel') {
+  const disneyProperty = cleanText(formData.get('disneyProperty')) || 'disneyland_paris';
+  if (disneyProperty !== 'disneyland_paris') {
     return redirectToForm(slug, { error: 'invalid' });
   }
 
@@ -231,7 +231,7 @@ export const POST: APIRoute = async ({ request, cookies, params }) => {
     },
     disney_property: {
       value: disneyProperty,
-      label: 'Disneyland Hotel',
+      label: 'Disneyland Paris',
       manifest_destination: 'disneyland_paris',
     },
     creative_type: {
