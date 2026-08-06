@@ -43,7 +43,6 @@ const typebotId = getTypebotId(service.embeddedFormUrl);
 const usesTypebotEmbed = Boolean(typebotId);
 const useNativeDisneyCapture = service.slug === 'brand-readiness-assessment';
 const submitted = Astro.url.searchParams.get('submitted') === '1';
-const submissionId = Astro.url.searchParams.get('submission') ?? '';
 const formError = Astro.url.searchParams.get('error') ?? '';
 const userMetadata = user?.user_metadata ?? {};
 
@@ -992,11 +991,6 @@ const formErrorMessage =
                     <br />
                     and the Disney Creative Approval Team will be in touch by email with feedback or approval.
                   </p>
-                  {submissionId ? (
-                    <p>
-                      Submission reference: <strong>{submissionId}</strong>
-                    </p>
-                  ) : null}
                 </div>
               ) : (
                 <>
