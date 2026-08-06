@@ -223,7 +223,7 @@ async function renderPdfFirstPage(params: OrchestrationParams, visualDir: string
         {
           stage: 'pdf_first_page_render',
           status: 'skipped' as const,
-          message: 'Skipped because pdftoppm is not available on this host.',
+          message: 'PDF visual matching was skipped because first-page rendering is not available on this host.',
         },
       ],
     };
@@ -299,7 +299,7 @@ async function extractDocxEmbeddedImages(params: OrchestrationParams, visualDir:
             stage: 'docx_embedded_image_extract',
             status: 'skipped' as const,
             tool: 'unzip',
-            message: 'No embedded PNG/JPEG images were found in the DOCX.',
+            message: 'No embedded PNG/JPEG images were found in the DOCX, so image matching was not needed for this file.',
           },
         ],
       };
@@ -384,7 +384,7 @@ async function collectMatcherVisualInputs(params: OrchestrationParams) {
       {
         stage: 'visual_input_collect',
         status: 'skipped' as const,
-        message: 'No supported visual extraction path for this file type.',
+        message: 'No supported visual extraction path was found for this file type, so compliance analysis will continue without image matching.',
       },
     ],
   };
@@ -451,7 +451,7 @@ function buildFinalMessage(result: Omit<OrchestrationResult, 'final_message'>) {
   const lines = [
     `Trailblazer test output for ${result.submission_id}`,
     '',
-    `Image matching: ${matcher.message}`,
+    `Image evidence and matching: ${matcher.message}`,
   ];
 
   if (matcherSummary) {

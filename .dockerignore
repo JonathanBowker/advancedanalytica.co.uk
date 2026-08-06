@@ -1,0 +1,12 @@
+.astro
+.env
+.env.local
+.env.production
+.git
+.github
+.vscode
+dist
+node_modules
+*.log
+*.service-account.json
+google-service-account*.json
