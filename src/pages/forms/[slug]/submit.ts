@@ -276,22 +276,20 @@ export const POST: APIRoute = async ({ request, cookies, params }) => {
     return redirectToForm(slug, { error: 'pipeline' });
   }
 
-  try {
-    await orchestrateDisneySubmission({
-      submissionId,
-      submissionDir,
-      storedFilePath,
-      storedFilename,
-      originalFilename: creative.name,
-      mediaType: creative.type || 'application/octet-stream',
-      manifest,
-      submission,
-      creativeFile: creative,
-      getEnvValue,
-    });
-  } catch (error) {
+  void orchestrateDisneySubmission({
+    submissionId,
+    submissionDir,
+    storedFilePath,
+    storedFilename,
+    originalFilename: creative.name,
+    mediaType: creative.type || 'application/octet-stream',
+    manifest,
+    submission,
+    creativeFile: creative,
+    getEnvValue,
+  }).catch((error) => {
     console.error('Failed to orchestrate Disney creative submission', error);
-  }
+  });
 
   return redirectToForm(slug, {
     submitted: '1',
