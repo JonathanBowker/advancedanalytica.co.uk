@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { createHash, randomUUID } from 'node:crypto';
+import { createHash, createHmac, randomUUID } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { orchestrateDisneySubmission } from '../../../lib/disneyOrchestration';
@@ -74,6 +74,112 @@ function extensionFor(filename: string) {
 
 function getEnvValue(name: string) {
   return String((import.meta.env as Record<string, string | undefined>)[name] || process.env[name] || '').trim();
+}
+
+function getSubmissionStoreConfig() {
+  const endpoint = getEnvValue('DISNEY_SUBMISSION_OBJECT_STORE_ENDPOINT') || getEnvValue('OBJECT_STORE_ENDPOINT');
+  const bucket = getEnvValue('DISNEY_SUBMISSION_OBJECT_STORE_BUCKET') || getEnvValue('OBJECT_STORE_BUCKET');
+  const region = getEnvValue('DISNEY_SUBMISSION_OBJECT_STORE_REGION') || getEnvValue('OBJECT_STORE_REGION') || 'lon1';
+  const accessKeyId =
+    getEnvValue('DISNEY_SUBMISSION_OBJECT_STORE_ACCESS_KEY_ID') || getEnvValue('OBJECT_STORE_ACCESS_KEY_ID');
+  const secretAccessKey =
+    getEnvValue('DISNEY_SUBMISSION_OBJECT_STORE_SECRET_ACCESS_KEY') || getEnvValue('OBJECT_STORE_SECRET_ACCESS_KEY');
+
+  if (!endpoint || !bucket || !region || !accessKeyId || !secretAccessKey) return null;
+
+  return {
+    endpoint: endpoint.replace(/\/+$/, ''),
+    bucket,
+    region,
+    accessKeyId,
+    secretAccessKey,
+  };
+}
+
+function hmac(key: Buffer | string, value: string) {
+  return createHmac('sha256', key).update(value, 'utf8').digest();
+}
+
+function sha256Hex(value: string | Buffer | Uint8Array) {
+  return createHash('sha256').update(value).digest('hex');
+}
+
+function encodeObjectKey(key: string) {
+  return key
+    .split('/')
+    .map((part) => encodeURIComponent(part))
+    .join('/');
+}
+
+async function putSubmissionObject(params: {
+  key: string;
+  body: Buffer;
+  contentType: string;
+}) {
+  const config = getSubmissionStoreConfig();
+  if (!config) {
+    throw new Error('submission object store is not configured');
+  }
+
+  const now = new Date();
+  const amzDate = now.toISOString().replace(/[:-]|\.\d{3}/g, '');
+  const dateStamp = amzDate.slice(0, 8);
+  const payloadHash = sha256Hex(params.body);
+  const host = new URL(config.endpoint).host;
+  const canonicalUri = `/${encodeURIComponent(config.bucket)}/${encodeObjectKey(params.key)}`;
+  const canonicalHeaders = [
+    `content-type:${params.contentType}`,
+    `host:${host}`,
+    `x-amz-content-sha256:${payloadHash}`,
+    `x-amz-date:${amzDate}`,
+    '',
+  ].join('\n');
+  const signedHeaders = 'content-type;host;x-amz-content-sha256;x-amz-date';
+  const canonicalRequest = [
+    'PUT',
+    canonicalUri,
+    '',
+    canonicalHeaders,
+    signedHeaders,
+    payloadHash,
+  ].join('\n');
+  const credentialScope = `${dateStamp}/${config.region}/s3/aws4_request`;
+  const stringToSign = [
+    'AWS4-HMAC-SHA256',
+    amzDate,
+    credentialScope,
+    sha256Hex(canonicalRequest),
+  ].join('\n');
+  const signingKey = hmac(
+    hmac(hmac(hmac(`AWS4${config.secretAccessKey}`, dateStamp), config.region), 's3'),
+    'aws4_request',
+  );
+  const signature = createHmac('sha256', signingKey).update(stringToSign, 'utf8').digest('hex');
+  const authorization = [
+    `AWS4-HMAC-SHA256 Credential=${config.accessKeyId}/${credentialScope}`,
+    `SignedHeaders=${signedHeaders}`,
+    `Signature=${signature}`,
+  ].join(', ');
+  const response = await fetch(`${config.endpoint}${canonicalUri}`, {
+    method: 'PUT',
+    headers: {
+      Authorization: authorization,
+      'Content-Type': params.contentType,
+      'X-Amz-Content-Sha256': payloadHash,
+      'X-Amz-Date': amzDate,
+    },
+    body: params.body,
+  });
+
+  if (!response.ok) {
+    throw new Error(`submission object upload failed with HTTP ${response.status}`);
+  }
+
+  return {
+    bucket: config.bucket,
+    key: params.key,
+    uri: `s3://${config.bucket}/${params.key}`,
+  };
 }
 
 function getProfileValue(metadata: Record<string, unknown>, ...keys: string[]) {
@@ -203,12 +309,34 @@ export const POST: APIRoute = async ({ request, cookies, params }) => {
   const uploadBuffer = Buffer.from(await creative.arrayBuffer());
   const uploadBytes = new Uint8Array(uploadBuffer);
   const sha256 = createHash('sha256').update(uploadBytes).digest('hex');
+  const originalObjectKey = `submissions/${submissionId}/original/${storedFilename}`;
+
+  let originalObject: Awaited<ReturnType<typeof putSubmissionObject>>;
+  try {
+    originalObject = await putSubmissionObject({
+      key: originalObjectKey,
+      body: uploadBuffer,
+      contentType: creative.type || 'application/octet-stream',
+    });
+  } catch (error) {
+    console.error('Failed to store Disney creative submission original', error);
+    return redirectToForm(slug, { error: 'pipeline' });
+  }
 
   const manifest = {
     manifest_id: submissionId,
     partner: {
       name: company,
       contact: `${name} <${email}>`,
+    },
+    source_asset: {
+      original_name: creative.name,
+      storage_uri: originalObject.uri,
+      storage_bucket: originalObject.bucket,
+      storage_key: originalObject.key,
+      media_type: creative.type || 'application/octet-stream',
+      size_bytes: creative.size,
+      sha256,
     },
     channel: creativeTypeChannels[creativeType],
     market: 'UK & Ireland',
@@ -253,6 +381,12 @@ export const POST: APIRoute = async ({ request, cookies, params }) => {
       media_type: creative.type || 'application/octet-stream',
       size: creative.size,
       sha256,
+      object_store: {
+        provider: 'digitalocean_spaces',
+        bucket: originalObject.bucket,
+        key: originalObject.key,
+        uri: originalObject.uri,
+      },
     },
     pipeline: {
       status: 'queued',
