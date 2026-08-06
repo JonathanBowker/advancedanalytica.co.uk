@@ -9,8 +9,14 @@ function resolveEnvValue(publicValue: string | undefined, fallbackValue: string 
   return String(fallbackValue || '').trim();
 }
 
-const supabaseUrl = resolveEnvValue(import.meta.env.PUBLIC_SUPABASE_URL, import.meta.env.SUPABASE_URL);
-const supabaseAnonKey = resolveEnvValue(import.meta.env.PUBLIC_SUPABASE_ANON_KEY, import.meta.env.SUPABASE_ANON_KEY);
+const supabaseUrl = resolveEnvValue(
+  import.meta.env.PUBLIC_SUPABASE_URL,
+  import.meta.env.SUPABASE_URL || process.env.SUPABASE_URL,
+);
+const supabaseAnonKey = resolveEnvValue(
+  import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
+  import.meta.env.SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY,
+);
 
 export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
 
