@@ -1192,7 +1192,7 @@ const formErrorMessage =
                         <strong>Submitting to Trailblazer.</strong>
                         <span>
                           We're uploading your file and processing the submission against the brand rules.
-                          This can take a few moments, so please keep this tab open until the thank-you message appears.
+                          This can take a few moments. The thank-you message will appear when the submission is queued.
                         </span>
                       </div>
 
@@ -1354,6 +1354,7 @@ const formErrorMessage =
           let reviewReady = false;
           let reviewTimer = 0;
           let isSubmitting = false;
+          const SUBMISSION_MESSAGE_DELAY_MS = 3000;
           const PDF_THUMBNAIL_MAX_BYTES = 10 * 1024 * 1024;
           const PDF_THUMBNAIL_TIMEOUT_MS = 12000;
 
@@ -1737,7 +1738,7 @@ const formErrorMessage =
               event.preventDefault();
               showProcessing();
               window.requestAnimationFrame(() => {
-                window.setTimeout(() => form.submit(), 80);
+                window.setTimeout(() => form.submit(), SUBMISSION_MESSAGE_DELAY_MS);
               });
               return;
             }
