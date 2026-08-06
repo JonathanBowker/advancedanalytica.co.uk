@@ -1,7 +1,7 @@
 import { execFile } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { access, mkdir, readFile, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import { basename, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 type StageStatus = 'completed' | 'skipped' | 'failed';
@@ -473,17 +473,25 @@ function buildFinalMessage(result: Omit<OrchestrationResult, 'final_message'>) {
 }
 
 async function runImageMatcher(params: OrchestrationParams): Promise<OrchestrationStage> {
-  const endpoint = endpointFromEnv(
+  const scanEndpoint = endpointFromEnv(
     'DISNEY_IMAGE_MATCHER_SCAN_URL',
     'DISNEY_IMAGE_MATCHER_URL',
     '/scans',
     params.getEnvValue,
   );
+  const uploadEndpoint = endpointFromEnv(
+    'DISNEY_IMAGE_MATCHER_UPLOAD_URL',
+    'DISNEY_IMAGE_MATCHER_URL',
+    '/scan-uploads',
+    params.getEnvValue,
+  );
+  const endpoint = uploadEndpoint || scanEndpoint;
 
   if (!endpoint) {
     return {
       status: 'skipped',
-      message: 'Skipped because DISNEY_IMAGE_MATCHER_URL or DISNEY_IMAGE_MATCHER_SCAN_URL is not configured.',
+      message:
+        'Skipped because DISNEY_IMAGE_MATCHER_URL, DISNEY_IMAGE_MATCHER_SCAN_URL, or DISNEY_IMAGE_MATCHER_UPLOAD_URL is not configured.',
     };
   }
 
@@ -501,28 +509,16 @@ async function runImageMatcher(params: OrchestrationParams): Promise<Orchestrati
     };
   }
   const apiKey = params.getEnvValue('DISNEY_IMAGE_MATCHER_API_KEY');
-  const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
-  };
+  const headers: Record<string, string> = {};
   if (apiKey) headers['X-API-Key'] = apiKey;
 
   try {
     const scans = await Promise.all(
       collected.visuals.map(async (visual) => {
-        const payload = {
-          brand_id: 'disney',
-          tenant_id: 'parks',
-          source_uri: pathToFileURL(visual.file_path).href,
-          source_sha256: visual.source_sha256,
-          width: visual.width,
-          height: visual.height,
-          as_of: isoDateTimeFromDate((params.submission.activity as Record<string, unknown>)?.end_date),
-        };
-        const response = await fetchWithTimeout(endpoint, {
-          method: 'POST',
-          headers,
-          body: JSON.stringify(payload),
-        });
+        const asOf = isoDateTimeFromDate((params.submission.activity as Record<string, unknown>)?.end_date);
+        const response = uploadEndpoint
+          ? await postMatcherUpload(uploadEndpoint, headers, visual, asOf)
+          : await postMatcherJson(scanEndpoint, headers, visual, asOf);
         const evidence = await readJsonResponse(response);
         return {
           input_id: visual.input_id,
@@ -565,6 +561,60 @@ async function runImageMatcher(params: OrchestrationParams): Promise<Orchestrati
       message: error instanceof Error ? error.message : 'Image matcher request failed.',
     };
   }
+}
+
+async function postMatcherUpload(
+  endpoint: string,
+  headers: Record<string, string>,
+  visual: MatcherVisualInput,
+  asOf: string,
+) {
+  const payload = new FormData();
+  const buffer = await readFile(visual.file_path);
+  payload.set(
+    'creative',
+    new File([new Uint8Array(buffer)], basename(visual.file_path), {
+      type: visual.media_type,
+    }),
+  );
+  payload.set('brand_id', 'disney');
+  payload.set('tenant_id', 'parks');
+  payload.set('source_sha256', visual.source_sha256);
+  payload.set('as_of', asOf);
+  if (visual.width) payload.set('width', String(visual.width));
+  if (visual.height) payload.set('height', String(visual.height));
+
+  return fetchWithTimeout(endpoint, {
+    method: 'POST',
+    headers,
+    body: payload,
+  });
+}
+
+async function postMatcherJson(
+  endpoint: string,
+  headers: Record<string, string>,
+  visual: MatcherVisualInput,
+  asOf: string,
+) {
+  const payload = {
+    brand_id: 'disney',
+    tenant_id: 'parks',
+    source_uri: pathToFileURL(visual.file_path).href,
+    source_sha256: visual.source_sha256,
+    width: visual.width,
+    height: visual.height,
+    as_of: asOf,
+  };
+
+  return fetchWithTimeout(endpoint, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });
 }
 
 async function runCompliancePipeline(params: OrchestrationParams): Promise<OrchestrationStage> {
