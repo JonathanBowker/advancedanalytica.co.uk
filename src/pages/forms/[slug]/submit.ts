@@ -26,6 +26,7 @@ const allowedMimeTypes = new Set([
 
 const creativeTypeLabels: Record<string, string> = {
   social_media_post: 'Social media post',
+  social_media_ugc: 'Social media UGC',
   email_campaign: 'Email campaign',
   newsletter: 'Newsletter',
   brochure_print: 'Brochure / print',
@@ -36,6 +37,7 @@ const creativeTypeLabels: Record<string, string> = {
 
 const creativeTypeChannels: Record<string, string> = {
   social_media_post: 'social',
+  social_media_ugc: 'social',
   email_campaign: 'email',
   newsletter: 'email',
   brochure_print: 'brochure',
