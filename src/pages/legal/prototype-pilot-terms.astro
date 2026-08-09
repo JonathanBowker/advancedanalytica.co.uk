@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE_URL } from '../../lib/seo/site';
+
+const title = 'Prototype and Pilot Terms of Use';
+const description =
+  'Terms for accessing Advanced Analytica prototype and pilot systems before production release.';
+
+const page = {
+  title,
+  description,
+  url: `${SITE_URL}/legal/prototype-pilot-terms`,
+  breadcrumbs: [
+    { name: 'Home', url: `${SITE_URL}/` },
+    { name: 'Legal', url: `${SITE_URL}/legal/terms` },
+    { name: 'Prototype and Pilot Terms', url: `${SITE_URL}/legal/prototype-pilot-terms` }
+  ]
+};
+---
+<BaseLayout title={title} description={description} page={page}>
+  <section class="container-narrow py-16">
+    <div class="eyebrow">Legal</div>
+    <h1 class="mt-4 text-4xl font-semibold text-ink">Prototype and Pilot Terms of Use</h1>
+    <div class="prose mt-6">
+      <p><strong>Last updated: 9 August 2026.</strong></p>
+
+      <p>
+        These terms apply when Advanced Analytica Ltd gives you access to a
+        client-facing prototype, proof of concept, pilot, beta, or other
+        pre-production system. They are intended to set expectations clearly
+        before a test flow is used.
+      </p>
+
+      <h2>Prototype status</h2>
+      <p>
+        Prototype and pilot systems are pre-production. They may be incomplete,
+        unavailable, changed, suspended, or withdrawn without the same notice,
+        service levels, continuity arrangements, or operational guarantees that
+        would apply to a production service.
+      </p>
+      <p>
+        Outputs may contain errors, omissions, incomplete analysis, unexpected
+        behaviour, or experimental features. You should treat all outputs as
+        test material unless Advanced Analytica has separately agreed otherwise
+        in writing.
+      </p>
+
+      <h2>Use during the test period</h2>
+      <p>
+        You use prototypes and pilots at your own risk during the agreed test
+        period. They are provided for evaluation, workflow validation, user
+        feedback, and technical proving only. They should not be relied on as a
+        final approval, legal sign-off, compliance decision, or production
+        business process.
+      </p>
+
+      <h2>Data processed</h2>
+      <p>
+        The categories of data processed will depend on the particular
+        engagement, but may include:
+      </p>
+      <ul>
+        <li>identity and contact details, such as name, work email address, and company;</li>
+        <li>authentication and access records, including magic-link requests and consent events;</li>
+        <li>submitted test materials, creative assets, files, images, copy, or related notes;</li>
+        <li>submission metadata, such as activity dates, content type, and selected workflow options;</li>
+        <li>technical logs needed to operate, secure, debug, and improve the prototype.</li>
+      </ul>
+      <p>
+        For the Disney MagiKit Trailblazer pilot, this includes the test user's
+        email address and the uploaded creative image or file that is held
+        temporarily so the pilot workflow can process the submission.
+      </p>
+
+      <h2>Availability, data handling, and retention</h2>
+      <p>
+        Prototype infrastructure, monitoring, retention, recovery, audit, and
+        data-handling processes may not yet match production standards. Advanced
+        Analytica will use reasonable measures appropriate to the test, but the
+        purpose of the pilot is to validate and improve the system before it is
+        treated as production-ready.
+      </p>
+      <p>
+        Pilot data should be retained only for as long as reasonably necessary
+        for the relevant test, review, troubleshooting, governance, and legal
+        purposes, unless a separate agreement or legal requirement applies.
+      </p>
+
+      <h2>Consent record</h2>
+      <p>
+        Access to a prototype or pilot may require an active acknowledgement of
+        these terms. Where that happens, Advanced Analytica may record the
+        consent event against the relevant user record, including the timestamp,
+        policy version, engagement, and email address used for access.
+      </p>
+
+      <h2>Data protection</h2>
+      <p>
+        These terms are a liability and expectations caveat only. They do not
+        override Advanced Analytica's obligations under UK GDPR, the Data
+        Protection Act 2018, or any other applicable data protection law.
+      </p>
+      <p>
+        Lawful basis, purpose limitation, retention limits, security
+        requirements, transparency duties, processor or controller obligations,
+        and individual rights continue to apply in full regardless of prototype
+        or pilot status.
+      </p>
+
+      <h2>Relationship with other terms</h2>
+      <p>
+        These terms sit alongside any written agreement, statement of work,
+        data processing agreement, or project-specific pilot terms agreed with
+        Advanced Analytica. If a signed agreement sets a higher standard for a
+        particular engagement, that agreement will continue to apply.
+      </p>
+
+      <h2>Questions</h2>
+      <p>
+        If you have questions about a prototype or pilot, including how data is
+        handled in a specific engagement, please contact Advanced Analytica via
+        the <a href="/company/contact">Contact</a> page.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
