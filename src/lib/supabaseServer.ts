@@ -32,7 +32,9 @@ export function createSupabaseServerClient({
   }
 
   return createServerClient(supabaseUrl, supabaseAnonKey, {
+    cookieEncoding: 'raw',
     cookies: {
+      encode: 'tokens-only',
       getAll() {
         return parseCookieHeader(request.headers.get('Cookie') ?? '').flatMap(
           ({ name, value }) => (value ? [{ name, value }] : [])

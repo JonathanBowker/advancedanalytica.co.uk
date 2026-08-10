@@ -24,6 +24,7 @@ RUN pnpm build
 
 ENV HOST=0.0.0.0
 ENV PORT=8080
+ENV NODE_OPTIONS=--max-http-header-size=131072
 
 EXPOSE 8080
 
