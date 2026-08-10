@@ -209,6 +209,13 @@ const formErrorMessage =
         border-color: var(--color-accent);
       }
 
+      .access-code-note {
+        margin: -4px 0 0;
+        font-size: 0.8rem;
+        line-height: 1.5;
+        color: #64748b;
+      }
+
       .access-actions {
         display: flex;
         flex-wrap: wrap;
@@ -1216,10 +1223,10 @@ const formErrorMessage =
     ) : (
       <main class="access-shell">
         <section class="access-card">
-          <div class="access-label">Magic link access</div>
+          <div class="access-label">Secure code access</div>
           <h1 class="access-title">{service.name}</h1>
           <p class="access-copy">
-            Enter your work email and we’ll send a tenant-aware magic link that brings you straight back to this form.
+            Enter your work email and we’ll send a tenant-aware security code that brings you straight back to this form.
           </p>
 
           <form id="embedded-form-access" class="access-form">
@@ -1236,13 +1243,29 @@ const formErrorMessage =
               />
             </label>
 
+            <label id="embedded-form-code-field" class="access-field" hidden>
+              Security code
+              <input
+                id="embedded-form-code"
+                type="text"
+                name="code"
+                autocomplete="one-time-code"
+                inputmode="numeric"
+                pattern="[0-9]*"
+                maxlength="6"
+                placeholder="123456"
+                class="access-input"
+              />
+              <span class="access-code-note">Use the newest security code only once.</span>
+            </label>
+
             <div class="access-actions">
               <button
                 id="embedded-form-submit"
                 type="submit"
                 class="access-button"
               >
-                Send magic link
+                Send security code
               </button>
             </div>
 
@@ -1256,35 +1279,89 @@ const formErrorMessage =
       <script is:inline define:vars={{ nextPath }}>
         const form = document.getElementById('embedded-form-access');
         const emailInput = document.getElementById('embedded-form-email');
+        const codeField = document.getElementById('embedded-form-code-field');
+        const codeInput = document.getElementById('embedded-form-code');
         const submitButton = document.getElementById('embedded-form-submit');
         const status = document.getElementById('embedded-form-status');
 
         if (
           form instanceof HTMLFormElement &&
           emailInput instanceof HTMLInputElement &&
+          codeField instanceof HTMLElement &&
+          codeInput instanceof HTMLInputElement &&
           submitButton instanceof HTMLButtonElement &&
           status instanceof HTMLElement
         ) {
+          let codeSent = false;
+          let codeEmail = '';
+
           const setStatus = (message, tone) => {
             status.textContent = message;
             status.classList.remove('is-success', 'is-error');
             status.classList.add('is-visible', tone === 'success' ? 'is-success' : 'is-error');
           };
 
+          const resetCodeStep = () => {
+            codeSent = false;
+            codeEmail = '';
+            codeInput.value = '';
+            codeField.hidden = true;
+            submitButton.textContent = 'Send security code';
+          };
+
+          emailInput.addEventListener('input', () => {
+            if (codeEmail && emailInput.value.trim().toLowerCase() !== codeEmail) {
+              resetCodeStep();
+            }
+          });
+
+          codeInput.addEventListener('input', () => {
+            codeInput.value = codeInput.value.replace(/\D/g, '').slice(0, 6);
+          });
+
           form.addEventListener('submit', async (event) => {
             event.preventDefault();
 
-            const email = emailInput.value.trim();
+            const email = emailInput.value.trim().toLowerCase();
             if (!email) {
               setStatus('Enter a work email address.', 'error');
               return;
             }
 
             submitButton.disabled = true;
-            submitButton.textContent = 'Sending...';
+            submitButton.textContent = codeSent && codeEmail === email ? 'Verifying...' : 'Sending...';
             status.classList.remove('is-visible', 'is-success', 'is-error');
 
             try {
+              if (codeSent && codeEmail === email) {
+                const token = codeInput.value.replace(/\D/g, '').slice(0, 6);
+                if (token.length !== 6) {
+                  throw new Error('Enter the 6-digit security code.');
+                }
+
+                const response = await fetch('/api/auth/verify-otp', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    email,
+                    token,
+                    nextUrl: nextPath,
+                  }),
+                });
+
+                const payload = await response.json().catch(() => null);
+
+                if (!response.ok) {
+                  throw new Error(payload?.error || 'Failed to verify security code.');
+                }
+
+                setStatus('Security code verified. Loading the form...', 'success');
+                window.location.assign(payload?.redirectTo || nextPath);
+                return;
+              }
+
               const response = await fetch('/auth/magic-link', {
                 method: 'POST',
                 headers: {
@@ -1299,17 +1376,22 @@ const formErrorMessage =
               const payload = await response.json().catch(() => null);
 
               if (!response.ok) {
-                throw new Error(payload?.error || 'Failed to send magic link.');
+                throw new Error(payload?.error || 'Failed to send security code.');
               }
 
-              setStatus('Check your email for the sign-in link, then return here to open the form.', 'success');
-              form.reset();
+              codeSent = true;
+              codeEmail = email;
+              codeInput.value = '';
+              codeField.hidden = false;
+              submitButton.textContent = 'Continue';
+              setStatus('Check your email for the 6-digit security code.', 'success');
+              codeInput.focus();
             } catch (error) {
-              const message = error instanceof Error ? error.message : 'Failed to send magic link.';
+              const message = error instanceof Error ? error.message : 'Failed to send security code.';
               setStatus(message, 'error');
             } finally {
               submitButton.disabled = false;
-              submitButton.textContent = 'Send magic link';
+              submitButton.textContent = codeSent && codeEmail === email ? 'Continue' : 'Send security code';
             }
           });
         }

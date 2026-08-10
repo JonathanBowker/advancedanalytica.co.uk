@@ -9,7 +9,7 @@ const authServiceLabel = 'Advanced Analytica sign-in service';
 const authConfigMessage =
   'Sign-in is not configured correctly for this environment. Please contact Advanced Analytica.';
 const resendCooldownMs = 60_000;
-const magicLinkRequestTimeoutMs = 10_000;
+const emailOtpRequestTimeoutMs = 10_000;
 const captchaTimeoutMs = 8_000;
 const defaultPortalPath = '/portal';
 const turnstileScriptId = 'cloudflare-turnstile-script';
@@ -276,7 +276,7 @@ function getEmailFlowErrorMessage(err, fallback) {
 
   if (lower.includes('user already registered') || lower.includes('already been registered')) {
     return {
-      message: 'An account already exists for that email. Use Password or Magic link to sign in.',
+      message: 'An account already exists for that email. Use Password or Secure code to sign in.',
       isRateLimit: false,
     };
   }
@@ -347,11 +347,11 @@ function getLoginErrorMessage(errorCode, errorDescription) {
   const normalizedDescription = (errorDescription || '').toLowerCase();
 
   if (normalizedCode === 'otp_expired') {
-    return 'That magic link has expired or was already used. Request a fresh sign-in link and open the newest email only once.';
+    return 'That security code has expired or was already used. Request a fresh code and use the newest email only once.';
   }
 
   if (normalizedCode === 'access_denied' && normalizedDescription.includes('expired')) {
-    return 'That sign-in link has expired. Request a fresh magic link and try again.';
+    return 'That security code has expired. Request a fresh code and try again.';
   }
 
   if (normalizedCode === 'callback') {
@@ -363,7 +363,7 @@ function getLoginErrorMessage(errorCode, errorDescription) {
       return `The sign-in callback failed: ${errorDescription}`;
     }
 
-    return 'The sign-in link could not be completed. Request a new magic link and try again.';
+    return 'The sign-in could not be completed. Request a new security code and try again.';
   }
 
   if (normalizedCode === 'config') {
@@ -384,9 +384,9 @@ function getLoginErrorMessage(errorCode, errorDescription) {
   return '';
 }
 
-async function requestMagicLink({ email, captchaToken, nextUrl, shouldCreateUser }) {
+async function requestEmailOtp({ email, captchaToken, nextUrl, shouldCreateUser }) {
   const controller = new AbortController();
-  const timeoutId = window.setTimeout(() => controller.abort(), magicLinkRequestTimeoutMs);
+  const timeoutId = window.setTimeout(() => controller.abort(), emailOtpRequestTimeoutMs);
 
   let response;
   try {
@@ -415,7 +415,46 @@ async function requestMagicLink({ email, captchaToken, nextUrl, shouldCreateUser
 
   const payload = await response.json().catch(() => null);
   if (!response.ok) {
-    const error = new Error(payload?.error || 'Failed to send magic link.');
+    const error = new Error(payload?.error || 'Failed to send security code.');
+    error.status = response.status;
+    error.code = payload?.code || payload?.error_code || '';
+    throw error;
+  }
+
+  return payload;
+}
+
+async function verifyEmailOtp({ email, token, nextUrl }) {
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), emailOtpRequestTimeoutMs);
+
+  let response;
+  try {
+    response = await fetch('/api/auth/verify-otp', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        token,
+        nextUrl,
+      }),
+      signal: controller.signal,
+    });
+  } catch (error) {
+    if (error instanceof DOMException && error.name === 'AbortError') {
+      throw new Error('Security code verification took too long. Try again.');
+    }
+
+    throw error;
+  } finally {
+    window.clearTimeout(timeoutId);
+  }
+
+  const payload = await response.json().catch(() => null);
+  if (!response.ok) {
+    const error = new Error(payload?.error || 'Failed to verify security code.');
     error.status = response.status;
     error.code = payload?.code || payload?.error_code || '';
     throw error;
@@ -557,13 +596,17 @@ async function executeInvisibleTurnstile({
 function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-analytica', tenantHost = '' }) {
   const [session, setSession] = useState(null);
   const [email, setEmail] = useState('');
+  const [otpCode, setOtpCode] = useState('');
+  const [otpEmail, setOtpEmail] = useState('');
+  const [otpSent, setOtpSent] = useState(false);
   const [password, setPassword] = useState('');
-  const [method, setMethod] = useState('magic_link');
+  const [method, setMethod] = useState('secure_code');
   const [showPassword, setShowPassword] = useState(false);
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState({ state: 'idle', message: '' });
   const [cooldownUntil, setCooldownUntil] = useState(0);
   const [now, setNow] = useState(() => Date.now());
+  const codeInputRefs = useRef([]);
   const turnstileContainerRef = useRef(null);
   const turnstileWidgetRef = useRef(null);
   const heroVideoRef = useRef(null);
@@ -571,12 +614,57 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
   const nextUrl = getNextUrl();
   const cooldownSeconds = Math.max(0, Math.ceil((cooldownUntil - now) / 1000));
   const inCooldown = cooldownSeconds > 0;
+  const normalizedEmail = email.trim().toLowerCase();
+  const normalizedOtpCode = otpCode.replace(/\D/g, '').slice(0, 6);
+  const canVerifyOtp = otpSent && otpEmail === normalizedEmail;
 
   function resetTurnstile() {
     if (typeof window === 'undefined' || turnstileWidgetRef.current == null) return;
     if (!window.turnstile?.reset) return;
 
     window.turnstile.reset(turnstileWidgetRef.current);
+  }
+
+  function clearOtpState() {
+    setOtpCode('');
+    setOtpEmail('');
+    setOtpSent(false);
+  }
+
+  function handleOtpChange(index, value) {
+    const digits = value.replace(/\D/g, '');
+    if (!digits) {
+      const nextCode = normalizedOtpCode.padEnd(6, ' ').split('');
+      nextCode[index] = ' ';
+      setOtpCode(nextCode.join('').replace(/\s/g, ''));
+      return;
+    }
+
+    const nextDigits = normalizedOtpCode.padEnd(6, ' ').split('');
+    digits
+      .slice(0, 6 - index)
+      .split('')
+      .forEach((digit, digitIndex) => {
+        nextDigits[index + digitIndex] = digit;
+      });
+
+    const nextCode = nextDigits.join('').replace(/\s/g, '').slice(0, 6);
+    setOtpCode(nextCode);
+
+    const nextIndex = Math.min(5, index + digits.length);
+    window.setTimeout(() => codeInputRefs.current[nextIndex]?.focus(), 0);
+  }
+
+  function handleOtpKeyDown(index, event) {
+    if (event.key !== 'Backspace') return;
+    if (normalizedOtpCode[index]) return;
+
+    event.preventDefault();
+    const previousIndex = Math.max(0, index - 1);
+    const nextCode = normalizedOtpCode.padEnd(6, ' ').split('');
+    nextCode[previousIndex] = ' ';
+    setOtpCode(nextCode.join('').replace(/\s/g, ''));
+    window.setTimeout(() => codeInputRefs.current[previousIndex]?.focus(), 0);
   }
 
   async function getCaptchaToken() {
@@ -671,8 +759,9 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
   async function signIn(event, requestedMethod = method) {
     event.preventDefault();
     setStatus({ state: 'idle', message: '' });
+    const isSecureCodeRequest = requestedMethod === 'secure_code' || requestedMethod === 'secure_code_resend';
 
-    if (requestedMethod !== 'magic_link' && (!isSupabaseConfigured || !supabase)) {
+    if (!isSecureCodeRequest && (!isSupabaseConfigured || !supabase)) {
       setStatus({
         state: 'error',
         message: authConfigMessage,
@@ -685,7 +774,11 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
       return;
     }
 
-    if ((requestedMethod === 'magic_link' || (allowSelfSignup && requestedMethod === 'request_access')) && inCooldown) {
+    if (
+      (isSecureCodeRequest || (allowSelfSignup && requestedMethod === 'request_access')) &&
+      inCooldown &&
+      !(requestedMethod === 'secure_code' && canVerifyOtp)
+    ) {
       setStatus({
         state: 'error',
         message: `Please wait ${cooldownSeconds}s before trying again.`,
@@ -701,8 +794,9 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
     setBusy(true);
 
     try {
-      const captchaToken = await getCaptchaToken();
-      if (authCaptchaEnabled && !captchaToken && !canBypassTurnstileForLocalDev()) {
+      const shouldRunCaptcha = !(requestedMethod === 'secure_code' && canVerifyOtp);
+      const captchaToken = shouldRunCaptcha ? await getCaptchaToken() : '';
+      if (shouldRunCaptcha && authCaptchaEnabled && !captchaToken && !canBypassTurnstileForLocalDev()) {
         setStatus((current) =>
           current.state === 'error' && current.message
             ? current
@@ -711,32 +805,58 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
         return;
       }
 
-      if (requestedMethod === 'magic_link') {
-        await requestMagicLink({
-          email: email.trim(),
+      if (isSecureCodeRequest) {
+        if (requestedMethod === 'secure_code' && canVerifyOtp) {
+          if (normalizedOtpCode.length !== 6) {
+            setStatus({ state: 'error', message: 'Enter the 6-digit security code.' });
+            return;
+          }
+
+          const payload = await verifyEmailOtp({
+            email: normalizedEmail,
+            token: normalizedOtpCode,
+            nextUrl,
+          });
+
+          setStatus({ state: 'sent', message: 'Security code verified. Loading the portal…' });
+          window.location.replace(payload?.redirectTo || nextUrl);
+          return;
+        }
+
+        await requestEmailOtp({
+          email: normalizedEmail,
           captchaToken,
           nextUrl,
           shouldCreateUser: false,
         });
 
         setCooldownUntil(Date.now() + resendCooldownMs);
-        setStatus({ state: 'sent', message: 'Check your email for a sign-in link.' });
+        setOtpEmail(normalizedEmail);
+        setOtpCode('');
+        setOtpSent(true);
+        setStatus({ state: 'sent', message: 'Check your email for a 6-digit security code.' });
+        window.setTimeout(() => codeInputRefs.current[0]?.focus(), 0);
         return;
       }
 
       if (allowSelfSignup && requestedMethod === 'request_access') {
-        await requestMagicLink({
-          email: email.trim(),
+        await requestEmailOtp({
+          email: normalizedEmail,
           captchaToken,
           nextUrl: '/auth/confirmed',
           shouldCreateUser: true,
         });
 
         setCooldownUntil(Date.now() + resendCooldownMs);
+        setMethod('secure_code');
+        setOtpEmail(normalizedEmail);
+        setOtpCode('');
+        setOtpSent(true);
         setStatus({
           state: 'sent',
-          message: 'Check your email to complete registration and sign in.',
+          message: 'Check your email for a 6-digit security code to complete registration.',
         });
+        window.setTimeout(() => codeInputRefs.current[0]?.focus(), 0);
         return;
       }
 
@@ -751,8 +871,8 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
       window.location.replace(nextUrl);
     } catch (err) {
       const { message, isRateLimit } =
-        requestedMethod === 'magic_link' || (allowSelfSignup && requestedMethod === 'request_access')
-          ? getEmailFlowErrorMessage(err, 'Failed to send magic link.')
+        isSecureCodeRequest || (allowSelfSignup && requestedMethod === 'request_access')
+          ? getEmailFlowErrorMessage(err, 'Failed to send security code.')
           : { message: getPasswordErrorMessage(err), isRateLimit: false };
 
       if (isRateLimit) setCooldownUntil(Date.now() + resendCooldownMs);
@@ -879,11 +999,11 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
                 <div className="tabs">
                   <button
                     type="button"
-                    onClick={() => setMethod('magic_link')}
+                    onClick={() => setMethod('secure_code')}
                     disabled={busy}
-                    className={`flex-1 rounded-[10px] border px-4 py-2 text-sm font-medium transition ${method === 'magic_link' ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-200 bg-white text-slate-900 hover:bg-slate-50'}`}
+                    className={`flex-1 rounded-[10px] border px-4 py-2 text-sm font-medium transition ${method === 'secure_code' ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-200 bg-white text-slate-900 hover:bg-slate-50'}`}
                   >
-                    Magic link
+                    Secure code
                   </button>
                   <button
                     type="button"
@@ -895,10 +1015,12 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
                   </button>
                 </div>
                 <p className="text-sm text-slate-500">
-                  {method === 'magic_link'
-                    ? 'Enter your work email and we’ll send a secure one-time sign-in link.'
+                  {method === 'secure_code'
+                    ? canVerifyOtp
+                      ? `Enter the newest 6-digit code sent to ${otpEmail}.`
+                      : 'Enter your work email and we’ll send a secure one-time code.'
                     : allowSelfSignup && method === 'request_access'
-                      ? 'We’ll email you a sign-in link and create your portal account if one does not exist yet.'
+                      ? 'We’ll email you a security code and create your portal account if one does not exist yet.'
                       : 'Use password sign-in if your account has one set.'}
                 </p>
               </div>
@@ -914,12 +1036,60 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
                     autoComplete="email"
                     inputMode="email"
                     value={email}
-                    onChange={(event) => setEmail(event.target.value)}
+                    onChange={(event) => {
+                      const nextEmail = event.target.value;
+                      setEmail(nextEmail);
+                      if (otpEmail && nextEmail.trim().toLowerCase() !== otpEmail) {
+                        clearOtpState();
+                      }
+                    }}
                     disabled={busy}
                     placeholder="you@company.com"
                     required
                   />
                 </label>
+
+                {method === 'secure_code' && canVerifyOtp ? (
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between gap-4">
+                      <label className="text-sm font-medium text-slate-700">
+                        Security code <span className="text-[#14B8A6]">*</span>
+                      </label>
+                      <button
+                        className="text-sm text-slate-500 underline decoration-slate-300 underline-offset-4 hover:text-slate-700 disabled:no-underline disabled:opacity-60"
+                        type="button"
+                        onClick={(event) => signIn(event, 'secure_code_resend')}
+                        disabled={busy || inCooldown}
+                      >
+                        {inCooldown ? `Resend in ${cooldownSeconds}s` : 'Resend'}
+                      </button>
+                    </div>
+                    <div className="grid grid-cols-6 gap-2" aria-label="6-digit security code">
+                      {Array.from({ length: 6 }).map((_, index) => (
+                        <input
+                          key={`otp-${index}`}
+                          ref={(node) => {
+                            codeInputRefs.current[index] = node;
+                          }}
+                          className="h-12 w-full rounded-[10px] border border-slate-200 bg-white text-center text-lg font-semibold text-slate-900 outline-none transition focus:border-[#14B8A6]"
+                          type="text"
+                          inputMode="numeric"
+                          autoComplete={index === 0 ? 'one-time-code' : 'off'}
+                          pattern="[0-9]*"
+                          maxLength={6}
+                          value={normalizedOtpCode[index] || ''}
+                          onChange={(event) => handleOtpChange(index, event.target.value)}
+                          onKeyDown={(event) => handleOtpKeyDown(index, event)}
+                          disabled={busy}
+                          aria-label={`Security code digit ${index + 1}`}
+                        />
+                      ))}
+                    </div>
+                    <p className="text-xs leading-relaxed text-slate-500">
+                      Use the newest security code only once.
+                    </p>
+                  </div>
+                ) : null}
 
                 {method === 'password' ? (
                   <div className="space-y-1.5">
@@ -989,16 +1159,18 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
                   <button
                     className="w-full rounded-[10px] bg-[#14B8A6] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0F766E] disabled:cursor-not-allowed disabled:opacity-60"
                     type="submit"
-                    disabled={busy || (method === 'magic_link' && inCooldown)}
+                    disabled={busy || (method === 'secure_code' && !canVerifyOtp && inCooldown)}
                   >
                     {busy
                       ? 'Working…'
-                      : method === 'magic_link' || (allowSelfSignup && method === 'request_access')
-                        ? inCooldown
+                      : method === 'secure_code' || (allowSelfSignup && method === 'request_access')
+                        ? method === 'secure_code' && canVerifyOtp
+                          ? 'Continue'
+                          : inCooldown
                           ? `Try again in ${cooldownSeconds}s`
                           : allowSelfSignup && method === 'request_access'
-                            ? 'Request access link'
-                            : 'Send secure link'
+                            ? 'Request access code'
+                            : 'Send security code'
                         : 'Sign in'}
                   </button>
                 </div>
@@ -1529,11 +1701,17 @@ function ResetInner() {
 
 function RoleMagicLinkInner({ role }) {
   const [email, setEmail] = useState('');
+  const [otpCode, setOtpCode] = useState('');
+  const [otpEmail, setOtpEmail] = useState('');
+  const [otpSent, setOtpSent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState({ state: 'idle', message: '' });
   const turnstileContainerRef = useRef(null);
   const turnstileWidgetRef = useRef(null);
   const nextUrl = `/portal?intake_role=${encodeURIComponent(role.slug)}`;
+  const normalizedEmail = email.trim().toLowerCase();
+  const normalizedOtpCode = otpCode.replace(/\D/g, '').slice(0, 6);
+  const canVerifyOtp = otpSent && otpEmail === normalizedEmail;
 
   function resetTurnstile() {
     if (typeof window === 'undefined' || turnstileWidgetRef.current == null) return;
@@ -1557,33 +1735,52 @@ function RoleMagicLinkInner({ role }) {
     });
   }
 
-  async function submitMagicLink(event) {
+  async function submitSecurityCode(event) {
     event.preventDefault();
     setStatus({ state: 'idle', message: '' });
 
-    if (!email.trim()) {
+    if (!normalizedEmail) {
       setStatus({ state: 'error', message: 'Enter an email address.' });
       return;
     }
 
     setBusy(true);
     try {
+      if (canVerifyOtp) {
+        if (normalizedOtpCode.length !== 6) {
+          setStatus({ state: 'error', message: 'Enter the 6-digit security code.' });
+          return;
+        }
+
+        const payload = await verifyEmailOtp({
+          email: normalizedEmail,
+          token: normalizedOtpCode,
+          nextUrl,
+        });
+
+        setStatus({ state: 'sent', message: 'Security code verified. Loading the portal…' });
+        window.location.replace(payload?.redirectTo || nextUrl);
+        return;
+      }
+
       const captchaToken = await getCaptchaToken();
       if (authCaptchaEnabled && !captchaToken) {
         setStatus((current) => current.state === 'error' && current.message ? current : { state: 'error', message: 'The verification check did not complete. Try again.' });
         return;
       }
 
-      await requestMagicLink({
-        email: email.trim(),
+      await requestEmailOtp({
+        email: normalizedEmail,
         captchaToken,
         nextUrl,
         shouldCreateUser: false,
       });
-      setEmail('');
-      setStatus({ state: 'sent', message: 'Check your email for your secure sign-in link.' });
+      setOtpEmail(normalizedEmail);
+      setOtpCode('');
+      setOtpSent(true);
+      setStatus({ state: 'sent', message: 'Check your email for your secure sign-in code.' });
     } catch (err) {
-      const { message } = getEmailFlowErrorMessage(err, 'Failed to send magic link.');
+      const { message } = getEmailFlowErrorMessage(err, 'Failed to send security code.');
       setStatus({ state: 'error', message });
     } finally {
       resetTurnstile();
@@ -1600,20 +1797,49 @@ function RoleMagicLinkInner({ role }) {
               <a href="/talk-to-us/" className="inline-flex h-10 w-10 items-center justify-center text-slate-400 hover:text-slate-600 lg:absolute lg:-left-16 lg:top-1/2 lg:-translate-y-1/2" aria-label="Back">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" className="h-9 w-9"><path d="M15 18l-6-6 6-6" /></svg>
               </a>
-              <h1 className="text-3xl font-semibold tracking-tight text-slate-900">Magic link</h1>
+              <h1 className="text-3xl font-semibold tracking-tight text-slate-900">Secure code</h1>
             </div>
 
             <div className="space-y-4 auth-card pt-0">
-              <p className="text-sm text-slate-500">We&apos;ll email you a one-time specialist-call link for this role.</p>
-              <form onSubmit={submitMagicLink} className="form">
+              <p className="text-sm text-slate-500">
+                {canVerifyOtp ? `Enter the newest 6-digit code sent to ${otpEmail}.` : "We'll email you a one-time specialist-call code for this role."}
+              </p>
+              <form onSubmit={submitSecurityCode} className="form">
                 <label className="label text-sm font-medium text-slate-700">
                   <span>Work email <span className="text-[#14B8A6]">*</span></span>
-                  <input className="input text-base text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#14B8A6]" type="email" autoComplete="email" inputMode="email" value={email} onChange={(event) => setEmail(event.target.value)} disabled={busy} placeholder="you@company.com" required />
+                  <input className="input text-base text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#14B8A6]" type="email" autoComplete="email" inputMode="email" value={email} onChange={(event) => {
+                    const nextEmail = event.target.value;
+                    setEmail(nextEmail);
+                    if (otpEmail && nextEmail.trim().toLowerCase() !== otpEmail) {
+                      setOtpCode('');
+                      setOtpEmail('');
+                      setOtpSent(false);
+                    }
+                  }} disabled={busy} placeholder="you@company.com" required />
                 </label>
+                {canVerifyOtp ? (
+                  <label className="label text-sm font-medium text-slate-700">
+                    <span>Security code <span className="text-[#14B8A6]">*</span></span>
+                    <input
+                      className="input text-center text-lg font-semibold text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#14B8A6]"
+                      type="text"
+                      autoComplete="one-time-code"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      maxLength={6}
+                      value={normalizedOtpCode}
+                      onChange={(event) => setOtpCode(event.target.value.replace(/\D/g, '').slice(0, 6))}
+                      disabled={busy}
+                      placeholder="123456"
+                      required
+                    />
+                    <span className="text-xs font-normal leading-relaxed text-slate-500">Use the newest security code only once.</span>
+                  </label>
+                ) : null}
                 <StatusBanner status={status} />
-                <div className="rounded-[10px] border border-dashed border-slate-200 bg-white px-4 py-3 text-sm leading-relaxed text-slate-500">We validate business email domains and run a verification check before sending the link.</div>
+                <div className="rounded-[10px] border border-dashed border-slate-200 bg-white px-4 py-3 text-sm leading-relaxed text-slate-500">We validate business email domains and run a verification check before sending the code.</div>
                 <div ref={turnstileContainerRef} className={turnstileMountClass} aria-hidden="true" />
-                <button className="w-full rounded-[10px] bg-[#14B8A6] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0F766E] disabled:cursor-not-allowed disabled:opacity-60" type="submit" disabled={busy}>{busy ? 'Working…' : 'Send magic link'}</button>
+                <button className="w-full rounded-[10px] bg-[#14B8A6] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0F766E] disabled:cursor-not-allowed disabled:opacity-60" type="submit" disabled={busy}>{busy ? 'Working…' : canVerifyOtp ? 'Continue' : 'Send security code'}</button>
                 <a href="/login" className="flex w-full items-center justify-center gap-2 rounded-[10px] border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50">Portal login</a>
               </form>
               <div className="pt-2 text-center text-sm text-slate-500">Start with your business email. We&apos;ll use it to route a specialist call for this role.</div>

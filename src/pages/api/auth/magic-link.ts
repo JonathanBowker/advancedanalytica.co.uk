@@ -136,7 +136,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
     if (error) {
       return new Response(JSON.stringify({
-        error: error.message || 'Failed to send magic link.',
+        error: error.message || 'Failed to send security code.',
         code: error.code || '',
       }), {
         status: error.status || 400,
@@ -154,7 +154,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: getErrorMessage(error, 'Failed to send magic link.') }), {
+    return new Response(JSON.stringify({ error: getErrorMessage(error, 'Failed to send security code.') }), {
       status: 500,
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
