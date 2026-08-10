@@ -34,6 +34,11 @@ export const portalAssignableRoles = [
 ] as const;
 
 const portalEntryRoles = new Set(['admin', 'operator', 'developer', 'consultant', 'partner', 'client']);
+const clientAccessEmailDomains = new Set(['disney.com']);
+
+function getEmailDomain(email: string) {
+  return email.split('@').pop()?.toLowerCase() || '';
+}
 
 export type PortalAccessUser = {
   email?: string | null;
@@ -57,6 +62,10 @@ export function getPortalAccess(user: PortalAccessUser | null | undefined) {
 
   if (email.endsWith('@advancedanalytica.co.uk')) {
     roles.push('operator');
+  }
+
+  if (clientAccessEmailDomains.has(getEmailDomain(email))) {
+    roles.push('client');
   }
 
   if (roles.includes('admin')) {

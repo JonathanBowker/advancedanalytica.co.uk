@@ -8,6 +8,7 @@ export const prerender = false;
 
 const mxLookupTimeoutMs = 5_000;
 const allowSelfSignup = true;
+const portalAutoProvisionDomains = new Set(['disney.com']);
 
 const freeEmailDomains = new Set([
   'aol.com',
@@ -54,6 +55,10 @@ function getEmailDomain(email: string) {
   return email.split('@').pop()?.toLowerCase() || '';
 }
 
+function canAutoProvisionPortalUser(email: string) {
+  return portalAutoProvisionDomains.has(getEmailDomain(email));
+}
+
 async function hasMxRecords(email: string) {
   const domain = getEmailDomain(email);
   if (!domain) return false;
@@ -90,7 +95,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const email = String(body?.email || '').trim().toLowerCase();
     const captchaToken = String(body?.captchaToken || '').trim();
     const nextUrl = String(body?.nextUrl || getTenantHomePath()).trim();
-    const shouldCreateUser = allowSelfSignup && Boolean(body?.shouldCreateUser);
+    const shouldCreateUser =
+      allowSelfSignup && (Boolean(body?.shouldCreateUser) || canAutoProvisionPortalUser(email));
 
     if (!isValidEmail(email)) {
       return new Response(JSON.stringify({ error: 'Enter a valid email address.' }), {
