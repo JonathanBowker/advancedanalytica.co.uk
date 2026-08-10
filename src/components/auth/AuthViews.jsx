@@ -256,7 +256,6 @@ function getEmailFlowErrorMessage(err, fallback) {
   }
 
   if (
-    err?.status >= 500 ||
     normalizedCode === 'service_unavailable' ||
     lower.includes('<!doctype html') ||
     lower.includes('<html') ||
@@ -267,6 +266,17 @@ function getEmailFlowErrorMessage(err, fallback) {
     return {
       message:
         'The secure-code service is temporarily unavailable. Wait a moment, then try again or resend a fresh code.',
+      isRateLimit: false,
+    };
+  }
+
+  if (
+    normalizedCode === 'verify_failed' ||
+    lower.includes('could not be verified')
+  ) {
+    return {
+      message:
+        'The security code could not be verified. Request a fresh code and try again.',
       isRateLimit: false,
     };
   }
