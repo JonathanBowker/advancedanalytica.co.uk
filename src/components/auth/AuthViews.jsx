@@ -256,6 +256,22 @@ function getEmailFlowErrorMessage(err, fallback) {
   }
 
   if (
+    err?.status >= 500 ||
+    normalizedCode === 'service_unavailable' ||
+    lower.includes('<!doctype html') ||
+    lower.includes('<html') ||
+    lower.includes('502 bad gateway') ||
+    lower.includes('request could not be satisfied') ||
+    lower.includes('cloudfront')
+  ) {
+    return {
+      message:
+        'The secure-code service is temporarily unavailable. Wait a moment, then try again or resend a fresh code.',
+      isRateLimit: false,
+    };
+  }
+
+  if (
     normalizedCode === 'otp_expired' ||
     lower.includes('token has expired') ||
     lower.includes('expired or is invalid') ||
@@ -472,15 +488,20 @@ async function verifyEmailOtp({ email, token, nextUrl }) {
   } catch {}
 
   if (!response.ok) {
+    const contentType = response.headers.get('content-type') || '';
+    const isHtmlError =
+      contentType.includes('text/html') ||
+      responseText.trimStart().toLowerCase().startsWith('<!doctype') ||
+      responseText.trimStart().toLowerCase().startsWith('<html');
     const error = new Error(
       payload?.error ||
       payload?.message ||
       payload?.msg ||
-      responseText ||
+      (isHtmlError ? 'The secure-code service is temporarily unavailable.' : responseText) ||
       'Failed to verify security code.',
     );
     error.status = response.status;
-    error.code = payload?.code || payload?.error_code || '';
+    error.code = payload?.code || payload?.error_code || (isHtmlError ? 'service_unavailable' : '');
     throw error;
   }
 
