@@ -236,7 +236,7 @@ secure_password_change = true
 # Controls the minimum amount of time that must pass before sending another signup confirmation or password reset email.
 max_frequency = "15s"
 # Number of characters used in the email OTP.
-otp_length = 8
+otp_length = 6
 # Number of seconds before the email OTP expires (defaults to 1 hour).
 otp_expiry = 3600
 
@@ -259,7 +259,7 @@ subject = "Confirm your email address"
 content_path = "./supabase/templates/confirmation.html"
 
 [auth.email.template.magic_link]
-  subject = "Your secure sign-in link is ready"
+subject = "Your verification code"
 content_path = "./supabase/templates/magic-link.html"
 
 [auth.email.template.recovery]

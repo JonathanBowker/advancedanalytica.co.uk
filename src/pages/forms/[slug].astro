@@ -1384,7 +1384,7 @@ const formErrorMessage =
               codeInput.value = '';
               codeField.hidden = false;
               submitButton.textContent = 'Continue';
-              setStatus('Check your email for the 6-digit security code.', 'success');
+              setStatus('Check your email for “Your verification code”, then enter the 6 digits below.', 'success');
               codeInput.focus();
             } catch (error) {
               const message = error instanceof Error ? error.message : 'Failed to send security code.';

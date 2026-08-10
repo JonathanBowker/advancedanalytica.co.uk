@@ -834,7 +834,7 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
         setOtpEmail(normalizedEmail);
         setOtpCode('');
         setOtpSent(true);
-        setStatus({ state: 'sent', message: 'Check your email for a 6-digit security code.' });
+        setStatus({ state: 'sent', message: 'Check your email for “Your verification code”, then enter the 6 digits below.' });
         window.setTimeout(() => codeInputRefs.current[0]?.focus(), 0);
         return;
       }
@@ -854,7 +854,7 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
         setOtpSent(true);
         setStatus({
           state: 'sent',
-          message: 'Check your email for a 6-digit security code to complete registration.',
+          message: 'Check your email for “Your verification code”, then enter the 6 digits below.',
         });
         window.setTimeout(() => codeInputRefs.current[0]?.focus(), 0);
         return;

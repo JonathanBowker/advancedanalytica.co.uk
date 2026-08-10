@@ -106,13 +106,13 @@ multiple SPF TXT records on the same hostname.
 
 Use the checked-in templates in this repo:
 
-- [Magic link template](./templates/applications/supabase-magic-link-email.html)
+- [Secure code template](../../supabase/templates/magic-link.html)
 - [Reset password template](./templates/applications/supabase-reset-password-email.html)
 
-Those templates should use Supabase's generated confirmation URL directly:
+Those templates should use the correct Supabase variable for each flow:
 
-- magic link
-  - `{{ .ConfirmationURL }}`
+- secure code sign-in
+  - `{{ .Token }}`
 - password reset
   - `{{ .ConfirmationURL }}`
 
@@ -128,7 +128,7 @@ Before going live:
    - `spf=pass`
    - `dkim=pass`
    - `dmarc=pass`
-6. Confirm the clicked link lands on `/portal` for magic links.
+6. Confirm the secure-code email contains a six-digit code and verifies on `/login`.
 7. Confirm the reset link lands on `/auth/reset`.
 
 ## Anti-Junk Guidelines

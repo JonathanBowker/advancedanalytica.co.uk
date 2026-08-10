@@ -75,13 +75,17 @@ const allowList = readConfigValue(config, 'uri_allow_list')
 const missingRedirects = requiredRedirects.filter((redirect) => !allowList.includes(redirect));
 const brokenTemplates = templateChecks.filter((key) => {
   const content = readConfigValue(config, key);
+  if (key === 'mailer_templates_magic_link_content') {
+    return content && (!content.includes('Token') || content.includes('TokenHash') || content.includes('ConfirmationURL'));
+  }
   return content && (!content.includes('TokenHash') || content.includes('ConfirmationURL'));
 });
 
 const checks = {
   captchaDisabled: config.security_captcha_enabled === false,
   requiredRedirectsPresent: missingRedirects.length === 0,
-  tokenHashTemplatesReady: brokenTemplates.length === 0,
+  authTemplatesReady: brokenTemplates.length === 0,
+  sixDigitEmailOtp: config.mailer_otp_length === 6,
 };
 
 console.log(JSON.stringify({
