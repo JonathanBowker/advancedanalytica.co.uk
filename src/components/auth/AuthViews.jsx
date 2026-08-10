@@ -1071,7 +1071,7 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
                           ref={(node) => {
                             codeInputRefs.current[index] = node;
                           }}
-                          className="h-12 w-full rounded-[10px] border border-slate-200 bg-white text-center text-lg font-semibold text-slate-900 outline-none transition focus:border-[#14B8A6]"
+                          className="aspect-square w-full min-w-0 rounded-[10px] border border-slate-200 bg-white text-center text-lg font-semibold text-slate-900 outline-none transition focus:border-[#14B8A6]"
                           type="text"
                           inputMode="numeric"
                           autoComplete={index === 0 ? 'one-time-code' : 'off'}
