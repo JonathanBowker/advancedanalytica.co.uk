@@ -244,6 +244,7 @@ function getPasswordErrorMessage(err) {
 function getEmailFlowErrorMessage(err, fallback) {
   const rawMessage = err?.message || fallback;
   const lower = rawMessage.toLowerCase();
+  const normalizedCode = String(err?.code || '').toLowerCase();
   const isRateLimit =
     err?.status === 429 || lower.includes('rate limit') || lower.includes('too many');
 
@@ -251,6 +252,18 @@ function getEmailFlowErrorMessage(err, fallback) {
     return {
       message: 'Email rate limit exceeded. Wait a few minutes and try again.',
       isRateLimit: true,
+    };
+  }
+
+  if (
+    normalizedCode === 'otp_expired' ||
+    lower.includes('token has expired') ||
+    lower.includes('expired or is invalid') ||
+    lower.includes('otp_expired')
+  ) {
+    return {
+      message: 'That security code has expired or is invalid. Use the newest verification-code email, or resend a fresh code.',
+      isRateLimit: false,
     };
   }
 
@@ -452,9 +465,20 @@ async function verifyEmailOtp({ email, token, nextUrl }) {
     window.clearTimeout(timeoutId);
   }
 
-  const payload = await response.json().catch(() => null);
+  const responseText = await response.text().catch(() => '');
+  let payload = null;
+  try {
+    payload = responseText ? JSON.parse(responseText) : null;
+  } catch {}
+
   if (!response.ok) {
-    const error = new Error(payload?.error || 'Failed to verify security code.');
+    const error = new Error(
+      payload?.error ||
+      payload?.message ||
+      payload?.msg ||
+      responseText ||
+      'Failed to verify security code.',
+    );
     error.status = response.status;
     error.code = payload?.code || payload?.error_code || '';
     throw error;
@@ -1080,6 +1104,7 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
                           value={normalizedOtpCode[index] || ''}
                           onChange={(event) => handleOtpChange(index, event.target.value)}
                           onKeyDown={(event) => handleOtpKeyDown(index, event)}
+                          onFocus={(event) => event.target.select()}
                           disabled={busy}
                           aria-label={`Security code digit ${index + 1}`}
                         />
