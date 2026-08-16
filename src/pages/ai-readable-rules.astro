@@ -55,9 +55,59 @@ const capabilities = [
     body: "Production AI needs observability: what it saw, what it used, what it did, and when a human or escalation path was required.",
   },
 ];
+
+const faqs = [
+  {
+    question: "What is context engineering in simple business terms?",
+    answer:
+      "Context engineering is the work of giving AI the business-specific understanding it needs before it answers, recommends, or acts. That means connecting the model to the right policies, data, rules, permissions, examples, and escalation paths at the right moment.",
+  },
+  {
+    question: "Why does context matter more for AI agents?",
+    answer:
+      "When AI is only generating text, a weak answer is often a nuisance. When an agent can make recommendations, trigger workflows, expose data, or take action, missing context can create operational, legal, security, or commercial risk.",
+  },
+  {
+    question: "Is context engineering just better prompting?",
+    answer:
+      "No. Prompting is only one small part of the system. Context engineering is the operating layer around the model: retrieval, permissions, structured rules, workflow design, memory, observability, and evidence.",
+  },
+  {
+    question: "What company context should be captured first?",
+    answer:
+      "Start with the workflow and the decisions it depends on. The first useful context is usually policy, approval logic, risk thresholds, customer or case history, exceptions, source evidence, and the rules that determine when a person must step in.",
+  },
+  {
+    question: "Do we need to move all our data into one AI system?",
+    answer:
+      "Usually no. Enterprise data is often too sensitive, distributed, and fast-moving to copy into a single place. The better pattern is governed access to trusted data where it already lives, with retrieval and controls deciding what the AI can see.",
+  },
+  {
+    question: "How does this help governance and auditability?",
+    answer:
+      "It makes the decision path visible. You can see what context the AI used, which rules applied, what action it took, when it escalated, and what evidence sits behind the outcome. That is the difference between AI that sounds plausible and AI your business can govern.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.answer,
+    },
+  })),
+};
 ---
 
 <BaseLayout title={title} description={description} page={page}>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  </Fragment>
+
   <section class="aa-rules-hero">
     <div class="aa-rules-hero__shade" aria-hidden="true"></div>
 
@@ -216,6 +266,29 @@ const capabilities = [
         >
           Ask Claude
         </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="aa-rules-faq" aria-labelledby="aa-rules-faq-title">
+    <div class="container-wide aa-rules-faq__inner">
+      <div class="aa-rules-faq__intro">
+        <p class="aa-rules-eyebrow">Frequently Asked Questions</p>
+        <h2 id="aa-rules-faq-title">Context engineering, in the terms leaders actually need.</h2>
+      </div>
+
+      <div class="aa-rules-faq__list">
+        {faqs.map((faq) => (
+          <details class="aa-rules-faq__item" data-rules-faq>
+            <summary>
+              <span>{faq.question}</span>
+              <span class="aa-rules-faq__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="aa-rules-faq__answer">
+              <p>{faq.answer}</p>
+            </div>
+          </details>
+        ))}
       </div>
     </div>
   </section>
@@ -396,6 +469,10 @@ const capabilities = [
       padding-block: clamp(4.5rem, 8vw, 6.5rem);
     }
 
+    .aa-rules-faq {
+      padding-block: clamp(4.5rem, 8vw, 6.5rem);
+    }
+
     .aa-rules-statement {
       background: var(--color-paper);
       color: var(--color-ink);
@@ -413,7 +490,8 @@ const capabilities = [
     .aa-rules-proof h2,
     .aa-rules-output h2,
     .aa-rules-practice h2,
-    .aa-rules-final h2 {
+    .aa-rules-final h2,
+    .aa-rules-faq h2 {
       margin: 1rem 0 0;
       font-family: var(--font-display);
       color: inherit;
@@ -592,6 +670,117 @@ const capabilities = [
       line-height: 1.625;
     }
 
+    .aa-rules-faq {
+      background: #f3f0e8;
+      color: var(--color-ink);
+    }
+
+    .aa-rules-faq__inner {
+      display: block;
+    }
+
+    .aa-rules-faq__intro {
+      max-width: 56rem;
+      margin-inline: auto;
+      text-align: center;
+    }
+
+    .aa-rules-faq__list {
+      display: grid;
+      gap: 1rem;
+      max-width: 56rem;
+      margin: 3rem auto 0;
+    }
+
+    .aa-rules-faq__item {
+      overflow: hidden;
+      border: 1px solid rgba(11, 14, 20, 0.1);
+      border-radius: 1rem;
+      background: var(--color-paper);
+      box-shadow: var(--shadow-outline);
+      transition:
+        border-color 180ms ease,
+        transform 180ms ease;
+    }
+
+    .aa-rules-faq__item:hover,
+    .aa-rules-faq__item[open] {
+      border-color: rgba(20, 184, 166, 0.5);
+    }
+
+    .aa-rules-faq__item:hover {
+      transform: translateY(-1px);
+    }
+
+    .aa-rules-faq__item summary {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 2.25rem;
+      gap: 1.25rem;
+      align-items: center;
+      min-height: 0;
+      color: var(--color-ink);
+      cursor: pointer;
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 600;
+      line-height: 1.2;
+      list-style: none;
+      padding: 1.75rem;
+    }
+
+    .aa-rules-faq__item summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .aa-rules-faq__item summary:hover,
+    .aa-rules-faq__item summary:focus-visible {
+      color: #0f766e;
+      outline: none;
+    }
+
+    .aa-rules-faq__icon {
+      position: relative;
+      display: inline-flex;
+      width: 2.25rem;
+      height: 2.25rem;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px solid rgba(11, 14, 20, 0.18);
+      border-radius: 999px;
+    }
+
+    .aa-rules-faq__icon::before,
+    .aa-rules-faq__icon::after {
+      position: absolute;
+      width: 0.85rem;
+      height: 1.5px;
+      background: currentColor;
+      content: "";
+      transition: transform 180ms ease;
+    }
+
+    .aa-rules-faq__icon::after {
+      transform: rotate(90deg);
+    }
+
+    .aa-rules-faq__item[open] .aa-rules-faq__icon::after {
+      transform: rotate(0deg);
+    }
+
+    .aa-rules-faq__answer {
+      max-width: 48rem;
+      padding: 0 4.25rem 1.75rem 1.75rem;
+    }
+
+    .aa-rules-faq__answer p {
+      margin: 0;
+      color: var(--color-steel);
+      font-family: var(--font-body);
+      font-size: 1.125rem;
+      font-weight: 400;
+      line-height: 1.625;
+    }
+
     @media (max-width: 900px) {
       .aa-rules-statement__grid,
       .aa-rules-output__grid,
@@ -639,10 +828,32 @@ const capabilities = [
         grid-template-columns: 1fr;
         gap: 0.75rem;
       }
+
+      .aa-rules-faq__item summary {
+        grid-template-columns: minmax(0, 1fr) 2rem;
+        font-size: 1.25rem;
+        padding: 1.35rem;
+      }
+
+      .aa-rules-faq__answer {
+        padding: 0 1.35rem 1.35rem;
+      }
     }
   </style>
 
   <script define:vars={{ salesFunnelSourceUrl: page.url }} is:inline>
+    document.addEventListener("toggle", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLDetailsElement)) return;
+      if (!target.matches("[data-rules-faq]") || !target.open) return;
+
+      document.querySelectorAll("[data-rules-faq][open]").forEach((item) => {
+        if (item !== target && item instanceof HTMLDetailsElement) {
+          item.open = false;
+        }
+      });
+    }, true);
+
     document.addEventListener("click", (event) => {
       const target = event.target instanceof Element
         ? event.target.closest("[data-sales-funnel-assistant]")
