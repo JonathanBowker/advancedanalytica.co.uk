@@ -4,7 +4,7 @@ import { SITE_URL } from '../../../lib/seo/site';
 
 export const prerender = false;
 
-const defaultPackUrl = 'https://advancedanalytica.co.uk/packs/ai-sales-funnel.zip';
+const defaultPackUrl = 'https://aa-sales-funnel-packs.lon1.digitaloceanspaces.com/ai-sales-funnel.zip';
 const defaultTriggerApiUrl = 'http://188.166.152.62:8080';
 const defaultWrapperClient = 'advanced-analytica';
 const defaultWrapperWorkflow = 'sales-funnel-page-build';
