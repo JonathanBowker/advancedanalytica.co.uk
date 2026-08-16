@@ -833,7 +833,12 @@ const faqJsonLd = {
 
       event.preventDefault();
       const fallbackUrl = target.href;
-      const assistantWindow = window.open("about:blank", "_blank", "noopener,noreferrer");
+      const assistantWindow = window.open("about:blank", "_blank");
+      if (assistantWindow) {
+        assistantWindow.opener = null;
+        assistantWindow.document.write('<!doctype html><title>Preparing AI source</title><body style="font-family: system-ui, sans-serif; padding: 2rem;">Preparing the AI-readable source...</body>');
+        assistantWindow.document.close();
+      }
 
       try {
         const response = await fetch("/api/sales-funnel/page-build", {
