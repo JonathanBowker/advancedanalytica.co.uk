@@ -9,6 +9,7 @@ const defaultTriggerApiUrl = 'https://prefect.advancedanalytica.co.uk';
 const defaultTriggerClient = 'sales-funnel';
 const defaultDeploymentName = 'page-build';
 const triggerTimeoutMs = 8000;
+const failedDependencyStatus = 424;
 
 function getEnv(name: string) {
   return String(
@@ -183,7 +184,7 @@ export const POST: APIRoute = async ({ request }) => {
             status: deploymentId.status,
             details: deploymentId.payload,
           },
-          502,
+          failedDependencyStatus,
         );
       }
 
@@ -211,7 +212,7 @@ export const POST: APIRoute = async ({ request }) => {
             status: response.status,
             details: payload,
           },
-          502,
+          failedDependencyStatus,
         );
       }
 
@@ -246,7 +247,7 @@ export const POST: APIRoute = async ({ request }) => {
           status: response.status,
           details: payload,
         },
-        502,
+        failedDependencyStatus,
       );
     }
 
@@ -263,7 +264,7 @@ export const POST: APIRoute = async ({ request }) => {
         ok: false,
         error: error instanceof Error ? error.message : 'Sales funnel trigger failed.',
       },
-      502,
+      failedDependencyStatus,
     );
   }
 };
