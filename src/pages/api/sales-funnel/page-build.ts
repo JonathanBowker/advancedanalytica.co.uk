@@ -117,7 +117,7 @@ async function waitForPageReady(pageUrl: string) {
   while (Date.now() < deadline) {
     try {
       const response = await fetch(pageUrl, {
-        headers: { Accept: 'text/html,text/markdown;q=0.9,*/*;q=0.1' },
+        headers: { Accept: 'text/plain,text/html;q=0.9,text/markdown;q=0.8,*/*;q=0.1' },
         signal: AbortSignal.timeout(3000),
       });
       if (response.ok) return true;
@@ -192,7 +192,7 @@ export const POST: APIRoute = async ({ request }) => {
   const assistant = getRequestBodyValue(body, 'assistant') || 'unknown';
   const trackingId = generateTrackingId();
   const pageBaseUrl = getSalesFunnelPageBaseUrl();
-  const pageUrl = `${pageBaseUrl}/${encodeURIComponent(trackingId)}.md`;
+  const pageUrl = `${pageBaseUrl}/${encodeURIComponent(trackingId)}.txt`;
   const markdownUrl = pageUrl;
   const htmlPageUrl = `${triggerApiUrl.replace(/\/+$/, '')}/sales-funnel/pages/${encodeURIComponent(
     trackingId,
