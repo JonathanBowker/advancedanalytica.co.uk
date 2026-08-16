@@ -8,6 +8,7 @@ const defaultPackUrl = 'https://advancedanalytica.co.uk/packs/ai-sales-funnel.zi
 const defaultTriggerApiUrl = 'http://prefect.advancedanalytica.co.uk';
 const defaultTriggerClient = 'sales-funnel';
 const defaultDeploymentName = 'page-build';
+const triggerTimeoutMs = 8000;
 
 function getEnv(name: string) {
   return String(
@@ -37,6 +38,10 @@ function getRequestBodyValue(body: unknown, key: string) {
 
 async function readJson(response: Response) {
   return response.json().catch(() => ({}));
+}
+
+function triggerSignal() {
+  return AbortSignal.timeout(triggerTimeoutMs);
 }
 
 function getPrefectApiUrl(value: string) {
@@ -111,6 +116,7 @@ async function getPrefectDeploymentId({
     `${prefectApiUrl}/deployments/name/${encodeURIComponent(flowName)}/${encodeURIComponent(deploymentName)}`,
     {
       headers: getPrefectHeaders(triggerApiKey),
+      signal: triggerSignal(),
     },
   );
   const payload = await readJson(response);
@@ -186,6 +192,7 @@ export const POST: APIRoute = async ({ request }) => {
         {
           method: 'POST',
           headers: getPrefectHeaders(triggerApiKey),
+          signal: triggerSignal(),
           body: JSON.stringify({
             parameters,
             idempotency_key: trackingId,
@@ -221,6 +228,7 @@ export const POST: APIRoute = async ({ request }) => {
       `${triggerApiUrl.replace(/\/+$/, '')}/flows/${triggerClient}/page-build/run`,
       {
         method: 'POST',
+        signal: triggerSignal(),
         headers: {
           'Content-Type': 'application/json',
           ...(triggerApiKey ? { 'X-API-Key': triggerApiKey } : {}),

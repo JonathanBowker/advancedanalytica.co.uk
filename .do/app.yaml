@@ -14,6 +14,7 @@ ingress:
           prefix: /api/portal
     - component:
         name: web
+        preserve_path_prefix: true
       match:
         path:
           prefix: /api/sales-funnel
