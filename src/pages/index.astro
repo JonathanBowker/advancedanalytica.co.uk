@@ -528,6 +528,35 @@ const pathways = [
       transform: translateY(-1px);
     }
 
+    .aa-ai-toast {
+      position: fixed;
+      right: clamp(1rem, 3vw, 2rem);
+      bottom: clamp(1rem, 3vw, 2rem);
+      z-index: 80;
+      max-width: min(24rem, calc(100vw - 2rem));
+      padding: 1rem 1.15rem;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 0.5rem;
+      background: rgba(11, 18, 32, 0.96);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.24);
+      color: #ffffff;
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 600;
+      line-height: 1.4;
+      opacity: 0;
+      transform: translateY(0.75rem);
+      transition:
+        opacity 240ms ease,
+        transform 240ms ease;
+      pointer-events: none;
+    }
+
+    .aa-ai-toast.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     @media (max-width: 960px) {
       .home-hero__inner {
         padding-top: 6.5rem;
@@ -558,21 +587,43 @@ const pathways = [
   </style>
 
   <script is:inline>
+    const showSalesFunnelToast = (message) => {
+      let toast = document.querySelector('[data-sales-funnel-toast]');
+      if (!(toast instanceof HTMLElement)) {
+        toast = document.createElement('div');
+        toast.className = 'aa-ai-toast';
+        toast.setAttribute('data-sales-funnel-toast', '');
+        toast.setAttribute('role', 'status');
+        toast.setAttribute('aria-live', 'polite');
+        document.body.appendChild(toast);
+      }
+
+      toast.textContent = message;
+      requestAnimationFrame(() => {
+        toast.classList.add('is-visible');
+      });
+      return toast;
+    };
+
+    const fadeToastThenNavigate = (toast, url) => {
+      toast.classList.remove('is-visible');
+      window.setTimeout(() => {
+        window.location.href = url;
+      }, 260);
+    };
+
     document.addEventListener('click', async (event) => {
       const target = event.target instanceof Element
         ? event.target.closest('[data-sales-funnel-assistant]')
         : null;
 
       if (!(target instanceof HTMLAnchorElement)) return;
+      if (target.getAttribute('aria-busy') === 'true') return;
 
       event.preventDefault();
       const fallbackUrl = target.href;
-      const assistantWindow = window.open('about:blank', '_blank');
-      if (assistantWindow) {
-        assistantWindow.opener = null;
-        assistantWindow.document.write('<!doctype html><title>Preparing AI source</title><body style="font-family: system-ui, sans-serif; padding: 2rem;">Preparing the AI-readable source...</body>');
-        assistantWindow.document.close();
-      }
+      const toast = showSalesFunnelToast('Preparing the AI-readable source...');
+      target.setAttribute('aria-busy', 'true');
 
       try {
         const response = await fetch('/api/sales-funnel/page-build', {
@@ -589,17 +640,11 @@ const pathways = [
           ? payload.assistant_url
           : fallbackUrl;
 
-        if (assistantWindow) {
-          assistantWindow.location.href = outboundUrl;
-        } else {
-          window.location.href = outboundUrl;
-        }
+        toast.textContent = 'Opening your assistant...';
+        fadeToastThenNavigate(toast, outboundUrl);
       } catch {
-        if (assistantWindow) {
-          assistantWindow.location.href = fallbackUrl;
-        } else {
-          window.location.href = fallbackUrl;
-        }
+        toast.textContent = 'Opening your assistant...';
+        fadeToastThenNavigate(toast, fallbackUrl);
       }
     });
   </script>
