@@ -114,7 +114,8 @@ const faqJsonLd = {
 
       <div class="aa-rules-hero__grid">
         <h1>
-          Could your AI explain a decision using your company's rules?
+          <span>Could your AI</span>
+          <span>explain a decision based on your rules?</span>
         </h1>
 
         <div>
@@ -334,7 +335,7 @@ const faqJsonLd = {
 
     .aa-rules-hero h1 {
       margin: 0;
-      max-width: 13.1ch;
+      max-width: 15.5ch;
       font-family: var(--font-display);
       color: var(--color-ink);
       font-size: clamp(38px, 4.5vw, 62px);
@@ -343,6 +344,10 @@ const faqJsonLd = {
       line-height: 1.12;
       text-wrap: balance;
       -webkit-text-stroke: 0.3px var(--color-ink);
+    }
+
+    .aa-rules-hero h1 span {
+      display: block;
     }
 
     .aa-rules-hero__lead {
@@ -800,7 +805,7 @@ const faqJsonLd = {
 
     @media (min-width: 1024px) {
       .aa-rules-hero__grid {
-        grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+        grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
         gap: 5rem;
         align-items: start;
       }
