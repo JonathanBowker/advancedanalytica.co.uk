@@ -109,43 +109,45 @@ const faqJsonLd = {
   </Fragment>
 
   <section class="aa-rules-hero">
-    <div class="aa-rules-hero__shade" aria-hidden="true"></div>
-
     <div class="container-wide aa-rules-hero__inner">
-      <div class="aa-rules-hero__content">
-        <p class="aa-rules-eyebrow">Context engineering</p>
+      <p class="aa-rules-eyebrow">Context engineering</p>
+
+      <div class="aa-rules-hero__grid">
         <h1>
           Could your AI explain a decision using your company's rules?
         </h1>
-        <p class="aa-rules-hero__lead">
-          Most leaders find the honest answer is no. That is not a model
-          problem. It is because the rules were never captured in a way a
-          machine could read them, retrieve them, and apply them at the moment
-          of decision.
-        </p>
-        <div class="aa-rules-hero__actions">
-          <a href="/company/contact/" class="aa-rules-primary-cta">
-            Book a call
-          </a>
-          <div class="aa-rules-chat-actions" aria-label="Ask an AI assistant about this page">
-            <a
-              href={askChatGptUrl}
-              class="aa-rules-chat-button aa-rules-chat-button--dark"
-              data-sales-funnel-assistant="chatgpt"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Ask ChatGPT
+
+        <div>
+          <p class="aa-rules-hero__lead">
+            Most leaders find the honest answer is no. That is not a model
+            problem. It is because the rules were never captured in a way a
+            machine could read them, retrieve them, and apply them at the moment
+            of decision.
+          </p>
+          <div class="aa-rules-hero__actions">
+            <a href="/company/contact/" class="aa-rules-primary-cta">
+              Book a call
             </a>
-            <a
-              href={askClaudeUrl}
-              class="aa-rules-chat-button aa-rules-chat-button--dark"
-              data-sales-funnel-assistant="claude"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Ask Claude
-            </a>
+            <div class="aa-rules-chat-actions" aria-label="Ask an AI assistant about this page">
+              <a
+                href={askChatGptUrl}
+                class="aa-rules-chat-button"
+                data-sales-funnel-assistant="chatgpt"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Ask ChatGPT
+              </a>
+              <a
+                href={askClaudeUrl}
+                class="aa-rules-chat-button"
+                data-sales-funnel-assistant="claude"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Ask Claude
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -305,56 +307,42 @@ const faqJsonLd = {
 
     .aa-rules-hero {
       position: relative;
-      min-height: calc(100svh - 5rem);
       overflow: hidden;
-      background: #05070b;
-      color: var(--color-paper);
-    }
-
-    .aa-rules-hero__shade {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    .aa-rules-hero__shade {
-      background:
-        linear-gradient(115deg, rgba(5, 7, 11, 0.99) 0%, rgba(8, 14, 21, 0.98) 48%, rgba(8, 33, 36, 0.96) 100%),
-        radial-gradient(circle at 80% 18%, rgba(20, 184, 166, 0.22), transparent 24rem),
-        radial-gradient(circle at 24% 82%, rgba(59, 130, 246, 0.14), transparent 26rem);
+      border-bottom: 1px solid color-mix(in srgb, var(--color-ink) 10%, white);
+      background: var(--color-paper);
+      color: var(--color-ink);
     }
 
     .aa-rules-hero__inner {
       position: relative;
       z-index: 1;
-      display: flex;
-      min-height: calc(100svh - 5rem);
-      align-items: center;
-      padding-block: clamp(4.5rem, 10vw, 8rem);
+      padding-top: 7rem;
+      padding-bottom: 5rem;
     }
 
-    .aa-rules-hero__content {
-      max-width: 58rem;
+    .aa-rules-hero__grid {
+      display: grid;
+      gap: 2.5rem;
+      margin-top: 2.5rem;
     }
 
     .aa-rules-hero h1 {
-      margin: 1.35rem 0 0;
+      margin: 0;
       max-width: 13.1ch;
       font-family: var(--font-display);
-      color: #ffffff;
+      color: var(--color-ink);
       font-size: clamp(38px, 4.5vw, 62px);
       font-weight: 1000;
       letter-spacing: -0.016em;
       line-height: 1.12;
       text-wrap: balance;
-      -webkit-text-stroke: 0.3px #ffffff;
+      -webkit-text-stroke: 0.3px var(--color-ink);
     }
 
     .aa-rules-hero__lead {
-      margin: 1.75rem 0 0;
+      margin: 0 0 2rem;
       max-width: 34rem;
-      color: rgba(246, 247, 248, 0.82);
+      color: color-mix(in srgb, var(--color-ink) 62%, white);
       font-family: var(--font-body);
       font-size: 1.125rem;
       font-weight: 400;
@@ -367,7 +355,6 @@ const faqJsonLd = {
       flex-wrap: wrap;
       align-items: center;
       gap: 2rem;
-      margin-top: 2.25rem;
     }
 
     .aa-rules-primary-cta {
@@ -445,19 +432,6 @@ const faqJsonLd = {
       color: var(--color-ink);
       transform: translateY(-1px);
       outline: none;
-    }
-
-    .aa-rules-chat-button--dark {
-      border-color: rgba(246, 247, 248, 0.72);
-      background: rgba(246, 247, 248, 0.08);
-      color: #ffffff;
-    }
-
-    .aa-rules-chat-button--dark:hover,
-    .aa-rules-chat-button--dark:focus-visible {
-      border-color: #ffffff;
-      background: #ffffff;
-      color: var(--color-ink);
     }
 
     .aa-rules-statement,
@@ -780,19 +754,9 @@ const faqJsonLd = {
     }
 
     @media (max-width: 640px) {
-      .aa-rules-hero {
-        min-height: auto;
-      }
-
-      .aa-rules-hero__shade {
-        background:
-          linear-gradient(180deg, rgba(5, 7, 11, 0.94) 0%, rgba(5, 7, 11, 0.88) 58%, rgba(5, 7, 11, 0.72) 100%),
-          radial-gradient(circle at 68% 8%, rgba(20, 184, 166, 0.16), transparent 18rem);
-      }
-
       .aa-rules-hero__inner {
-        min-height: auto;
-        padding-block: 4.5rem 5.5rem;
+        padding-top: 6.5rem;
+        padding-bottom: 4rem;
       }
 
       .aa-rules-hero h1 {
@@ -821,6 +785,14 @@ const faqJsonLd = {
 
       .aa-rules-faq__answer {
         padding: 0 1.75rem 1.35rem 0;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .aa-rules-hero__grid {
+        grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+        gap: 5rem;
+        align-items: start;
       }
     }
   </style>
