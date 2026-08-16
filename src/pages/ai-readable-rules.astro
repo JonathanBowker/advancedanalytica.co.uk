@@ -951,11 +951,11 @@ const faqJsonLd = {
       if (messageNode) messageNode.textContent = message;
     };
 
-    const fadeOverlayThenNavigate = (overlay, url) => {
-      overlay.classList.remove("is-visible");
+    const navigateWithOverlay = (overlay, url) => {
+      overlay.classList.add("is-visible");
       window.setTimeout(() => {
         window.location.href = url;
-      }, 240);
+      }, 120);
     };
 
     document.addEventListener("toggle", (event) => {
@@ -999,10 +999,10 @@ const faqJsonLd = {
           : fallbackUrl;
 
         setSalesFunnelOverlayMessage(overlay, "Opening your assistant...");
-        fadeOverlayThenNavigate(overlay, outboundUrl);
+        navigateWithOverlay(overlay, outboundUrl);
       } catch {
         setSalesFunnelOverlayMessage(overlay, "Opening your assistant...");
-        fadeOverlayThenNavigate(overlay, fallbackUrl);
+        navigateWithOverlay(overlay, fallbackUrl);
       }
     });
   </script>
