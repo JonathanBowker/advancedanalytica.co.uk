@@ -681,7 +681,7 @@ const pathways = [
         .aa-ai-spinner__system {
           transform-box: view-box;
           transform-origin: 73.92px 73.92px;
-          animation: aa-ai-spinner-system 2.25s ease-in-out infinite;
+          animation: aa-ai-spinner-system 2.25s linear infinite;
         }
 
         .aa-ai-spinner__core,
@@ -696,16 +696,16 @@ const pathways = [
         .aa-ai-spinner__dot {
           transform-box: view-box;
           transform-origin: 45.54px 32.67px;
-          animation: aa-ai-spinner-dot 2.25s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+          animation: aa-ai-spinner-dot 2.25s linear infinite;
         }
 
         @keyframes aa-ai-spinner-system {
           0%,
-          24% {
+          28% {
             transform: rotate(0deg);
           }
 
-          66%,
+          72%,
           100% {
             transform: rotate(-360deg);
           }
@@ -713,23 +713,18 @@ const pathways = [
 
         @keyframes aa-ai-spinner-dot {
           0%,
-          10% {
+          14% {
             opacity: 1;
             transform: translate(0, 0);
           }
 
-          24%,
-          66% {
+          28%,
+          72% {
             opacity: 1;
             transform: translate(0, 36px);
           }
 
-          78% {
-            opacity: 1;
-            transform: translate(0, 0);
-          }
-
-          88%,
+          86%,
           100% {
             opacity: 1;
             transform: translate(0, 0);
