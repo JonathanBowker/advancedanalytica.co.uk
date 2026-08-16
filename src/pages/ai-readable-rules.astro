@@ -612,19 +612,26 @@ const faqJsonLd = {
 
     .aa-rules-practice__grid {
       display: grid;
-      gap: 1px;
+      gap: 1rem;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       margin-top: 3rem;
-      background: rgba(11, 14, 20, 0.12);
-      border: 1px solid rgba(11, 14, 20, 0.12);
-      border-radius: 0.5rem;
-      overflow: hidden;
     }
 
     .aa-rules-practice__item {
       min-height: 18rem;
+      border: 1px solid rgba(11, 14, 20, 0.1);
+      border-radius: 0.5rem;
       background: var(--color-paper);
+      box-shadow: var(--shadow-outline);
       padding: clamp(1.5rem, 3vw, 2rem);
+      transition:
+        border-color 180ms ease,
+        transform 180ms ease;
+    }
+
+    .aa-rules-practice__item:hover {
+      border-color: rgba(20, 184, 166, 0.5);
+      transform: translateY(-1px);
     }
 
     .aa-rules-practice__item h3 {
