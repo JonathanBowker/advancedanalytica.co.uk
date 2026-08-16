@@ -557,7 +557,7 @@ const pathways = [
     }
   </style>
 
-  <script define:vars={{ salesFunnelSourceUrl: page.url }} is:inline>
+  <script is:inline>
     document.addEventListener('click', (event) => {
       const target = event.target instanceof Element
         ? event.target.closest('[data-sales-funnel-assistant]')
@@ -572,7 +572,7 @@ const pathways = [
         keepalive: true,
         body: JSON.stringify({
           assistant: target.dataset.salesFunnelAssistant || 'unknown',
-          sourceUrl: salesFunnelSourceUrl,
+          sourceUrl: window.location.href,
         }),
       }).catch(() => {
         // The outbound assistant link should not be blocked by tracking.
