@@ -155,23 +155,25 @@ const faqJsonLd = {
   </section>
 
   <section class="aa-rules-statement">
-    <div class="container-wide aa-rules-statement__grid">
-      <div>
-        <p class="aa-rules-eyebrow">The problem</p>
-        <h2>A model trained on the world's data does not know your business.</h2>
-      </div>
-      <div class="aa-rules-statement__copy">
-        <p>
-          It does not automatically know your policies, your history, your
-          operating environment, your attitude to risk, your customer promises,
-          or the outcomes your board cares about. Without that context, it can
-          sound confident while being wrong about the things that matter.
-        </p>
-        <p>
-          Context engineering is the discipline of giving AI that understanding:
-          connecting the right data, rules, permissions, and guardrails to the
-          right model at the right time.
-        </p>
+    <div class="container-wide">
+      <p class="aa-rules-eyebrow aa-rules-eyebrow--center">The problem</p>
+      <div class="aa-rules-statement__grid">
+        <div>
+          <h2>A model trained on the world's data does not know your business.</h2>
+        </div>
+        <div class="aa-rules-statement__copy">
+          <p>
+            It does not automatically know your policies, your history, your
+            operating environment, your attitude to risk, your customer promises,
+            or the outcomes your board cares about. Without that context, it can
+            sound confident while being wrong about the things that matter.
+          </p>
+          <p>
+            Context engineering is the discipline of giving AI that understanding:
+            connecting the right data, rules, permissions, and guardrails to the
+            right model at the right time.
+          </p>
+        </div>
       </div>
     </div>
   </section>
@@ -303,6 +305,10 @@ const faqJsonLd = {
       letter-spacing: 0.2em;
       line-height: 1.4;
       text-transform: uppercase;
+    }
+
+    .aa-rules-eyebrow--center {
+      text-align: center;
     }
 
     .aa-rules-hero {
@@ -457,6 +463,10 @@ const faqJsonLd = {
       gap: clamp(2.5rem, 6vw, 5rem);
       grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
       align-items: start;
+    }
+
+    .aa-rules-statement__grid {
+      margin-top: 2.5rem;
     }
 
     .aa-rules-statement h2,
