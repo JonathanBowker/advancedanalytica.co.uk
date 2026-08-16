@@ -59,17 +59,6 @@ const capabilities = [
 
 <BaseLayout title={title} description={description} page={page}>
   <section class="aa-rules-hero">
-    <video
-      class="aa-rules-hero__media"
-      autoplay
-      muted
-      loop
-      playsinline
-      preload="metadata"
-      aria-hidden="true"
-    >
-      <source src="/videos/brand-operator-full-dots.mp4" type="video/mp4" />
-    </video>
     <div class="aa-rules-hero__shade" aria-hidden="true"></div>
 
     <div class="container-wide aa-rules-hero__inner">
@@ -250,7 +239,6 @@ const capabilities = [
       color: var(--color-paper);
     }
 
-    .aa-rules-hero__media,
     .aa-rules-hero__shade {
       position: absolute;
       inset: 0;
@@ -258,15 +246,11 @@ const capabilities = [
       height: 100%;
     }
 
-    .aa-rules-hero__media {
-      object-fit: cover;
-      opacity: 0.5;
-    }
-
     .aa-rules-hero__shade {
       background:
-        linear-gradient(90deg, rgba(5, 7, 11, 0.96) 0%, rgba(5, 7, 11, 0.82) 44%, rgba(5, 7, 11, 0.38) 100%),
-        radial-gradient(circle at 76% 24%, rgba(20, 184, 166, 0.18), transparent 25rem);
+        linear-gradient(115deg, rgba(5, 7, 11, 0.99) 0%, rgba(8, 14, 21, 0.98) 48%, rgba(8, 33, 36, 0.96) 100%),
+        radial-gradient(circle at 80% 18%, rgba(20, 184, 166, 0.22), transparent 24rem),
+        radial-gradient(circle at 24% 82%, rgba(59, 130, 246, 0.14), transparent 26rem);
     }
 
     .aa-rules-hero__inner {
