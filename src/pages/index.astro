@@ -558,25 +558,44 @@ const pathways = [
   </style>
 
   <script is:inline>
-    document.addEventListener('click', (event) => {
+    document.addEventListener('click', async (event) => {
       const target = event.target instanceof Element
         ? event.target.closest('[data-sales-funnel-assistant]')
         : null;
 
       if (!(target instanceof HTMLAnchorElement)) return;
 
-      fetch('/api/sales-funnel/page-build', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'same-origin',
-        keepalive: true,
-        body: JSON.stringify({
-          assistant: target.dataset.salesFunnelAssistant || 'unknown',
-          sourceUrl: window.location.href,
-        }),
-      }).catch(() => {
-        // The outbound assistant link should not be blocked by tracking.
-      });
+      event.preventDefault();
+      const fallbackUrl = target.href;
+      const assistantWindow = window.open('about:blank', '_blank', 'noopener,noreferrer');
+
+      try {
+        const response = await fetch('/api/sales-funnel/page-build', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'same-origin',
+          body: JSON.stringify({
+            assistant: target.dataset.salesFunnelAssistant || 'unknown',
+            sourceUrl: window.location.href,
+          }),
+        });
+        const payload = await response.json();
+        const outboundUrl = response.ok && payload && typeof payload.assistant_url === 'string'
+          ? payload.assistant_url
+          : fallbackUrl;
+
+        if (assistantWindow) {
+          assistantWindow.location.href = outboundUrl;
+        } else {
+          window.location.href = outboundUrl;
+        }
+      } catch {
+        if (assistantWindow) {
+          assistantWindow.location.href = fallbackUrl;
+        } else {
+          window.location.href = fallbackUrl;
+        }
+      }
     });
   </script>
 </BaseLayout>

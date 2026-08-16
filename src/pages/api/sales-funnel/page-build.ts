@@ -11,6 +11,8 @@ const defaultWrapperWorkflow = 'sales-funnel-page-build';
 const defaultPrefectFlowName = 'sales-funnel-page-build';
 const defaultPrefectDeploymentName = 'sales-funnel-page-build';
 const triggerTimeoutMs = 8000;
+const pageReadyTimeoutMs = 22000;
+const pageReadyPollMs = 1000;
 const failedDependencyStatus = 424;
 
 function getEnv(name: string) {
@@ -45,6 +47,10 @@ async function readJson(response: Response) {
 
 function triggerSignal() {
   return AbortSignal.timeout(triggerTimeoutMs);
+}
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 function getPrefectApiUrl(value: string) {
@@ -89,6 +95,34 @@ function getTriggerApiUrl() {
   }
 
   return configuredUrl || defaultTriggerApiUrl;
+}
+
+function getSalesFunnelPageBaseUrl(triggerApiUrl: string) {
+  return (getEnv('SALES_FUNNEL_PAGE_BASE_URL') || triggerApiUrl || defaultTriggerApiUrl).replace(/\/+$/, '');
+}
+
+function buildAssistantUrl(assistant: string, pageUrl: string) {
+  const prompt = `Read from ${pageUrl} so I can ask questions about its contents`;
+  const encodedPrompt = encodeURIComponent(prompt);
+  if (assistant === 'claude') return `https://claude.ai/new?q=${encodedPrompt}`;
+  return `https://chatgpt.com/?hint=search&q=${encodedPrompt}`;
+}
+
+async function waitForPageReady(pageUrl: string) {
+  const deadline = Date.now() + pageReadyTimeoutMs;
+  while (Date.now() < deadline) {
+    try {
+      const response = await fetch(pageUrl, {
+        headers: { Accept: 'text/html,text/markdown;q=0.9,*/*;q=0.1' },
+        signal: AbortSignal.timeout(3000),
+      });
+      if (response.ok) return true;
+    } catch {
+      // The worker may still be creating the page.
+    }
+    await sleep(pageReadyPollMs);
+  }
+  return false;
 }
 
 function getPrefectHeaders(triggerApiKey: string) {
@@ -153,6 +187,10 @@ export const POST: APIRoute = async ({ request }) => {
   const sourceUrl = getRequestBodyValue(body, 'sourceUrl') || `${SITE_URL}/`;
   const assistant = getRequestBodyValue(body, 'assistant') || 'unknown';
   const trackingId = generateTrackingId();
+  const pageBaseUrl = getSalesFunnelPageBaseUrl(triggerApiUrl);
+  const pageUrl = `${pageBaseUrl}/sales-funnel/pages/${encodeURIComponent(trackingId)}`;
+  const markdownUrl = `${pageUrl}.md`;
+  const assistantUrl = buildAssistantUrl(assistant, pageUrl);
 
   const parameters = {
     campaign_source: `advanced-analytica-homepage-${assistant}`,
@@ -163,7 +201,7 @@ export const POST: APIRoute = async ({ request }) => {
       'Advanced Analytica turns brand standards, business rules, approvals, policies, and expert judgement into governed AI operating assets that agents can follow consistently.',
     deeper_pack_url: getEnv('SALES_FUNNEL_DEEPER_PACK_URL') || defaultPackUrl,
     booking_url: `${SITE_URL}/company/contact/`,
-    ask_source_url: sourceUrl,
+    ask_source_url: pageUrl || sourceUrl,
     template_path: 'templates/sales-pitch-page-template.md',
     output_dir: 'data/tmp/pages',
     store_path: 'data/tmp/funnel-events.json',
@@ -219,12 +257,17 @@ export const POST: APIRoute = async ({ request }) => {
         );
       }
 
+      const pageReady = await waitForPageReady(pageUrl);
       return jsonResponse({
         ok: true,
         tracking_id: trackingId,
         flow_run_id: payload.id,
         deployment_id: deploymentId,
         state: payload.state,
+        page_url: pageUrl,
+        markdown_url: markdownUrl,
+        assistant_url: assistantUrl,
+        page_ready: pageReady,
       });
     }
 
@@ -254,12 +297,17 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
+    const pageReady = await waitForPageReady(pageUrl);
     return jsonResponse({
       ok: true,
       tracking_id: trackingId,
       flow_run_id: payload.flow_run_id,
       deployment_name: payload.deployment_name,
       state: payload.state,
+      page_url: pageUrl,
+      markdown_url: markdownUrl,
+      assistant_url: assistantUrl,
+      page_ready: pageReady,
     });
   } catch (error) {
     return jsonResponse(
