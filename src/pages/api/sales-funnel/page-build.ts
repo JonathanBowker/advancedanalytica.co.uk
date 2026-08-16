@@ -5,7 +5,7 @@ import { SITE_URL } from '../../../lib/seo/site';
 export const prerender = false;
 
 const defaultPackUrl = 'https://advancedanalytica.co.uk/packs/ai-sales-funnel.zip';
-const defaultTriggerApiUrl = 'http://prefect.advancedanalytica.co.uk';
+const defaultTriggerApiUrl = 'https://prefect.advancedanalytica.co.uk';
 const defaultTriggerClient = 'sales-funnel';
 const defaultDeploymentName = 'page-build';
 const triggerTimeoutMs = 8000;
