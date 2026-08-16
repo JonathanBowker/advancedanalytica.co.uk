@@ -926,16 +926,67 @@ const faqJsonLd = {
 
         .aa-ai-spinner {
           display: block;
-          width: 2.25rem;
-          height: 2.25rem;
-          margin: 1rem auto 0;
-          animation: aa-ai-spinner-turn 1.35s linear infinite;
-          filter: invert(1);
+          width: 4.75rem;
+          height: 4.75rem;
+          margin: 1.15rem auto 0;
+          overflow: visible;
         }
 
-        @keyframes aa-ai-spinner-turn {
-          to {
+        .aa-ai-spinner__system {
+          transform-box: view-box;
+          transform-origin: 73.92px 73.92px;
+          animation: aa-ai-spinner-system 2.25s ease-in-out infinite;
+        }
+
+        .aa-ai-spinner__core,
+        .aa-ai-spinner__dot {
+          fill: #ffffff;
+        }
+
+        .aa-ai-spinner__core {
+          opacity: 0.95;
+        }
+
+        .aa-ai-spinner__dot {
+          transform-box: view-box;
+          transform-origin: 45.54px 32.67px;
+          animation: aa-ai-spinner-dot 2.25s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+        }
+
+        @keyframes aa-ai-spinner-system {
+          0%,
+          24% {
+            transform: rotate(0deg);
+          }
+
+          66%,
+          100% {
             transform: rotate(360deg);
+          }
+        }
+
+        @keyframes aa-ai-spinner-dot {
+          0%,
+          10% {
+            opacity: 1;
+            transform: translate(0, 0) scale(1);
+          }
+
+          24%,
+          66% {
+            opacity: 1;
+            transform: translate(0, 36px) scale(0.92);
+          }
+
+          78% {
+            opacity: 1;
+            transform: translate(0, 0) scale(1.2);
+          }
+
+          88%,
+          100% {
+            opacity: 1;
+            transform: translate(0, 0) scale(1);
           }
         }
       `;
@@ -949,7 +1000,7 @@ const faqJsonLd = {
         overlay = document.createElement("div");
         overlay.className = "aa-ai-overlay";
         overlay.setAttribute("data-sales-funnel-overlay", "");
-        overlay.innerHTML = '<div class="aa-ai-dialog" role="status" aria-live="polite"><div class="aa-ai-dialog__eyebrow">AI source</div><p class="aa-ai-dialog__message" data-sales-funnel-message></p><img class="aa-ai-spinner" src="/images/infrastructure/brando-avatar-dots.svg" alt="" aria-hidden="true" decoding="async"></div>';
+        overlay.innerHTML = '<div class="aa-ai-dialog" role="status" aria-live="polite"><div class="aa-ai-dialog__eyebrow">AI source</div><p class="aa-ai-dialog__message" data-sales-funnel-message></p><svg class="aa-ai-spinner" viewBox="0 0 147.84 147.84" aria-hidden="true" focusable="false"><g class="aa-ai-spinner__system"><g class="aa-ai-spinner__core"><path d="M93.08,107.24c.66,5.88-3.94,10.88-9.69,10.88-3.62,0-6.77-1.98-8.45-4.91-.44-.77-1.58-.77-2.02,0-1.68,2.93-4.84,4.91-8.45,4.91-5.75,0-10.36-5-9.69-10.88.5-4.46,4.1-8.06,8.56-8.57,4.08-.46,7.72,1.6,9.58,4.83.45.79,1.58.79,2.04,0,1.86-3.22,5.51-5.29,9.58-4.83,4.46.51,8.06,4.11,8.56,8.57Z"/><path d="M64.46,61.35c3.62,0,6.77-1.98,8.45-4.91.44-.77,1.58-.77,2.02,0,1.68,2.93,4.84,4.91,8.45,4.91,5.75,0,10.36-5,9.69-10.88-.5-4.46-4.1-8.06-8.56-8.57-4.07-.46-7.72,1.6-9.58,4.83-.45.79-1.58.79-2.04,0-1.86-3.22-5.51-5.29-9.58-4.83-4.46.51-8.06,4.11-8.56,8.57-.66,5.88,3.94,10.88,9.69,10.88Z"/><path d="M50.4,81c-.79-.45-.79-1.58,0-2.04,3.22-1.86,5.29-5.51,4.83-9.58-.51-4.46-4.11-8.06-8.57-8.56-5.88-.66-10.88,3.94-10.88,9.69,0,3.62,1.98,6.77,4.91,8.45.77.44.77,1.58,0,2.02-2.93,1.68-4.91,4.84-4.91,8.45,0,5.75,5,10.36,10.88,9.69,4.46-.5,8.06-4.1,8.57-8.56.46-4.08-1.6-7.72-4.83-9.58Z"/><path d="M107.18,81c-.79-.45-.79-1.58,0-2.04,3.22-1.86,5.29-5.51,4.83-9.58-.51-4.46-4.11-8.06-8.57-8.56-5.88-.66-10.88,3.94-10.88,9.69,0,3.62,1.98,6.77,4.91,8.45.77.44.77,1.58,0,2.02-2.93,1.68-4.91,4.84-4.91,8.45,0,5.75,5,10.36,10.88,9.69,4.46-.5,8.06-4.1,8.57-8.56.46-4.08-1.6-7.72-4.83-9.58Z"/></g><circle class="aa-ai-spinner__dot" cx="45.54" cy="32.67" r="9.76"/></g></svg></div>';
         document.body.appendChild(overlay);
       }
 
