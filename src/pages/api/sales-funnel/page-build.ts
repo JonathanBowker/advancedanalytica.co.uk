@@ -6,7 +6,7 @@ export const prerender = false;
 
 const defaultPackUrl = 'https://advancedanalytica.co.uk/packs/ai-sales-funnel.zip';
 const defaultTriggerApiUrl = 'http://188.166.152.62:8080';
-const defaultWrapperClient = 'pwc';
+const defaultWrapperClient = 'advanced-analytica';
 const defaultWrapperWorkflow = 'sales-funnel-page-build';
 const defaultPrefectFlowName = 'sales-funnel-page-build';
 const defaultPrefectDeploymentName = 'sales-funnel-page-build';
