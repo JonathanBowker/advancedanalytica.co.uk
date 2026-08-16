@@ -810,60 +810,89 @@ const faqJsonLd = {
       }
     }
 
-    .aa-ai-toast {
+    .aa-ai-overlay {
       position: fixed;
-      right: clamp(1rem, 3vw, 2rem);
-      bottom: clamp(1rem, 3vw, 2rem);
+      inset: 0;
       z-index: 80;
-      max-width: min(24rem, calc(100vw - 2rem));
-      padding: 1rem 1.15rem;
+      display: grid;
+      place-items: center;
+      padding: 1.25rem;
+      background: rgba(11, 18, 32, 0.58);
+      opacity: 0;
+      transition: opacity 220ms ease;
+      pointer-events: none;
+    }
+
+    .aa-ai-overlay.is-visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .aa-ai-dialog {
+      width: min(27rem, 100%);
+      padding: 1.25rem 1.35rem;
       border: 1px solid rgba(255, 255, 255, 0.14);
       border-radius: 0.5rem;
       background: rgba(11, 18, 32, 0.96);
       box-shadow: 0 18px 45px rgba(0, 0, 0, 0.24);
       color: #ffffff;
       font-family: var(--font-display);
-      font-size: 0.95rem;
-      font-weight: 600;
-      line-height: 1.4;
-      opacity: 0;
-      transform: translateY(0.75rem);
+      transform: translateY(0.5rem) scale(0.98);
       transition:
-        opacity 240ms ease,
-        transform 240ms ease;
-      pointer-events: none;
+        opacity 220ms ease,
+        transform 220ms ease;
     }
 
-    .aa-ai-toast.is-visible {
-      opacity: 1;
+    .aa-ai-overlay.is-visible .aa-ai-dialog {
       transform: translateY(0);
+    }
+
+    .aa-ai-dialog__eyebrow {
+      margin-bottom: 0.35rem;
+      color: #14b8a6;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .aa-ai-dialog__message {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.4;
     }
   </style>
 
   <script define:vars={{ salesFunnelSourceUrl: page.url }} is:inline>
-    const showSalesFunnelToast = (message) => {
-      let toast = document.querySelector("[data-sales-funnel-toast]");
-      if (!(toast instanceof HTMLElement)) {
-        toast = document.createElement("div");
-        toast.className = "aa-ai-toast";
-        toast.setAttribute("data-sales-funnel-toast", "");
-        toast.setAttribute("role", "status");
-        toast.setAttribute("aria-live", "polite");
-        document.body.appendChild(toast);
+    const showSalesFunnelOverlay = (message) => {
+      let overlay = document.querySelector("[data-sales-funnel-overlay]");
+      if (!(overlay instanceof HTMLElement)) {
+        overlay = document.createElement("div");
+        overlay.className = "aa-ai-overlay";
+        overlay.setAttribute("data-sales-funnel-overlay", "");
+        overlay.innerHTML = '<div class="aa-ai-dialog" role="status" aria-live="polite"><div class="aa-ai-dialog__eyebrow">AI source</div><p class="aa-ai-dialog__message" data-sales-funnel-message></p></div>';
+        document.body.appendChild(overlay);
       }
 
-      toast.textContent = message;
+      const messageNode = overlay.querySelector("[data-sales-funnel-message]");
+      if (messageNode) messageNode.textContent = message;
       requestAnimationFrame(() => {
-        toast.classList.add("is-visible");
+        overlay.classList.add("is-visible");
       });
-      return toast;
+      return overlay;
     };
 
-    const fadeToastThenNavigate = (toast, url) => {
-      toast.classList.remove("is-visible");
+    const setSalesFunnelOverlayMessage = (overlay, message) => {
+      const messageNode = overlay.querySelector("[data-sales-funnel-message]");
+      if (messageNode) messageNode.textContent = message;
+    };
+
+    const fadeOverlayThenNavigate = (overlay, url) => {
+      overlay.classList.remove("is-visible");
       window.setTimeout(() => {
         window.location.href = url;
-      }, 260);
+      }, 240);
     };
 
     document.addEventListener("toggle", (event) => {
@@ -888,7 +917,7 @@ const faqJsonLd = {
 
       event.preventDefault();
       const fallbackUrl = target.href;
-      const toast = showSalesFunnelToast("Preparing the AI-readable source...");
+      const overlay = showSalesFunnelOverlay("Preparing the AI-readable source...");
       target.setAttribute("aria-busy", "true");
 
       try {
@@ -906,11 +935,11 @@ const faqJsonLd = {
           ? payload.assistant_url
           : fallbackUrl;
 
-        toast.textContent = "Opening your assistant...";
-        fadeToastThenNavigate(toast, outboundUrl);
+        setSalesFunnelOverlayMessage(overlay, "Opening your assistant...");
+        fadeOverlayThenNavigate(overlay, outboundUrl);
       } catch {
-        toast.textContent = "Opening your assistant...";
-        fadeToastThenNavigate(toast, fallbackUrl);
+        setSalesFunnelOverlayMessage(overlay, "Opening your assistant...");
+        fadeOverlayThenNavigate(overlay, fallbackUrl);
       }
     });
   </script>
