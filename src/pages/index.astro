@@ -669,6 +669,21 @@ const pathways = [
           font-weight: 700;
           line-height: 1.4;
         }
+
+        .aa-ai-spinner {
+          display: block;
+          width: 2.25rem;
+          height: 2.25rem;
+          margin: 1rem auto 0;
+          animation: aa-ai-spinner-turn 1.35s linear infinite;
+          filter: invert(1);
+        }
+
+        @keyframes aa-ai-spinner-turn {
+          to {
+            transform: rotate(360deg);
+          }
+        }
       `;
       document.head.appendChild(style);
     };
@@ -680,7 +695,7 @@ const pathways = [
         overlay = document.createElement('div');
         overlay.className = 'aa-ai-overlay';
         overlay.setAttribute('data-sales-funnel-overlay', '');
-        overlay.innerHTML = '<div class="aa-ai-dialog" role="status" aria-live="polite"><div class="aa-ai-dialog__eyebrow">AI source</div><p class="aa-ai-dialog__message" data-sales-funnel-message></p></div>';
+        overlay.innerHTML = '<div class="aa-ai-dialog" role="status" aria-live="polite"><div class="aa-ai-dialog__eyebrow">AI source</div><p class="aa-ai-dialog__message" data-sales-funnel-message></p><img class="aa-ai-spinner" src="/images/infrastructure/brando-avatar-dots.svg" alt="" aria-hidden="true" decoding="async"></div>';
         document.body.appendChild(overlay);
       }
 
