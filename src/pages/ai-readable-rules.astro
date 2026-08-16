@@ -865,7 +865,70 @@ const faqJsonLd = {
   </style>
 
   <script define:vars={{ salesFunnelSourceUrl: page.url }} is:inline>
+    const ensureSalesFunnelOverlayStyles = () => {
+      if (document.querySelector("[data-sales-funnel-overlay-style]")) return;
+
+      const style = document.createElement("style");
+      style.setAttribute("data-sales-funnel-overlay-style", "");
+      style.textContent = `
+        .aa-ai-overlay {
+          position: fixed;
+          inset: 0;
+          z-index: 2147483000;
+          display: grid;
+          place-items: center;
+          padding: 1.25rem;
+          background: rgba(11, 18, 32, 0.68);
+          opacity: 0;
+          transition: opacity 220ms ease;
+          pointer-events: none;
+        }
+
+        .aa-ai-overlay.is-visible {
+          opacity: 1;
+          pointer-events: auto;
+        }
+
+        .aa-ai-dialog {
+          width: min(27rem, 100%);
+          padding: 1.25rem 1.35rem;
+          border: 1px solid rgba(255, 255, 255, 0.14);
+          border-radius: 0.5rem;
+          background: rgba(11, 18, 32, 0.96);
+          box-shadow: 0 18px 45px rgba(0, 0, 0, 0.24);
+          color: #ffffff;
+          font-family: var(--font-display);
+          transform: translateY(0.5rem) scale(0.98);
+          transition:
+            opacity 220ms ease,
+            transform 220ms ease;
+        }
+
+        .aa-ai-overlay.is-visible .aa-ai-dialog {
+          transform: translateY(0);
+        }
+
+        .aa-ai-dialog__eyebrow {
+          margin-bottom: 0.35rem;
+          color: #14b8a6;
+          font-size: 0.76rem;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+        }
+
+        .aa-ai-dialog__message {
+          margin: 0;
+          font-size: 1.05rem;
+          font-weight: 700;
+          line-height: 1.4;
+        }
+      `;
+      document.head.appendChild(style);
+    };
+
     const showSalesFunnelOverlay = (message) => {
+      ensureSalesFunnelOverlayStyles();
       let overlay = document.querySelector("[data-sales-funnel-overlay]");
       if (!(overlay instanceof HTMLElement)) {
         overlay = document.createElement("div");
