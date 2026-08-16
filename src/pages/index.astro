@@ -671,39 +671,29 @@ const pathways = [
         }
 
         .aa-ai-spinner {
-          position: relative;
           display: block;
           width: 14.25rem;
           height: 14.25rem;
-          margin: 1.75rem auto 0;
+          margin: 1.5rem auto 0;
+          overflow: visible;
         }
 
-        .aa-ai-spinner__ring {
-          position: absolute;
-          inset: 0;
-          transform-origin: 50% 50%;
+        .aa-ai-spinner__core,
+        .aa-ai-spinner__dot-orbit {
+          transform-box: view-box;
+          transform-origin: 73.92px 80px;
           animation: aa-ai-spinner-ring 2.25s linear infinite;
         }
 
-        .aa-ai-spinner__ring-dot,
-        .aa-ai-spinner__orb {
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          width: 1.58rem;
-          height: 1.58rem;
-          border-radius: 999px;
-          background: #ffffff;
-          box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04);
+        .aa-ai-spinner__core,
+        .aa-ai-spinner__dot {
+          fill: #ffffff;
         }
 
-        .aa-ai-spinner__ring-dot {
-          transform: translate(-50%, -50%) rotate(calc(var(--dot-index) * 45deg)) translateY(-3.7rem);
-        }
-
-        .aa-ai-spinner__orb {
-          transform: translate(-50%, -50%) rotate(-45deg) translateY(-5.35rem);
-          animation: aa-ai-spinner-orb 2.25s linear infinite;
+        .aa-ai-spinner__dot {
+          transform-box: view-box;
+          transform-origin: 45.54px 32.67px;
+          animation: aa-ai-spinner-dot 2.25s linear infinite;
         }
 
         @keyframes aa-ai-spinner-ring {
@@ -718,23 +708,23 @@ const pathways = [
           }
         }
 
-        @keyframes aa-ai-spinner-orb {
+        @keyframes aa-ai-spinner-dot {
           0%,
           14% {
             opacity: 1;
-            transform: translate(-50%, -50%) rotate(-45deg) translateY(-5.35rem);
+            transform: translate(0, 0);
           }
 
           28%,
           72% {
-            opacity: 0;
-            transform: translate(-50%, -50%) rotate(-45deg) translateY(-3.7rem);
+            opacity: 1;
+            transform: translate(0, 36px);
           }
 
           86%,
           100% {
             opacity: 1;
-            transform: translate(-50%, -50%) rotate(-45deg) translateY(-5.35rem);
+            transform: translate(0, 0);
           }
         }
       `;
@@ -748,7 +738,7 @@ const pathways = [
         overlay = document.createElement('div');
         overlay.className = 'aa-ai-overlay';
         overlay.setAttribute('data-sales-funnel-overlay', '');
-        overlay.innerHTML = '<div class="aa-ai-dialog" role="status" aria-live="polite"><div class="aa-ai-dialog__eyebrow">AI source</div><p class="aa-ai-dialog__message" data-sales-funnel-message></p><div class="aa-ai-spinner" aria-hidden="true"><div class="aa-ai-spinner__ring"><span class="aa-ai-spinner__ring-dot" style="--dot-index: 0"></span><span class="aa-ai-spinner__ring-dot" style="--dot-index: 1"></span><span class="aa-ai-spinner__ring-dot" style="--dot-index: 2"></span><span class="aa-ai-spinner__ring-dot" style="--dot-index: 3"></span><span class="aa-ai-spinner__ring-dot" style="--dot-index: 4"></span><span class="aa-ai-spinner__ring-dot" style="--dot-index: 5"></span><span class="aa-ai-spinner__ring-dot" style="--dot-index: 6"></span><span class="aa-ai-spinner__ring-dot" style="--dot-index: 7"></span></div><span class="aa-ai-spinner__orb"></span></div></div>';
+        overlay.innerHTML = '<div class="aa-ai-dialog" role="status" aria-live="polite"><div class="aa-ai-dialog__eyebrow">AI source</div><p class="aa-ai-dialog__message" data-sales-funnel-message></p><svg class="aa-ai-spinner" viewBox="0 0 147.84 147.84" aria-hidden="true" focusable="false"><g class="aa-ai-spinner__core"><path d="M93.08,107.24c.66,5.88-3.94,10.88-9.69,10.88-3.62,0-6.77-1.98-8.45-4.91-.44-.77-1.58-.77-2.02,0-1.68,2.93-4.84,4.91-8.45,4.91-5.75,0-10.36-5-9.69-10.88.5-4.46,4.1-8.06,8.56-8.57,4.08-.46,7.72,1.6,9.58,4.83.45.79,1.58.79,2.04,0,1.86-3.22,5.51-5.29,9.58-4.83,4.46.51,8.06,4.11,8.56,8.57Z"/><path d="M64.46,61.35c3.62,0,6.77-1.98,8.45-4.91.44-.77,1.58-.77,2.02,0,1.68,2.93,4.84,4.91,8.45,4.91,5.75,0,10.36-5,9.69-10.88-.5-4.46-4.1-8.06-8.56-8.57-4.07-.46-7.72,1.6-9.58,4.83-.45.79-1.58.79-2.04,0-1.86-3.22-5.51-5.29-9.58-4.83-4.46.51-8.06,4.11-8.56,8.57-.66,5.88,3.94,10.88,9.69,10.88Z"/><path d="M50.4,81c-.79-.45-.79-1.58,0-2.04,3.22-1.86,5.29-5.51,4.83-9.58-.51-4.46-4.11-8.06-8.57-8.56-5.88-.66-10.88,3.94-10.88,9.69,0,3.62,1.98,6.77,4.91,8.45.77.44.77,1.58,0,2.02-2.93,1.68-4.91,4.84-4.91,8.45,0,5.75,5,10.36,10.88,9.69,4.46-.5,8.06-4.1,8.57-8.56.46-4.08-1.6-7.72-4.83-9.58Z"/><path d="M107.18,81c-.79-.45-.79-1.58,0-2.04,3.22-1.86,5.29-5.51,4.83-9.58-.51-4.46-4.11-8.06-8.57-8.56-5.88-.66-10.88,3.94-10.88,9.69,0,3.62,1.98,6.77,4.91,8.45.77.44.77,1.58,0,2.02-2.93,1.68-4.91,4.84-4.91,8.45,0,5.75,5,10.36,10.88,9.69,4.46-.5,8.06-4.1,8.57-8.56.46-4.08-1.6-7.72-4.83-9.58Z"/></g><g class="aa-ai-spinner__dot-orbit"><circle class="aa-ai-spinner__dot" cx="45.54" cy="32.67" r="9.76"/></g></svg></div>';
         document.body.appendChild(overlay);
       }
 
