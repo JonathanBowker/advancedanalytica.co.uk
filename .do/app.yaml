@@ -13,6 +13,11 @@ ingress:
         path:
           prefix: /api/portal
     - component:
+        name: web
+      match:
+        path:
+          prefix: /api/sales-funnel
+    - component:
         name: lead-api
       match:
         path:
