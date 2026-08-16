@@ -5,9 +5,11 @@ import { SITE_URL } from '../../../lib/seo/site';
 export const prerender = false;
 
 const defaultPackUrl = 'https://advancedanalytica.co.uk/packs/ai-sales-funnel.zip';
-const defaultTriggerApiUrl = 'https://prefect.advancedanalytica.co.uk';
-const defaultTriggerClient = 'sales-funnel';
-const defaultDeploymentName = 'page-build';
+const defaultTriggerApiUrl = 'http://188.166.152.62:8080';
+const defaultWrapperClient = 'pwc';
+const defaultWrapperWorkflow = 'sales-funnel-page-build';
+const defaultPrefectFlowName = 'sales-funnel-page-build';
+const defaultPrefectDeploymentName = 'sales-funnel-page-build';
 const triggerTimeoutMs = 8000;
 const failedDependencyStatus = 424;
 
@@ -67,7 +69,6 @@ function shouldUsePrefect(triggerApiUrl: string) {
 
   const value = triggerApiUrl.toLowerCase();
   return (
-    value === defaultTriggerApiUrl ||
     value.includes('prefect.') ||
     value.includes(':4200') ||
     value.includes('/api') ||
@@ -144,9 +145,11 @@ export const POST: APIRoute = async ({ request }) => {
   const triggerApiUrl = getTriggerApiUrl();
   const triggerApiKey =
     getEnv('SALES_FUNNEL_TRIGGER_API_KEY') || getEnv('PREFECT_API_KEY');
-  const triggerClient = getEnv('SALES_FUNNEL_TRIGGER_CLIENT') || defaultTriggerClient;
-  const deploymentName =
-    getEnv('SALES_FUNNEL_PREFECT_DEPLOYMENT_NAME') || defaultDeploymentName;
+  const wrapperClient = getEnv('SALES_FUNNEL_TRIGGER_CLIENT') || defaultWrapperClient;
+  const wrapperWorkflow = getEnv('SALES_FUNNEL_TRIGGER_WORKFLOW') || defaultWrapperWorkflow;
+  const prefectFlowName = getEnv('SALES_FUNNEL_PREFECT_FLOW_NAME') || defaultPrefectFlowName;
+  const prefectDeploymentName =
+    getEnv('SALES_FUNNEL_PREFECT_DEPLOYMENT_NAME') || defaultPrefectDeploymentName;
   const sourceUrl = getRequestBodyValue(body, 'sourceUrl') || `${SITE_URL}/`;
   const assistant = getRequestBodyValue(body, 'assistant') || 'unknown';
   const trackingId = generateTrackingId();
@@ -172,8 +175,8 @@ export const POST: APIRoute = async ({ request }) => {
       const deploymentId = await getPrefectDeploymentId({
         prefectApiUrl,
         triggerApiKey,
-        flowName: triggerClient,
-        deploymentName,
+        flowName: prefectFlowName,
+        deploymentName: prefectDeploymentName,
       });
 
       if (typeof deploymentId !== 'string') {
@@ -226,7 +229,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const response = await fetch(
-      `${triggerApiUrl.replace(/\/+$/, '')}/flows/${triggerClient}/page-build/run`,
+      `${triggerApiUrl.replace(/\/+$/, '')}/flows/${wrapperClient}/${wrapperWorkflow}/run`,
       {
         method: 'POST',
         signal: triggerSignal(),
