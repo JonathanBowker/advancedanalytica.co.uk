@@ -6,6 +6,10 @@ export const prerender = false;
 
 const defaultPackUrl = 'https://aa-sales-funnel-packs.lon1.digitaloceanspaces.com/ai-sales-funnel.zip';
 const defaultTriggerApiUrl = 'http://188.166.152.62:8080';
+const defaultPageBaseUrl = 'https://aa-sales-funnel-packs.lon1.digitaloceanspaces.com/pages';
+const defaultSpacesBucket = 'aa-sales-funnel-packs';
+const defaultSpacesRegion = 'lon1';
+const defaultSpacesPagePrefix = 'pages';
 const defaultWrapperClient = 'advanced-analytica';
 const defaultWrapperWorkflow = 'sales-funnel-page-build';
 const defaultPrefectFlowName = 'sales-funnel-page-build';
@@ -97,8 +101,8 @@ function getTriggerApiUrl() {
   return configuredUrl || defaultTriggerApiUrl;
 }
 
-function getSalesFunnelPageBaseUrl(triggerApiUrl: string) {
-  return (getEnv('SALES_FUNNEL_PAGE_BASE_URL') || triggerApiUrl || defaultTriggerApiUrl).replace(/\/+$/, '');
+function getSalesFunnelPageBaseUrl() {
+  return (getEnv('SALES_FUNNEL_PAGE_BASE_URL') || defaultPageBaseUrl).replace(/\/+$/, '');
 }
 
 function buildAssistantUrl(assistant: string, pageUrl: string) {
@@ -187,9 +191,12 @@ export const POST: APIRoute = async ({ request }) => {
   const sourceUrl = getRequestBodyValue(body, 'sourceUrl') || `${SITE_URL}/`;
   const assistant = getRequestBodyValue(body, 'assistant') || 'unknown';
   const trackingId = generateTrackingId();
-  const pageBaseUrl = getSalesFunnelPageBaseUrl(triggerApiUrl);
-  const pageUrl = `${pageBaseUrl}/sales-funnel/pages/${encodeURIComponent(trackingId)}`;
-  const markdownUrl = `${pageUrl}.md`;
+  const pageBaseUrl = getSalesFunnelPageBaseUrl();
+  const pageUrl = `${pageBaseUrl}/${encodeURIComponent(trackingId)}.md`;
+  const markdownUrl = pageUrl;
+  const htmlPageUrl = `${triggerApiUrl.replace(/\/+$/, '')}/sales-funnel/pages/${encodeURIComponent(
+    trackingId,
+  )}`;
   const assistantUrl = buildAssistantUrl(assistant, pageUrl);
 
   const parameters = {
@@ -205,6 +212,10 @@ export const POST: APIRoute = async ({ request }) => {
     template_path: 'templates/sales-pitch-page-template.md',
     output_dir: 'data/tmp/pages',
     store_path: 'data/tmp/funnel-events.json',
+    spaces_bucket: getEnv('SALES_FUNNEL_SPACES_BUCKET') || defaultSpacesBucket,
+    spaces_region: getEnv('SALES_FUNNEL_SPACES_REGION') || defaultSpacesRegion,
+    spaces_key_prefix: getEnv('SALES_FUNNEL_SPACES_PAGE_PREFIX') || defaultSpacesPagePrefix,
+    spaces_public_base_url: pageBaseUrl,
   };
 
   try {
@@ -266,6 +277,7 @@ export const POST: APIRoute = async ({ request }) => {
         state: payload.state,
         page_url: pageUrl,
         markdown_url: markdownUrl,
+        html_page_url: htmlPageUrl,
         assistant_url: assistantUrl,
         page_ready: pageReady,
       });
@@ -306,6 +318,7 @@ export const POST: APIRoute = async ({ request }) => {
       state: payload.state,
       page_url: pageUrl,
       markdown_url: markdownUrl,
+      html_page_url: htmlPageUrl,
       assistant_url: assistantUrl,
       page_ready: pageReady,
     });
