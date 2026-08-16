@@ -1,0 +1,668 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE_URL } from "../lib/seo/site";
+
+const title = "Context Engineering for AI Decisions";
+const description =
+  "Give AI systems the company-specific context, rules, data access, and guardrails they need to recommend, decide, and act safely.";
+
+const page = {
+  title,
+  description,
+  url: `${SITE_URL}/ai-readable-rules`,
+  breadcrumbs: [
+    { name: "Home", url: `${SITE_URL}/` },
+    { name: title, url: `${SITE_URL}/ai-readable-rules` },
+  ],
+};
+const askPrompt = `Read from ${page.url} so I can ask questions about its contents`;
+const askChatGptUrl = `https://chatgpt.com/?hint=search&q=${encodeURI(askPrompt)}`;
+const askClaudeUrl = `https://claude.ai/new?q=${encodeURI(askPrompt)}`;
+
+const foundations = [
+  "The policies, standards, and rulebooks the decision depends on",
+  "The live and historical data needed to understand the situation",
+  "The permissions, risk thresholds, and escalation paths that control action",
+  "The evidence trail needed to explain what happened afterwards",
+];
+
+const proofPoints = [
+  {
+    title: "The model is the brain. Context is the memory.",
+    body: "A capable model can reason quickly, but it does not automatically understand your business, your history, your appetite for risk, or your goals.",
+  },
+  {
+    title: "Wrong answers become dangerous actions",
+    body: "When AI only writes a response, a mistake is usually a nuisance. When an agent can recommend, decide, route, approve, or act, missing context becomes business risk.",
+  },
+  {
+    title: "The advantage is not the model",
+    body: "Everyone can access strong models. The edge comes from the quality of the company context they can see, the controls around what they can do, and the measurement behind whether they worked.",
+  },
+];
+
+const capabilities = [
+  {
+    title: "Start with the workflow",
+    body: "We map the decisions, handoffs, risks, and data dependencies before choosing where AI should help.",
+  },
+  {
+    title: "Bring AI to the data",
+    body: "Enterprise data is too large, sensitive, and distributed to keep copying around. AI needs governed access to trusted context where it already lives.",
+  },
+  {
+    title: "Instrument the system",
+    body: "Production AI needs observability: what it saw, what it used, what it did, and when a human or escalation path was required.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} page={page}>
+  <section class="aa-rules-hero">
+    <video
+      class="aa-rules-hero__media"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      aria-hidden="true"
+    >
+      <source src="/videos/brand-operator-full-dots.mp4" type="video/mp4" />
+    </video>
+    <div class="aa-rules-hero__shade" aria-hidden="true"></div>
+
+    <div class="container-wide aa-rules-hero__inner">
+      <div class="aa-rules-hero__content">
+        <p class="aa-rules-eyebrow">Context engineering</p>
+        <h1>
+          Could your AI explain a decision using your company's rules?
+        </h1>
+        <p class="aa-rules-hero__lead">
+          Most leaders find the honest answer is no. That is not a model
+          problem. It is because the rules were never captured in a way a
+          machine could read them, retrieve them, and apply them at the moment
+          of decision.
+        </p>
+        <div class="aa-rules-hero__actions">
+          <a href="/company/contact/" class="aa-rules-primary-cta">
+            Book a call
+          </a>
+          <div class="aa-rules-chat-actions" aria-label="Ask an AI assistant about this page">
+            <a
+              href={askChatGptUrl}
+              class="aa-rules-chat-button aa-rules-chat-button--dark"
+              data-sales-funnel-assistant="chatgpt"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Ask ChatGPT
+            </a>
+            <a
+              href={askClaudeUrl}
+              class="aa-rules-chat-button aa-rules-chat-button--dark"
+              data-sales-funnel-assistant="claude"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Ask Claude
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="aa-rules-statement">
+    <div class="container-wide aa-rules-statement__grid">
+      <div>
+        <p class="aa-rules-eyebrow">The problem</p>
+        <h2>A model trained on the world's data does not know your business.</h2>
+      </div>
+      <div class="aa-rules-statement__copy">
+        <p>
+          It does not automatically know your policies, your history, your
+          operating environment, your attitude to risk, your customer promises,
+          or the outcomes your board cares about. Without that context, it can
+          sound confident while being wrong about the things that matter.
+        </p>
+        <p>
+          Context engineering is the discipline of giving AI that understanding:
+          connecting the right data, rules, permissions, and guardrails to the
+          right model at the right time.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="aa-rules-proof">
+    <div class="container-wide">
+      <div class="aa-rules-proof__intro">
+        <p class="aa-rules-eyebrow">Why it matters</p>
+        <h2>The difference between a useful AI agent and a liability is usually context.</h2>
+      </div>
+
+      <div class="aa-rules-proof__cards">
+        {proofPoints.map((item) => (
+          <article class="aa-rules-proof__card">
+            <h3>{item.title}</h3>
+            <p>{item.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="aa-rules-output">
+    <div class="container-wide aa-rules-output__grid">
+      <div class="aa-rules-output__panel">
+        <p class="aa-rules-eyebrow">What AI needs to see</p>
+        <h2>The context layer determines whether AI is trustworthy enough to act.</h2>
+        <p>
+          In a security operation, fraud process, compliance workflow, or brand
+          approval flow, the same principle holds: AI needs current, governed
+          access to the right company context before it can make a reliable
+          recommendation or take a safe action.
+        </p>
+      </div>
+
+      <div class="aa-rules-signal-list">
+        {foundations.map((signal, index) => (
+          <div class="aa-rules-signal">
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <p>{signal}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="aa-rules-practice">
+    <div class="container-wide">
+      <div class="aa-rules-practice__intro">
+        <p class="aa-rules-eyebrow">In practice</p>
+        <h2>Production AI is a workflow and data problem before it is a model problem.</h2>
+      </div>
+
+      <div class="aa-rules-practice__grid">
+        {capabilities.map((item) => (
+          <article class="aa-rules-practice__item">
+            <h3>{item.title}</h3>
+            <p>{item.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="aa-rules-final">
+    <div class="container-wide aa-rules-final__inner">
+      <p class="aa-rules-eyebrow">Fifteen minutes</p>
+      <h2>
+        We are already fixing this for Fortune 500 brands.
+      </h2>
+      <p>
+        Book a short call to discuss what we are doing, where your context layer
+        is today, and how it could work inside your business.
+      </p>
+      <a href="/company/contact/" class="aa-rules-primary-cta">
+        Book a call
+      </a>
+      <div class="aa-rules-chat-actions aa-rules-chat-actions--center" aria-label="Ask an AI assistant about this page">
+        <a
+          href={askChatGptUrl}
+          class="aa-rules-chat-button"
+          data-sales-funnel-assistant="chatgpt"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Ask ChatGPT
+        </a>
+        <a
+          href={askClaudeUrl}
+          class="aa-rules-chat-button"
+          data-sales-funnel-assistant="claude"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Ask Claude
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .aa-rules-eyebrow {
+      margin: 0;
+      color: #14b8a6;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0;
+      line-height: 1.4;
+      text-transform: uppercase;
+    }
+
+    .aa-rules-hero {
+      position: relative;
+      min-height: calc(100svh - 5rem);
+      overflow: hidden;
+      background: #05070b;
+      color: var(--color-paper);
+    }
+
+    .aa-rules-hero__media,
+    .aa-rules-hero__shade {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .aa-rules-hero__media {
+      object-fit: cover;
+      opacity: 0.5;
+    }
+
+    .aa-rules-hero__shade {
+      background:
+        linear-gradient(90deg, rgba(5, 7, 11, 0.96) 0%, rgba(5, 7, 11, 0.82) 44%, rgba(5, 7, 11, 0.38) 100%),
+        radial-gradient(circle at 76% 24%, rgba(20, 184, 166, 0.18), transparent 25rem);
+    }
+
+    .aa-rules-hero__inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      min-height: calc(100svh - 5rem);
+      align-items: center;
+      padding-block: clamp(4.5rem, 10vw, 8rem);
+    }
+
+    .aa-rules-hero__content {
+      max-width: 58rem;
+    }
+
+    .aa-rules-hero h1 {
+      margin: 1.35rem 0 0;
+      max-width: 15ch;
+      color: #ffffff;
+      font-size: clamp(3rem, 8vw, 6.85rem);
+      font-weight: 800;
+      letter-spacing: 0;
+      line-height: 0.96;
+      text-wrap: balance;
+    }
+
+    .aa-rules-hero__lead {
+      margin: 1.75rem 0 0;
+      max-width: 44rem;
+      color: rgba(246, 247, 248, 0.82);
+      font-size: clamp(1.15rem, 2vw, 1.55rem);
+      line-height: 1.55;
+    }
+
+    .aa-rules-hero__actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 2.25rem;
+    }
+
+    .aa-rules-primary-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.5rem;
+      background: #14b8a6;
+      box-shadow: var(--shadow-outline);
+      color: var(--color-paper);
+      font-size: 0.84rem;
+      font-weight: 800;
+      letter-spacing: 0;
+      line-height: 1.2;
+      padding: 1rem 1.65rem;
+      text-transform: uppercase;
+      transition:
+        background-color 180ms ease,
+        transform 180ms ease;
+    }
+
+    .aa-rules-primary-cta:hover,
+    .aa-rules-primary-cta:focus-visible {
+      background: #0f766e;
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .aa-rules-chat-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .aa-rules-chat-actions--center {
+      justify-content: center;
+      margin-top: -0.75rem;
+    }
+
+    .aa-rules-chat-button {
+      display: inline-flex;
+      min-height: 46px;
+      min-width: 132px;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px solid var(--color-ink);
+      border-radius: 0.5rem;
+      background: var(--color-ink);
+      color: #ffffff;
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 650;
+      line-height: 1.2;
+      padding: 0 1.1rem;
+      text-decoration: none;
+      white-space: nowrap;
+      transition:
+        color 180ms ease,
+        background-color 180ms ease,
+        border-color 180ms ease,
+        transform 180ms ease;
+    }
+
+    .aa-rules-chat-button:hover,
+    .aa-rules-chat-button:focus-visible {
+      background: transparent;
+      color: var(--color-ink);
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .aa-rules-chat-button--dark {
+      border-color: rgba(246, 247, 248, 0.72);
+      background: rgba(246, 247, 248, 0.08);
+      color: #ffffff;
+    }
+
+    .aa-rules-chat-button--dark:hover,
+    .aa-rules-chat-button--dark:focus-visible {
+      border-color: #ffffff;
+      background: #ffffff;
+      color: var(--color-ink);
+    }
+
+    .aa-rules-statement,
+    .aa-rules-proof,
+    .aa-rules-output,
+    .aa-rules-practice,
+    .aa-rules-final {
+      padding-block: clamp(4.5rem, 8vw, 6.5rem);
+    }
+
+    .aa-rules-statement {
+      background: var(--color-paper);
+      color: var(--color-ink);
+    }
+
+    .aa-rules-statement__grid,
+    .aa-rules-output__grid {
+      display: grid;
+      gap: clamp(2.5rem, 6vw, 5rem);
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      align-items: start;
+    }
+
+    .aa-rules-statement h2,
+    .aa-rules-proof h2,
+    .aa-rules-output h2,
+    .aa-rules-practice h2,
+    .aa-rules-final h2 {
+      margin: 1rem 0 0;
+      color: inherit;
+      font-size: clamp(2.3rem, 5vw, 4.7rem);
+      font-weight: 800;
+      letter-spacing: 0;
+      line-height: 1.02;
+      text-wrap: balance;
+    }
+
+    .aa-rules-statement__copy {
+      color: var(--color-steel);
+      font-size: clamp(1.08rem, 1.5vw, 1.32rem);
+      line-height: 1.68;
+    }
+
+    .aa-rules-statement__copy p {
+      margin: 0;
+    }
+
+    .aa-rules-statement__copy p + p {
+      margin-top: 1.35rem;
+    }
+
+    .aa-rules-proof {
+      background: #eef2f4;
+      color: var(--color-ink);
+    }
+
+    .aa-rules-proof__intro {
+      max-width: 56rem;
+    }
+
+    .aa-rules-proof__cards {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 3rem;
+    }
+
+    .aa-rules-proof__card {
+      min-height: 20rem;
+      border: 1px solid rgba(11, 14, 20, 0.1);
+      border-radius: 0.5rem;
+      background: #ffffff;
+      box-shadow: var(--shadow-outline);
+      padding: clamp(1.5rem, 3vw, 2rem);
+    }
+
+    .aa-rules-proof__card h3 {
+      margin: 0;
+      color: var(--color-ink);
+      font-size: clamp(1.45rem, 2vw, 1.9rem);
+      font-weight: 750;
+      letter-spacing: 0;
+      line-height: 1.12;
+    }
+
+    .aa-rules-proof__card p {
+      margin: 1.25rem 0 0;
+      color: var(--color-steel);
+      font-size: 1rem;
+      line-height: 1.65;
+    }
+
+    .aa-rules-output {
+      background: #0b0e14;
+      color: var(--color-paper);
+    }
+
+    .aa-rules-output__panel p {
+      margin: 1.5rem 0 0;
+      max-width: 42rem;
+      color: rgba(246, 247, 248, 0.76);
+      font-size: clamp(1.08rem, 1.5vw, 1.3rem);
+      line-height: 1.65;
+    }
+
+    .aa-rules-signal-list {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .aa-rules-signal {
+      display: grid;
+      grid-template-columns: 4.5rem minmax(0, 1fr);
+      align-items: center;
+      border: 1px solid rgba(246, 247, 248, 0.14);
+      border-radius: 0.5rem;
+      background: rgba(246, 247, 248, 0.055);
+      min-height: 6rem;
+      padding: 1.15rem 1.25rem;
+    }
+
+    .aa-rules-signal span {
+      color: #14b8a6;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .aa-rules-signal p {
+      margin: 0;
+      color: rgba(246, 247, 248, 0.84);
+      font-size: clamp(1rem, 1.3vw, 1.18rem);
+      line-height: 1.5;
+    }
+
+    .aa-rules-practice {
+      background: #ffffff;
+      color: var(--color-ink);
+    }
+
+    .aa-rules-practice__intro {
+      max-width: 62rem;
+    }
+
+    .aa-rules-practice__grid {
+      display: grid;
+      gap: 1px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 3rem;
+      background: rgba(11, 14, 20, 0.12);
+      border: 1px solid rgba(11, 14, 20, 0.12);
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+
+    .aa-rules-practice__item {
+      min-height: 18rem;
+      background: var(--color-paper);
+      padding: clamp(1.5rem, 3vw, 2rem);
+    }
+
+    .aa-rules-practice__item h3 {
+      margin: 0;
+      color: var(--color-ink);
+      font-size: clamp(1.4rem, 2vw, 1.85rem);
+      font-weight: 750;
+      letter-spacing: 0;
+      line-height: 1.15;
+    }
+
+    .aa-rules-practice__item p {
+      margin: 1.25rem 0 0;
+      color: var(--color-steel);
+      font-size: 1rem;
+      line-height: 1.65;
+    }
+
+    .aa-rules-final {
+      background: var(--color-paper);
+      color: var(--color-ink);
+    }
+
+    .aa-rules-final__inner {
+      display: grid;
+      gap: 1.75rem;
+      justify-items: center;
+      text-align: center;
+    }
+
+    .aa-rules-final h2 {
+      max-width: 60rem;
+      margin-top: 0;
+    }
+
+    .aa-rules-final p:not(.aa-rules-eyebrow) {
+      max-width: 46rem;
+      margin: 0;
+      color: var(--color-steel);
+      font-size: clamp(1.08rem, 1.5vw, 1.3rem);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 900px) {
+      .aa-rules-statement__grid,
+      .aa-rules-output__grid,
+      .aa-rules-proof__cards,
+      .aa-rules-practice__grid {
+        grid-template-columns: 1fr;
+      }
+
+      .aa-rules-proof__card,
+      .aa-rules-practice__item {
+        min-height: 0;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .aa-rules-hero {
+        min-height: auto;
+      }
+
+      .aa-rules-hero__shade {
+        background:
+          linear-gradient(180deg, rgba(5, 7, 11, 0.94) 0%, rgba(5, 7, 11, 0.88) 58%, rgba(5, 7, 11, 0.72) 100%),
+          radial-gradient(circle at 68% 8%, rgba(20, 184, 166, 0.16), transparent 18rem);
+      }
+
+      .aa-rules-hero__inner {
+        min-height: auto;
+        padding-block: 4.5rem 5.5rem;
+      }
+
+      .aa-rules-hero h1 {
+        max-width: 11ch;
+        font-size: clamp(2.75rem, 15vw, 4.6rem);
+      }
+
+      .aa-rules-primary-cta {
+        width: 100%;
+      }
+
+      .aa-rules-chat-actions,
+      .aa-rules-chat-button {
+        width: 100%;
+      }
+
+      .aa-rules-signal {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
+    }
+  </style>
+
+  <script define:vars={{ salesFunnelSourceUrl: page.url }} is:inline>
+    document.addEventListener("click", (event) => {
+      const target = event.target instanceof Element
+        ? event.target.closest("[data-sales-funnel-assistant]")
+        : null;
+
+      if (!(target instanceof HTMLAnchorElement)) return;
+
+      fetch("/api/sales-funnel/page-build", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        keepalive: true,
+        body: JSON.stringify({
+          assistant: target.dataset.salesFunnelAssistant || "unknown",
+          sourceUrl: salesFunnelSourceUrl,
+        }),
+      }).catch(() => {
+        // The outbound assistant link should not be blocked by tracking.
+      });
+    });
+  </script>
+</BaseLayout>
