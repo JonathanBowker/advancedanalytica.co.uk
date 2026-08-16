@@ -273,8 +273,7 @@ const faqJsonLd = {
   <section class="aa-rules-faq" aria-labelledby="aa-rules-faq-title">
     <div class="container-wide aa-rules-faq__inner">
       <div class="aa-rules-faq__intro">
-        <p class="aa-rules-eyebrow">Frequently Asked Questions</p>
-        <h2 id="aa-rules-faq-title">Context engineering, in the terms leaders actually need.</h2>
+        <h2 id="aa-rules-faq-title"><span>Frequently asked questions</span></h2>
       </div>
 
       <div class="aa-rules-faq__list">
@@ -678,7 +677,7 @@ const faqJsonLd = {
     }
 
     .aa-rules-faq {
-      background: #f3f0e8;
+      background: #ffffff;
       color: var(--color-ink);
     }
 
@@ -687,52 +686,43 @@ const faqJsonLd = {
     }
 
     .aa-rules-faq__intro {
-      max-width: 56rem;
       margin-inline: auto;
       text-align: center;
     }
 
+    .aa-rules-faq h2 {
+      margin-top: 0;
+    }
+
+    .aa-rules-faq h2 span {
+      background: #dedede;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+    }
+
     .aa-rules-faq__list {
       display: grid;
-      gap: 1rem;
-      max-width: 56rem;
-      margin: 3rem auto 0;
+      margin: clamp(3.5rem, 6vw, 4.5rem) auto 0;
+      border-top: 1px solid rgba(11, 14, 20, 0.16);
     }
 
     .aa-rules-faq__item {
-      overflow: hidden;
-      border: 1px solid rgba(11, 14, 20, 0.1);
-      border-radius: 1rem;
-      background: var(--color-paper);
-      box-shadow: var(--shadow-outline);
-      transition:
-        border-color 180ms ease,
-        transform 180ms ease;
-    }
-
-    .aa-rules-faq__item:hover,
-    .aa-rules-faq__item[open] {
-      border-color: rgba(20, 184, 166, 0.5);
-    }
-
-    .aa-rules-faq__item:hover {
-      transform: translateY(-1px);
+      border-bottom: 1px solid rgba(11, 14, 20, 0.16);
     }
 
     .aa-rules-faq__item summary {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 2.25rem;
+      grid-template-columns: minmax(0, 1fr) 1.25rem;
       gap: 1.25rem;
       align-items: center;
-      min-height: 0;
       color: var(--color-ink);
       cursor: pointer;
       font-family: var(--font-display);
-      font-size: 1.5rem;
-      font-weight: 600;
+      font-size: clamp(1.35rem, 2.2vw, 1.75rem);
+      font-weight: 700;
       line-height: 1.2;
       list-style: none;
-      padding: 1.75rem;
+      padding: 1.75rem 0;
     }
 
     .aa-rules-faq__item summary::-webkit-details-marker {
@@ -741,42 +731,29 @@ const faqJsonLd = {
 
     .aa-rules-faq__item summary:hover,
     .aa-rules-faq__item summary:focus-visible {
-      color: #0f766e;
+      color: var(--color-ink);
       outline: none;
     }
 
     .aa-rules-faq__icon {
-      position: relative;
-      display: inline-flex;
-      width: 2.25rem;
-      height: 2.25rem;
-      align-items: center;
-      justify-content: center;
-      border: 1.5px solid rgba(11, 14, 20, 0.18);
-      border-radius: 999px;
-    }
-
-    .aa-rules-faq__icon::before,
-    .aa-rules-faq__icon::after {
-      position: absolute;
-      width: 0.85rem;
-      height: 1.5px;
-      background: currentColor;
+      display: block;
+      width: 0.62rem;
+      height: 0.62rem;
+      justify-self: end;
+      border-right: 2px solid #155dfc;
+      border-bottom: 2px solid #155dfc;
       content: "";
+      transform: rotate(45deg);
       transition: transform 180ms ease;
     }
 
-    .aa-rules-faq__icon::after {
-      transform: rotate(90deg);
-    }
-
-    .aa-rules-faq__item[open] .aa-rules-faq__icon::after {
-      transform: rotate(0deg);
+    .aa-rules-faq__item[open] .aa-rules-faq__icon {
+      transform: rotate(225deg);
     }
 
     .aa-rules-faq__answer {
-      max-width: 48rem;
-      padding: 0 4.25rem 1.75rem 1.75rem;
+      max-width: 72rem;
+      padding: 0 3rem 1.85rem 0;
     }
 
     .aa-rules-faq__answer p {
@@ -837,13 +814,13 @@ const faqJsonLd = {
       }
 
       .aa-rules-faq__item summary {
-        grid-template-columns: minmax(0, 1fr) 2rem;
+        grid-template-columns: minmax(0, 1fr) 1rem;
         font-size: 1.25rem;
-        padding: 1.35rem;
+        padding: 1.35rem 0;
       }
 
       .aa-rules-faq__answer {
-        padding: 0 1.35rem 1.35rem;
+        padding: 0 1.75rem 1.35rem 0;
       }
     }
   </style>
