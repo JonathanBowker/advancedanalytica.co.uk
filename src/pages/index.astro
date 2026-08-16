@@ -149,6 +149,7 @@ const pathways = [
             <a
               href={askChatGptUrl}
               class="home-ask-ai-button"
+              data-sales-funnel-assistant="chatgpt"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -157,6 +158,7 @@ const pathways = [
             <a
               href={askClaudeUrl}
               class="home-ask-ai-button"
+              data-sales-funnel-assistant="claude"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -554,4 +556,27 @@ const pathways = [
       }
     }
   </style>
+
+  <script define:vars={{ salesFunnelSourceUrl: page.url }} is:inline>
+    document.addEventListener('click', (event) => {
+      const target = event.target instanceof Element
+        ? event.target.closest('[data-sales-funnel-assistant]')
+        : null;
+
+      if (!(target instanceof HTMLAnchorElement)) return;
+
+      fetch('/api/sales-funnel/page-build', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        keepalive: true,
+        body: JSON.stringify({
+          assistant: target.dataset.salesFunnelAssistant || 'unknown',
+          sourceUrl: salesFunnelSourceUrl,
+        }),
+      }).catch(() => {
+        // The outbound assistant link should not be blocked by tracking.
+      });
+    });
+  </script>
 </BaseLayout>
