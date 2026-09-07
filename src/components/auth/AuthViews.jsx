@@ -1323,7 +1323,7 @@ function LoginInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced-
                   Access protected service workflows, partner materials, offer material, and the operating tools that help teams move quickly without losing control.
                 </p>
                 <p className="mx-auto mt-6 max-w-xl text-sm uppercase tracking-[0.22em] text-white/45">
-                  Brando - AI Brand Operator
+                  Intelligent Business Operations
                 </p>
                 <p className="mx-auto mt-10 max-w-xl text-base text-white/60">
                   Trusted by some of the world&apos;s largest brands
