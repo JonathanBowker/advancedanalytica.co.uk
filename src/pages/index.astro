@@ -23,23 +23,82 @@ const page = {
 const solvedProblems = [
   {
     context: "Global professional services",
-    title: "Governed terminology across complex markets",
-    body: "Converted policy and operating rules that were being interpreted differently across teams into structured, machine-readable guidance that could be checked consistently.",
+    title: "Governed brand terminology across every jurisdiction",
+    challenge:
+      "A global firm's brand wording was being interpreted differently market by market, and non-English-speaking teams had no reliable way to check it.",
+    solution:
+      "We converted the guidelines into a structured knowledge graph, served through an API and MCP server, so both people and AI content tools could query the rules directly.",
+    outcome:
+      "Consistent brand terminology, accessible in any language, with AI-generated content checked against the rules automatically.",
+  },
+  {
+    context: "Global travel and destination",
+    title: "An approval pipeline built on structured brand law",
+    challenge:
+      "An enterprise needed to approve huge volumes of content against brand and legal rules, but the rules only existed as documents.",
+    solution:
+      "We converted the guidelines, nomenclature and legal properties into structured data feeding an automated approval workflow.",
+    outcome:
+      "Content is checked and a governed judgement returned automatically, at a scale manual review could never match.",
+  },
+  {
+    context: "Agronomy",
+    title: "A dense regulation made queryable by anyone",
+    challenge:
+      "A complex regulation was locked away in dense official documents that most practitioners struggled to navigate.",
+    solution:
+      "We chunked the regulation into a governed knowledge base and put a conversational chatbot in front of it.",
+    outcome:
+      "Anyone can now ask a plain question and get a clear, reliable answer, wherever they are.",
+  },
+  {
+    context: "Rural estate services",
+    title: "One knowledge graph, instant answers across the estate",
+    challenge:
+      "Contacts and records sat in disconnected systems, so answering a simple question meant several manual lookups.",
+    solution:
+      "We built a master knowledge graph interconnecting every data point across the estate.",
+    outcome:
+      "Questions that once took multiple lookups are now answered instantly from a single query.",
+  },
+  {
+    context: "Financial services and ESG",
+    title: "Cloud and AI emissions turned into a tradable asset",
+    challenge:
+      "An investment institution could not see or resolve its cloud and AI emissions liabilities across its portfolio.",
+    solution:
+      "We built a system to calculate, store and collateralise those emissions into a designated unit of value.",
+    outcome:
+      "That value can now be transferred to a nature credit provider, settling the liability in a clean, auditable step.",
   },
   {
     context: "Entertainment and intellectual property",
     title: "AI compliance at asset scale",
-    body: "Designed a verification approach for large visual asset libraries, testing generated outputs against defined business and brand rules before they reached production workflows.",
+    challenge:
+      "A major studio needed every AI-generated image checked against strict brand rules before it reached production.",
+    solution:
+      "We designed a verification pipeline that tests thousands of generated assets against defined business and brand rules.",
+    outcome: "Non-compliant assets are caught before production, not after release.",
   },
   {
-    context: "Complex operating policy",
-    title: "A repeatable way to resolve conflicting rules",
-    body: "Turned judgement calls, exceptions, and unresolved guidance into a decision register that teams can maintain and AI systems can follow.",
+    context: "Creative and marketing production",
+    title: "A toolkit for building infinite zoom video",
+    challenge:
+      "A creative team wanted a repeatable way to produce infinite zoom video content without rebuilding the process each time.",
+    solution:
+      "We built a toolkit with a structured discovery brief and an automated flow driving the image generation pipeline end to end.",
+    outcome:
+      "A consistent, repeatable production process for a format that previously depended on manual trial and error.",
   },
   {
-    context: "Spec-driven delivery",
-    title: "A buildable blueprint before the build",
-    body: "Each engagement creates the specification, architecture, validation logic, and guardrail policies needed for accountable implementation.",
+    context: "Manufacturing and scale-up",
+    title: "From 2D drawing to 3D print, fully automated",
+    challenge:
+      "A scale-up needed CAD drawings turned into printable 3D models without a manual modelling bottleneck.",
+    solution:
+      "We built a pipeline taking clean 2D drafts through to fully parametric 3D models, validated before anything is built.",
+    outcome:
+      "A dimensionally accurate, print-ready model produced automatically from a validated 2D drawing.",
   },
 ] as const;
 
@@ -386,9 +445,20 @@ const pathways = [
               <h3 class="mt-4 text-2xl font-semibold tracking-tight text-ink">
                 {item.title}
               </h3>
-              <p class="mt-4 text-base leading-relaxed text-steel">
-                {item.body}
-              </p>
+              <dl class="mt-5 space-y-4 text-base leading-relaxed text-steel">
+                <div>
+                  <dt class="eyebrow text-ink/60">Challenge</dt>
+                  <dd class="mt-1">{item.challenge}</dd>
+                </div>
+                <div>
+                  <dt class="eyebrow text-ink/60">Solution</dt>
+                  <dd class="mt-1">{item.solution}</dd>
+                </div>
+                <div>
+                  <dt class="eyebrow text-ink/60">Outcome</dt>
+                  <dd class="mt-1">{item.outcome}</dd>
+                </div>
+              </dl>
             </article>
           ))
         }
