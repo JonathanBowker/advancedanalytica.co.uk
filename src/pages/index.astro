@@ -23,83 +23,83 @@ const page = {
 const solvedProblems = [
   {
     context: "Global professional services",
-    title: "Governed brand terminology across every jurisdiction",
+    title: "An agent that governs brand language across every market",
     challenge:
-      "A global firm's brand wording was being interpreted differently market by market, and non-English-speaking teams had no reliable way to check it.",
+      "A global firm's brand wording was interpreted differently market by market, with no way to check content against the rules at scale.",
     solution:
-      "We converted the guidelines into a structured knowledge graph, served through an API and MCP server, so both people and AI content tools could query the rules directly.",
+      "We structured the brand rules into a queryable knowledge base, then built an agent that reads submitted content, checks it clause by clause against the rules, and returns an approval or a flagged correction with reasoning attached.",
     outcome:
-      "Consistent brand terminology, accessible in any language, with AI-generated content checked against the rules automatically.",
+      "Every piece of content, in any language, passes through the same automated judgement before it goes live.",
   },
   {
     context: "Global travel and destination",
-    title: "An approval pipeline built on structured brand law",
+    title: "An agent that approves content against brand rules",
     challenge:
-      "An enterprise needed to approve huge volumes of content against brand and legal rules, but the rules only existed as documents.",
+      "An enterprise needed every piece of content checked against brand and legal rules before publication, at a volume no manual team could sustain.",
     solution:
-      "We converted the guidelines, nomenclature and legal properties into structured data feeding an automated approval workflow.",
+      "We converted the brand guidelines and legal properties into structured rules, then built an agent that ingests each submission, runs it through a sequence of compliance checks, and issues a governed pass or fail decision.",
     outcome:
-      "Content is checked and a governed judgement returned automatically, at a scale manual review could never match.",
+      "Content is approved or rejected automatically, with a clear audit trail behind every decision.",
   },
   {
     context: "Agronomy",
-    title: "A dense regulation made queryable by anyone",
+    title: "An agent that applies regulation, not just recalls it",
     challenge:
-      "A complex regulation was locked away in dense official documents that most practitioners struggled to navigate.",
+      "A dense regulation was locked in documents that practitioners struggled to apply correctly to their own situation.",
     solution:
-      "We chunked the regulation into a governed knowledge base and put a conversational chatbot in front of it.",
+      "We structured the regulation into a governed knowledge base, then built an agent that takes a user's specific circumstances, works through the relevant clauses, and returns a reasoned determination rather than a generic answer.",
     outcome:
-      "Anyone can now ask a plain question and get a clear, reliable answer, wherever they are.",
+      "Users get a specific, defensible answer to their actual situation, not a document to interpret themselves.",
   },
   {
     context: "Rural estates and property management",
-    title: "Building regulations, always audit ready",
+    title: "An agent that keeps compliance permanently ready",
     challenge:
-      "A large estate managed building regulations, safety certificates and compliance deadlines across many properties on scattered spreadsheets.",
+      "A large estate tracked building regulations and safety certificates across many properties on scattered spreadsheets, with deadlines routinely discovered too late.",
     solution:
-      "We built a monitoring system that tracks obligations and evidence continuously, checking compliance automatically as conditions change.",
+      "We built an agent that continuously checks live obligations against current evidence, flags anything falling out of compliance, and prepares the documentation an inspector would need before it's asked for.",
     outcome:
-      "The estate is always audit ready, with nothing missed and no last-minute scramble before an inspection.",
+      "The estate moves from reacting to inspections to a system that catches problems before they become one.",
   },
   {
     context: "Financial services and ESG",
-    title: "Cloud and AI emissions turned into a tradable asset",
+    title: "An agent that resolves emissions liabilities end to end",
     challenge:
-      "An investment institution could not see or resolve its cloud and AI emissions liabilities across its portfolio.",
+      "An investment institution could not see its cloud and AI emissions liabilities across its portfolio, let alone act on them.",
     solution:
-      "We built a system to calculate, store and collateralise those emissions into a designated unit of value.",
+      "We built an agent that calculates emissions exposure per holding, decides the offset action required, and executes the transfer of a collateralised value unit to a nature credit provider to settle it.",
     outcome:
-      "That value can now be transferred to a nature credit provider, settling the liability in a clean, auditable step.",
+      "Emissions liabilities are identified and settled through one continuous process, not a manual reconciliation exercise.",
   },
   {
     context: "Entertainment and intellectual property",
-    title: "AI compliance at asset scale",
+    title: "An agent that polices brand compliance at asset scale",
     challenge:
-      "A major studio needed every AI-generated image checked against strict brand rules before it reached production.",
+      "A major studio needed thousands of AI-generated images checked against strict brand rules before any reached production.",
     solution:
-      "We designed a verification pipeline that tests thousands of generated assets against defined business and brand rules.",
+      "We built an agent that inspects each generated asset, tests it against defined business and brand rules, and returns an accept or reject decision with the specific rule breached.",
     outcome:
-      "Non-compliant assets are caught before production, not after release.",
+      "Non-compliant assets are caught and named automatically, before a human ever needs to look at them.",
   },
   {
     context: "Creative and marketing production",
-    title: "A toolkit for building infinite zoom video",
+    title: "An agent that runs the infinite zoom production pipeline",
     challenge:
-      "A creative team wanted a repeatable way to produce infinite zoom video content without rebuilding the process each time.",
+      "A creative team needed a repeatable way to produce infinite zoom video without rebuilding the process by hand each time.",
     solution:
-      "We built a toolkit with a structured discovery brief and an automated flow driving the image generation pipeline end to end.",
+      "We built an agent that takes a structured creative brief, sequences the image generation steps, checks each frame for consistency, and assembles the final output.",
     outcome:
-      "A consistent, repeatable production process for a format that previously depended on manual trial and error.",
+      "A creative brief goes in, a finished, consistent video comes out, without manual frame-by-frame supervision.",
   },
   {
     context: "Manufacturing and scale-up",
-    title: "From 2D drawing to 3D print, fully automated",
+    title: "An agent that turns a 2D drawing into a validated 3D print file",
     challenge:
       "A scale-up needed CAD drawings turned into printable 3D models without a manual modelling bottleneck.",
     solution:
-      "We built a pipeline taking clean 2D drafts through to fully parametric 3D models, validated before anything is built.",
+      "We built an agent that takes a 2D draft, validates it against required dimensions and tolerances, builds the parametric 3D model, and checks the result is printable before export.",
     outcome:
-      "A dimensionally accurate, print-ready model produced automatically from a validated 2D drawing.",
+      "A drawing goes in, a print-ready, dimensionally verified model comes out, with no manual modelling step in between.",
   },
 ] as const;
 
@@ -447,7 +447,9 @@ const pathways = [
             >
               <summary class="flex cursor-pointer list-none items-start justify-between gap-5 [&::-webkit-details-marker]:hidden">
                 <span>
-                  <span class="eyebrow block text-[#14B8A6]">{item.context}</span>
+                  <span class="eyebrow block text-[#14B8A6]">
+                    {item.context}
+                  </span>
                   <span class="mt-4 block text-2xl font-semibold tracking-tight text-ink">
                     {item.title}
                   </span>
