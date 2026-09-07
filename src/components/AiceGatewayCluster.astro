@@ -37,7 +37,7 @@ const defaultRightData: ClusterNode = {
 };
 
 const {
-  title = 'Brando® - AI Brand Operator',
+  title = 'Intelligent Business Operating Model',
   leftData = defaultLeftData,
   rightData = defaultRightData,
   agentOrder = ['Brand Team', 'Support Team', 'Marketing Team', 'Other Teams'],
@@ -48,10 +48,10 @@ const {
     'Other Teams': 'Other Agents'
   },
   questionToTools = {},
-  controlLayer = 'CONTROLLED BRAND COMMUNICATIONS',
+  controlLayer = 'CONTROLLED BUSINESS OPERATIONS',
   tagline = '',
   leftColumnOffset = 0,
-  ariaLabel = 'Brando AI Brand Operator controlled AI communications diagram'
+  ariaLabel = 'IBOM agentic AI controlled business operations diagram'
 } = Astro.props as {
   title?: string;
   leftData?: ClusterNode;
@@ -243,7 +243,7 @@ const diagramConfig = JSON.stringify({
       .attr('fill', '#ffffff')
       .attr('font-size', 26)
       .attr('font-weight', 700)
-      .text(config.title || 'Brando® - AI Brand Operator');
+      .text(config.title || 'Intelligent Business Operating Model');
 
     const glow = defs
       .append('filter')
@@ -442,7 +442,7 @@ const diagramConfig = JSON.stringify({
       .attr('fill', '#ffffff')
       .attr('font-size', 28)
       .attr('font-weight', 700)
-      .text('BRANDO');
+      .text('IBOM');
 
     gatewayLabel
       .append('text')
@@ -451,12 +451,12 @@ const diagramConfig = JSON.stringify({
       .attr('fill', 'rgba(255,255,255,0.95)')
       .attr('font-size', 19)
       .attr('font-weight', 600)
-      .text('AI BRAND BRAIN');
+      .text('AGENTIC AI');
 
-    const controlLayerLabel = config.controlLayer || 'CONTROLLED BRAND COMMUNICATIONS';
+    const controlLayerLabel = config.controlLayer || 'CONTROLLED BUSINESS OPERATIONS';
     const controlLayerLines =
-      controlLayerLabel === 'CONTROLLED BRAND COMMUNICATIONS'
-        ? ['CONTROLLED BRAND', 'COMMUNICATIONS']
+      controlLayerLabel === 'CONTROLLED BUSINESS OPERATIONS'
+        ? ['CONTROLLED BUSINESS', 'OPERATIONS']
         : [controlLayerLabel];
 
     const controlLayerText = gatewayLabel

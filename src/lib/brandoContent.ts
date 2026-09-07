@@ -135,15 +135,15 @@ export const ibomStages = [
 
 export const howItWorksCards = [
   {
-    heading: "Brando Mapping",
+    heading: "Process Mapping",
     body: "We map the rules, approvals, exceptions, and judgement your teams already use. The system starts with how your business really works.",
   },
   {
-    heading: "Brando Data Modelling",
+    heading: "Data Modelling",
     body: "We turn brand and business logic into an interconnected, machine-readable data asset that AI can interpret and follow.",
   },
   {
-    heading: "Brando Deployment",
+    heading: "Agent Deployment",
     body: "We build, test, and deploy Brando into controlled workflows, review paths, and agent behaviours.",
   },
 ] as const;

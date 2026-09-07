@@ -5,9 +5,9 @@ import AiceGatewayCluster from "../components/AiceGatewayCluster.astro";
 import { getCollection } from "astro:content";
 import { SITE_URL } from "../lib/seo/site";
 
-const title = "Brand-First AI Governance";
+const title = "Agentic AI for UK Enterprises | Advanced Analytica";
 const description =
-  "Turn brand standards, business logic, and expert judgement into Brando: an AI Brand Operator your agents can follow. Talk to Advanced Analytica about governed AI brand operations.";
+  "Advanced Analytica gets Agentic AI into production for UK enterprises. Using IBOM®, we identify high-value opportunities, prove value in weeks, and deploy governed AI agents and skills that scale.";
 
 const latestPosts = (
   await getCollection("blog", ({ data }) => !data.draft)
@@ -19,23 +19,20 @@ const page = {
   url: `${SITE_URL}/`,
   breadcrumbs: [{ name: "Home", url: `${SITE_URL}/` }],
 };
-const askPrompt = `Read from ${page.url} so I can ask questions about its contents`;
-const askChatGptUrl = `https://chatgpt.com/?hint=search&q=${encodeURI(askPrompt)}`;
-const askClaudeUrl = `https://claude.ai/new?q=${encodeURI(askPrompt)}`;
 
 const solvedProblems = [
   {
     context: "Global professional services",
-    title: "Governed terminology across complex markets",
-    body: "Converted policy rules that were being interpreted differently across teams into structured, machine-readable guidance that could be checked consistently.",
+    title: "Governed operational terminology across complex markets",
+    body: "Converted policy and operating rules that were being interpreted differently across teams into structured, machine-readable guidance that could be checked consistently.",
   },
   {
     context: "Entertainment and intellectual property",
-    title: "AI image compliance at asset scale",
-    body: "Designed a verification approach for large visual asset libraries, testing generated outputs against defined brand rules before they reached production workflows.",
+    title: "AI compliance at asset scale",
+    body: "Designed a verification approach for large visual asset libraries, testing generated outputs against defined business and brand rules before they reached production workflows.",
   },
   {
-    context: "Ambiguous brand governance",
+    context: "Complex operating policy",
     title: "A repeatable way to resolve conflicting rules",
     body: "Turned judgement calls, exceptions, and unresolved guidance into a decision register that teams can maintain and AI systems can follow.",
   },
@@ -50,31 +47,31 @@ const pathways = [
   {
     eyebrow: "First Step",
     title: "AI Knowledge Packs",
-    body: "Prepare scattered documents, screenshots, policies, and expert knowledge for reliable chatbot testing before committing to a full agent build.",
+    body: "Prepare scattered documents, policies, process knowledge, and expert judgement as structured data assets that AI systems can use reliably.",
     href: "/services/ai-ready-knowledge-packs/",
-  },
-  {
-    eyebrow: "Product",
-    title: "Brando",
-    body: "Understand the AI Brand Operator: what it is, what your business owns, and why static brand guidance is not enough for AI.",
-    href: "/brando/",
   },
   {
     eyebrow: "Framework",
     title: "IBOM",
-    body: "See the Intelligent Business Operating Model that delivers Brando through staged, governed, expert-led implementation.",
+    body: "See the Intelligent Business Operating Model that turns business knowledge, rules, workflows, skills, and controls into governed Agentic AI.",
     href: "/ibom/",
   },
   {
     eyebrow: "Delivery",
     title: "How It Works",
-    body: "Walk through mapping, modelling, validation, deployment, and the controlled layer that makes AI brand operations usable.",
+    body: "See how we move from opportunity identification through mapping, modelling, validation, deployment, and controlled operation.",
     href: "/how-it-works/",
   },
   {
-    eyebrow: "Stakeholders",
+    eyebrow: "Example Agent",
+    title: "Brando",
+    body: "See how the same governed approach can turn brand knowledge, standards, and judgement into a production-ready AI Brand Operator.",
+    href: "/brando/",
+  },
+  {
+    eyebrow: "Leadership",
     title: "For Leaders",
-    body: "See how Brando matters to brand, marketing, legal, AI, technology, finance, and transformation leaders.",
+    body: "Understand the value, governance, operating model, and control implications of deploying Agentic AI across the enterprise.",
     href: "/for-leaders/",
   },
 ] as const;
@@ -84,26 +81,27 @@ const pathways = [
   <section class="home-hero bg-paper text-ink">
     <div class="container-wide home-hero__inner">
       <div class="eyebrow mb-10 text-left font-bold">MOVE FAST. STAY SAFE.</div>
-
       <div class="home-split-grid home-split-grid--hero">
         <h1 class="home-hero__title">
-          You've created your brand. Now make AI operate it.
+          You've adopted AI. Now make it deliver.<br />
         </h1>
-
         <div>
           <p class="home-hero__lead">
-            Advanced Analytica specialises in rewiring brands and business
-            domains for AI-assisted operations. We capture the structure behind
-            your brand and express it in a form AI can read and operate. We run
-            the whole programme, with the speed to show results in weeks and a
-            methodology that you can stand behind under scrutiny.
+            Advanced Analytica specialises in getting Agentic AI into production
+            for UK enterprises, deploying it where it creates the greatest value
+            with control built in.
           </p>
-
+          <p class="home-hero__lead">
+            Using <strong>IBOM<sup>®</sup>, our Intelligent Business Operating Model</strong>,
+            we run the programme end to end: identifying and prioritising high-impact
+            opportunities, proving value in weeks, and deploying governed AI agents
+            and skills that can scale across your business functions — with a
+            methodology and control framework you can stand behind.
+          </p>
           <div class="home-hero__actions">
             <a href="/company/contact/" class="home-hero__button">
               Book a Conversation
             </a>
-
             <a href="#why" class="home-hero__secondary">
               <span>Why It Matters</span>
               <span aria-hidden="true">↓</span>
@@ -116,53 +114,27 @@ const pathways = [
 
   <section id="why" class="bg-[#f3f0e8] text-ink">
     <div class="container-wide py-20">
-      <div class="eyebrow mb-10 text-center">Why It Matters</div>
-
+      <div class="eyebrow mb-10 text-center">What is Agentic AI</div>
       <div class="home-split-grid">
         <div>
           <h2 class="text-5xl font-extrabold tracking-tight text-ink">
-            A PDF cannot govern an AI agent.
+            What is Agentic AI and why does it matter?
           </h2>
         </div>
-
         <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
           <p>
-            Teams paste fragments into chatbots, one prompt at a time, with a
-            person present for every cycle. That is not governance. That is
-            supervision. Every off-brand output spends trust you have worked
-            hard to build.
+            Agentic AI refers to AI systems that can work towards goals by
+            planning, making decisions, using tools, and carrying out multi-step
+            actions within defined boundaries.
           </p>
-
           <p class="mt-6">
-            The fix is not a stricter document or a better prompt. It is
-            Brando: a governed Brand Operator delivered as an interconnected data
-            asset, so AI expresses the brand correctly, everywhere, every time.
+            Unlike traditional generative AI, which typically responds to a
+            prompt with text or images, Agentic AI can use tools, call APIs,
+            work across systems, and take actions as part of an operational workflow.
           </p>
-
           <div class="mt-8">
             <a href="/company/contact/" class="home-outline-cta">
               Talk to Us
-            </a>
-          </div>
-
-          <div class="home-ask-ai-actions" aria-label="Ask an AI assistant about this page">
-            <a
-              href={askChatGptUrl}
-              class="home-ask-ai-button"
-              data-sales-funnel-assistant="chatgpt"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Ask ChatGPT
-            </a>
-            <a
-              href={askClaudeUrl}
-              class="home-ask-ai-button"
-              data-sales-funnel-assistant="claude"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Ask Claude
             </a>
           </div>
         </div>
@@ -172,26 +144,31 @@ const pathways = [
 
   <section class="bg-paper text-ink">
     <div class="container-wide py-20">
-      <div class="eyebrow mb-10 text-center text-[#14B8A6]">What Brando Is</div>
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Agentic AI</div>
       <div class="home-split-grid">
         <div>
           <h2 class="text-5xl font-extrabold tracking-tight text-ink">
-            Brando is your AI Brand Operator.
+            Agentic AI is your efficiency accelerator.
           </h2>
         </div>
         <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
           <p>
-            Brando turns brand standards, approvals, policies, examples, and
-            judgement into an interconnected data asset that AI systems can
-            consume. It gives agents something structured to follow instead of
-            asking them to infer the brand from documents.
+            Agentic AI turns your business knowledge, policies, approvals,
+            processes, examples, and judgement into interconnected data assets
+            that AI agents can consume and act on.
           </p>
           <p class="mt-6">
-            Delivered through IBOM, it becomes a governed operating asset: your
-            knowledge, your rules, your audit trail, and your control layer.
+            Instead of asking AI to infer how the business should operate from
+            fragmented documents and prompts, agents are given structured
+            knowledge, rules, context, and controls to follow.
+          </p>
+          <p class="mt-6">
+            Delivered through IBOM, Agentic AI becomes a governed operating
+            capability: your knowledge, your rules, your workflows, your skills,
+            your control layer, your assets, and your IP.
           </p>
           <div class="mt-8 flex flex-wrap gap-4">
-            <a href="/brando/" class="home-outline-cta">Explore Brando</a>
+            <a href="/ibom/" class="home-outline-cta">Explore IBOM</a>
             <a href="/company/contact/" class="home-outline-cta">
               Talk to Us
             </a>
@@ -217,27 +194,27 @@ const pathways = [
             problems the work has solved.
           </p>
           <p class="mt-6">
-            The pattern is consistent: make judgement explicit, turn policy into
-            usable structure, and give AI systems rules that can be tested before
-            they act.
+            The pattern is consistent: make judgement explicit, turn policy and
+            knowledge into usable structure, and give AI systems rules and
+            controls that can be tested before they act.
           </p>
         </div>
       </div>
-
       <div class="mt-12 grid gap-6 md:grid-cols-2">
-        {solvedProblems.map((item) => (
-          <article class="rounded-2xl border border-ink/10 bg-paper p-7 shadow-outline">
-            <div class="eyebrow text-[#14B8A6]">{item.context}</div>
-            <h3 class="mt-4 text-2xl font-semibold tracking-tight text-ink">
-              {item.title}
-            </h3>
-            <p class="mt-4 text-base leading-relaxed text-steel">
-              {item.body}
-            </p>
-          </article>
-        ))}
+        {
+          solvedProblems.map((item) => (
+            <article class="rounded-2xl border border-ink/10 bg-paper p-7 shadow-outline">
+              <div class="eyebrow text-[#14B8A6]">{item.context}</div>
+              <h3 class="mt-4 text-2xl font-semibold tracking-tight text-ink">
+                {item.title}
+              </h3>
+              <p class="mt-4 text-base leading-relaxed text-steel">
+                {item.body}
+              </p>
+            </article>
+          ))
+        }
       </div>
-
       <div class="mt-12 flex justify-center">
         <a href="/company/contact/" class="home-outline-cta">Talk to Us</a>
       </div>
@@ -246,30 +223,32 @@ const pathways = [
 
   <section class="bg-slate text-paper">
     <div class="container-wide py-20">
-      <div class="eyebrow mb-6 text-center text-[#14B8A6]">The Operating Model</div>
-      <h2 class="mx-auto max-w-4xl text-center text-5xl font-semibold tracking-tight text-paper">
-        One controlled layer between your brand, your systems, and your AI.
+      <div class="eyebrow mb-6 text-center text-[#14B8A6]">
+        Intelligent Business Operating Model
+      </div>
+      <h2
+        class="mx-auto max-w-4xl text-center text-5xl font-semibold tracking-tight text-paper"
+      >
+        One controlled layer between your workforce, your workflows, your systems, and your AI.
       </h2>
-      <p class="mx-auto mt-8 max-w-[82ch] text-center text-lg leading-relaxed text-paper/80 md:text-xl">
-        The visual below is the short version: teams, agents, systems, and
-        policies connected through a governed brand-first operating model.
+      <p
+        class="mx-auto mt-8 max-w-[82ch] text-center text-lg leading-relaxed text-paper/80 md:text-xl"
+      >
+        IBOM connects people, agents, workflows, knowledge, systems, policies,
+        and controls through one Intelligent Business Operating Model.
       </p>
-
       <div
-        id="Brando-visual"
+        id="ibom-visual"
         class="relative mx-auto mt-10 w-full max-w-6xl scroll-mt-28"
-        aria-label="Brando delivered through IBOM visualisation"
+        aria-label="Business operations delivered through IBOM visualisation"
       >
         <AiceGatewayCluster />
       </div>
-
       <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
         <a href="/how-it-works/" class="home-dark-outline-cta">
           See How It Works
         </a>
-        <a href="/company/contact/" class="home-dark-cta">
-          Talk to Us
-        </a>
+        <a href="/company/contact/" class="home-dark-cta">Talk to Us</a>
       </div>
     </div>
   </section>
@@ -277,32 +256,32 @@ const pathways = [
   <section class="bg-[#f3f0e8] text-ink">
     <div class="container-wide py-20">
       <div class="eyebrow mb-10 text-center text-[#14B8A6]">Start Here</div>
-      <h2 class="mx-auto max-w-4xl text-center text-5xl font-extrabold tracking-tight text-ink">
+      <h2
+        class="mx-auto max-w-4xl text-center text-5xl font-extrabold tracking-tight text-ink"
+      >
         Choose the path that gets you to a useful conversation.
       </h2>
-
       <div class="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-5">
-        {pathways.map((item) => (
-          <a
-            href={item.href}
-            class="group flex min-h-full flex-col rounded-2xl border border-ink/10 bg-paper p-7 shadow-outline transition-all duration-200 hover:-translate-y-1 hover:border-[#14B8A6]/50"
-          >
-            <div class="eyebrow text-[#14B8A6]">
-              {item.eyebrow}
-            </div>
-            <h3 class="mt-4 text-2xl font-semibold tracking-tight text-ink">
-              {item.title}
-            </h3>
-            <p class="mt-4 flex-1 text-base leading-relaxed text-steel">
-              {item.body}
-            </p>
-            <div class="mt-8 text-sm font-semibold uppercase tracking-[0.14em] text-[#0F766E]">
-              Read more <span aria-hidden="true">→</span>
-            </div>
-          </a>
-        ))}
+        {
+          pathways.map((item) => (
+            <a
+              href={item.href}
+              class="group flex min-h-full flex-col rounded-2xl border border-ink/10 bg-paper p-7 shadow-outline transition-all duration-200 hover:-translate-y-1 hover:border-[#14B8A6]/50"
+            >
+              <div class="eyebrow text-[#14B8A6]">{item.eyebrow}</div>
+              <h3 class="mt-4 text-2xl font-semibold tracking-tight text-ink">
+                {item.title}
+              </h3>
+              <p class="mt-4 flex-1 text-base leading-relaxed text-steel">
+                {item.body}
+              </p>
+              <div class="mt-8 text-sm font-semibold uppercase tracking-[0.14em] text-[#0F766E]">
+                Read more <span aria-hidden="true">→</span>
+              </div>
+            </a>
+          ))
+        }
       </div>
-
       <div class="mt-12 flex items-center justify-center">
         <a href="/company/contact/" class="home-outline-cta">Talk to Us</a>
       </div>
@@ -315,45 +294,48 @@ const pathways = [
       <h2 class="text-center text-5xl font-extrabold tracking-tight text-ink">
         Latest Posts
       </h2>
-      <p class="mx-auto mt-5 max-w-[70ch] text-center text-lg leading-relaxed text-steel md:text-xl">
-        Recent thinking on governed AI systems, brand operations, and
-        knowledge-first delivery.
+      <p
+        class="mx-auto mt-5 max-w-[70ch] text-center text-lg leading-relaxed text-steel md:text-xl"
+      >
+        Recent thinking on Agentic AI, governed business operations, and
+        knowledge-first deployment.
       </p>
-
       <div class="mt-12 grid gap-8 lg:grid-cols-3">
         {latestPosts.slice(0, 3).map((post) => <PostCard post={post} />)}
       </div>
-
       <div class="mt-12 flex flex-wrap items-center justify-center gap-4">
         <a href="/opinions/" class="home-outline-cta">More Thinking</a>
-        <a href="/company/contact/" class="home-outline-cta">
-          Talk to Us
-        </a>
+        <a href="/company/contact/" class="home-outline-cta">Talk to Us</a>
       </div>
     </div>
   </section>
 
   <section class="bg-[#f3f0e8] text-ink">
     <div class="container-wide py-20">
-      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Start The Conversation</div>
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">
+        Start The Conversation
+      </div>
       <div class="grid items-start gap-10 lg:grid-cols-[0.9fr_1.1fr]">
         <div>
           <h2 class="text-5xl font-extrabold tracking-tight text-ink">
-            Find out where AI is already operating your brand.
+            Find where Agentic AI can create the greatest value.
           </h2>
         </div>
         <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
           <p>
             The useful first step is not another deck. It is a clear view of
-            where your brand is exposed to AI now, which workflows carry risk,
-            and what needs to be governed first.
+            where Agentic AI can improve performance, which workflows carry the
+            greatest opportunity and risk, and what needs to change before
+            agents go into production.
           </p>
           <p class="mt-6">
-            We can help you turn that into a practical route into Brando and the
-            IBOM Framework.
+            We turn that into a practical route from opportunity to governed
+            Agentic AI in production.
           </p>
           <div class="mt-8">
-            <a href="/company/contact/" class="home-hero__button">Book a Conversation</a>
+            <a href="/company/contact/" class="home-hero__button">
+              Book a Conversation
+            </a>
           </div>
         </div>
       </div>
@@ -361,441 +343,787 @@ const pathways = [
   </section>
 
   <style>
+
     .home-split-grid {
+
       display: grid;
+
       gap: 2.5rem;
+
     }
 
     .home-hero {
+
       border-bottom: 1px solid color-mix(in srgb, var(--color-ink) 10%, white);
+
     }
 
     .home-hero__inner {
+
       padding-top: 7rem;
+
       padding-bottom: 5rem;
+
     }
 
     .home-hero__title {
+
       max-width: 13.1ch;
+
       margin: 0;
+
       font-family: var(--font-display);
+
       font-size: clamp(38px, 4.5vw, 62px);
+
       font-weight: 1000;
+
       letter-spacing: -0.016em;
+
       line-height: 1.12;
+
       color: var(--color-ink);
+
       -webkit-text-stroke: 0.3px var(--color-ink);
+
       text-wrap: balance;
+
     }
 
     .home-hero__lead {
+
       max-width: 34rem;
+
       margin: 0 0 2rem;
+
       font-family: var(--font-body);
+
       font-size: 1.125rem;
+
       font-weight: 400;
+
       line-height: 1.625;
+
       color: color-mix(in srgb, var(--color-ink) 62%, white);
+
       text-wrap: pretty;
+
     }
 
     .home-hero__actions {
+
       display: flex;
+
       align-items: center;
+
       gap: 2rem;
+
       flex-wrap: wrap;
+
     }
 
     .home-hero__button,
+
     .home-dark-cta {
+
       display: inline-flex;
+
       align-items: center;
+
       justify-content: center;
+
       padding: 15px 32px;
+
       border: 1.5px solid #14b8a6;
+
       border-radius: 0.875rem;
+
       background: #14b8a6;
+
       color: #fff;
+
       font-family: var(--font-display);
+
       font-size: 1rem;
+
       font-weight: 600;
+
       text-decoration: none;
+
       white-space: nowrap;
+
       transition:
-        background 180ms ease,
+
+*background* 180ms ease,
+
         border-color 180ms ease,
+
         transform 180ms ease,
+
         box-shadow 180ms ease;
+
     }
 
     .home-hero__button:hover,
+
     .home-dark-cta:hover {
+
       background: #0f766e;
+
       border-color: #0f766e;
+
       transform: translateY(-1px);
+
       box-shadow:
+
         0 4px 6px -1px rgba(0, 0, 0, 0.1),
+
         0 2px 4px -2px rgba(0, 0, 0, 0.1);
+
     }
 
     .home-hero__secondary,
+
     .home-outline-cta,
+
     .home-dark-outline-cta {
+
       display: inline-flex;
+
       align-items: center;
+
       justify-content: center;
+
       gap: 0.7rem;
+
       padding: 15px 32px;
+
       border: 1.5px solid #14b8a6;
+
       border-radius: 0.875rem;
+
       background: transparent;
+
       font-family: var(--font-display);
+
       font-size: 1rem;
+
       font-weight: 600;
+
       color: #0f766e;
+
       text-decoration: none;
+
       white-space: nowrap;
+
       transition:
+
         color 180ms ease,
+
         border-color 180ms ease,
+
         background-color 180ms ease,
+
         transform 180ms ease,
+
         box-shadow 180ms ease;
+
     }
 
     .home-dark-outline-cta {
+
       color: #5eead4;
+
     }
 
     .home-hero__secondary:hover,
+
     .home-outline-cta:hover,
+
     .home-dark-outline-cta:hover {
+
       color: #ffffff;
+
       background: #14b8a6;
+
       border-color: #14b8a6;
+
       transform: translateY(-1px);
+
       box-shadow:
+
         0 4px 6px -1px rgba(0, 0, 0, 0.1),
+
         0 2px 4px -2px rgba(0, 0, 0, 0.1);
+
     }
 
     .home-inline-cta {
+
       display: inline-flex;
+
       align-items: center;
+
       gap: 0.45rem;
+
       font-weight: 700;
+
       color: #0f766e;
+
       text-decoration: none;
+
     }
 
     .home-inline-cta:hover {
+
       color: #14b8a6;
+
     }
 
     .home-ask-ai-actions {
+
       display: none;
+
       flex-wrap: nowrap;
+
       gap: 0.75rem;
+
       margin-top: 1rem;
+
     }
 
     .home-ask-ai-button {
+
       display: inline-flex;
+
       min-height: 44px;
+
       min-width: 132px;
+
       align-items: center;
+
       justify-content: center;
+
       padding: 0 18px;
+
       border: 1.5px solid var(--color-ink);
+
       border-radius: 0.5rem;
+
       background: var(--color-ink);
+
       color: #ffffff;
+
       font-family: var(--font-display);
+
       font-size: 0.95rem;
+
       font-weight: 600;
+
       text-decoration: none;
+
       white-space: nowrap;
+
       transition:
+
         color 180ms ease,
+
         background-color 180ms ease,
+
         transform 180ms ease;
+
     }
 
     .home-ask-ai-button:hover,
+
     .home-ask-ai-button:focus-visible {
+
       background: transparent;
+
       color: var(--color-ink);
+
       transform: translateY(-1px);
+
     }
 
     .aa-ai-overlay {
+
       position: fixed;
+
       inset: 0;
+
       z-index: 80;
+
       display: grid;
+
       place-items: center;
+
       padding: 1.25rem;
+
       background: rgba(11, 18, 32, 0.58);
+
       opacity: 0;
+
       transition: opacity 220ms ease;
+
       pointer-events: none;
+
     }
 
     .aa-ai-overlay.is-visible {
+
       opacity: 1;
+
       pointer-events: auto;
+
     }
 
     .aa-ai-dialog {
+
       width: min(27rem, 100%);
+
       padding: 1.25rem 1.35rem;
+
       border: 1px solid rgba(255, 255, 255, 0.14);
+
       border-radius: 0.5rem;
+
       background: rgba(11, 18, 32, 0.96);
+
       box-shadow: 0 18px 45px rgba(0, 0, 0, 0.24);
+
       color: #ffffff;
+
       font-family: var(--font-display);
+
       transform: translateY(0.5rem) scale(0.98);
+
       transition:
+
         opacity 220ms ease,
+
         transform 220ms ease;
+
     }
 
     .aa-ai-overlay.is-visible .aa-ai-dialog {
+
       transform: translateY(0);
+
     }
 
     .aa-ai-dialog__eyebrow {
+
       margin-bottom: 0.35rem;
+
       color: #14b8a6;
+
       font-size: 0.76rem;
+
       font-weight: 700;
+
       letter-spacing: 0.14em;
+
       text-transform: uppercase;
+
     }
 
     .aa-ai-dialog__message {
+
       margin: 0;
+
       font-size: 1.05rem;
+
       font-weight: 700;
+
       line-height: 1.4;
+
     }
 
     @media (max-width: 960px) {
+
       .home-hero__inner {
+
         padding-top: 6.5rem;
+
         padding-bottom: 4rem;
+
       }
 
       .home-hero__title {
+
         max-width: 12ch;
+
       }
 
       h2 {
+
         font-size: 2.65rem;
+
         line-height: 1.08;
+
       }
+
     }
 
     @media (min-width: 1024px) {
+
       .home-split-grid {
+
         grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+
         gap: 4.5rem;
+
         align-items: start;
+
       }
 
       .home-split-grid--hero {
+
         gap: 5rem;
+
       }
+
     }
+
   </style>
 
   <script is:inline>
-    const ensureSalesFunnelOverlayStyles = () => {
-      if (document.querySelector('[data-sales-funnel-overlay-style]')) return;
 
-      const style = document.createElement('style');
-      style.setAttribute('data-sales-funnel-overlay-style', '');
+    const ensureSalesFunnelOverlayStyles = () => {
+
+      if (document.querySelector("[data-sales-funnel-overlay-style]")) return;
+
+      const style = document.createElement("style");
+
+      style.setAttribute("data-sales-funnel-overlay-style", "");
+
       style.textContent = `
+
         .aa-ai-overlay {
+
           position: fixed;
+
           inset: 0;
+
           z-index: 2147483000;
+
           display: grid;
+
           place-items: center;
+
           padding: 1.25rem;
+
           background: rgba(11, 18, 32, 0.68);
+
           opacity: 0;
+
           transition: opacity 220ms ease;
+
           pointer-events: none;
+
         }
 
         .aa-ai-overlay.is-visible {
+
           opacity: 1;
+
           pointer-events: auto;
+
         }
 
         .aa-ai-dialog {
+
           width: min(27rem, 100%);
+
           padding: 1.25rem 1.35rem;
+
           border: 1px solid rgba(255, 255, 255, 0.14);
+
           border-radius: 0.5rem;
+
           background: rgba(11, 18, 32, 0.96);
+
           box-shadow: 0 18px 45px rgba(0, 0, 0, 0.24);
+
           color: #ffffff;
+
           font-family: var(--font-display);
+
           transform: translateY(0.5rem) scale(0.98);
+
           transition:
+
             opacity 220ms ease,
+
             transform 220ms ease;
+
         }
 
         .aa-ai-overlay.is-visible .aa-ai-dialog {
+
           transform: translateY(0);
+
         }
 
         .aa-ai-dialog__eyebrow {
+
           margin-bottom: 0.35rem;
+
           color: #14b8a6;
+
           font-size: 0.76rem;
+
           font-weight: 700;
+
           letter-spacing: 0.14em;
+
           text-transform: uppercase;
+
         }
 
         .aa-ai-dialog__message {
+
           margin: 0;
+
           font-size: 1.05rem;
+
           font-weight: 700;
+
           line-height: 1.4;
+
         }
 
         .aa-ai-spinner {
+
           display: block;
+
           width: 14.25rem;
+
           height: 14.25rem;
+
           margin: 1.5rem auto 0;
+
           overflow: visible;
+
         }
 
         .aa-ai-spinner__core,
+
         .aa-ai-spinner__dot-orbit {
+
           transform-box: view-box;
+
           transform-origin: 73.92px 80px;
+
           animation: aa-ai-spinner-ring 2.25s linear infinite;
+
         }
 
         .aa-ai-spinner__core,
+
         .aa-ai-spinner__dot {
+
           fill: #ffffff;
+
         }
 
         .aa-ai-spinner__dot {
+
           transform-box: view-box;
+
           transform-origin: 45.54px 32.67px;
+
           animation: aa-ai-spinner-dot 2.25s linear infinite;
+
         }
 
         @keyframes aa-ai-spinner-ring {
+
           0%,
+
           28% {
+
             transform: rotate(0deg);
+
           }
 
           72%,
+
           100% {
+
             transform: rotate(-360deg);
+
           }
+
         }
 
         @keyframes aa-ai-spinner-dot {
+
           0%,
+
           14% {
+
             opacity: 1;
+
             transform: translate(0, 0);
+
           }
 
           28%,
+
           72% {
+
             opacity: 1;
+
             transform: translate(0, 36px);
+
           }
 
           86%,
+
           100% {
+
             opacity: 1;
+
             transform: translate(0, 0);
+
           }
+
         }
+
       `;
+
       document.head.appendChild(style);
+
     };
 
     const showSalesFunnelOverlay = (message) => {
+
       ensureSalesFunnelOverlayStyles();
-      let overlay = document.querySelector('[data-sales-funnel-overlay]');
+
+      let overlay = document.querySelector("[data-sales-funnel-overlay]");
+
       if (!(overlay instanceof HTMLElement)) {
-        overlay = document.createElement('div');
-        overlay.className = 'aa-ai-overlay';
-        overlay.setAttribute('data-sales-funnel-overlay', '');
-        overlay.innerHTML = '<div class="aa-ai-dialog" role="status" aria-live="polite"><div class="aa-ai-dialog__eyebrow">AI source</div><p class="aa-ai-dialog__message" data-sales-funnel-message></p><svg class="aa-ai-spinner" viewBox="0 0 147.84 147.84" aria-hidden="true" focusable="false"><g class="aa-ai-spinner__core"><path d="M93.08,107.24c.66,5.88-3.94,10.88-9.69,10.88-3.62,0-6.77-1.98-8.45-4.91-.44-.77-1.58-.77-2.02,0-1.68,2.93-4.84,4.91-8.45,4.91-5.75,0-10.36-5-9.69-10.88.5-4.46,4.1-8.06,8.56-8.57,4.08-.46,7.72,1.6,9.58,4.83.45.79,1.58.79,2.04,0,1.86-3.22,5.51-5.29,9.58-4.83,4.46.51,8.06,4.11,8.56,8.57Z"/><path d="M64.46,61.35c3.62,0,6.77-1.98,8.45-4.91.44-.77,1.58-.77,2.02,0,1.68,2.93,4.84,4.91,8.45,4.91,5.75,0,10.36-5,9.69-10.88-.5-4.46-4.1-8.06-8.56-8.57-4.07-.46-7.72,1.6-9.58,4.83-.45.79-1.58.79-2.04,0-1.86-3.22-5.51-5.29-9.58-4.83-4.46.51-8.06,4.11-8.56,8.57-.66,5.88,3.94,10.88,9.69,10.88Z"/><path d="M50.4,81c-.79-.45-.79-1.58,0-2.04,3.22-1.86,5.29-5.51,4.83-9.58-.51-4.46-4.11-8.06-8.57-8.56-5.88-.66-10.88,3.94-10.88,9.69,0,3.62,1.98,6.77,4.91,8.45.77.44.77,1.58,0,2.02-2.93,1.68-4.91,4.84-4.91,8.45,0,5.75,5,10.36,10.88,9.69,4.46-.5,8.06-4.1,8.57-8.56.46-4.08-1.6-7.72-4.83-9.58Z"/><path d="M107.18,81c-.79-.45-.79-1.58,0-2.04,3.22-1.86,5.29-5.51,4.83-9.58-.51-4.46-4.11-8.06-8.57-8.56-5.88-.66-10.88,3.94-10.88,9.69,0,3.62,1.98,6.77,4.91,8.45.77.44.77,1.58,0,2.02-2.93,1.68-4.91,4.84-4.91,8.45,0,5.75,5,10.36,10.88,9.69,4.46-.5,8.06-4.1,8.57-8.56.46-4.08-1.6-7.72-4.83-9.58Z"/></g><g class="aa-ai-spinner__dot-orbit"><circle class="aa-ai-spinner__dot" cx="45.54" cy="32.67" r="9.76"/></g></svg></div>';
+
+        overlay = document.createElement("div");
+
+        overlay.className = "aa-ai-overlay";
+
+        overlay.setAttribute("data-sales-funnel-overlay", "");
+
+        overlay.innerHTML =
+
+          '<div class="aa-ai-dialog" role="status" aria-live="polite"><div class="aa-ai-dialog__eyebrow">AI source</div><p class="aa-ai-dialog__message" data-sales-funnel-message></p><svg class="aa-ai-spinner" viewBox="0 0 147.84 147.84" aria-hidden="true" focusable="false"><g class="aa-ai-spinner__core"><path d="M93.08,107.24c.66,5.88-3.94,10.88-9.69,10.88-3.62,0-6.77-1.98-8.45-4.91-.44-.77-1.58-.77-2.02,0-1.68,2.93-4.84,4.91-8.45,4.91-5.75,0-10.36-5-9.69-10.88.5-4.46,4.1-8.06,8.56-8.57,4.08-.46,7.72,1.6,9.58,4.83.45.79,1.58.79,2.04,0,1.86-3.22,5.51-5.29,9.58-4.83,4.46.51,8.06,4.11,8.56,8.57Z"/><path d="M64.46,61.35c3.62,0,6.77-1.98,8.45-4.91.44-.77,1.58-.77,2.02,0,1.68,2.93,4.84,4.91,8.45,4.91,5.75,0,10.36-5,9.69-10.88-.5-4.46-4.1-8.06-8.56-8.57-4.07-.46-7.72,1.6-9.58,4.83-.45.79-1.58.79-2.04,0-1.86-3.22-5.51-5.29-9.58-4.83-4.46.51-8.06,4.11-8.56,8.57-.66,5.88,3.94,10.88,9.69,10.88Z"/><path d="M50.4,81c-.79-.45-.79-1.58,0-2.04,3.22-1.86,5.29-5.51,4.83-9.58-.51-4.46-4.11-8.06-8.57-8.56-5.88-.66-10.88,3.94-10.88,9.69,0,3.62,1.98,6.77,4.91,8.45.77.44.77,1.58,0,2.02-2.93,1.68-4.91,4.84-4.91,8.45,0,5.75,5,10.36,10.88,9.69,4.46-.5,8.06-4.1,8.57-8.56.46-4.08-1.6-7.72-4.83-9.58Z"/><path d="M107.18,81c-.79-.45-.79-1.58,0-2.04,3.22-1.86,5.29-5.51,4.83-9.58-.51-4.46-4.11-8.06-8.57-8.56-5.88-.66-10.88,3.94-10.88,9.69,0,3.62,1.98,6.77,4.91,8.45.77.44.77,1.58,0,2.02-2.93,1.68-4.91,4.84-4.91,8.45,0,5.75,5,10.36,10.88,9.69,4.46-.5,8.06-4.1,8.57-8.56.46-4.08-1.6-7.72-4.83-9.58Z"/></g><g class="aa-ai-spinner__dot-orbit"><circle class="aa-ai-spinner__dot" cx="45.54" cy="32.67" r="9.76"/></g></svg></div>';
+
         document.body.appendChild(overlay);
+
       }
 
-      const messageNode = overlay.querySelector('[data-sales-funnel-message]');
+      const messageNode = overlay.querySelector("[data-sales-funnel-message]");
+
       if (messageNode) messageNode.textContent = message;
+
       requestAnimationFrame(() => {
-        overlay.classList.add('is-visible');
+
+        overlay.classList.add("is-visible");
+
       });
+
       return overlay;
+
     };
 
     const setSalesFunnelOverlayMessage = (overlay, message) => {
-      const messageNode = overlay.querySelector('[data-sales-funnel-message]');
+
+      const messageNode = overlay.querySelector("[data-sales-funnel-message]");
+
       if (messageNode) messageNode.textContent = message;
+
     };
 
     const navigateWithOverlay = (overlay, url) => {
-      overlay.classList.add('is-visible');
+
+      overlay.classList.add("is-visible");
+
       window.setTimeout(() => {
+
         window.location.href = url;
+
       }, 120);
+
     };
 
-    document.addEventListener('click', async (event) => {
-      const target = event.target instanceof Element
-        ? event.target.closest('[data-sales-funnel-assistant]')
-        : null;
+    document.addEventListener("click", async (event) => {
+
+      const target =
+
+        event.target instanceof Element
+
+          ? event.target.closest("[data-sales-funnel-assistant]")
+
+          : null;
 
       if (!(target instanceof HTMLAnchorElement)) return;
-      if (target.getAttribute('aria-busy') === 'true') return;
+
+      if (target.getAttribute("aria-busy") === "true") return;
 
       event.preventDefault();
+
       const fallbackUrl = target.href;
-      const overlay = showSalesFunnelOverlay('Preparing the AI-readable source...');
-      target.setAttribute('aria-busy', 'true');
+
+      const overlay = showSalesFunnelOverlay(
+
+        "Preparing the AI-readable source...",
+
+      );
+
+      target.setAttribute("aria-busy", "true");
 
       try {
-        const response = await fetch('/api/sales-funnel/page-build', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'same-origin',
-          body: JSON.stringify({
-            assistant: target.dataset.salesFunnelAssistant || 'unknown',
-            sourceUrl: window.location.href,
-          }),
-        });
-        const payload = await response.json();
-        const outboundUrl = response.ok && payload && typeof payload.assistant_url === 'string'
-          ? payload.assistant_url
-          : fallbackUrl;
 
-        setSalesFunnelOverlayMessage(overlay, 'Opening your assistant...');
+        const response = await fetch("/api/sales-funnel/page-build", {
+
+          method: "POST",
+
+          headers: { "Content-Type": "application/json" },
+
+          credentials: "same-origin",
+
+          body: JSON.stringify({
+
+            assistant: target.dataset.salesFunnelAssistant || "unknown",
+
+            sourceUrl: window.location.href,
+
+          }),
+
+        });
+
+        const payload = await response.json();
+
+        const outboundUrl =
+
+          response.ok && payload && typeof payload.assistant_url === "string"
+
+            ? payload.assistant_url
+
+            : fallbackUrl;
+
+        setSalesFunnelOverlayMessage(overlay, "Opening your assistant...");
+
         navigateWithOverlay(overlay, outboundUrl);
+
       } catch {
-        setSalesFunnelOverlayMessage(overlay, 'Opening your assistant...');
+
+        setSalesFunnelOverlayMessage(overlay, "Opening your assistant...");
+
         navigateWithOverlay(overlay, fallbackUrl);
+
       }
+
     });
+
   </script>
+
 </BaseLayout>
