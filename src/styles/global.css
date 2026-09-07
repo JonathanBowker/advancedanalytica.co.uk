@@ -122,8 +122,10 @@
   input[type="button"],
   input[type="reset"],
   input[type="submit"],
+  a[role="button"],
   a[class*="cta"],
   a[class*="button"],
+  a[class~="inline-flex"][class*="rounded"],
   .button {
     text-transform: uppercase;
   }
