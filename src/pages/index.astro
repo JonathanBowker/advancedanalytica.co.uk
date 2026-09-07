@@ -52,14 +52,14 @@ const solvedProblems = [
       "Anyone can now ask a plain question and get a clear, reliable answer, wherever they are.",
   },
   {
-    context: "Rural estate services",
-    title: "One knowledge graph, instant answers across the estate",
+    context: "Rural estates and property management",
+    title: "Building regulations, always audit ready",
     challenge:
-      "Contacts and records sat in disconnected systems, so answering a simple question meant several manual lookups.",
+      "A large estate managed building regulations, safety certificates and compliance deadlines across many properties on scattered spreadsheets.",
     solution:
-      "We built a master knowledge graph interconnecting every data point across the estate.",
+      "We built a monitoring system that tracks obligations and evidence continuously, checking compliance automatically as conditions change.",
     outcome:
-      "Questions that once took multiple lookups are now answered instantly from a single query.",
+      "The estate is always audit ready, with nothing missed and no last-minute scramble before an inspection.",
   },
   {
     context: "Financial services and ESG",
@@ -78,7 +78,8 @@ const solvedProblems = [
       "A major studio needed every AI-generated image checked against strict brand rules before it reached production.",
     solution:
       "We designed a verification pipeline that tests thousands of generated assets against defined business and brand rules.",
-    outcome: "Non-compliant assets are caught before production, not after release.",
+    outcome:
+      "Non-compliant assets are caught before production, not after release.",
   },
   {
     context: "Creative and marketing production",
@@ -287,10 +288,10 @@ const pathways = [
             Agentic needs
           </h2>
           <p class="mt-6 text-lg leading-relaxed text-steel md:text-xl">
-            We use our proven IBOM<sup>®</sup> methodology to identify and prioritise where
-            Agentic AI can create the greatest business value. Then define the
-            required agents and skills, and evaluate their ability to meet your
-            operational needs.
+            We use our proven IBOM<sup>®</sup> methodology to identify and prioritise
+            where Agentic AI can create the greatest business value. Then define the
+            required agents and skills, and evaluate their ability to meet your operational
+            needs.
           </p>
         </div>
 
@@ -439,13 +440,26 @@ const pathways = [
       </div>
       <div class="mt-12 grid gap-6 md:grid-cols-2">
         {
-          solvedProblems.map((item) => (
-            <article class="rounded-2xl border border-ink/10 bg-[#eef2f5] p-7 shadow-outline">
-              <div class="eyebrow text-[#14B8A6]">{item.context}</div>
-              <h3 class="mt-4 text-2xl font-semibold tracking-tight text-ink">
-                {item.title}
-              </h3>
-              <dl class="mt-5 space-y-4 text-base leading-relaxed text-steel">
+          solvedProblems.map((item, index) => (
+            <details
+              class="group rounded-2xl border border-ink/10 bg-[#eef2f5] p-7 shadow-outline transition-colors open:border-[#14B8A6]/45"
+              open={index === 0}
+            >
+              <summary class="flex cursor-pointer list-none items-start justify-between gap-5 [&::-webkit-details-marker]:hidden">
+                <span>
+                  <span class="eyebrow block text-[#14B8A6]">{item.context}</span>
+                  <span class="mt-4 block text-2xl font-semibold tracking-tight text-ink">
+                    {item.title}
+                  </span>
+                </span>
+                <span
+                  class="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-ink/10 bg-paper text-xl leading-none text-ink transition-transform duration-200 group-open:rotate-45"
+                  aria-hidden="true"
+                >
+                  +
+                </span>
+              </summary>
+              <dl class="mt-6 space-y-4 border-t border-ink/10 pt-5 text-base leading-relaxed text-steel">
                 <div>
                   <dt class="eyebrow text-ink/60">Challenge</dt>
                   <dd class="mt-1">{item.challenge}</dd>
@@ -459,7 +473,7 @@ const pathways = [
                   <dd class="mt-1">{item.outcome}</dd>
                 </div>
               </dl>
-            </article>
+            </details>
           ))
         }
       </div>
