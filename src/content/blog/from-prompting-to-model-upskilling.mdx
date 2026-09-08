@@ -1,0 +1,70 @@
+---
+title: "From Prompting to Model Upskilling"
+description: The next operating discipline is teaching smaller models to carry repeatable reasoning inside governed agentic systems.
+publishedAt: 2026-09-02
+author: Jonny Bowker
+tags: [AI Agents, Model Upskilling, Specification]
+series: Teaching Smaller Models
+draft: false
+---
+
+# From Prompting to Model Upskilling
+
+Prompting was the first mass behaviour of the AI era.
+
+It made AI accessible. People could ask, revise, challenge, and iterate without learning a new system. That mattered. It created the bridge from curiosity to adoption.
+
+But prompting is not the final operating model for business AI.
+
+The next discipline is model upskilling: teaching smaller, cheaper models to carry defined reasoning inside governed agentic systems.
+
+## Why prompting reaches a ceiling
+
+Prompting depends heavily on the person doing the prompting. Two people can ask for the same thing and get materially different outputs. One person can return to the same workflow a week later and have to rebuild the context from memory.
+
+That is manageable for personal productivity. It is weak for operations.
+
+A business needs AI capability that is repeatable, transferable, auditable, and improvable. That means the knowledge has to move out of individual prompts and into durable assets.
+
+Those assets include:
+
+- specifications
+- examples
+- adapters
+- evaluation sets
+- rules
+- workflows
+- escalation paths
+- logs and feedback loops
+
+This is how a business teaches its systems.
+
+## The upskilling loop
+
+The practical loop is straightforward.
+
+First, the business defines the work and the standard. Then a highly capable model helps reason through the task, generate examples, identify edge cases, and expose the hidden judgement that usually sits in expert heads.
+
+Next, that reasoning is converted into specifications, training data, tests, and adapters. A smaller model is then trained or tuned for the defined task. The system is wrapped in deterministic code so the model only handles the part of the workflow it should handle.
+
+Finally, the live system is monitored. Errors become better examples. Exceptions become new rules. Drift becomes a signal to update the specification.
+
+The smaller model keeps improving because the operating system around it keeps teaching.
+
+## What this means for agentic AI
+
+Agentic systems raise the stakes because they can take action. A prompt is not enough when the system can use tools, move data, trigger workflows, or make recommendations that affect real decisions.
+
+Upskilled smaller models make sense when the task is specific, the boundary is clear, and the output can be verified. They let businesses reserve frontier models for the places where frontier reasoning is genuinely needed.
+
+That is the grown-up version of AI adoption: not bigger models everywhere, but taught models in the right places.
+
+## The operating principle
+
+Use the strongest model to teach. Use the smallest reliable model to operate. Use code to govern. Use humans where judgement, accountability, or risk requires them.
+
+That is the route from prompting to production.
+
+## Further context
+
+This post supports [Jonny Bowker's work on upskilling AI](/company/jonny-bowker/) and the wider [spec-driven AI methodology](/resources/from-nasa-to-ai-agents/).

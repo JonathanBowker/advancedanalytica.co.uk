@@ -1,0 +1,64 @@
+---
+title: "Large Models as Teachers, Smaller Models as Operators"
+description: Frontier models are often best used briefly and deliberately, so smaller models can carry routine work at lower cost.
+publishedAt: 2026-09-07
+author: Jonny Bowker
+tags: [AI Agents, Model Upskilling, Operations]
+series: Teaching Smaller Models
+draft: false
+---
+
+# Large Models as Teachers, Smaller Models as Operators
+
+The highest-value use of a frontier model is not always direct execution.
+
+Sometimes the better use is teaching.
+
+A large model can explore a domain, reason through difficult examples, surface hidden assumptions, draft specifications, identify failure modes, and generate labelled examples. That work is valuable because it converts fuzzy human intent into structured operating knowledge.
+
+But once the pattern is understood, the business should ask a sharper question:
+
+> Does this task still need the expensive model?
+
+Often, the answer is no.
+
+## Teaching once, operating many times
+
+Many business tasks are not frontier reasoning problems every time they run. They are repeatable judgement problems. The difficult work is defining the judgement pattern, not executing it indefinitely.
+
+Examples include:
+
+- classifying incoming requests
+- checking documents against policy
+- applying brand rules to content
+- summarising routine case notes
+- extracting structured fields from reports
+- deciding whether a workflow needs human review
+
+A frontier model can help teach the pattern. It can work through examples, explain its reasoning, and help create tests that expose weak spots. Once that knowledge is captured, a smaller model can often operate the task inside a controlled system.
+
+## Why this changes the cost model
+
+If the largest model is used for every interaction, cost scales directly with volume. The more successful the AI programme becomes, the more expensive it becomes to run.
+
+Model upskilling changes that curve.
+
+The expensive model is used in the construction phase. The cheaper model does more of the operational work. The business invests in teaching, specification, adapter training, evaluation, and deterministic code so that routine execution does not depend on the frontier model forever.
+
+This is closer to how organisations already treat senior expertise. Senior people are not asked to repeat the same decision endlessly. They define the method, train others, create standards, and handle exceptions.
+
+The frontier model plays the same role.
+
+## The governance benefit
+
+Using smaller models as operators also improves control. A smaller model working on a narrow task can be easier to test, monitor, constrain, and evaluate than a broad general-purpose model being asked to handle everything.
+
+The aim is not blind autonomy. It is delegated competence.
+
+The teacher model helps create the knowledge. The smaller model applies it. Deterministic code governs the workflow. Human experts handle exceptions and improve the specification.
+
+That is a stronger operating model than sending every task to the largest model and hoping the prompt holds.
+
+## Further context
+
+This post supports [Jonny Bowker's work on upskilling AI](/company/jonny-bowker/) and the wider [spec-driven AI methodology](/resources/from-nasa-to-ai-agents/).

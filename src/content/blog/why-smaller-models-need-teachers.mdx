@@ -1,0 +1,58 @@
+---
+title: "Why Smaller Models Need Teachers"
+description: Smaller models do not need to know everything. They need to be taught the task, the business, and the boundary conditions.
+publishedAt: 2026-09-08
+author: Jonny Bowker
+tags: [AI Agents, Model Upskilling, Adapters]
+series: Teaching Smaller Models
+draft: false
+---
+
+# Why Smaller Models Need Teachers
+
+The mistake most organisations make with smaller language models is treating them as smaller versions of frontier models.
+
+They are not.
+
+A smaller model should not be expected to carry the full burden of general intelligence. That is the expensive model's job. The smaller model becomes valuable when it is taught to perform a defined class of work inside a defined business context.
+
+That distinction is the heart of Jonny's thinking on model upskilling.
+
+The aim is not to make a small model generally brilliant. The aim is to make it specifically useful.
+
+## The teacher model
+
+A highly capable model can be used as a temporary teacher. It works through the task step by step, exposes the reasoning, identifies edge cases, explains decision criteria, and generates training examples that show how good work is produced.
+
+That teaching phase is deliberate and limited. The expensive model is not called forever. It is used to extract and structure the reasoning that the smaller system needs.
+
+The value is then transferred into assets the business can keep using:
+
+- specifications
+- examples
+- tests
+- scoring rubrics
+- adapter training data
+- deterministic workflow code
+
+Once that knowledge exists outside the frontier model, the business can start moving repeatable work to cheaper, smaller, more controllable systems.
+
+## Smaller models are operational instruments
+
+The smaller model should sit inside a designed operating environment. It should not be left alone to guess.
+
+For defined tasks, the surrounding system matters as much as the model. Deterministic code can handle routing, validation, formatting, permissions, audit logs, retrieval, and escalation. The model can focus on the parts of the task that require language understanding, judgement, classification, summarisation, or structured reasoning.
+
+That is how a smaller model punches above its weight. It is not asked to be everything. It is given a job, a teacher, a specification, and a set of rails.
+
+## The commercial point
+
+The commercial argument is simple. If every routine task has to call the newest and most expensive model, AI operating costs rise with adoption. If the business can teach smaller models to perform repeatable work reliably, cost falls as capability matures.
+
+The intellectual property also changes location. It no longer sits only in prompts or vendor model behaviour. It starts to live in the business's own specifications, adapters, tests, and operational workflows.
+
+That is the point: smaller models do not replace frontier models. They absorb the repeatable reasoning that frontier models help uncover.
+
+## Further context
+
+This post supports [Jonny Bowker's work on upskilling AI](/company/jonny-bowker/) and the wider [spec-driven AI methodology](/resources/from-nasa-to-ai-agents/).

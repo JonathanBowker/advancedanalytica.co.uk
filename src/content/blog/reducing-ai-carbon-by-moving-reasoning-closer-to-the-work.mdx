@@ -1,0 +1,61 @@
+---
+title: "Reducing AI Carbon by Moving Reasoning Closer to the Work"
+description: Smaller adapted models can reduce unnecessary inference overhead when they are used for well-specified, repeatable tasks.
+publishedAt: 2026-09-03
+author: Jonny Bowker
+tags: [AI Agents, Sustainability, Model Upskilling]
+series: Teaching Smaller Models
+draft: false
+---
+
+# Reducing AI Carbon by Moving Reasoning Closer to the Work
+
+The environmental cost of AI is increasingly an inference problem.
+
+Training large models attracts attention because the numbers are big and the infrastructure is visible. But once AI is widely adopted, repeated inference becomes the everyday footprint: every request, every document, every workflow step, every agent action.
+
+If routine work keeps calling the largest available model, the carbon impact grows with usage.
+
+Model upskilling offers a more efficient pattern.
+
+## Do not spend frontier compute on routine work
+
+Some tasks genuinely need frontier reasoning. Many do not.
+
+When a business has a repeatable workflow, the expensive reasoning should happen during design, teaching, evaluation, and exception review. The operational task can then move to a smaller adapted model, supported by code, retrieval, and rules.
+
+That does not make carbon disappear. It makes compute more intentional.
+
+The question becomes:
+
+> What is the smallest reliable system that can perform this task under governance?
+
+That is a better design principle than always reaching for the largest model.
+
+## Efficiency is an operating discipline
+
+Carbon reduction is not only about model size. It depends on hardware, routing, batching, context length, location, energy mix, and how often the system has to retry.
+
+But smaller adapted models create options. They can be cheaper to run, easier to deploy near the workflow, and more appropriate for high-volume tasks where the reasoning pattern is already known.
+
+The strongest systems will not use one model for everything. They will use the right level of intelligence at the right point in the workflow.
+
+## Teaching improves sustainability
+
+A taught system wastes less effort.
+
+If the specification is clear, the model needs fewer corrective loops. If examples are strong, the adapter can learn a narrower pattern. If deterministic code handles routing and validation, the model generates fewer invalid outputs. If uncertainty is escalated cleanly, the system avoids repeated attempts to force an answer from the wrong model.
+
+That all matters. Every unnecessary retry is cost. Every unnecessary frontier call is energy. Every poorly specified workflow creates waste.
+
+## The strategic point
+
+AI sustainability will not be solved only by more efficient chips or cleaner data centres. Those are important, but businesses also need better AI operating design.
+
+Jonny's model upskilling approach is practical because it joins capability, cost, and carbon in one discipline: use large models briefly and deliberately to teach smaller systems, then let those smaller systems perform defined work inside governed workflows.
+
+That is how AI becomes not only more useful, but more proportionate.
+
+## Further context
+
+This post supports [Jonny Bowker's work on upskilling AI](/company/jonny-bowker/) and the wider [spec-driven AI methodology](/resources/from-nasa-to-ai-agents/).
