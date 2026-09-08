@@ -12,34 +12,20 @@ type NavItem = {
 const nav: NavItem[] = [
   { label: 'Home', href: '/' },
   {
-    label: 'Products',
-    href: '/brando/',
+    label: 'Case Studies',
+    href: '/case-studies',
     children: [
-      { label: 'Brando', href: '/brando/', group: 'Product', registered: 'brando' },
-      { label: 'Content Atomiser', href: '/atomiser/', group: 'Product' },
-      { label: 'How It Works', href: '/how-it-works/', group: 'Product' },
-      { label: 'For Leaders', href: '/for-leaders/', group: 'Product' },
-      { label: 'AI Knowledge Packs', href: '/services/ai-ready-knowledge-packs/', group: 'Framework' },
-      { label: 'IBOM Framework', href: '/ibom/', group: 'Framework', registered: 'ibom-framework' },
-      { label: 'The IBOM Way', href: '/ibom-way/', group: 'Framework', registered: 'ibom-way' },
-      { label: 'AI Drift Audit', href: '/brand-ai-drift-audit/', group: 'Framework' },
-      { label: 'Book a Conversation', href: '/company/contact/', group: 'Explore' },
-    ]
-  },
-  {
-    label: 'Use Cases',
-    href: '/use-cases',
-    children: [
-      { label: 'Brand & Marketing', href: '/functions/brand-marketing/', group: 'By Function' },
-      { label: 'Legal, Risk & Compliance', href: '/functions/legal-risk-compliance/', group: 'By Function' },
-      { label: 'Product & Engineering', href: '/functions/product-engineering/', group: 'By Function' },
-      { label: 'Leadership', href: '/functions/leadership/', group: 'By Function' },
-      { label: 'Sales, Operations & Service', href: '/functions/sales-operations-service/', group: 'By Function' },
-      { label: 'AI brand governance', href: '/use-cases/tag/Governance/', group: 'Common Problems' },
-      { label: 'Approval bottlenecks', href: '/use-cases/tag/Approvals/', group: 'Common Problems' },
-      { label: 'Policy control', href: '/use-cases/tag/Policy/', group: 'Common Problems' },
-      { label: 'MCP and agent guardrails', href: '/use-cases/tag/MCP/', group: 'Common Problems' },
-      { label: 'View all use cases', href: '/use-cases/', group: 'Explore' },
+      { label: 'Brand Governance', href: '/case-studies/#brand-governance', group: 'Categories' },
+      { label: 'Risk and Compliance', href: '/case-studies/#risk-and-compliance', group: 'Categories' },
+      {
+        label: 'Emissions and Natural Capital',
+        href: '/case-studies/#emissions-and-natural-capital',
+        group: 'Categories'
+      },
+      { label: 'Estates and Land', href: '/case-studies/#estates-and-land', group: 'More Categories' },
+      { label: 'Creative and Production', href: '/case-studies/#creative-and-production', group: 'More Categories' },
+      { label: 'Health and Care', href: '/case-studies/#health-and-care', group: 'More Categories' },
+      { label: 'View all case studies', href: '/case-studies/', group: 'Explore' },
     ]
   },
   {
@@ -62,7 +48,7 @@ const nav: NavItem[] = [
   { label: 'About', href: '/company/about' }
 ];
 ---
- <header data-site-header class="fixed top-0 z-50 w-full border-b border-[#e7e0d4] bg-[#fbfaf6]/96 text-ink backdrop-blur transition-colors duration-300">
+ <header data-site-header class="fixed top-0 z-50 w-full border-b border-[#d8dee3] bg-[#eef2f5]/96 text-ink backdrop-blur transition-colors duration-300">
   <div class="container-nav flex items-center justify-between py-4 md:py-4.5">
     <a href="/" data-header-logo-link class="flex items-center gap-3 text-ink justify-self-start transition-colors">
       <img
@@ -166,29 +152,22 @@ const nav: NavItem[] = [
                 <div
                   class:list={[
                     "absolute left-1/2 top-full z-50 mt-2 -translate-x-1/2 translate-y-2 scale-[0.98] opacity-0 pointer-events-none transition-all duration-200 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:scale-100 group-focus-within:opacity-100 group-focus-within:pointer-events-auto",
-                    item.label === 'Products' || item.label === 'Use Cases' || item.label === 'Opinions' ? "w-[560px]" : "w-[320px]",
+                    item.label === 'Case Studies' || item.label === 'Opinions' ? "w-[560px]" : "w-[320px]",
                   ]}
                 >
                   <div class="rounded-xl border border-[#e7e0d4] bg-white p-3 shadow-outline">
-                    {item.label === 'Products' || item.label === 'Use Cases' || item.label === 'Opinions' ? (
+                    {item.label === 'Case Studies' || item.label === 'Opinions' ? (
                       <div class="grid gap-3 md:grid-cols-[1fr_1fr]">
-                        {item.label === 'Products' ? (
-                          <div class="md:col-span-2 px-4 pb-1 pt-2 text-sm leading-relaxed text-ink/62">
-                            Atomise your brand, build a knowledge pack, test the value, then build and deploy your agent.
-                          </div>
-                        ) : null}
-                        {(item.label === 'Products'
-                          ? ['Product', 'Framework']
-                          : item.label === 'Use Cases'
-                            ? ['By Function', 'Common Problems']
-                            : ['By Series', 'Key Topics']
+                        {(item.label === 'Case Studies'
+                          ? ['Categories', 'More Categories']
+                          : ['By Series', 'Key Topics']
                         ).map((group) => (
                           <div>
                             <div class="px-4 pb-2 pt-2 text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[#14B8A6]">
                               {group}
                             </div>
                             <div class="grid">
-                              {item.children
+                              {item.children!
                                 .filter((child) => child.group === group)
                                 .map((child) => (
                                   <a
@@ -208,7 +187,7 @@ const nav: NavItem[] = [
                           </div>
                         ))}
                         <div class="md:col-span-2">
-                          {item.children
+                          {item.children!
                             .filter((child) => child.group === 'Explore')
                             .map((child) => (
                               <a
@@ -373,11 +352,6 @@ const nav: NavItem[] = [
           </a>
           {item.children && (
             <div class="-mt-1 grid gap-1 border-l border-[#d7efe9] pl-4">
-              {item.label === 'Products' ? (
-                <p class="px-3 py-2 text-sm leading-relaxed text-ink/58">
-                  Atomise your brand, build a knowledge pack, test the value, then build and deploy your agent.
-                </p>
-              ) : null}
               {item.children.map((child) => (
                 <a
                   href={child.href}

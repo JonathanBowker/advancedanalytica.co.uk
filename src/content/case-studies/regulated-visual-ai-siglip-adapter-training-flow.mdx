@@ -1,0 +1,39 @@
+---
+title: "Regulated Industries: Training Brand-Specific Visual AI Adapters"
+description: Building auditable SigLIP-2 adapter training flows for client-specific visual governance requirements.
+publishedAt: 2026-09-08
+author: Advanced Analytica
+tags: [Regulated Industries, Visual AI, Governance]
+industry: Regulated Industries
+outcomes:
+  - Client-specific visual compliance adapters
+  - Audit trail from source asset to trained weight
+  - Reduced reliance on general-purpose vision models at inference time
+draft: false
+---
+# Regulated visual AI needs client-specific governance models
+
+This case study shows how regulated organisations can train client-specific visual AI adapters using auditable SigLIP-2 workflows and governed asset libraries. Generic vision models can identify broad visual patterns, but they usually cannot apply an organisation's own brand, compliance, representation, and rejection criteria with enough specificity. By structuring approved and rejected assets into a repeatable training flow, the organisation can create specialist adapters, preserve an audit trail from source asset to model output, and reduce reliance on uncontrolled inference-time judgement.
+
+## Challenge
+- Generic vision models could not apply client-specific brand and governance standards reliably.
+- Regulated industries needed visual compliance checks trained on approved and rejected assets.
+- Training workflows had to be auditable, repeatable, and bounded by the client's own governance rules.
+- The organisation needed deployable adapters rather than uncontrolled reliance on a general-purpose model.
+
+## Approach
+- Built an agent flow that ingests approved and rejected asset libraries.
+- Ran structured annotation against a defined visual taxonomy.
+- Generated synthetic augmentation within the boundaries of the client's brand and compliance rules.
+- Produced a fine-tuned SigLIP-2 LoRA adapter scoped to the client's governance requirements.
+- Created an audit trail from source asset through annotation, augmentation, training, and trained weight.
+
+## Outcome
+- Each client receives a brand-specific visual compliance adapter.
+- The adapter can be deployed locally for governed inference.
+- The training process remains auditable from source material to model output.
+- Regulated teams reduce dependence on general-purpose vision models for routine compliance decisions.
+
+## Real-world example
+
+Regulated clients needed visual compliance models trained on their own standards. We built an agent flow that annotates assets, generates bounded augmentation, and trains a SigLIP-2 adapter with a full audit trail.

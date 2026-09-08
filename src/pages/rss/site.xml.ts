@@ -14,7 +14,7 @@ type SiteFeedItem = {
 export async function GET() {
   const [opinions, useCases, resources] = await Promise.all([
     getCollection('blog', ({ data }) => !data.draft),
-    getCollection('use-cases', ({ data }) => !data.draft),
+    getCollection('case-studies', ({ data }) => !data.draft),
     getCollection('resources', ({ data }) => !data.draft)
   ]);
 
@@ -34,7 +34,7 @@ export async function GET() {
     ...useCases.map((post) => ({
       title: post.data.title,
       description: post.data.description,
-      url: `${SITE_URL}/use-cases/${encodeURIComponent(post.slug)}/`,
+      url: `${SITE_URL}/case-studies/${encodeURIComponent(post.slug)}/`,
       publishedAt: post.data.publishedAt
     })),
     ...resources.map((item) => ({

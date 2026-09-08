@@ -1,0 +1,39 @@
+---
+title: "Visual Brand Governance: Retagging Stock Imagery for Adapter Training"
+description: Classifying large image libraries across visual properties needed for compliance model training.
+publishedAt: 2026-09-08
+author: Advanced Analytica
+tags: [Visual Governance, Training Data, Brand]
+industry: Brand Governance
+outcomes:
+  - Consistently tagged image dataset
+  - Visual taxonomy applied at scale
+  - Cleaner training data for compliance adapters
+draft: false
+---
+# Visual compliance models need structured training data
+
+This case study shows how large stock imagery libraries can be retagged into structured training data for visual governance and adapter development. Existing image libraries often contain useful source material but lack consistent labels for the properties a compliance model needs to learn, such as gaze, skin tone, composition, background type, usage suitability, and montage logic. By applying a governed taxonomy at scale, the organisation can create cleaner datasets and improve the reliability of downstream visual compliance models.
+
+## Challenge
+- Existing image libraries were untagged or inconsistently labelled.
+- Manual annotation could not scale to the volume of assets.
+- The compliance pipeline needed structured data across visual properties such as gaze, skin tone, composition, and montage suitability.
+- Training adapters required a cleaner dataset than the source library provided.
+
+## Approach
+- Defined a visual taxonomy covering gaze direction, skin tone representation, composition structure, background type, and montage suitability.
+- Built an agent that ingests stock image libraries and classifies each asset against the taxonomy.
+- Wrote structured metadata back against each image for downstream training use.
+- Added quality checks for low-confidence classifications and inconsistent labels.
+- Prepared the dataset for adapter training in a repeatable, auditable way.
+
+## Outcome
+- A clean, consistently tagged dataset feeds the adapter training pipeline.
+- Manual annotation bottlenecks are reduced.
+- Compliance models learn from visual properties that match the actual governance problem.
+- The organisation gains reusable metadata for search, audit, and future model development.
+
+## Real-world example
+
+A brand compliance pipeline needed structured visual training data. We built an agent that retags stock imagery across gaze, skin tone, composition, background, and montage suitability for adapter training.

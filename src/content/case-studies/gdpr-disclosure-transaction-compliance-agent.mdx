@@ -1,0 +1,39 @@
+---
+title: "Data Governance: Serving GDPR Compliance Decisions at Transaction Time"
+description: Structuring disclosure documents into a governed knowledge base and returning compliance decisions through an API.
+publishedAt: 2026-09-08
+author: Advanced Analytica
+tags: [Data Governance, GDPR, Compliance]
+industry: Data Processing
+outcomes:
+  - Transaction-time compliance decisions
+  - Disclosure obligations made queryable
+  - Auditable gate before processing proceeds
+draft: false
+---
+# GDPR checks need to operate inside the workflow
+
+This case study shows how GDPR disclosure obligations can be turned into transaction-time decisioning for data processing workflows. The problem is that compliance documents often contain the necessary rules, but they are not structured for live operational checks when a data event is about to proceed. By converting disclosure content into a governed knowledge base and exposing it through an API, the processor can return an auditable decision inside the workflow, reducing manual delay while preserving traceability to the governing obligation.
+
+## Challenge
+- GDPR disclosure documents existed as unstructured text.
+- Live data handling workflows needed fast compliance checks.
+- Manual review was too slow to gate transaction-time processing.
+- The processor needed a governed decision returned through an API before an operation could proceed.
+
+## Approach
+- Structured disclosure documents into a governed knowledge base.
+- Mapped processing events to the disclosure obligations that apply to them.
+- Built an agent that accepts transaction context, identifies the relevant obligations, and returns a compliance decision through an API.
+- Added audit data showing which disclosure logic was applied.
+- Designed the response so live systems can gate, proceed, or escalate the transaction.
+
+## Outcome
+- Data processing events are checked automatically before completion.
+- Compliance decisions are returned quickly enough to operate inside live workflows.
+- The organisation gains an auditable record of obligations applied to each event.
+- Unstructured disclosure text becomes operational compliance logic.
+
+## Real-world example
+
+A data processor needed GDPR checks embedded in live data handling. We structured its disclosure documents and built an agent that returns a governed compliance decision by API before the transaction completes.

@@ -3,7 +3,6 @@ export const prerender = true;
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
-import FunctionRoutingPrompt from '../../components/FunctionRoutingPrompt.astro';
 import components from '../../lib/mdx/components';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { SITE_URL } from '../../lib/seo/site';
@@ -166,11 +165,35 @@ const page = {
     </div>
   </section>
 
-  <FunctionRoutingPrompt
-    eyebrow="Next step"
-    title="What is your function?"
-    description="If this article is relevant, the next step is to route you to the function-specific hub that matches your role in the business."
-  />
+  <section class="bg-paper text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">
+        Start The Conversation
+      </div>
+      <div class="grid items-start gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+        <div>
+          <h2 class="text-5xl font-extrabold tracking-tight text-ink">
+            Turn this perspective into a practical agentic AI plan.
+          </h2>
+        </div>
+        <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
+          <p>
+            This opinion sets out a practical issue for organisations putting AI into real workflows. The useful next
+            step is to locate where that issue appears in your business, define the rules and judgement agents need to
+            apply, and decide what should be tested before the work moves into production.
+          </p>
+          <p class="mt-6">
+            We turn that into a clear path from strategic intent to governed agentic AI that can operate reliably.
+          </p>
+          <div class="mt-8">
+            <a href="/company/contact/" class="home-hero__button">
+              TALK TO US
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section class="container-wide pt-8 pb-6">
     <div class="rounded-2xl border border-fog bg-surface p-6 md:p-7">

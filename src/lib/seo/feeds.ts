@@ -1,4 +1,4 @@
-import { iBOM, ORGANIZATION, SITE_NAME, SITE_URL } from './site';
+import { iBOM, JONNY_BOWKER, ORGANIZATION, SITE_NAME, SITE_URL } from './site';
 
 type FeedItem = {
   url: string;
@@ -33,6 +33,7 @@ export const buildDataFeed = ({ feedUrl, name, description, items }: DataFeedOpt
   });
 
   const organisationId = `${SITE_URL}#organisation`;
+  const personId = `${JONNY_BOWKER.url}#person`;
   const websiteId = `${SITE_URL}#website`;
   const serviceId = `${iBOM.url}#service`;
   const feedId = `${feedUrl}#datafeed`;
@@ -47,9 +48,29 @@ export const buildDataFeed = ({ feedUrl, name, description, items }: DataFeedOpt
       '@type': 'Organization',
       '@id': organisationId,
       name: ORGANIZATION.name,
+      legalName: ORGANIZATION.legalName,
       url: ORGANIZATION.url,
       description: ORGANIZATION.description,
-      knowsAbout: [serviceId]
+      logo: {
+        '@type': 'ImageObject',
+        url: ORGANIZATION.logo
+      },
+      sameAs: ORGANIZATION.sameAs,
+      founder: { '@id': personId },
+      knowsAbout: [...ORGANIZATION.knowsAbout, { '@id': serviceId }]
+    },
+    {
+      '@type': 'Person',
+      '@id': personId,
+      name: JONNY_BOWKER.name,
+      alternateName: JONNY_BOWKER.alternateName,
+      url: JONNY_BOWKER.url,
+      sameAs: JONNY_BOWKER.sameAs,
+      jobTitle: JONNY_BOWKER.jobTitle,
+      description: JONNY_BOWKER.description,
+      worksFor: { '@id': organisationId },
+      founderOf: { '@id': organisationId },
+      knowsAbout: JONNY_BOWKER.knowsAbout
     },
     {
       '@type': 'WebSite',
@@ -76,16 +97,11 @@ export const buildDataFeed = ({ feedUrl, name, description, items }: DataFeedOpt
           url: item.url,
           name: item.title,
           description: item.description,
-          author: item.author
-            ? {
-                '@type': 'Organization',
-                name: item.author,
-                url: ORGANIZATION.url
-              }
-            : undefined,
+          author: item.author ? (item.author === JONNY_BOWKER.name ? { '@id': personId } : { '@id': organisationId }) : undefined,
           keywords: item.tags?.join(', '),
           image: item.coverImage ? { '@type': 'ImageObject', url: item.coverImage } : undefined,
-          about: [{ '@id': serviceId }]
+          about: [{ '@id': serviceId }, { '@id': organisationId }],
+          mentions: [{ '@id': personId }]
         }
       }))
     }

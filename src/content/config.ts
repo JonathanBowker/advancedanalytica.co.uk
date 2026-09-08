@@ -69,7 +69,7 @@ const products = defineCollection({
   })
 });
 
-const useCases = defineCollection({
+const caseStudies = defineCollection({
   type: 'content',
   schema: z.object({
     title: plainTitle(),
@@ -137,7 +137,7 @@ export const collections = {
   resources,
   portalContent,
   products,
-  'use-cases': useCases,
+  'case-studies': caseStudies,
   roles,
   personas
 };

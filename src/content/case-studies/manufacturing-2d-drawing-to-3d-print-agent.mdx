@@ -1,0 +1,39 @@
+---
+title: "Manufacturing: Turning 2D Drawings into Validated 3D Print Files"
+description: Building an agent that converts 2D drawings into dimensionally checked, print-ready 3D models.
+publishedAt: 2026-09-08
+author: Advanced Analytica
+tags: [Manufacturing, Product Design, Automation]
+industry: Manufacturing
+outcomes:
+  - Faster conversion from drawing to model
+  - Dimension and tolerance validation
+  - Print-ready export without manual modelling bottlenecks
+draft: false
+---
+# Engineering workflows need validation before automation is useful
+
+This case study shows how early-stage engineering drawings can be transformed into validated, print-ready 3D outputs through an agentic production workflow. The work addresses the bottleneck between design intent and physical prototype, where manual modelling can be slow and errors in dimensions, tolerances, or geometry may only appear late. By extracting drawing constraints, generating a 3D model, and validating the result before export, the agent helps teams move faster while keeping technical checks inside the production process.
+
+## Challenge
+- A scale-up needed CAD drawings turned into printable 3D models.
+- Manual modelling created a bottleneck between design intent and physical prototype.
+- Drawings had to be checked against required dimensions and tolerances before printing.
+- The business needed automation that could catch modelling errors before export.
+
+## Approach
+- Defined the inputs required from 2D drawings, including dimensions, constraints, and tolerances.
+- Built an agent that interprets the draft, constructs a parametric 3D model, and validates it against the required geometry.
+- Added checks for printability, wall thickness, tolerances, and missing dimensions.
+- Routed incomplete or ambiguous drawings into a clarification workflow.
+- Exported validated models in a format ready for 3D printing.
+
+## Outcome
+- A drawing can move to a print-ready model with less manual modelling work.
+- Dimensional issues are caught before production.
+- Prototype cycles become faster and more repeatable.
+- Engineering teams retain control through validation and exception review.
+
+## Real-world example
+
+A manufacturing scale-up needed 2D drafts turned into printable 3D models without a manual bottleneck. We built an agent that validates dimensions, builds the model, and checks printability before export.

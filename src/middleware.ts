@@ -8,8 +8,8 @@ const authPages = ['/login'];
 const legacyRedirects: Record<string, string> = {
   '/activate': '/brando/',
   '/activate/': '/brando/',
-  '/agronomy': '/use-cases/agriculture-regulatory-knowledge/',
-  '/agronomy/': '/use-cases/agriculture-regulatory-knowledge/',
+  '/agronomy': '/case-studies/agriculture-regulatory-knowledge/',
+  '/agronomy/': '/case-studies/agriculture-regulatory-knowledge/',
   '/brand-sematics-analysis': '/brand-ai-drift-audit/',
   '/brand-sematics-analysis/': '/brand-ai-drift-audit/',
   '/dots-brand-operator-animation': '/brando/',

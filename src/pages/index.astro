@@ -20,88 +20,9 @@ const page = {
   breadcrumbs: [{ name: "Home", url: `${SITE_URL}/` }],
 };
 
-const solvedProblems = [
-  {
-    context: "Global professional services",
-    title: "An agent that governs brand language across every market",
-    challenge:
-      "A global firm's brand wording was interpreted differently market by market, with no way to check content against the rules at scale.",
-    solution:
-      "We structured the brand rules into a queryable knowledge base, then built an agent that reads submitted content, checks it clause by clause against the rules, and returns an approval or a flagged correction with reasoning attached.",
-    outcome:
-      "Every piece of content, in any language, passes through the same automated judgement before it goes live.",
-  },
-  {
-    context: "Global travel and destination",
-    title: "An agent that approves content against brand rules",
-    challenge:
-      "An enterprise needed every piece of content checked against brand and legal rules before publication, at a volume no manual team could sustain.",
-    solution:
-      "We converted the brand guidelines and legal properties into structured rules, then built an agent that ingests each submission, runs it through a sequence of compliance checks, and issues a governed pass or fail decision.",
-    outcome:
-      "Content is approved or rejected automatically, with a clear audit trail behind every decision.",
-  },
-  {
-    context: "Agronomy and rural consultancy",
-    title: "An agent that applies regulation, not just recalls it",
-    challenge:
-      "A dense regulation was locked in documents that practitioners struggled to apply correctly to their own situation.",
-    solution:
-      "We structured the regulation into a governed knowledge base, then built an agent that takes a user's specific circumstances, works through the relevant clauses, and returns a reasoned determination rather than a generic answer.",
-    outcome:
-      "Users get a specific, defensible answer to their actual situation, not a document to interpret themselves.",
-  },
-  {
-    context: "Rural estates and property management",
-    title: "An agent that keeps compliance permanently ready",
-    challenge:
-      "A large estate tracked building regulations and safety certificates across many properties on scattered spreadsheets, with deadlines routinely discovered too late.",
-    solution:
-      "We built an agent that continuously checks live obligations against current evidence, flags anything falling out of compliance, and prepares the documentation an inspector would need before it's asked for.",
-    outcome:
-      "The estate moves from reacting to inspections to a system that catches problems before they become one.",
-  },
-  {
-    context: "Financial services and ESG",
-    title: "An agent that resolves emissions liabilities end to end",
-    challenge:
-      "An investment institution could not see its cloud and AI emissions liabilities across its portfolio, let alone act on them.",
-    solution:
-      "We built an agent that calculates emissions exposure per holding, decides the offset action required, and executes the transfer of a collateralised value unit to a nature credit provider to settle it.",
-    outcome:
-      "Emissions liabilities are identified and settled through one continuous process, not a manual reconciliation exercise.",
-  },
-  {
-    context: "Entertainment and intellectual property",
-    title: "An agent that polices brand compliance at asset scale",
-    challenge:
-      "A major studio needed thousands of AI-generated images checked against strict brand rules before any reached production.",
-    solution:
-      "We built an agent that inspects each generated asset, tests it against defined business and brand rules, and returns an accept or reject decision with the specific rule breached.",
-    outcome:
-      "Non-compliant assets are caught and named automatically, before a human ever needs to look at them.",
-  },
-  {
-    context: "Creative and marketing production",
-    title: "An agent that runs the infinite zoom production pipeline",
-    challenge:
-      "A creative team needed a repeatable way to produce infinite zoom video without rebuilding the process by hand each time.",
-    solution:
-      "We built an agent that takes a structured creative brief, sequences the image generation steps, checks each frame for consistency, and assembles the final output.",
-    outcome:
-      "A creative brief goes in, a finished, consistent video comes out, without manual frame-by-frame supervision.",
-  },
-  {
-    context: "Manufacturing and scale-up",
-    title: "An agent that turns a 2D drawing into a validated 3D print file",
-    challenge:
-      "A scale-up needed CAD drawings turned into printable 3D models without a manual modelling bottleneck.",
-    solution:
-      "We built an agent that takes a 2D draft, validates it against required dimensions and tolerances, builds the parametric 3D model, and checks the result is printable before export.",
-    outcome:
-      "A drawing goes in, a print-ready, dimensionally verified model comes out, with no manual modelling step in between.",
-  },
-] as const;
+const latestCaseStudies = (
+  await getCollection("case-studies", ({ data }) => !data.draft)
+).sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
 
 const pathways = [
   {
@@ -402,68 +323,33 @@ const pathways = [
 
   <section class="bg-paper text-ink">
     <div class="container-wide py-20">
-      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Selected Work</div>
-      <div class="home-split-grid">
-        <div>
-          <h2 class="text-5xl font-extrabold tracking-tight text-ink">
-            Problems solved, not logos displayed.
-          </h2>
-        </div>
-        <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
-          <p>
-            Some of the strongest proof sits behind confidentiality. So we do
-            not build credibility around a logo strip. We explain the operating
-            problems the work has solved.
-          </p>
-          <p class="mt-6">
-            The pattern is consistent: make judgement explicit, turn policy and
-            knowledge into usable structure, and give agentic AI systems rules
-            and controls that can be tested before they act.
-          </p>
-        </div>
-      </div>
-      <div class="mt-12 grid gap-6 md:grid-cols-2">
+      <div class="eyebrow mb-6 text-center text-[#14B8A6]">Case Studies</div>
+      <h2 class="text-center text-5xl font-extrabold tracking-tight text-ink">
+        Problems solved, not logos displayed.
+      </h2>
+      <p
+        class="mx-auto mt-5 max-w-[76ch] text-center text-lg leading-relaxed text-steel md:text-xl"
+      >
+        We work with challenger businesses and Fortune 500 brands to advise on,
+        design, and engineer agentic AI solutions for complex operating
+        environments. Much of that work sits behind confidentiality, so we focus
+        on the operating problems solved.
+      </p>
+      <div class="mt-12 grid gap-8 lg:grid-cols-3">
         {
-          solvedProblems.map((item, index) => (
-            <details
-              class="group rounded-2xl border border-ink/10 bg-[#eef2f5] p-7 shadow-outline transition-colors open:border-[#14B8A6]/45"
-              open={index === 0}
-            >
-              <summary class="flex cursor-pointer list-none items-start justify-between gap-5 [&::-webkit-details-marker]:hidden">
-                <span>
-                  <span class="eyebrow block text-[#14B8A6]">
-                    {item.context}
-                  </span>
-                  <span class="mt-4 block text-2xl font-semibold tracking-tight text-ink">
-                    {item.title}
-                  </span>
-                </span>
-                <span
-                  class="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-ink/10 bg-paper text-xl leading-none text-ink transition-transform duration-200 group-open:rotate-45"
-                  aria-hidden="true"
-                >
-                  +
-                </span>
-              </summary>
-              <dl class="mt-6 space-y-4 border-t border-ink/10 pt-5 text-base leading-relaxed text-steel">
-                <div>
-                  <dt class="eyebrow text-ink/60">Challenge</dt>
-                  <dd class="mt-1">{item.challenge}</dd>
-                </div>
-                <div>
-                  <dt class="eyebrow text-ink/60">Solution</dt>
-                  <dd class="mt-1">{item.solution}</dd>
-                </div>
-                <div>
-                  <dt class="eyebrow text-ink/60">Outcome</dt>
-                  <dd class="mt-1">{item.outcome}</dd>
-                </div>
-              </dl>
-            </details>
-          ))
+          latestCaseStudies
+            .slice(0, 3)
+            .map((caseStudy) => (
+              <PostCard
+                post={caseStudy}
+                basePath="/case-studies"
+                showTags={false}
+              />
+            ))
         }
       </div>
-      <div class="mt-12 flex justify-center">
+      <div class="mt-12 flex flex-wrap items-center justify-center gap-4">
+        <a href="/case-studies/" class="home-outline-cta">CASE STUDIES</a>
         <a href="/company/contact/" class="home-hero__button">TALK TO US</a>
       </div>
     </div>
@@ -486,7 +372,7 @@ const pathways = [
       </div>
       <div class="mt-12 flex flex-wrap items-center justify-center gap-4">
         <a href="/opinions/" class="home-outline-cta">MORE THINKING</a>
-        <a href="/company/contact/" class="home-outline-cta">TALK TO US</a>
+        <a href="/company/contact/" class="home-hero__button">TALK TO US</a>
       </div>
     </div>
   </section>

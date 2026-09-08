@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { SITE_URL } from "../lib/seo/site";
-import { businessFunctions } from "../lib/businessFunctions";
 import { personaPositioningCards } from "../lib/brandoContent";
 
 const title = "Brando for Leaders";
@@ -39,7 +38,7 @@ const page = {
             already touching your brand and which leader owns the risk.
           </p>
           <div class="mt-8">
-            <a href="/company/contact/" class="aa-primary-cta">Talk to Us</a>
+            <a href="/company/contact/" class="home-hero__button">TALK TO US</a>
           </div>
         </div>
       </div>
@@ -71,8 +70,8 @@ const page = {
                     <p>
                       {card.body}
                     </p>
-                    <a href="/company/contact/" class="leader-carousel__cta">
-                      Talk to Us
+                    <a href="/company/contact/" class="home-hero__button">
+                      TALK TO US
                     </a>
                   </div>
                 </div>
@@ -108,41 +107,6 @@ const page = {
     </div>
   </section>
 
-  <section class="bg-paper text-ink">
-    <div class="container-wide py-20">
-      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Business Entry Points</div>
-      <h2 class="mx-auto max-w-4xl text-center text-5xl font-extrabold tracking-tight text-ink">
-        Start with brand. Extend into the business.
-      </h2>
-      <div class="mt-12 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-        {businessFunctions.map((role) => (
-          <div class="rounded-2xl border border-ink/10 bg-fog p-8 shadow-outline">
-            <div class="eyebrow text-[#14B8A6]">
-              {role.eyebrow}
-            </div>
-            <h3 class="mt-4 text-2xl font-semibold tracking-tight text-ink">
-              {role.heading}
-            </h3>
-            <p class="mt-4 text-base leading-relaxed text-steel">
-              {role.homeBody}
-            </p>
-            <div class="mt-8">
-              <a
-                href={`/functions/${role.slug}/`}
-                class="inline-flex items-center justify-center rounded-md border border-[#14B8A6] px-5 py-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#14B8A6] transition-colors hover:bg-[#0F766E] hover:text-paper"
-              >
-                Explore this area
-              </a>
-            </div>
-          </div>
-        ))}
-      </div>
-      <div class="mt-12 flex items-center justify-center">
-        <a href="/company/contact/" class="aa-primary-cta">Talk to Us</a>
-      </div>
-    </div>
-  </section>
-
   <section class="bg-[#eef2f5] text-ink">
     <div class="container-wide py-20">
       <div class="eyebrow mb-10 text-center text-[#14B8A6]">Leadership Decision</div>
@@ -164,7 +128,7 @@ const page = {
             workflows.
           </p>
           <div class="mt-8">
-            <a href="/company/contact/" class="aa-primary-cta">Book a Conversation</a>
+            <a href="/company/contact/" class="home-hero__button">TALK TO US</a>
           </div>
         </div>
       </div>

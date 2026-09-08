@@ -5,7 +5,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import components from "../../lib/mdx/components";
 import { getCollection } from "astro:content";
 import { SITE_URL } from "../../lib/seo/site";
-import { businessFunctions, getRolePath } from "../../lib/businessFunctions";
+import { businessFunctions } from "../../lib/businessFunctions";
 
 export async function getStaticPaths() {
   const personas = await getCollection("personas", ({ data }) => !data.draft);
@@ -58,24 +58,6 @@ const page = {
       {persona.data.organisationContext}
     </p>
 
-    <div class="mt-8 flex flex-wrap gap-4">
-      {entry ? (
-        <a
-          href={getRolePath(entry.slug, persona.data.roleTitle)}
-          class="inline-flex items-center justify-center gap-2 rounded-md bg-[#14B8A6] px-5 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-paper transition-colors hover:bg-[#0F766E]"
-        >
-          View role page
-        </a>
-      ) : null}
-      {entry ? (
-        <a
-          href={`/functions/${entry.slug}/`}
-          class="inline-flex items-center justify-center gap-2 rounded-md border border-[#14B8A6] px-5 py-3 text-sm font-semibold tracking-[0.14em] uppercase text-[#14B8A6] transition-colors hover:bg-[#0F766E] hover:text-paper"
-        >
-          View function page
-        </a>
-      ) : null}
-    </div>
   </section>
 
   <section class="container-wide pb-20">

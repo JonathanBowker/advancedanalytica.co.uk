@@ -218,7 +218,7 @@ const isConfigured = /^G-[A-Z0-9]+$/i.test(measurementId);
               return;
             }
 
-            if (linkPath.startsWith("/use-cases/")) {
+            if (linkPath.startsWith("/case-studies/")) {
               sendEvent("use_case_click", {
                 content_title: linkText,
                 link_url: linkPath,

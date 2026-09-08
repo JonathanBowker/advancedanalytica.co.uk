@@ -1,0 +1,39 @@
+---
+title: "Language Governance: Retagging Brand Copy for Adapter Training"
+description: Classifying content libraries across tone, terminology, and language compliance properties for local adapter training.
+publishedAt: 2026-09-08
+author: Advanced Analytica
+tags: [Language Governance, Training Data, Brand]
+industry: Brand Governance
+outcomes:
+  - Structured copy dataset for training
+  - Tone and terminology labels applied at scale
+  - Reduced reliance on large models for routine compliance decisions
+draft: false
+---
+# Language compliance needs labelled examples before it can scale
+
+This case study shows how a large library of brand copy can be converted into labelled training data for language governance and adapter development. The work starts from the practical problem that historical content contains useful examples, but rarely carries the structured labels needed for tone, terminology, sentence pattern, register, and compliance decisions. By turning existing copy into a governed dataset, the organisation can train smaller specialist models, reduce repeated review work, and make language compliance less dependent on broad general-purpose model judgement.
+
+## Challenge
+- Existing content libraries were too large to annotate manually.
+- Tone, terminology, sentence structure, banned language, and brand register were inconsistently labelled.
+- A language compliance pipeline needed training data that reflected the organisation's actual rules.
+- The business wanted routine compliance decisions to run locally where possible.
+
+## Approach
+- Defined a language taxonomy covering tone of voice, approved terminology, sentence structure, banned language, and brand register.
+- Built an agent that ingests copy libraries and classifies each asset against the taxonomy.
+- Wrote structured metadata back into the content dataset for training and audit.
+- Added confidence checks and review queues for ambiguous examples.
+- Prepared the labelled dataset for language adapter training.
+
+## Outcome
+- A clean, consistently tagged copy dataset feeds the training pipeline.
+- Trained adapters can handle routine compliance decisions locally.
+- Dependence on large language models at inference time is reduced.
+- The carbon and cost profile of repeated brand judgements improves at scale.
+
+## Real-world example
+
+A language compliance pipeline needed structured copy data. We built an agent that retags brand copy across tone, terminology, sentence structure, banned language, and register for adapter training.

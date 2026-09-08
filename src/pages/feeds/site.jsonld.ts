@@ -8,7 +8,7 @@ export const prerender = true;
 export async function GET() {
   const [opinions, useCases, resources] = await Promise.all([
     getCollection('blog', ({ data }) => !data.draft),
-    getCollection('use-cases', ({ data }) => !data.draft),
+    getCollection('case-studies', ({ data }) => !data.draft),
     getCollection('resources', ({ data }) => !data.draft)
   ]);
 
@@ -30,6 +30,14 @@ export async function GET() {
         'How Advanced Analytica helps businesses of all sizes turn knowledge, policy, and process into governed AI systems.',
       itemType: 'AboutPage',
       tags: ['About', 'Company']
+    },
+    {
+      url: `${SITE_URL}/company/jonny-bowker/`,
+      title: 'Jonny Bowker',
+      description:
+        'Jonny Bowker is the founder of Advanced Analytica, specialising in Intelligent Business Operating Models, spec-driven AI development, and governed agentic AI systems.',
+      itemType: 'ProfilePage',
+      tags: ['Jonny Bowker', 'Founder', 'Advanced Analytica', 'Agentic AI']
     },
     {
       url: `${SITE_URL}/company/contact/`,
@@ -64,12 +72,12 @@ export async function GET() {
       tags: ['Opinions']
     },
     {
-      url: `${SITE_URL}/use-cases/`,
-      title: 'Use Cases',
+      url: `${SITE_URL}/case-studies/`,
+      title: 'Case Studies',
       description:
-        'Use cases showing how organisations deploy IBOM to govern brand meaning, policy, and execution across AI systems.',
+        'Case studies showing how organisations deploy IBOM to govern brand meaning, policy, and execution across AI systems.',
       itemType: 'CollectionPage',
-      tags: ['Use Cases']
+      tags: ['Case Studies']
     },
     {
       url: `${SITE_URL}/resources/`,
@@ -85,7 +93,7 @@ export async function GET() {
     feedUrl,
     name: 'Advanced Analytica Site Feed',
     description:
-      'A master Schema.org DataFeed for Advanced Analytica covering key pages, opinions, use cases, and resources.',
+      'A master Schema.org DataFeed for Advanced Analytica covering key pages, opinions, case studies, and resources.',
     items: [
       ...staticPages,
       ...opinions
@@ -103,7 +111,7 @@ export async function GET() {
       ...useCases
         .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
         .map((post) => ({
-          url: `${SITE_URL}/use-cases/${encodeURIComponent(post.slug)}/`,
+          url: `${SITE_URL}/case-studies/${encodeURIComponent(post.slug)}/`,
           title: post.data.title,
           description: post.data.description,
           publishedAt: post.data.publishedAt,

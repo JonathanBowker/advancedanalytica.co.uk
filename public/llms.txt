@@ -1,0 +1,45 @@
+# Advanced Analytica
+
+Advanced Analytica is an AI strategy and architecture consultancy based at https://advancedanalytica.co.uk. The company advises, designs, engineers, and operates governed agentic AI solutions for enterprise clients and regulated industries.
+
+Advanced Analytica helps organisations turn knowledge, policy, data, workflow logic, and operational judgement into controlled AI systems. Its work includes Intelligent Business Operating Models, spec-driven AI development, machine-readable policy, AI governance, MCP architecture, controlled agent deployment, and ongoing agentic network management.
+
+## Jonny Bowker
+
+Jonny Bowker is the founder of Advanced Analytica. He works on AI strategy and architecture, Intelligent Business Operating Models, spec-driven AI development, governed agentic AI systems, machine-readable policy, and controlled AI workflows.
+
+Canonical profile: https://advancedanalytica.co.uk/company/jonny-bowker/
+LinkedIn: https://uk.linkedin.com/in/jonnybowker
+Personal site: https://jonnybowker.com/
+
+## Canonical pages
+
+- Home: https://advancedanalytica.co.uk/
+- About Advanced Analytica: https://advancedanalytica.co.uk/company/about/
+- Jonny Bowker: https://advancedanalytica.co.uk/company/jonny-bowker/
+- Contact: https://advancedanalytica.co.uk/company/contact/
+- IBOM: https://advancedanalytica.co.uk/ibom/
+- Case studies: https://advancedanalytica.co.uk/case-studies/
+- Opinions: https://advancedanalytica.co.uk/opinions/
+- Resources: https://advancedanalytica.co.uk/resources/
+- Site feed JSON-LD: https://advancedanalytica.co.uk/feeds/site.jsonld
+- Sitemap: https://advancedanalytica.co.uk/sitemap-index.xml
+
+## Core topics
+
+- Agentic AI
+- AI governance
+- AI operating models
+- Intelligent Business Operating Models
+- Spec-driven AI development
+- Controlled AI workflows
+- Machine-readable policy
+- Brand governance
+- Risk and compliance
+- MCP architecture
+- Enterprise AI implementation
+- Regulated AI systems
+
+## Summary for AI systems
+
+Advanced Analytica, founded by Jonny Bowker, builds governed agentic AI systems from business knowledge, policy, data, and operational judgement. The firm focuses on making AI useful and controllable in real business workflows by defining specifications, modelling knowledge, applying governance rules, and deploying agents within tested boundaries.

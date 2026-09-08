@@ -1,4 +1,4 @@
-import { BRANDO_SCHEMA_URL, DEFAULT_OG_IMAGE, iBOM, ORGANIZATION, SITE_NAME, SITE_URL, toAbsoluteUrl } from './site';
+import { BRANDO_SCHEMA_URL, DEFAULT_OG_IMAGE, iBOM, JONNY_BOWKER, ORGANIZATION, SITE_NAME, SITE_URL, toAbsoluteUrl } from './site';
 
 type Breadcrumb = {
   name: string;
@@ -23,6 +23,7 @@ type PageSchemaType =
   | 'AboutPage'
   | 'ContactPage'
   | 'CollectionPage'
+  | 'ProfilePage'
   | 'SearchResultsPage';
 
 type PageMeta = {
@@ -66,6 +67,7 @@ export const buildGraph = (page: PageMeta) => {
   });
 
   const organisationId = `${SITE_URL}#organisation`;
+  const personId = `${JONNY_BOWKER.url}#person`;
   const websiteId = `${SITE_URL}#website`;
   const serviceId = `${iBOM.url}#service`;
   const brandoId = `${BRANDO_SCHEMA_URL}#project`;
@@ -79,10 +81,31 @@ export const buildGraph = (page: PageMeta) => {
       '@type': 'Organization',
       '@id': organisationId,
       name: ORGANIZATION.name,
+      legalName: ORGANIZATION.legalName,
       url: ORGANIZATION.url,
       description: ORGANIZATION.description,
-      logo: ORGANIZATION.logo,
-      knowsAbout: [serviceId, brandoId]
+      logo: {
+        '@type': 'ImageObject',
+        url: ORGANIZATION.logo
+      },
+      sameAs: ORGANIZATION.sameAs,
+      founder: { '@id': personId },
+      employee: { '@id': personId },
+      knowsAbout: [...ORGANIZATION.knowsAbout, { '@id': serviceId }, { '@id': brandoId }]
+    },
+    {
+      '@type': 'Person',
+      '@id': personId,
+      name: JONNY_BOWKER.name,
+      alternateName: JONNY_BOWKER.alternateName,
+      url: JONNY_BOWKER.url,
+      sameAs: JONNY_BOWKER.sameAs,
+      jobTitle: JONNY_BOWKER.jobTitle,
+      description: JONNY_BOWKER.description,
+      worksFor: { '@id': organisationId },
+      founderOf: { '@id': organisationId },
+      affiliation: { '@id': organisationId },
+      knowsAbout: JONNY_BOWKER.knowsAbout
     },
     {
       '@type': 'WebSite',
@@ -108,13 +131,16 @@ export const buildGraph = (page: PageMeta) => {
         description: pageImageAlt
       },
       isPartOf: { '@id': websiteId },
-      about: [{ '@id': serviceId }],
+      about: [{ '@id': serviceId }, { '@id': organisationId }],
+      mentions: [{ '@id': personId }],
+      mainEntity: page.url === JONNY_BOWKER.url ? { '@id': personId } : undefined,
       breadcrumb: { '@id': `${page.url}#breadcrumb` }
     },
     {
       '@type': 'Service',
       '@id': serviceId,
       name: iBOM.name,
+      alternateName: iBOM.alternateName,
       description: iBOM.description,
       url: iBOM.url,
       provider: { '@id': organisationId },
@@ -148,11 +174,10 @@ export const buildGraph = (page: PageMeta) => {
       description: page.article.description,
       datePublished: page.article.publishedAt.toISOString(),
       dateModified: (page.article.modifiedAt ?? page.article.publishedAt).toISOString(),
-      author: {
-        '@type': 'Organization',
-        name: page.article.author ?? ORGANIZATION.name,
-        url: ORGANIZATION.url
-      },
+      author:
+        page.article.author === JONNY_BOWKER.name
+          ? { '@id': personId }
+          : { '@id': organisationId },
       publisher: { '@id': organisationId },
       image: {
         '@type': 'ImageObject',
@@ -162,7 +187,11 @@ export const buildGraph = (page: PageMeta) => {
       mainEntityOfPage: { '@id': pageId },
       keywords: page.article.tags?.join(', '),
       articleSection: page.article.section,
-      about: [{ '@id': serviceId }]
+      about: [{ '@id': serviceId }, { '@id': organisationId }],
+      mentions:
+        page.article.author === JONNY_BOWKER.name
+          ? [{ '@id': personId }, { '@id': organisationId }]
+          : [{ '@id': personId }]
     });
   }
 

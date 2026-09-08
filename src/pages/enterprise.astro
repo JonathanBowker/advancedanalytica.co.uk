@@ -6,7 +6,7 @@ import { SITE_URL } from '../lib/seo/site';
 const title = 'Enterprise';
 const description = 'Governance-ready brand systems for complex enterprises.';
 
-const useCases = (await getCollection('use-cases', ({ data }) => !data.draft)).filter(
+const useCases = (await getCollection('case-studies', ({ data }) => !data.draft)).filter(
   (entry) => Boolean(entry.data.industry || entry.data.outcomes?.length)
 );
 

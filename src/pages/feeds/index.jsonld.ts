@@ -14,13 +14,13 @@ export async function GET() {
       {
         url: `${SITE_URL}/feeds/site.jsonld`,
         title: 'Site Feed',
-        description: 'Master feed for key pages, opinions, use cases, and resources.',
+        description: 'Master feed for key pages, opinions, case studies, and resources.',
         itemType: 'DataFeed'
       },
       {
-        url: `${SITE_URL}/feeds/use-cases.jsonld`,
-        title: 'Use Cases Feed',
-        description: 'Latest use cases from Advanced Analytica.',
+        url: `${SITE_URL}/feeds/case-studies.jsonld`,
+        title: 'Case Studies Feed',
+        description: 'Latest case studies from Advanced Analytica.',
         itemType: 'DataFeed'
       },
       {

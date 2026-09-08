@@ -1,37 +1,344 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import RssLink from '../../components/RssLink.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
+import { getCollection } from 'astro:content';
 import { SITE_URL } from '../../lib/seo/site';
-const title = 'Use Cases';
-const description = 'This page has moved.';
-const targetPath = '/use-cases/';
-const targetUrl = `${SITE_URL}${targetPath}`;
+
+const title = 'Case Studies';
+const description = 'Real-world examples of Brando in action: policy, execution, and assurance.';
+
+const posts = (await getCollection('case-studies', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf()
+);
+
+const caseStudyCategories = [
+  {
+    title: 'Brand Governance',
+    slug: 'brand-governance',
+    slugs: [
+      'global-brand-language-governance-agent',
+      'global-travel-brand-content-approval-agent',
+      'entertainment-ai-asset-compliance-agent',
+      'brand-copy-language-adapter-training-data-agent',
+      'stock-imagery-visual-adapter-training-data-agent',
+      'regulated-visual-ai-siglip-adapter-training-flow'
+    ]
+  },
+  {
+    title: 'Risk and Compliance',
+    slug: 'risk-and-compliance',
+    slugs: [
+      'agronomy-regulation-application-agent',
+      'gdpr-disclosure-transaction-compliance-agent',
+      'fund-investor-continuous-risk-agent',
+      'business-integrity-risk-guidance'
+    ]
+  },
+  {
+    title: 'Emissions and Natural Capital',
+    slug: 'emissions-and-natural-capital',
+    slugs: ['financial-services-esg-emissions-settlement-agent', 'carbon-platform-name-domain-ip-clearance']
+  },
+  {
+    title: 'Estates and Land',
+    slug: 'estates-and-land',
+    slugs: ['rural-estate-compliance-readiness-agent', 'agriculture-regulatory-knowledge']
+  },
+  {
+    title: 'Creative and Production',
+    slug: 'creative-and-production',
+    slugs: [
+      'creative-infinite-zoom-production-agent',
+      'manufacturing-2d-drawing-to-3d-print-agent',
+      'stock-imagery-visual-adapter-training-data-agent'
+    ]
+  },
+  {
+    title: 'Health and Care',
+    slug: 'health-and-care',
+    slugs: ['healthcare-drug-information-lookup', 'dementia-voice-memory-companion-agent']
+  }
+];
+
+const categoryBySlug = new Map<string, { title: string; slug: string }[]>();
+caseStudyCategories.forEach((category) => {
+  category.slugs.forEach((slug) => {
+    const categories = categoryBySlug.get(slug) ?? [];
+    categories.push({ title: category.title, slug: category.slug });
+    categoryBySlug.set(slug, categories);
+  });
+});
+
+const allTags = Array.from(new Set(posts.flatMap((post) => post.data.tags ?? []))).sort((a, b) =>
+  a.localeCompare(b)
+);
+
+const INITIAL_COUNT = 6;
+const BATCH_SIZE = 6;
+
 const page = {
   title,
   description,
-  url: targetUrl,
+  url: `${SITE_URL}/case-studies/`,
+  schemaType: 'CollectionPage',
   breadcrumbs: [
     { name: 'Home', url: `${SITE_URL}/` },
-    { name: 'Use Cases', url: targetUrl }
+    { name: 'Case Studies', url: `${SITE_URL}/case-studies/` }
   ]
 };
 ---
 <BaseLayout title={title} description={description} page={page}>
-  <Fragment slot="head">
-    <meta http-equiv="refresh" content={`0; url=${targetPath}`} />
-  </Fragment>
-
   <section class="container-wide py-16">
-    <h1 class="text-3xl font-semibold tracking-tight text-ink">Redirecting…</h1>
-    <p class="mt-4 text-steel">
-      This page has moved to <a class="underline hover:text-ink" href={targetPath}>Use Cases</a>.
+    <div class="mx-auto max-w-[980px]">
+      <h1 class="text-[clamp(2.25rem,5vw,4rem)] font-semibold tracking-tight text-ink">
+        Case Studies
+      </h1>
+      <p class="mt-6 text-lg leading-relaxed text-steel md:text-xl">
+        Practical case studies showing how agentic AI has turned knowledge, policy, data, and operational judgement
+        into controlled workflows that support better decisions and more reliable execution.
+      </p>
+      <div class="mt-8 flex flex-col gap-5 sm:flex-row sm:flex-wrap sm:items-center">
+        <RssLink href="/rss/case-studies.xml" label="Case Studies RSS" />
+        <ShareButtons url={page.url} title={title} description={description} />
+      </div>
+    </div>
+  </section>
+
+  <section class="border-y border-ink/10 bg-paper py-6">
+    <div class="container-wide">
+      <div class="flex flex-col gap-3 rounded-xl border border-ink/10 bg-surface p-3 shadow-outline lg:flex-row lg:items-center">
+        <div class="min-w-0 flex-1">
+          <label for="case-studies-filter-search" class="sr-only">Search case studies</label>
+          <input
+            id="case-studies-filter-search"
+            data-listing-search
+            type="search"
+            placeholder="Search case studies"
+            class="w-full rounded-lg border border-[#e7e0d4] bg-white px-4 py-3 text-sm text-ink placeholder:text-ink/35 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30"
+          />
+        </div>
+        <div class="grid gap-3 sm:grid-cols-2 lg:w-[34rem]">
+          <div>
+            <label for="case-studies-category-filter" class="sr-only">Category</label>
+            <select
+              id="case-studies-category-filter"
+              data-category-select
+              class="w-full rounded-lg border border-[#e7e0d4] bg-white px-4 py-3 text-sm font-semibold text-ink focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30"
+            >
+              <option value="all">All categories</option>
+              {caseStudyCategories.map((category) => (
+                <option value={category.title} data-filter-slug={category.slug}>{category.title}</option>
+              ))}
+            </select>
+          </div>
+          <details data-tag-dropdown class="group relative">
+            <summary class="flex cursor-pointer list-none items-center justify-between rounded-lg border border-[#e7e0d4] bg-white px-4 py-3 text-sm font-semibold text-ink focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/30">
+              <span data-tag-summary>All tags</span>
+              <span aria-hidden="true" class="text-ink/45 transition-transform group-open:rotate-180">⌄</span>
+            </summary>
+            <div class="absolute right-0 z-30 mt-2 max-h-[22rem] w-full min-w-[18rem] overflow-auto rounded-xl border border-[#e7e0d4] bg-white p-3 shadow-outline">
+              <div class="mb-2 flex items-center justify-between gap-3 border-b border-fog pb-2">
+                <span class="text-xs font-semibold uppercase tracking-[0.16em] text-steel">Select tags</span>
+                <button type="button" data-clear-tags class="text-xs font-semibold uppercase tracking-[0.14em] text-[#0F766E] hover:text-ink">Clear</button>
+              </div>
+              <div class="grid gap-2">
+                {allTags.map((tag) => (
+                  <label class="flex cursor-pointer items-center gap-3 rounded-lg px-2 py-2 text-sm text-ink/78 transition-colors hover:bg-[#f5f1e8] hover:text-ink">
+                    <input
+                      type="checkbox"
+                      value={tag}
+                      data-tag-checkbox
+                      class="h-4 w-4 rounded border-[#d9ded8] text-[#14B8A6] focus:ring-[#14B8A6]"
+                    />
+                    <span>{tag}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-wide pb-20 pt-16">
+    <style is:inline>
+      .listing-card {
+        opacity: 0;
+        transform: translateY(14px);
+        transition: opacity 520ms ease, transform 520ms ease;
+        will-change: opacity, transform;
+      }
+      .listing-card.listing-card-in {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
+
+    <div id="case-studies-grid" class="grid gap-6 md:grid-cols-2 xl:grid-cols-3" data-listing-grid>
+      {posts.map((post, idx) => {
+        const categories = categoryBySlug.get(post.slug) ?? [];
+        return (
+          <div
+            data-listing-card={String(idx)}
+            data-title={post.data.title}
+            data-description={post.data.description}
+            data-tags={(post.data.tags ?? []).join('|')}
+            data-categories={categories.map((category) => category.title).join('|')}
+            class={`listing-card ${idx >= INITIAL_COUNT ? 'hidden' : 'listing-card-in'}`.trim()}
+          >
+            <PostCard post={post} basePath="/case-studies" showTags={false} />
+          </div>
+        );
+      })}
+    </div>
+
+    <p data-listing-empty class="hidden rounded-xl border border-fog bg-surface p-6 text-center text-sm text-steel">
+      No case studies match the current filters.
     </p>
+
+    <div class="mt-12 flex items-center justify-center">
+      <button
+        id="case-studies-load-more"
+        type="button"
+        class="rounded-md bg-[#14B8A6] px-12 py-4 text-sm font-semibold tracking-[0.18em] uppercase text-paper shadow-outline hover:bg-[#0F766E] transition-colors"
+        data-listing-load-more
+        data-initial-count={String(INITIAL_COUNT)}
+        data-batch-size={String(BATCH_SIZE)}
+        aria-controls="case-studies-grid"
+        aria-label="Load more case studies"
+        style={posts.length > INITIAL_COUNT ? '' : 'display:none;'}
+      >
+        LOAD MORE
+      </button>
+    </div>
   </section>
 
   <script is:inline>
     (() => {
-      const target = "/use-cases/";
-      if (typeof window !== "undefined") window.location.replace(target);
+      const grid = document.querySelector('[data-listing-grid]');
+      const search = document.querySelector('[data-listing-search]');
+      const categorySelect = document.querySelector('[data-category-select]');
+      const button = document.querySelector('[data-listing-load-more]');
+      const empty = document.querySelector('[data-listing-empty]');
+      const tagSummary = document.querySelector('[data-tag-summary]');
+      const tagCheckboxes = Array.from(document.querySelectorAll('[data-tag-checkbox]'));
+      const clearTags = document.querySelector('[data-clear-tags]');
+      if (!(grid instanceof HTMLElement)) return;
+      if (!(search instanceof HTMLInputElement)) return;
+      if (!(categorySelect instanceof HTMLSelectElement)) return;
+      if (!(button instanceof HTMLButtonElement)) return;
+
+      const cards = Array.from(grid.querySelectorAll('[data-listing-card]'));
+      const batchSize = Number(button.dataset.batchSize || '6');
+      const activeTags = new Set();
+      let activeCategory = categorySelect.value || 'all';
+      let visibleLimit = Number(button.dataset.initialCount || '6');
+
+      const normalize = (value) => value.toLowerCase().trim();
+      const splitValues = (value) => (value || '').split('|').filter(Boolean).map(normalize);
+      const textFor = (card) => normalize([
+        card.getAttribute('data-title'),
+        card.getAttribute('data-description'),
+        card.getAttribute('data-tags'),
+        card.getAttribute('data-categories')
+      ].filter(Boolean).join(' '));
+
+      const updateTagSummary = () => {
+        if (!(tagSummary instanceof HTMLElement)) return;
+        if (activeTags.size === 0) {
+          tagSummary.textContent = 'All tags';
+          return;
+        }
+        tagSummary.textContent = `${activeTags.size} tag${activeTags.size === 1 ? '' : 's'} selected`;
+      };
+
+      const matches = (card) => {
+        const query = normalize(search.value);
+        const tags = splitValues(card.getAttribute('data-tags'));
+        const categories = splitValues(card.getAttribute('data-categories'));
+        const categoryMatch = activeCategory === 'all' || categories.includes(normalize(activeCategory));
+        const tagMatch = activeTags.size === 0 || Array.from(activeTags).every((tag) => tags.includes(normalize(tag)));
+        const searchMatch = !query || textFor(card).includes(query);
+        return categoryMatch && tagMatch && searchMatch;
+      };
+
+      const render = () => {
+        const matchingCards = cards.filter(matches);
+        cards.forEach((card) => {
+          card.classList.add('hidden');
+          card.classList.remove('listing-card-in');
+        });
+        matchingCards.slice(0, visibleLimit).forEach((card, index) => {
+          card.classList.remove('hidden');
+          window.requestAnimationFrame(() => {
+            window.setTimeout(() => card.classList.add('listing-card-in'), index * 35);
+          });
+        });
+        button.style.display = matchingCards.length > visibleLimit ? '' : 'none';
+        if (empty instanceof HTMLElement) empty.classList.toggle('hidden', matchingCards.length > 0);
+        updateTagSummary();
+      };
+
+      categorySelect.addEventListener('change', () => {
+        activeCategory = categorySelect.value || 'all';
+        visibleLimit = Number(button.dataset.initialCount || '6');
+        const selectedOption = categorySelect.selectedOptions[0];
+        const nextHash = selectedOption?.dataset.filterSlug;
+        history.replaceState(null, '', nextHash ? `#${nextHash}` : window.location.pathname);
+        render();
+      });
+
+      tagCheckboxes.forEach((checkbox) => {
+        if (!(checkbox instanceof HTMLInputElement)) return;
+        checkbox.addEventListener('change', () => {
+          if (checkbox.checked) activeTags.add(checkbox.value);
+          else activeTags.delete(checkbox.value);
+          visibleLimit = Number(button.dataset.initialCount || '6');
+          render();
+        });
+      });
+
+      if (clearTags instanceof HTMLButtonElement) {
+        clearTags.addEventListener('click', () => {
+          tagCheckboxes.forEach((checkbox) => {
+            if (checkbox instanceof HTMLInputElement) checkbox.checked = false;
+          });
+          activeTags.clear();
+          visibleLimit = Number(button.dataset.initialCount || '6');
+          render();
+        });
+      }
+
+      const initialHash = window.location.hash.slice(1);
+      if (initialHash) {
+        const option = Array.from(categorySelect.options).find((candidate) => candidate.dataset.filterSlug === initialHash);
+        if (option) {
+          categorySelect.value = option.value;
+          activeCategory = option.value;
+        }
+      }
+
+      search.addEventListener('input', () => {
+        visibleLimit = Number(button.dataset.initialCount || '6');
+        render();
+      });
+
+      button.addEventListener('click', () => {
+        visibleLimit += Number.isFinite(batchSize) ? batchSize : 6;
+        render();
+      });
+
+      document.addEventListener('click', (event) => {
+        const dropdown = document.querySelector('[data-tag-dropdown]');
+        if (!(dropdown instanceof HTMLDetailsElement)) return;
+        if (dropdown.contains(event.target)) return;
+        dropdown.open = false;
+      });
+
+      render();
     })();
   </script>
 </BaseLayout>
-

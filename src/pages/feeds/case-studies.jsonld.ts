@@ -6,17 +6,17 @@ import { getGeneratedCoverPath } from '../../lib/contentCover';
 export const prerender = true;
 
 export async function GET() {
-  const posts = (await getCollection('use-cases', ({ data }) => !data.draft)).sort(
+  const posts = (await getCollection('case-studies', ({ data }) => !data.draft)).sort(
     (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf()
   );
 
   const feedUrl = `${SITE_URL}/feeds/case-studies.jsonld`;
   const payload = buildDataFeed({
     feedUrl,
-    name: 'Advanced Analytica Use Cases',
+    name: 'Advanced Analytica Case Studies',
     description: 'Real-world examples of IBOM in action: policy, execution, and assurance.',
     items: posts.map((post) => ({
-      url: `${SITE_URL}/use-cases/${encodeURIComponent(post.slug)}/`,
+      url: `${SITE_URL}/case-studies/${encodeURIComponent(post.slug)}/`,
       title: post.data.title,
       description: post.data.description,
       publishedAt: post.data.publishedAt,

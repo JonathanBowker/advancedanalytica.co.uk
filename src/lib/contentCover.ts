@@ -8,7 +8,7 @@ export const getCoverPathForBasePath = (
   slug: string,
   fallback?: string
 ) => {
-  if (basePath === '/use-cases') return getGeneratedCoverPath('use-case', slug);
+  if (basePath === '/case-studies') return getGeneratedCoverPath('use-case', slug);
   if (basePath === '/resources') return getGeneratedCoverPath('resource', slug);
   if (basePath === '/opinions' || basePath === '/blog' || !basePath) {
     return getGeneratedCoverPath('opinion', slug);

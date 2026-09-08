@@ -22,7 +22,7 @@ export default defineConfig({
     '/brand-oracle': '/brand-operator',
     '/dots-brand-oracle-animation': '/brando/',
     '/dots-brand-oracle-wordmark-animation': '/brando/',
-    '/use-cases/financial-services-brand-brain': '/use-cases/financial-services-brand-operator',
+    '/use-cases/financial-services-brand-brain': '/case-studies/financial-services-brand-operator',
     '/case-studies/financial-services-brand-brain': '/case-studies/financial-services-brand-operator',
   },
   vite: {
@@ -43,8 +43,8 @@ export default defineConfig({
 
         if (pathname.startsWith('/AGENTS/')) return false;
         if (pathname.startsWith('/blog/')) return false;
-        if (pathname.startsWith('/case-studies/')) return false;
         if (pathname.startsWith('/personas/')) return false;
+        if (pathname.startsWith('/use-cases/')) return false;
         if (pathname.includes('/roles/')) return false;
 
         if (

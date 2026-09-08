@@ -1,0 +1,39 @@
+---
+title: "Financial Data: Serving Live Mid-Rate Currency Data by API and Firehose"
+description: Building an agent that calculates reconciled mid-rates across crypto and fiat pairs in real time.
+publishedAt: 2026-09-08
+author: Advanced Analytica
+tags: [Financial Data, Trading, APIs]
+industry: Financial Infrastructure
+outcomes:
+  - Consistent mid-rate per currency pair
+  - Query API for on-demand access
+  - Live firehose stream for tick-level consumers
+draft: false
+---
+# Trading tools need consistent rates across fragmented markets
+
+This case study shows how live financial data can be reconciled into a dependable mid-rate service for downstream trading, pricing, and cost analysis tools. The challenge is that crypto and fiat rates come from fragmented markets, each with different latency, coverage, licensing, and quality characteristics. The agent collects and reconciles source feeds, calculates consistent pair-level mid-rates, and serves the result through both query APIs and live firehose streams so different consumers can work from one controlled rate layer.
+
+## Challenge
+- A trading cost analysis tool needed accurate mid-rates in real time.
+- No single source covered crypto and fiat pairs with the right latency and licensing profile.
+- Feed discrepancies created uncertainty for downstream calculations.
+- Some consumers needed on-demand queries while others needed a continuous live stream.
+
+## Approach
+- Built an agent that pulls live price feeds from multiple exchange and market sources.
+- Calculated the mid-rate per pair using a defined reconciliation method.
+- Checked discrepancies across feeds and flagged abnormal movement or source quality issues.
+- Wrote the reconciled rate to a continuously updated database.
+- Exposed the data through both a query API and a live firehose stream.
+
+## Outcome
+- Downstream systems receive one consistent mid-rate per pair.
+- API users can query current rates on demand.
+- Streaming consumers can consume every tick through the firehose.
+- Trading analysis becomes less dependent on inconsistent source-by-source interpretation.
+
+## Real-world example
+
+A trading cost analysis tool needed live mid-rates across crypto and fiat. We built an agent that reconciles multiple feeds, calculates the mid-rate per pair, and serves it through an API and firehose stream.

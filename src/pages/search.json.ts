@@ -105,15 +105,15 @@ export async function GET() {
         'quickstart IBOM integration development delivery workflows implementation guidance'
     },
     {
-      title: 'Use Cases',
+      title: 'Case Studies',
       description: 'Real-world examples of IBOM in action.',
-      url: '/use-cases',
+      url: '/case-studies',
       type: 'Page',
       snippet:
         'Examples of how governed knowledge systems support brand, risk, compliance, operations, and AI-assisted delivery in practice.'
       ,
       searchText:
-        'use cases examples governed knowledge systems brand risk compliance operations AI assisted delivery'
+        'case studies examples governed knowledge systems brand risk compliance operations AI assisted delivery'
     },
     {
       title: 'Opinions',
@@ -147,6 +147,16 @@ export async function GET() {
       ,
       searchText:
         'about Advanced Analytica governed AI systems approach organisations sectors'
+    },
+    {
+      title: 'Jonny Bowker',
+      description: 'Founder of Advanced Analytica.',
+      url: '/company/jonny-bowker',
+      type: 'Page',
+      snippet:
+        'Jonny Bowker is the founder of Advanced Analytica, an AI strategy and architecture consultancy specialising in Intelligent Business Operating Models, spec-driven AI development, and governed agentic AI systems.',
+      searchText:
+        'Jonny Bowker Jonathan Bowker founder Advanced Analytica AI strategy architecture consultancy Intelligent Business Operating Models IBOM spec-driven AI development governed agentic AI systems MCP architecture'
     },
     {
       title: 'Contact',
@@ -203,22 +213,22 @@ export async function GET() {
       type: 'Opinion',
       snippet: extractSnippet(rawBody),
       author: post.data.author,
-      searchText: buildSearchText(post.data.title, post.data.description, post.data.tags, rawBody)
+      searchText: buildSearchText(post.data.title, post.data.description, post.data.tags, post.data.author, rawBody)
     };
   });
 
-  const caseStudies = await getCollection('use-cases', ({ data }) => !data.draft);
+  const caseStudies = await getCollection('case-studies', ({ data }) => !data.draft);
   const studies = caseStudies.map((post) => {
     const rawBody = typeof post.body === 'string' ? post.body : '';
     return {
       title: post.data.title,
       description: post.data.description,
       tags: post.data.tags,
-      url: `/use-cases/${post.slug}`,
-      type: 'Use Case',
+      url: `/case-studies/${post.slug}`,
+      type: 'Case Study',
       snippet: extractSnippet(rawBody),
       author: post.data.author,
-      searchText: buildSearchText(post.data.title, post.data.description, post.data.tags, rawBody)
+      searchText: buildSearchText(post.data.title, post.data.description, post.data.tags, post.data.author, rawBody)
     };
   });
 
