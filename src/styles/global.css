@@ -261,7 +261,7 @@
     overflow-x: auto;
     border-collapse: separate;
     border-spacing: 0;
-    border: 1px solid rgba(10, 24, 40, 0.12);
+    border: 1px solid rgba(10, 24, 40, 0.22);
     border-radius: 0.5rem;
     background: #ffffff;
     box-shadow: var(--shadow-outline);
@@ -269,7 +269,7 @@
   }
 
   .prose thead {
-    background: #eef2f5;
+    background: var(--color-ink);
   }
 
   .prose th,
@@ -278,21 +278,26 @@
     padding: 0.9rem 1rem;
     text-align: left;
     vertical-align: top;
-    border-bottom: 1px solid rgba(10, 24, 40, 0.1);
+    border-bottom: 1px solid rgba(10, 24, 40, 0.16);
     line-height: 1.55;
   }
 
   .prose th + th,
   .prose td + td {
-    border-left: 1px solid rgba(10, 24, 40, 0.08);
+    border-left: 1px solid rgba(10, 24, 40, 0.14);
   }
 
   .prose th {
-    color: var(--color-ink);
+    color: #ffffff;
     font-size: 0.78rem;
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+
+  .prose th + th {
+    border-left-color: rgba(255, 255, 255, 0.18);
   }
 
   .prose td {
