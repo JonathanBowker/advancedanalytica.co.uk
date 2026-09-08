@@ -136,7 +136,7 @@ const page = {
           data-categories={post.data.series ?? ''}
           class={`listing-card ${idx >= INITIAL_COUNT ? 'hidden' : 'listing-card-in'}`.trim()}
         >
-          <PostCard post={post} showTags={false} />
+          <PostCard post={post} />
         </div>
       ))}
     </div>
