@@ -1,0 +1,69 @@
+---
+title: The Five Failure Modes of AI Briefing
+description: Ambiguity, incompleteness, staleness, cost, and distrust explain why many AI initiatives disappoint after the pilot.
+publishedAt: 2026-09-07
+author: Jonny Bowker
+tags: [AI Agents, Specification, Operating Model]
+series: From NASA to AI Agents
+draft: false
+---
+
+# The Five Failure Modes of AI Briefing
+
+Most AI failures do not begin inside the model. They begin in the brief.
+
+A team asks an AI system for analysis, content, code, reporting, research, or process support. The first output looks impressive. The second needs correction. The third exposes a missed assumption. By the time the work becomes important enough to govern, the team is spending more energy supervising the AI than it expected to save.
+
+The pattern is familiar because it predates AI. It is the same pattern that has always affected requirements documents, statements of work, creative briefs, research commissions, and strategy papers. The executor changes, but the briefing failures remain.
+
+There are five of them.
+
+## Ambiguity
+
+Natural language is flexible, which makes it powerful and dangerous. A phrase like "make this more strategic" or "write in a confident but approachable tone" can be interpreted several different ways. A human may ask follow-up questions. An AI agent may simply choose the most statistically likely interpretation and move forward.
+
+Every undefined term becomes an invisible decision. Invisible decisions become inconsistency.
+
+## Incompleteness
+
+Briefs usually describe the happy path. They explain the desired output, but often skip the edge cases: what to do when evidence is weak, when sources conflict, when compliance risk appears, when data is missing, or when the task crosses an authority boundary.
+
+Incompleteness is expensive because it is usually discovered during execution. By then, the team is revising outputs instead of improving the system that produced them.
+
+## Staleness
+
+Business context changes quickly. A specification, policy, campaign brief, or workflow map can be accurate when it is written and unreliable a few weeks later.
+
+When documents are not kept alive, teams stop trusting them. Once that happens, people work around the specification instead of through it. AI then inherits stale context or no context at all.
+
+## Cost
+
+Writing a proper specification takes time. That cost is visible at the start of a project, while the cost of ambiguity appears later as rework, review cycles, missed controls, or quietly inconsistent outputs.
+
+Many organisations therefore under-specify their AI work because the saving feels immediate. The bill arrives later.
+
+## Distrust
+
+When people see that outputs are inconsistent, they stop trusting the system. Once trust drops, every output needs more review. The AI becomes a draft generator rather than an operational capability.
+
+This is the quiet failure mode. The system still works in a narrow technical sense, but nobody wants to rely on it for serious decisions.
+
+## What fixes the pattern
+
+The answer is not longer prompts. It is specification discipline.
+
+A useful AI brief defines the task, the context, the constraints, the evidence standard, the success criteria, and the escalation points before execution begins. It makes intent testable. It gives the agent something to work from and gives the human something to verify against.
+
+The real goal is not a better one-off output. The goal is a better operating pattern:
+
+- specify before execution
+- validate before build
+- verify against the specification
+- improve the specification when outputs fail
+- reuse the specification once it works
+
+That is how a business moves from AI as a clever assistant to AI as governed operating capability.
+
+## Read the white paper
+
+This post is adapted from [From NASA to AI Agents: The Evolution of Spec-Driven Development](/resources/from-nasa-to-ai-agents/). You can also [download the PDF](/white-papers/from-nasa-to-ai-agents.pdf).

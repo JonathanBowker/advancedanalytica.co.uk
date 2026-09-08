@@ -1,0 +1,66 @@
+---
+title: Why Vibe Coding Does Not Scale
+description: Conversational prompting is excellent for exploration, but production AI needs specification, validation, and governance.
+publishedAt: 2026-09-04
+author: Jonny Bowker
+tags: [AI Agents, Specification, Governance]
+series: From NASA to AI Agents
+draft: false
+---
+
+# Why Vibe Coding Does Not Scale
+
+Vibe coding changed how people experienced AI.
+
+The appeal was obvious: describe what you want, let the model produce something, react to the result, ask for changes, and keep going. For simple scripts, quick prototypes, draft documents, and contained tasks, this style can be extraordinarily productive.
+
+It also helped millions of people understand that AI was not only a search tool or a chatbot. It could make things.
+
+But the same approach becomes fragile when the work has to move into production.
+
+## The problem is not the vibe
+
+Exploratory work should feel fluid. Early ideas need space. There is real value in using AI conversationally to find the shape of a problem before the formal work begins.
+
+The issue starts when exploratory behaviour is mistaken for an operating model.
+
+Production work needs memory, consistency, verification, accountability, and transferability. Vibe coding is weak on all five. It often leaves the important knowledge inside a chat history, spread across prompts, corrections, assumptions, and decisions that were never written into a governing artefact.
+
+That makes the work hard to hand over and hard to trust.
+
+## Where it breaks
+
+The common failure patterns are easy to recognise:
+
+- context has to be rebuilt every time work resumes
+- intent drifts as outputs are revised
+- review effort grows faster than expected
+- related workstreams produce inconsistent results
+- decisions made during the process are not captured
+- the next person starts from almost nothing
+
+None of this means conversational AI is useless. It means it is insufficient for governed work.
+
+## Production AI needs a specification
+
+Spec-driven methodology changes the centre of gravity. The goal is not to keep prompting until an output looks right. The goal is to define what right means before execution begins.
+
+That specification gives the agent a durable source of truth. It gives the team a basis for validation. It gives the organisation a way to improve the system when outputs fail.
+
+If a generated result is wrong, the answer is not only to ask for a rewrite. The better question is:
+
+> What did the specification fail to teach?
+
+That question turns a correction into an improvement. It makes the next output better because the operating knowledge has improved.
+
+## The useful boundary
+
+Vibe coding is excellent for discovery. Specification is essential for delivery.
+
+A healthy AI operating model uses both. It can use conversational AI to explore ideas, expose unknowns, test assumptions, and accelerate drafting. But when the work becomes important, repeatable, regulated, client-facing, or operationally embedded, it has to move into specification.
+
+The future of agentic AI will not be won by teams that prompt the most. It will be won by teams that specify best.
+
+## Read the white paper
+
+This post is adapted from [From NASA to AI Agents: The Evolution of Spec-Driven Development](/resources/from-nasa-to-ai-agents/). You can also [download the PDF](/white-papers/from-nasa-to-ai-agents.pdf).
