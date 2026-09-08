@@ -7,11 +7,17 @@ tags: [Schema, Policy, Semantics]
 draft: false
 ---
 
-# A graph makes intent computable.
+# A graph makes intent computable without flattening meaning.
 
-PDFs are good at presentation. They are not good at execution. A graph-based representation allows brand concepts, constraints, contexts, and exceptions to be addressed explicitly.
+PDFs are good at presentation. They are not good at execution. A graph-based
+representation allows brand concepts, constraints, contexts, and exceptions to
+be addressed explicitly.
 
-For organisations trying to govern AI, this matters because meaning is relational. A claim is not simply allowed or disallowed in the abstract. It depends on audience, channel, market, product, approval state, risk category, and other surrounding definitions. A graph is useful because it preserves those relationships instead of flattening them into disconnected statements.
+For organisations trying to govern AI, this matters because meaning is
+relational. A claim is not simply allowed or disallowed in the abstract. It
+depends on audience, channel, market, product, approval state, risk category, and
+other surrounding definitions. A graph is useful because it preserves those
+relationships instead of flattening them into disconnected statements.
 
 ## Why structure matters
 - Systems need unambiguous references.
@@ -25,6 +31,8 @@ A machine-readable representation can also support a domain definition language 
 - Machine-checkable constraints
 - Consistent policy derivation
 - Versioning at the level of meaning, not slides
+- Better retrieval because concepts are connected, not isolated
+- Clearer evidence when a rule is applied or overridden
 
 ## Where this fits the offer
 At Advanced Analytica, we use this type of structured representation to move organisations from dark knowledge to governed execution. The graph is not the whole product. It is part of the specification layer that supports the Brando and feeds the implementation layer with clear, governed logic.
@@ -39,3 +47,10 @@ That means the graph is valuable when it helps the organisation do practical thi
 <Insight>
 When the graph changes, policies can be recompiled and redeployed with traceability.
 </Insight>
+
+## What not to overbuild
+
+The graph should serve the operating model. It does not need to represent every
+possible idea in the business. It should represent the relationships that affect
+decisions: what a rule means, when it applies, what it depends on, who owns it,
+and what evidence proves it was used correctly.

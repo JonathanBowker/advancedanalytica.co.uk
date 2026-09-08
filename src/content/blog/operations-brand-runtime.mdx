@@ -1,23 +1,34 @@
 ---
 title: Operating Brand Policy at Runtime
-description: What it means to run brand governance as a live system, not a document.
+description: What it means to run brand governance as a live, observable system rather than a document.
 publishedAt: 2025-12-05
 author: Jonny Bowker
 tags: [Operation, Brando, Governance]
 draft: false
 ---
 
-# Operation is where brand governance becomes continuous, not periodic.
+# Operation is where brand governance becomes continuous.
 
-In runtime operation, brand rules are not “checked occasionally”. They are enforced and measured during generation, translation, personalisation, and publication.
+In runtime operation, brand rules are not “checked occasionally”. They are
+enforced and measured during generation, translation, personalisation, approval,
+and publication.
 
-This is the point where many AI initiatives succeed or fail. It is relatively easy to create a promising prototype. It is much harder to run a governed system reliably when it is being used by multiple teams, across multiple channels, under real operational pressure.
+This is the point where many AI initiatives succeed or fail. It is relatively
+easy to create a promising prototype. It is much harder to run a governed system
+reliably when it is being used by multiple teams, across multiple channels, under
+real operational pressure.
+
+The shift in 2026 is that runtime governance is no longer a luxury for advanced
+teams. As AI systems are connected to tools, content workflows, and customer
+operations, organisations need controls that operate while work is happening,
+not weeks later in a review meeting.
 
 ## Runtime capabilities
 - Policy enforcement at inference time
 - Context-aware tokens and persona constraints
 - Controlled overrides (campaigns, exceptions)
 - Auditing for every decision path
+- Rollback when a policy version creates unexpected behaviour
 
 Those capabilities need to sit inside the operational pathway, not beside it. If controls only exist as guidance or after-the-fact review, they do not meaningfully govern runtime behaviour.
 
@@ -25,6 +36,8 @@ Those capabilities need to sit inside the operational pathway, not beside it. If
 - Hardcoding brand logic inside prompts with no versioning.
 - Shipping “temporary” exceptions with no expiry.
 - Treating monitoring as a separate project.
+- Allowing agents to call tools without policy checks.
+- Measuring outputs without feeding evidence back into policy.
 
 ## The role of the implementation layer
 This is where the implementation layer matters in our offer. It acts as the governed layer between the organisation’s systems, people, and AI interactions. That allows runtime operation to be managed through explicit policy, observable controls, and consistent communications logic rather than improvised prompt engineering.
@@ -39,3 +52,17 @@ When operation is treated properly, the organisation can answer:
 <Warning>
 If you cannot roll back a policy version, you are not operating brand governance safely.
 </Warning>
+
+## The operating test
+
+A runtime model is working when teams can answer these questions quickly:
+
+- what was the system allowed to do?
+- which policy bundle did it use?
+- what did it block or escalate?
+- what evidence proves the decision path?
+- how would the organisation correct the behaviour if it drifted?
+
+If those answers are scattered across prompts, spreadsheets, Slack threads, and
+human memory, the governance model is still informal. Runtime operation is the
+move from informal confidence to controlled evidence.

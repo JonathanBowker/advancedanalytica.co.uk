@@ -9,9 +9,14 @@ draft: false
 
 # If intent changes, systems must change safely.
 
-Brands evolve: new products, new markets, new regulations, new risks. Versioning turns change into a controlled process rather than an uncontrolled ripple across teams.
+Brands evolve: new products, new markets, new regulations, new risks. Versioning
+turns change into a controlled process rather than an uncontrolled ripple across
+teams.
 
-In AI-enabled operations, this becomes more important, not less. A small change to a policy definition can affect behaviour across multiple tools, channels, and workflows. Without versioning, organisations lose the ability to explain what changed, who approved it, and why the system behaved the way it did.
+In AI-enabled operations, this becomes more important, not less. A small change
+to a policy definition can affect behaviour across multiple tools, channels, and
+workflows. Without versioning, organisations lose the ability to explain what
+changed, who approved it, and why the system behaved the way it did.
 
 ## What to version
 - Definitions (concepts and vocabulary)
@@ -30,6 +35,8 @@ It is also useful to version the supporting evidence around those changes:
 - Rollback when something breaks
 - Auditability of who approved what
 - Reproducibility (why outputs looked a certain way)
+- Safer experimentation with temporary campaigns or local-market exceptions
+- Clear evidence when a compliance, brand, or legal question appears later
 
 ## Versioning in a governed operating model
 Within the Brando, versioning is not just a repository habit. It is part of how governance is expressed operationally. Definitions, policies, and release states need to move together, so that the organisation can connect specification, deployment, and assurance.
@@ -39,3 +46,11 @@ That is also where the implementation layer becomes useful. If deployment is con
 <Warning>
 Without versioning, it is impossible to prove which brand rules were in effect at the time of an incident.
 </Warning>
+
+## A practical versioning rule
+
+Version the things that change behaviour. That includes brand definitions,
+claims rules, approval routes, prompt instructions, policy bundles, evaluation
+rubrics, tool permissions, and exceptions. If changing it could alter what an AI
+system says, does, blocks, or escalates, it belongs in the versioned operating
+model.

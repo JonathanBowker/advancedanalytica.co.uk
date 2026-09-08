@@ -7,11 +7,22 @@ tags: [Policy, Execution, Systems]
 draft: false
 ---
 
-# If brand rules are executable, they need tests.
+# If brand rules are executable, they need release tests.
 
-Traditional brand governance assumes humans read documents. In AI-mediated workflows, policies are executed continuously and at scale. That demands a testing discipline.
+Traditional brand governance assumes humans read documents. In AI-mediated
+workflows, policies are executed continuously and at scale. That demands a
+testing discipline.
 
-If a policy can change behaviour in production, it should be treated with the same release discipline as software. That means versioning, testing, promotion, rollback, and evidence. Otherwise the organisation is still relying on trust and manual interpretation, just with faster failure modes.
+If a policy can change behaviour in production, it should be treated with the
+same release discipline as software. That means versioning, testing, promotion,
+rollback, and evidence. Otherwise the organisation is still relying on trust and
+manual interpretation, just with faster failure modes.
+
+That discipline now sits inside a broader AI governance context. AI Act
+transparency requirements, GPAI obligations, and ISO/IEC 42001 all point in the
+same direction: organisations need traceability, control, and evidence for how AI
+systems are used. Brand policy testing is one practical way to create that
+evidence before an agent or workflow reaches production.
 
 ## What to test
 - **Hard constraints:** e.g. forbidden terms, legal disclaimers, mandatory elements.
@@ -48,3 +59,8 @@ Without regression tests, policy changes become a new source of risk.
 - Rollback is a first-class capability.
 
 This is one of the clearest differences between static guidelines and governed AI systems. A PDF can be published. A policy-driven operating model has to be released safely.
+
+## Source note
+
+- [European Commission guidelines for GPAI providers](https://digital-strategy.ec.europa.eu/en/policies/guidelines-gpai-providers)
+- [ISO/IEC 42001 preview](https://webstore.iec.ch/en/iec_catalog/product/preview/?id=cHViL3BkZi9wcmV2aWV3L2luZm9faXNvaWVjNDIwMDF7ZWQxLjB9ZW4ucGRm)

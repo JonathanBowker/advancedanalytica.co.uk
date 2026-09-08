@@ -1,23 +1,36 @@
 ---
 title: MCP Servers for Brand Governance
-description: MCP enables policy-aware tooling for brand systems.
+description: How MCP servers expose governed brand rules, tools, and audit paths to AI systems.
 publishedAt: 2025-12-12
 author: Jonny Bowker
 tags: [MCP, Governance, Developers]
 draft: false
 ---
 
-# MCP servers can mediate access to brand rules, enforce policy checks, and automate compliance.
+# MCP servers can turn brand governance into a controlled interface.
 
-## Governance flows
-- Request validation
-- Policy execution
-- Audit logging
+MCP matters because agents need more than prompts. They need a governed way to
+find knowledge, call tools, apply rules, and leave evidence behind. Without that
+interface layer, organisations end up hardcoding policy into individual tools or
+allowing each team to invent its own connection pattern.
 
-That sounds technical, but the business value is straightforward. MCP gives an organisation a standard way to expose governed capabilities to AI systems without hardwiring every rule into prompts or custom integrations.
+That sounds technical, but the business value is straightforward. MCP gives an
+organisation a standard way to expose governed capabilities to AI systems
+without rebuilding every integration from scratch.
 
-## Why that matters
-If an assistant, agent, or workflow needs to use approved brand language, retrieve the right asset, check whether a claim is permitted, or request an escalation path, it needs controlled access to that logic. MCP servers provide a structured interface for doing that.
+## Why that matters in 2026
+
+MCP has moved from an experimental developer pattern into a practical interface
+for AI-enabled work. Current MCP documentation describes servers as a way to
+expose data, tools, and interactive capabilities to AI clients. For brand
+governance, that is important because the most useful controls are not static
+files. They are live capabilities: retrieve the approved rule, check the claim,
+select the correct asset, block unsafe action, or route the decision to an owner.
+
+If an assistant, agent, or workflow needs to use approved brand language,
+retrieve the right asset, check whether a claim is permitted, or request an
+escalation path, it needs controlled access to that logic. MCP servers provide a
+structured interface for doing that.
 
 In a mature operating model, an MCP layer can:
 
@@ -27,8 +40,25 @@ In a mature operating model, an MCP layer can:
 - log requests and outcomes for assurance
 - route uncertain cases to human review
 
+## Governance flows
+
+A useful MCP governance flow usually contains three layers:
+
+1. **Request validation:** is the caller, task, channel, and purpose allowed?
+2. **Policy execution:** which rule, constraint, or approval path applies?
+3. **Audit logging:** what happened, which version was used, and what evidence was created?
+
+Those layers are what make MCP relevant to executives as well as developers. The
+protocol is not the governance model by itself, but it gives the governance
+model somewhere to operate.
+
 ## Where this fits in the Advanced Analytica offer
-We use the implementation layer as the governed communications layer and MCP as the interface pattern that allows systems to consume policy and knowledge safely. IBOM® provides the operating model that determines what should exist in that layer in the first place, with Brando® as the Brand Operator those systems consume.
+
+We use the implementation layer as the governed communications layer and MCP as
+the interface pattern that allows systems to consume policy and knowledge
+safely. IBOM® provides the operating model that determines what should exist in
+that layer in the first place, with Brando® as the Brand Operator those systems
+consume.
 
 Put simply:
 
@@ -38,3 +68,7 @@ Put simply:
 - the implementation layer carries those capabilities into live operation
 
 That is what turns governance from a document problem into an infrastructure capability.
+
+## Source note
+
+- [Model Context Protocol documentation](https://modelcontextprotocol.io/)

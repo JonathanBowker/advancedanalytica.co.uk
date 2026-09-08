@@ -7,9 +7,10 @@ tags: [Schema, Semantics, Brando]
 draft: false
 ---
 
-# Schema creates structure. Semantics creates meaning. Brando operationalizes both.
+# Schema creates structure. Semantics creates meaning. Brando operationalises both.
 
 ## The distinction
+
 Schema defines the data model. Semantics defines the intent behind the model.
 
 An organisation can have a perfectly tidy schema and still fail operationally if nobody agrees what the fields mean, how the rules should be interpreted, or what behaviour the system is supposed to support. Structure alone creates order. It does not create understanding.
@@ -18,11 +19,17 @@ That is why both layers matter in AI governance:
 
 - schema tells the system how information is organised
 - semantics tells the system what the organisation means by that information
+- governance tells the system who can change it and when
 
 ## Why this becomes a business problem
 In most enterprises, the gap between schema and semantics is hidden by human judgement. Experienced people know what the policy “really means”. They know when a phrase is acceptable, when a claim needs escalation, and when a context switch changes the right answer.
 
 AI systems do not have that implicit organisational memory. If semantics are missing, they may execute something structurally valid but operationally wrong.
+
+That is why this distinction has become more urgent as AI moves into live
+workflows. A retrieval system can find a rule. An agent can apply a rule. But
+neither can reliably infer the business meaning of that rule if the meaning has
+not been made explicit.
 
 ## How the Brando uses both
 Within the Brando, schema supports the structured layer: datasets, records, field definitions, policy objects, and machine-readable specifications. Semantics supports the governed layer: intent, meaning, context, and interpretation. The operating model matters because it keeps those two aligned over time rather than letting them drift apart.
@@ -37,3 +44,10 @@ In practical terms, that is what allows an organisation to:
 <Warning>
 Without semantics, schemas only create compliance, not consistency.
 </Warning>
+
+## A useful test
+
+Ask whether two teams would apply the same field in the same way. If the answer
+is no, the schema is not enough. The organisation still needs semantic work:
+definitions, examples, exceptions, ownership, and evidence that the meaning is
+being applied consistently.
