@@ -254,18 +254,18 @@
   }
 
   .prose table {
-    display: block;
+    display: table;
+    table-layout: fixed;
     width: 100%;
     max-width: 100%;
     margin: 1.75rem 0;
-    overflow-x: auto;
+    overflow: hidden;
     border-collapse: separate;
     border-spacing: 0;
     border: 1px solid rgba(10, 24, 40, 0.22);
     border-radius: 0.5rem;
     background: #ffffff;
     box-shadow: var(--shadow-outline);
-    -webkit-overflow-scrolling: touch;
   }
 
   .prose thead {
@@ -302,12 +302,14 @@
 
   .prose td {
     color: var(--color-slate);
+    overflow-wrap: anywhere;
   }
 
   .prose td:first-child {
-    width: 34%;
+    width: 32%;
     color: var(--color-ink);
     font-weight: 600;
+    overflow-wrap: normal;
   }
 
   .prose tbody tr:nth-child(even) {
