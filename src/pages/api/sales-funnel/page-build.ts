@@ -19,6 +19,15 @@ const pageReadyTimeoutMs = 22000;
 const pageReadyPollMs = 1000;
 const failedDependencyStatus = 424;
 
+export const GET: APIRoute = async () =>
+  new Response(null, {
+    status: 410,
+    headers: {
+      'Cache-Control': 'public, max-age=86400',
+      'X-Robots-Tag': 'noindex, nofollow',
+    },
+  });
+
 function getEnv(name: string) {
   return String(
     (import.meta.env as Record<string, string | undefined>)[name] || process.env[name] || '',

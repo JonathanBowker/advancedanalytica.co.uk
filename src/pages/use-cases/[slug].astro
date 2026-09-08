@@ -1,51 +1,7 @@
 ---
-export const prerender = true;
-
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
-import { SITE_URL } from '../../lib/seo/site';
-
-export async function getStaticPaths() {
-  const posts = await getCollection('case-studies', ({ data }) => !data.draft);
-  return posts.map((post) => ({
-    params: { slug: post.slug },
-    props: { title: post.data.title }
-  }));
-}
+export const prerender = false;
 
 const { slug } = Astro.params as { slug: string };
-const { title: postTitle } = Astro.props as { title: string };
-const title = postTitle;
-const description = 'This page has moved.';
-const targetPath = `/case-studies/${encodeURIComponent(slug)}/`;
-const targetUrl = `${SITE_URL}${targetPath}`;
-const page = {
-  title,
-  description,
-  url: targetUrl,
-  breadcrumbs: [
-    { name: 'Home', url: `${SITE_URL}/` },
-    { name: 'Case Studies', url: `${SITE_URL}/case-studies/` },
-    { name: title, url: targetUrl }
-  ]
-};
+const target = `/case-studies/${encodeURIComponent(slug)}${Astro.url.search}`;
+return Astro.redirect(target, 301);
 ---
-
-<BaseLayout title={title} description={description} page={page}>
-  <Fragment slot="head">
-    <meta http-equiv="refresh" content={`0; url=${targetPath}`} />
-  </Fragment>
-
-  <section class="container-wide py-16">
-    <h1 class="text-3xl font-semibold tracking-tight text-ink">Redirecting...</h1>
-    <p class="mt-4 text-steel">
-      This page has moved to <a class="underline hover:text-ink" href={targetPath}>{title}</a>.
-    </p>
-  </section>
-
-  <script is:inline define:vars={{ targetPath }}>
-    (() => {
-      if (typeof window !== "undefined") window.location.replace(targetPath);
-    })();
-  </script>
-</BaseLayout>

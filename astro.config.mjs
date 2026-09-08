@@ -42,19 +42,18 @@ export default defineConfig({
         const { pathname } = new URL(page);
 
         if (pathname.startsWith('/AGENTS/')) return false;
+        if (pathname.startsWith('/auth/')) return false;
         if (pathname.startsWith('/blog/')) return false;
         if (pathname.startsWith('/personas/')) return false;
+        if (pathname.startsWith('/portal/')) return false;
         if (pathname.startsWith('/use-cases/')) return false;
         if (pathname.includes('/roles/')) return false;
 
         if (
           new Set([
-            '/auth/callback/',
-            '/auth/reset/',
             '/login/',
             '/logout/',
             '/opinions/tag/',
-            '/portal/',
             '/rss/',
             '/search/',
           ]).has(pathname)

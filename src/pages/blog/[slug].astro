@@ -1,27 +1,7 @@
 ---
-export const prerender = true;
+export const prerender = false;
 
-import { getCollection } from 'astro:content';
-
-export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ data }) => !data.draft);
-  return posts.map((post) => ({
-    params: { slug: post.slug },
-    props: { target: `/opinions/${post.slug}` }
-  }));
-}
-
-const { target } = Astro.props;
+const { slug } = Astro.params as { slug: string };
+const target = `/opinions/${encodeURIComponent(slug)}${Astro.url.search}`;
+return Astro.redirect(target, 301);
 ---
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="refresh" content={`0;url=${target}`} />
-    <link rel="canonical" href={target} />
-    <title>Redirecting…</title>
-  </head>
-  <body>
-    <p><a href={target}>Continue to Opinions</a></p>
-  </body>
-</html>

@@ -1,15 +1,6 @@
 ---
-const target = '/opinions';
+export const prerender = false;
+
+const target = `/opinions/${Astro.url.search}`;
+return Astro.redirect(target, 301);
 ---
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="refresh" content={`0;url=${target}`} />
-    <link rel="canonical" href={target} />
-    <title>Redirecting…</title>
-  </head>
-  <body>
-    <p><a href={target}>Continue to Opinions</a></p>
-  </body>
-</html>

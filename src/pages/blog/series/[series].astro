@@ -1,35 +1,7 @@
 ---
-export const prerender = true;
+export const prerender = false;
 
-import { getCollection } from 'astro:content';
-
-export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ data }) => !data.draft);
-  const series = [
-    ...new Set(
-      posts
-        .map((post) => post.data.series)
-        .filter((value): value is string => Boolean(value))
-    ),
-  ].sort((a, b) => a.localeCompare(b));
-
-  return series.map((entry) => ({
-    params: { series: entry },
-    props: { target: `/opinions/series/${encodeURIComponent(entry)}` }
-  }));
-}
-
-const { target } = Astro.props;
+const { series } = Astro.params as { series: string };
+const target = `/opinions/series/${encodeURIComponent(series)}${Astro.url.search}`;
+return Astro.redirect(target, 301);
 ---
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="refresh" content={`0;url=${target}`} />
-    <link rel="canonical" href={target} />
-    <title>Redirecting…</title>
-  </head>
-  <body>
-    <p><a href={target}>Continue to Opinions</a></p>
-  </body>
-</html>
