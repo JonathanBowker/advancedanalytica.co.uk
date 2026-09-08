@@ -68,6 +68,15 @@ const getLegacyCanonicalTarget = (pathname: string, search: string) => {
     return withSearch('/opinions/tag/IBOM/');
   }
 
+  if (
+    pathname === '/blog/what-v-storm-calls-agentic-ai-your-estate-manager-calls-tuesday' ||
+    pathname === '/blog/what-v-storm-calls-agentic-ai-your-estate-manager-calls-tuesday/' ||
+    pathname === '/opinions/what-v-storm-calls-agentic-ai-your-estate-manager-calls-tuesday' ||
+    pathname === '/opinions/what-v-storm-calls-agentic-ai-your-estate-manager-calls-tuesday/'
+  ) {
+    return withSearch('/opinions/what-agentic-ai-calls-automation-estate-managers-call-tuesday/');
+  }
+
   if (pathname === '/blog' || pathname === '/blog/') return withSearch('/opinions/');
   if (pathname.startsWith('/blog/tag/')) {
     return withSearch(`/opinions/tag/${pathname.slice('/blog/tag/'.length)}`);
