@@ -19,11 +19,6 @@ ingress:
         path:
           prefix: /api/sales-funnel
     - component:
-        name: lead-api
-      match:
-        path:
-          prefix: /api
-    - component:
         name: web
       match:
         path:
@@ -46,9 +41,3 @@ services:
       - key: PUBLIC_GA_MEASUREMENT_ID
         value: G-J6XQFZQSSR
         scope: BUILD_TIME
-functions:
-  - name: lead-api
-    git:
-      branch: main
-      repo_clone_url: https://github.com/JonathanBowker/advancedanalytica.co.uk.git
-    source_dir: functions/contact
