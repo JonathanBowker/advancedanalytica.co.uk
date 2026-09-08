@@ -48,14 +48,14 @@ const nav: NavItem[] = [
   { label: 'About', href: '/company/about' }
 ];
 ---
- <header data-site-header class="fixed top-0 z-50 w-full border-b border-[#d8dee3] bg-[#eef2f5]/96 text-ink backdrop-blur transition-colors duration-300">
+ <header data-site-header class="fixed top-0 z-50 w-full border-b border-white/15 bg-[#050505]/94 text-white backdrop-blur transition-colors duration-300">
   <div class="container-nav flex items-center justify-between py-4 md:py-4.5">
-    <a href="/" data-header-logo-link class="flex items-center gap-3 text-ink justify-self-start transition-colors">
+    <a href="/" data-header-logo-link class="flex items-center gap-3 text-white/80 justify-self-start transition-colors hover:text-white">
       <img
         src="/images/infrastructure/logo.svg"
         alt="Advanced Analytica"
         data-header-logo
-        class="h-7 w-auto brightness-0 saturate-100 transition-[filter] duration-300 md:h-9"
+        class="h-7 w-auto brightness-0 invert saturate-100 transition-[filter] duration-300 md:h-9"
         decoding="async"
       />
       <span class="sr-only">Advanced Analytica: IBOM</span>
@@ -64,7 +64,7 @@ const nav: NavItem[] = [
       <a
         href={authHref}
         data-header-auth-link
-        class="inline-flex items-center gap-2 rounded-md border border-[#cfe8e2] bg-white px-3 py-2 text-xs font-semibold text-[#0F766E] transition-colors hover:border-[#14B8A6] hover:bg-[#f0fbf8]"
+        class="inline-flex items-center gap-2 rounded-md border border-white/20 bg-white/[0.08] px-3 py-2 text-xs font-semibold text-white/82 transition-colors hover:border-[#14B8A6]/55 hover:bg-[#14B8A6]/[0.14] hover:text-white"
       >
         {authLabel}
       </a>
@@ -73,7 +73,7 @@ const nav: NavItem[] = [
         data-header-contact-link
         class="inline-flex items-center gap-2 rounded-md bg-[#14B8A6] px-3 py-2 text-xs font-semibold text-paper transition-colors hover:bg-[#0F766E]"
       >
-        Talk to Us
+        TALK TO US
         <svg
           class="h-4 w-4"
           viewBox="0 0 20 20"
@@ -94,7 +94,7 @@ const nav: NavItem[] = [
         aria-label="Open menu"
         aria-expanded="false"
         aria-controls="mobile-nav-panel"
-        class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-[#e7e0d4] bg-white text-ink/72 transition-colors hover:border-[#cfc4b1] hover:text-ink"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-white/20 bg-white/[0.08] text-white/78 transition-colors hover:border-white/35 hover:text-white"
       >
         <svg
           data-mobile-menu-icon-open
@@ -127,13 +127,13 @@ const nav: NavItem[] = [
     </div>
     <div class="hidden md:flex md:flex-1 md:items-center md:justify-end md:gap-7">
       <div class="relative flex flex-1 items-center justify-end gap-7">
-        <nav data-main-nav class="flex items-center gap-9 text-[0.96rem] text-ink/72 transition-opacity duration-200">
+        <nav data-main-nav class="flex items-center gap-9 text-[0.96rem] text-white/78 transition-opacity duration-200">
           {nav.map((item) =>
             item.children ? (
               <div class="relative group after:absolute after:inset-x-0 after:top-full after:h-4 after:content-[''] after:bg-transparent">
                 <a
                   href={item.href}
-                  class="inline-flex items-center gap-2 hover:text-ink transition-colors"
+                  class="inline-flex items-center gap-2 hover:text-white transition-colors"
                   aria-haspopup="true"
                 >
                   {item.registered === 'brando' ? (
@@ -230,7 +230,7 @@ const nav: NavItem[] = [
                 </div>
               </div>
             ) : (
-              <a href={item.href} class="inline-flex items-center hover:text-ink transition-colors">
+              <a href={item.href} class="inline-flex items-center hover:text-white transition-colors">
                 {item.registered === 'brando' ? (
                   <>Brando<sup class="ml-0.5 align-super text-[0.58em] leading-none">®</sup></>
                 ) : item.label}
@@ -244,7 +244,7 @@ const nav: NavItem[] = [
           aria-label="Open search"
           aria-expanded="false"
           aria-controls="site-search-panel"
-          class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-[#e7e0d4] bg-white text-ink/62 transition-colors hover:border-[#cfc4b1] hover:text-ink"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-white/20 bg-white/[0.08] text-white/78 transition-colors hover:border-white/35 hover:text-white"
         >
           <svg
             class="h-4 w-4"
@@ -321,7 +321,7 @@ const nav: NavItem[] = [
       <a
         href={authHref}
         data-header-auth-link
-        class="inline-flex items-center gap-2 rounded-md border border-[#d9ded8] bg-white px-5 py-2.5 text-sm font-medium text-ink/58 transition-colors hover:border-[#14B8A6] hover:text-[#0F766E] hover:bg-[#f0fbf8]"
+        class="inline-flex items-center gap-2 rounded-md border border-white/20 bg-white/[0.08] px-5 py-2.5 text-sm font-medium text-white/82 transition-colors hover:border-[#14B8A6]/55 hover:bg-[#14B8A6]/[0.14] hover:text-white"
       >
         {authLabel}
         
@@ -331,7 +331,7 @@ const nav: NavItem[] = [
         data-header-contact-link
         class="inline-flex items-center gap-2 rounded-md bg-[#14B8A6] px-5 py-2.5 text-sm font-semibold text-paper hover:bg-[#0F766E] transition-colors"
       >
-        Talk to Us
+        TALK TO US
         
       </a>
     </div>
@@ -339,23 +339,23 @@ const nav: NavItem[] = [
   <div
     id="mobile-nav-panel"
     data-mobile-menu-panel
-    class="hidden border-t border-[#e7e0d4] bg-[#fbfaf6] md:hidden"
+    class="hidden border-t border-white/15 bg-[#050505] md:hidden"
   >
-    <nav class="container-nav grid gap-1 py-4 text-base font-medium text-ink/78" aria-label="Mobile navigation">
+    <nav class="container-nav grid gap-1 py-4 text-base font-medium text-white/78" aria-label="Mobile navigation">
       {nav.map((item) => (
         <>
           <a
             href={item.href}
-            class="rounded-md px-3 py-3 transition-colors hover:bg-[#f1ece2] hover:text-ink"
+            class="rounded-md px-3 py-3 transition-colors hover:bg-white/[0.08] hover:text-white"
           >
             {item.label}
           </a>
           {item.children && (
-            <div class="-mt-1 grid gap-1 border-l border-[#d7efe9] pl-4">
+            <div class="-mt-1 grid gap-1 border-l border-[#14B8A6]/35 pl-4">
               {item.children.map((child) => (
                 <a
                   href={child.href}
-                  class="rounded-md px-3 py-2 text-sm text-ink/64 transition-colors hover:bg-[#f1ece2] hover:text-ink"
+                  class="rounded-md px-3 py-2 text-sm text-white/62 transition-colors hover:bg-white/[0.08] hover:text-white"
                 >
                   {child.label}
                 </a>
@@ -366,7 +366,7 @@ const nav: NavItem[] = [
       ))}
       <a
         href="/search"
-        class="rounded-md px-3 py-3 transition-colors hover:bg-[#f1ece2] hover:text-ink"
+        class="rounded-md px-3 py-3 transition-colors hover:bg-white/[0.08] hover:text-white"
       >
         Search
       </a>
