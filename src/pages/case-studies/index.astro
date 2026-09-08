@@ -189,7 +189,7 @@ const page = {
             data-categories={categories.map((category) => category.title).join('|')}
             class={`listing-card ${idx >= INITIAL_COUNT ? 'hidden' : 'listing-card-in'}`.trim()}
           >
-            <PostCard post={post} basePath="/case-studies" showTags={false} />
+            <PostCard post={post} basePath="/case-studies" />
           </div>
         );
       })}
