@@ -1,32 +1,32 @@
 ---
 export const prerender = true;
 
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { ORGANIZATION, SITE_URL } from '../../lib/seo/site';
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { ORGANIZATION, SITE_URL } from "../../lib/seo/site";
 
-const title = 'Jonny Bowker';
+const title = "Jonny Bowker";
 const description =
-  'Jonny Bowker is the founder of Advanced Analytica, a thought leader, futurist, and pioneer at the frontier of agentic AI who explains complex technology in clear, practical language.';
+  "Jonny Bowker is the founder of Advanced Analytica, a thought leader, futurist, and pioneer at the frontier of agentic AI who explains complex technology in clear, practical language.";
 
 const page = {
   title,
   description,
   url: `${SITE_URL}/company/jonny-bowker`,
-  schemaType: 'ProfilePage',
+  schemaType: "ProfilePage",
   breadcrumbs: [
-    { name: 'Home', url: `${SITE_URL}/` },
-    { name: 'Company', url: `${SITE_URL}/company/about` },
-    { name: 'Jonny Bowker', url: `${SITE_URL}/company/jonny-bowker` }
-  ]
+    { name: "Home", url: `${SITE_URL}/` },
+    { name: "Company", url: `${SITE_URL}/company/about` },
+    { name: "Jonny Bowker", url: `${SITE_URL}/company/jonny-bowker` },
+  ],
 };
 
 const focusAreas = [
-  'Agentic AI strategy and architecture',
-  'Intelligent Business Operating Models',
-  'Spec-driven AI development',
-  'AI governance and controlled workflows',
-  'Machine-readable policy and MCP architecture',
-  'Enterprise AI implementation in regulated settings'
+  "Agentic AI strategy and architecture",
+  "Intelligent Business Operating Models",
+  "Spec-driven AI development",
+  "AI governance and controlled workflows",
+  "Machine-readable policy and MCP architecture",
+  "Enterprise AI implementation in regulated settings",
 ] as const;
 ---
 
@@ -45,20 +45,21 @@ const focusAreas = [
         </div>
         <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
           <p>
-            Jonny Bowker is the founder of Advanced Analytica, a thought leader, futurist, and pioneer at the frontier
-            of agentic AI. He helps businesses turn knowledge and process into controlled agentic AI systems that can
-            be understood, trusted, and used in real business settings.
+            Jonny Bowker is the founder of Advanced Analytica, a thought leader,
+            futurist, and pioneer at the frontier of agentic AI. He helps
+            businesses turn knowledge and process into controlled agentic AI
+            systems that can be understood, trusted, and used in real business
+            settings.
           </p>
           <p class="mt-6">
-            Jonny knows the technology in depth, but his work is grounded in clear language, practical judgement,
-            and empathy for the people who need to make AI useful. He focuses on spec-driven development, using voice,
-            vision, and text AI to help build agentic systems in a more natural and tangible way.
+            Jonny knows the technology in depth, but his work is grounded in
+            clear language, practical judgement, and empathy for the people who
+            need to make AI useful. He focuses on spec-driven development, using
+            voice, vision, and text AI to help build agentic systems in a more
+            natural and tangible way.
           </p>
           <div class="mt-8 flex flex-wrap gap-4">
-            <a
-              href="/company/contact/"
-              class="home-hero__button"
-            >
+            <a href="/company/contact/" class="home-hero__button">
               TALK TO US
             </a>
             <a
@@ -84,13 +85,16 @@ const focusAreas = [
         </h2>
         <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
           <p>
-            Through {ORGANIZATION.name}, Jonny advises, designs, engineers, and operates AI solutions for organisations
-            that need more than a generic model or a loose automation layer. The work starts by making business knowledge
-            explicit, then turns that knowledge into specifications, workflows, controls, and production-ready agents.
+            Through {ORGANIZATION.name}, Jonny advises, designs, and builds AI
+            systems for businesses that need more than a chatbot or a loose
+            automation layer. The work starts by making business knowledge
+            accessible, then turning it into governed skills, agents, and
+            workflows that run in production.
           </p>
           <p class="mt-6">
-            Advanced Analytica works across enterprise, professional services, financial services, healthcare, brand
-            governance, risk, compliance, emissions, and other regulated or high-judgement operating contexts.
+            Advanced Analytica works across professional services, financial
+            services, healthcare, brand governance, agriculture, compliance, and
+            emissions, wherever the need for efficiency is real.
           </p>
         </div>
       </div>
@@ -106,12 +110,14 @@ const focusAreas = [
         </h2>
         <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
           <p>
-            Talent does not always land where it should. Plenty of capable graduates leave university with real
-            potential and no clear route to using it.
+            Talent does not always land where it should. Plenty of capable
+            graduates leave university with real potential and no clear route to
+            using it.
           </p>
           <p class="mt-6">
-            Jonny works with young people one at a time, not through a programme. He gets to know them, then helps
-            them build practical AI skills that make them genuinely valuable to a business.
+            Jonny works with young people one at a time, not through a programme.
+            He gets to know them, then helps them build practical AI skills that
+            make them genuinely valuable to a business.
           </p>
         </div>
       </div>
@@ -122,11 +128,15 @@ const focusAreas = [
     <div class="container-wide py-20">
       <div class="eyebrow mb-10 text-center text-[#14B8A6]">Focus Areas</div>
       <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-        {focusAreas.map((area) => (
-          <div class="rounded-2xl border border-ink/10 bg-surface p-6 shadow-outline">
-            <p class="text-lg font-semibold tracking-tight text-ink">{area}</p>
-          </div>
-        ))}
+        {
+          focusAreas.map((area) => (
+            <div class="rounded-2xl border border-ink/10 bg-surface p-6 shadow-outline">
+              <p class="text-lg font-semibold tracking-tight text-ink">
+                {area}
+              </p>
+            </div>
+          ))
+        }
       </div>
     </div>
   </section>
@@ -137,11 +147,14 @@ const focusAreas = [
         <h2 class="text-5xl font-semibold tracking-tight text-paper">
           The operating principle is simple: specify before you automate.
         </h2>
-        <div class="max-w-prose text-lg leading-relaxed text-paper/78 md:text-xl">
+        <div
+          class="max-w-prose text-lg leading-relaxed text-paper/78 md:text-xl"
+        >
           <p>
-            AI becomes useful in serious business settings when it can work from clear intent, defined boundaries,
-            current knowledge, and testable rules. That is the discipline behind Advanced Analytica’s approach to
-            agentic AI and Intelligent Business Operating Models.
+            AI becomes useful in serious business settings when it can work from
+            clear intent, defined boundaries, current knowledge, and testable
+            rules. That is the discipline behind Advanced Analytica’s approach
+            to agentic AI and Intelligent Business Operating Models.
           </p>
           <div class="mt-8">
             <a
