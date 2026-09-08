@@ -71,7 +71,7 @@ const page = {
       </div>
 
       <div class="container-wide relative z-20 pt-10 pb-8">
-        <a href="/opinions" class="inline-flex items-center gap-3 text-sm font-semibold tracking-[0.2em] uppercase text-white/80 hover:text-white transition-colors">
+        <a href="/opinions/" class="inline-flex items-center gap-3 text-sm font-semibold tracking-[0.2em] uppercase text-white/80 hover:text-white transition-colors">
           <span class="text-2xl leading-none">←</span>
           BACK
         </a>
@@ -98,7 +98,7 @@ const page = {
             <div class="flex flex-wrap gap-3">
               {post.data.tags.map((tag: string) => (
                 <a
-                  href={`/opinions/tag/${encodeURIComponent(tag)}`}
+                  href={`/opinions/tag/${encodeURIComponent(tag)}/`}
                   class="rounded-sm bg-[#14B8A6] px-4 py-2 text-xs font-semibold uppercase text-paper transition-colors hover:bg-[#0F766E]"
                 >
                   {tag}
@@ -208,14 +208,14 @@ const page = {
   <section class="container-wide pt-0 pb-20">
     <div class="flex items-center justify-between gap-4">
       <h2 class="text-2xl font-semibold text-ink">Related Posts</h2>
-      <a href="/opinions" class="text-xs font-semibold tracking-[0.2em] uppercase text-steel hover:text-ink">
+      <a href="/opinions/" class="text-xs font-semibold tracking-[0.2em] uppercase text-steel hover:text-ink">
         View All
       </a>
     </div>
 
     <div class="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
       {related.map((entry) => (
-        <a href={`/opinions/${entry.slug}`} class="rounded-xl border border-fog bg-surface p-6">
+        <a href={`/opinions/${entry.slug}/`} class="rounded-xl border border-fog bg-surface p-6">
           <div class="text-xs uppercase tracking-[0.2em] text-steel">
             {entry.data.series ?? 'Opinion'}
           </div>

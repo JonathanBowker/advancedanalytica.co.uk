@@ -26,7 +26,7 @@ const displayTitle = toSentenceCaseTitle(post.data.title);
 const coverAlt = `${displayTitle} — ${post.data.description}`;
 ---
 <article class="group rounded-xl border border-fog bg-surface p-6 shadow-outline">
-  <a href={`${basePath}/${post.slug}`} class="block overflow-hidden rounded-xl bg-[#0b0e14] shadow-outline">
+  <a href={`${basePath}/${post.slug}/`} class="block overflow-hidden rounded-xl bg-[#0b0e14] shadow-outline">
     {coverImage ? (
       <img
         src={coverImage}
@@ -49,7 +49,7 @@ const coverAlt = `${displayTitle} — ${post.data.description}`;
       <div class="flex flex-wrap gap-2">
         {post.data.tags.map((tag) => (
           <a
-            href={`${tagBasePath}/${encodeURIComponent(tag)}`}
+            href={`${tagBasePath}/${encodeURIComponent(tag)}/`}
             class="rounded-sm bg-[#14B8A6] px-3 py-1 text-xs font-semibold uppercase text-paper transition-colors hover:bg-[#0F766E]"
             aria-label={`View posts tagged ${tag}`}
           >
@@ -60,7 +60,7 @@ const coverAlt = `${displayTitle} — ${post.data.description}`;
     ) : null}
   </div>
   <h3 class="mt-4 text-xl font-semibold text-ink">
-    <a href={`${basePath}/${post.slug}`} class="hover:text-accent transition-colors">
+    <a href={`${basePath}/${post.slug}/`} class="hover:text-accent transition-colors">
       {displayTitle}
     </a>
   </h3>

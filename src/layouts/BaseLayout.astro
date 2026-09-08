@@ -19,18 +19,35 @@ const { title, description, page } = Astro.props as {
   headerContactHref?: string;
 };
 
+const toCanonicalPageUrl = (value: string) => {
+  try {
+    const url = new URL(value);
+    const lastPathPart = url.pathname.split('/').filter(Boolean).at(-1) ?? '';
+    const hasFileExtension = /\.[a-z0-9]+$/i.test(lastPathPart);
+    if (!hasFileExtension && !url.pathname.endsWith('/')) {
+      url.pathname = `${url.pathname}/`;
+    }
+    return url.toString();
+  } catch {
+    return value;
+  }
+};
+
 const displayTitle = toSentenceCaseTitle(title);
 const normalizedPage = {
   ...page,
   title: toSentenceCaseTitle(page.title),
+  url: toCanonicalPageUrl(page.url),
   breadcrumbs: page.breadcrumbs?.map((item) => ({
     ...item,
-    name: toSentenceCaseTitle(item.name)
+    name: toSentenceCaseTitle(item.name),
+    url: toCanonicalPageUrl(item.url)
   })),
   article: page.article
     ? {
         ...page.article,
-        title: toSentenceCaseTitle(page.article.title)
+        title: toSentenceCaseTitle(page.article.title),
+        url: toCanonicalPageUrl(page.article.url)
       }
     : undefined
 };
@@ -55,12 +72,12 @@ const tenant = Astro.locals.tenant ?? getDefaultTenant();
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <meta name="robots" content={robotsContent} />
-    <link rel="canonical" href={page.url} />
+    <link rel="canonical" href={normalizedPage.url} />
     <meta property="og:type" content={socialType} />
     <meta property="og:site_name" content={SITE_NAME} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={page.url} />
+    <meta property="og:url" content={normalizedPage.url} />
     <meta property="og:image" content={socialImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />

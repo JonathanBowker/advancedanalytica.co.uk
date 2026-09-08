@@ -16,12 +16,27 @@ const {
 };
 
 const stripHtml = (value: string) => value.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+const toShareUrl = (value: string) => {
+  try {
+    const shareUrl = new URL(value);
+    const lastPathPart = shareUrl.pathname.split('/').filter(Boolean).at(-1) ?? '';
+    const hasFileExtension = /\.[a-z0-9]+$/i.test(lastPathPart);
+    if (!hasFileExtension && !shareUrl.pathname.endsWith('/')) {
+      shareUrl.pathname = `${shareUrl.pathname}/`;
+    }
+    return shareUrl.toString();
+  } catch {
+    return value;
+  }
+};
+
+const shareUrl = toShareUrl(url);
 const cleanTitle = stripHtml(title);
 const cleanDescription = stripHtml(description);
-const encodedUrl = encodeURIComponent(url);
+const encodedUrl = encodeURIComponent(shareUrl);
 const encodedTitle = encodeURIComponent(cleanTitle);
 const mailSubject = encodeURIComponent(cleanTitle);
-const mailBody = encodeURIComponent(`${cleanDescription || cleanTitle}\n\n${url}`);
+const mailBody = encodeURIComponent(`${cleanDescription || cleanTitle}\n\n${shareUrl}`);
 
 const buttonClass =
   variant === 'dark'
@@ -44,7 +59,7 @@ const iconClass = 'h-4 w-4';
     type="button"
     class={iconButtonClass}
     data-share-native
-    data-share-url={url}
+    data-share-url={shareUrl}
     data-share-title={cleanTitle}
     data-share-text={cleanDescription}
     aria-label={`Share ${cleanTitle}`}
@@ -115,7 +130,7 @@ const iconClass = 'h-4 w-4';
     type="button"
     class={iconButtonClass}
     data-share-copy
-    data-share-url={url}
+    data-share-url={shareUrl}
     aria-label={`Copy link to ${cleanTitle}`}
     title="Copy link"
   >
