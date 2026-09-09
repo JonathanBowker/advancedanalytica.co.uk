@@ -85,7 +85,7 @@ const NON_ENGLISH_LATIN_DIACRITICS =
 const URL_PATTERN = /(?:https?:\/\/|ftp:\/\/|www\.)\S+/gi;
 const REPETITION_PATTERN = /\b(\w{3,})\b(?:[\s,;.!?]+\1\b){4,}/i;
 const SPAM_PHRASE_PATTERN =
-  /\b(?:seo\b|search engine optim|rank(?:ing)? on google|backlink|link.?build|digital marketing agency|guaranteed (?:results?|traffic|rankings?|leads?)|buy (?:traffic|followers|backlinks?|reviews?)|(?:casino|poker|slot machine|sports? betting|online gambling)|(?:crypto(?:currency)?|bitcoin|forex|binary options?) invest|(?:viagra|cialis|levitra|sildenafil|online pharmacy)|(?:loan|mortgage|credit(?: card)?) (?:offer|approv)|urgent (?:business|investment) (?:proposal|opportunity)|work from home|make money online)\b/i;
+  /\b(?:seo\b|search engine optim|rank(?:ing)? on google|backlink|link.?build|digital marketing agency|guaranteed (?:results?|traffic|rankings?|leads?)|buy (?:traffic|followers|backlinks?|reviews?)|(?:casino|poker|slot machine|sports? betting|online gambling)|(?:crypto(?:currency)?|bitcoin|forex|binary options?) invest|(?:viagra|cialis|levitra|sildenafil|online pharmacy)|(?:loan|mortgage|credit(?: card)?) (?:offer|approv)|urgent (?:business|investment) (?:proposal|opportunity)|work from home|make money online|price for reseller|the price for reseller|\b(?:szia|ola),?\s+(?:meg|quer[ií]a|queria)|meg akartam tudni|saber o seu pre[zç]o|saber el precio)\b/i;
 
 const json = (statusCode, body) => ({
   statusCode,
@@ -338,7 +338,24 @@ const hasSpamPhrases = (payload) => {
   ]
     .filter(Boolean)
     .join(" ");
-  return SPAM_PHRASE_PATTERN.test(text);
+
+  if (SPAM_PHRASE_PATTERN.test(text)) return true;
+
+  const message = String(payload.message || "").trim();
+  const role = String(payload.role || "").trim();
+  const company = String(payload.company || "").trim().toLowerCase();
+  const emailDomain = getEmailDomain(payload.email);
+
+  if (/^robertfut$/i.test(payload.name || "")) return true;
+  if (company === "google" && emailDomain && !emailDomain.endsWith("google.com")) {
+    return true;
+  }
+  if (/\baloha,?\s+i am write about\b/i.test(role)) return true;
+  if (/\b(?:szia|ola),?\b/i.test(message) && !/\b(?:ai|agentic|governance|business|workflow|automation|data|risk|compliance|operations?)\b/i.test(message)) {
+    return true;
+  }
+
+  return false;
 };
 
 const isMissingSecret = (value) =>

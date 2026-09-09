@@ -16,7 +16,17 @@ AWS_SECRET_ACCESS_KEY=...
 AWS_SES_REGION=eu-west-2
 LEAD_EMAIL_TO=...
 LEAD_EMAIL_FROM=Advanced Analytica <verified-sender@advancedanalytica.co.uk>
+TURNSTILE_SECRET_KEY=...
+LEAD_FORM_TOKEN_SECRET=...
 ```
+
+Required build/runtime variable for the web app:
+
+```text
+PUBLIC_TURNSTILE_SITE_KEY=...
+```
+
+`PUBLIC_TURNSTILE_SITE_KEY` must be available when the page is built so the browser can request an invisible Turnstile token. `TURNSTILE_SECRET_KEY` must be available to the contact function so submitted tokens are verified server-side. `LEAD_FORM_TOKEN_SECRET` signs the short-lived form token that ties a submission to the page origin and browser fingerprint.
 
 Optional email-policy overrides:
 
