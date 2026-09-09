@@ -60,11 +60,14 @@ const robotsContent = page.noindex
   ? 'noindex,nofollow,max-image-preview:large,max-snippet:-1,max-video-preview:-1'
   : 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1';
 const tenant = Astro.locals.tenant ?? getDefaultTenant();
+const turnstileSiteKey = String(
+  import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? process.env.PUBLIC_TURNSTILE_SITE_KEY ?? ""
+).trim();
 ---
 <!doctype html>
 <html
   lang="en"
-  data-turnstile-site-key={String(import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "").trim()}
+  data-turnstile-site-key={turnstileSiteKey}
 >
   <head>
     <meta charset="utf-8" />

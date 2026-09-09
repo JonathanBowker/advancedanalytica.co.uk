@@ -18,6 +18,9 @@ const {
 };
 
 const currentPath = Astro.url.pathname;
+const turnstileSiteKey = String(
+  import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? process.env.PUBLIC_TURNSTILE_SITE_KEY ?? ""
+).trim();
 const materialIcons = {
   workspace: [
     'M4 5.5h7',
@@ -131,7 +134,7 @@ const navItems = signedIn
 <!doctype html>
 <html
   lang="en"
-  data-turnstile-site-key={String(import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '').trim()}
+  data-turnstile-site-key={turnstileSiteKey}
 >
   <head>
     <meta charset="utf-8" />
