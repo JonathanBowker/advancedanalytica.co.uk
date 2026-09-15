@@ -344,7 +344,7 @@ const pathways = [
     </div>
   </section>
 
-  <section class="bg-paper text-ink">
+  <section class="bg-[#eef2f5] text-ink">
     <div class="container-wide py-20">
       <div class="eyebrow mb-6 text-center text-[#14B8A6]">Case Studies</div>
       <h2 class="text-center text-5xl font-extrabold tracking-tight text-ink">
@@ -358,7 +358,7 @@ const pathways = [
         environments. Much of that work sits behind confidentiality, so we focus
         on the problems solved.
       </p>
-      <div class="mt-12 grid gap-8 lg:grid-cols-3">
+      <div class="mt-12 grid items-stretch gap-8 lg:grid-cols-3">
         {
           latestCaseStudies
             .slice(0, 3)
@@ -378,7 +378,7 @@ const pathways = [
     </div>
   </section>
 
-  <section class="bg-[#eef2f5] text-ink">
+  <section class="bg-paper text-ink">
     <div class="container-wide py-20">
       <div class="eyebrow mb-6 text-center text-[#14B8A6]">Latest Thinking</div>
       <h2 class="text-center text-5xl font-extrabold tracking-tight text-ink">
@@ -390,7 +390,7 @@ const pathways = [
         Recent thinking on Agentic AI, governed business operations, and
         knowledge-first deployment.
       </p>
-      <div class="mt-12 grid gap-8 lg:grid-cols-3">
+      <div class="mt-12 grid items-stretch gap-8 lg:grid-cols-3">
         {latestPosts.slice(0, 3).map((post) => <PostCard post={post} />)}
       </div>
       <div class="mt-12 flex flex-wrap items-center justify-center gap-4">

@@ -45,7 +45,17 @@ const nav: NavItem[] = [
     ]
   },
   { label: 'Resources', href: '/resources/' },
-  { label: 'About', href: '/company/about/' }
+  {
+    label: 'About',
+    href: '/company/about/',
+    children: [
+      { label: 'About Advanced Analytica', href: '/company/about/', group: 'Company' },
+      { label: 'Jonny Bowker', href: '/company/jonny-bowker/', group: 'Company' },
+      { label: 'Fractional Chief AI Officer', href: '/company/interim-ai-directorship/', group: 'Company' },
+      { label: 'Security', href: '/company/security/', group: 'Company' },
+      { label: 'Contact', href: '/company/contact/', group: 'Company' },
+    ]
+  }
 ];
 ---
  <header data-site-header class="fixed top-0 z-50 w-full border-b border-white/15 bg-[#050505]/94 text-white backdrop-blur transition-colors duration-300">

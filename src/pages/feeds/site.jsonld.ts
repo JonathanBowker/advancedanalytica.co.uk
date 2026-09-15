@@ -40,6 +40,14 @@ export async function GET() {
       tags: ['Jonny Bowker', 'Founder', 'Advanced Analytica', 'Agentic AI']
     },
     {
+      url: `${SITE_URL}/company/interim-ai-directorship/`,
+      title: 'Fractional Chief AI Officer Services & Interim AI Directorship',
+      description:
+        'Fractional Chief AI Officer services and interim AI directorship from Jonny Bowker for organisations that need accountable AI due diligence, governance, and delivery leadership without a permanent hire.',
+      itemType: 'Service',
+      tags: ['Fractional Chief AI Officer', 'Interim AI Director', 'AI Governance', 'Due Diligence', 'Jonny Bowker']
+    },
+    {
       url: `${SITE_URL}/company/contact/`,
       title: 'Contact Advanced Analytica',
       description:

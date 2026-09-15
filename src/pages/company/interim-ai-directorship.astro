@@ -1,0 +1,779 @@
+---
+export const prerender = true;
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { SITE_URL } from "../../lib/seo/site";
+
+const title = "Fractional Chief AI Officer Services & Interim AI Directorship";
+const description =
+  "Fractional Chief AI Officer services and interim AI directorship from Advanced Analytica for organisations that need accountable AI direction, due diligence, governance, and delivery leadership without a permanent hire.";
+
+const page = {
+  title,
+  description,
+  url: `${SITE_URL}/company/interim-ai-directorship`,
+  schemaType: "Service",
+  breadcrumbs: [
+    { name: "Home", url: `${SITE_URL}/` },
+    { name: "Company", url: `${SITE_URL}/company/about` },
+    {
+      name: "Fractional Chief AI Officer Services & Interim AI Directorship",
+      url: `${SITE_URL}/company/interim-ai-directorship`,
+    },
+  ],
+};
+
+const dueDiligenceAreas = [
+  "AI tools already approved, bought, trialled, or abandoned",
+  "Shadow AI use across teams, suppliers, and operational workflows",
+  "Data, policy, security, brand, compliance, and governance exposure",
+  "Existing automation, agentic systems, prompts, workflows, and assets",
+  "What is working, what is idle, and what should be stopped",
+] as const;
+
+const engagementModels = [
+  {
+    title: "Strategic Advisory",
+    rhythm: "A set number of days each month",
+    body: "Senior challenge and direction at the points that matter: board meetings, key decisions, quarterly reviews, and programme checkpoints. Suited to organisations with operational capacity but no senior owner for the AI conversation.",
+  },
+  {
+    title: "Embedded Directorship",
+    rhythm: "A regular day or more each week",
+    body: "One of our directors sits inside the organisation as a genuine member of the leadership team, not a periodic visitor. They carry operational responsibility for AI decisions as they arise and keep direction tied to live work.",
+  },
+  {
+    title: "Defined Programme",
+    rhythm: "A fixed term, typically three to twelve months",
+    body: "A named owner for a specific transformation, diligence, governance, or build programme with clear milestones. Suited to work that needs accountable direction from mobilisation through handover.",
+  },
+] as const;
+
+const interimReasons = [
+  {
+    title: "Immediate mobilisation",
+    body: "AI decisions rarely wait for a permanent search. We can become operational within a short, defined window from sign-off.",
+  },
+  {
+    title: "No headcount risk",
+    body: "You pay for the work and the judgement, not a permanent seat. If priorities shift, the commitment can move with them.",
+  },
+  {
+    title: "Diligence before opinion",
+    body: "Direction starts from what the organisation actually has: live systems, unused tools, informal practice, risks, and gaps.",
+  },
+  {
+    title: "Credentials that carry weight",
+    body: "Law Society of Scotland Legal Technologist accreditation, with expertise in AI, data privacy, and knowledge management, plus operational and technical AI governance work inside Fortune 500 enterprises.",
+  },
+  {
+    title: "Scalable commitment",
+    body: "Advisory, embedded, or programme-based support lets the level of involvement match what the business really needs.",
+  },
+  {
+    title: "Clean exit",
+    body: "Clear terms and planned handover mean the engagement can end without creating dependency or organisational drag.",
+  },
+] as const;
+
+const mobilisationSteps = [
+  {
+    num: "01",
+    title: "Discovery call",
+    body: "A practical conversation about where the business is, what has already been tried, and where the gaps sit.",
+  },
+  {
+    num: "02",
+    title: "Proposal",
+    body: "A clear scope, time commitment, deliverables, and decision points. No ambiguity about what is included.",
+  },
+  {
+    num: "03",
+    title: "Mobilisation",
+    body: "We become operational within a short, defined window from sign-off, beginning with the due diligence pass.",
+  },
+] as const;
+---
+
+<BaseLayout title={title} description={description} page={page}>
+  <section class="home-hero bg-paper text-ink">
+    <div class="container-wide home-hero__inner">
+      <div class="eyebrow mb-10 text-left font-bold">
+        MOVE FAST. STAY SAFE.
+      </div>
+      <div class="home-split-grid home-split-grid--hero">
+        <div>
+          <h1 class="home-hero__title">
+            Interim AI leadership with responsibility.
+          </h1>
+          <p class="home-proof-note">
+            Jonny Bowker holds the Law Society of Scotland's accreditation for
+            intelligent systems expertise. He's built operational and technical
+            AI governance inside Fortune 500 enterprises and legal teams.
+          </p>
+        </div>
+        <div>
+          <p class="home-hero__lead">
+            What we bring is directorship. We do not review your position and
+            hand over a report. We take the seat, carry operational
+            responsibility, and are accountable for the calls we make.
+          </p>
+          <p class="home-hero__lead">
+            When a business needs real direction on AI, not another document to
+            file away, that is the difference that matters.
+          </p>
+          <div class="home-hero__actions">
+            <a href="/company/contact/" class="home-hero__secondary">
+              <span>TALK TO US</span>
+              <span aria-hidden="true">↓</span>
+            </a>
+            <a href="#how-it-works" class="home-hero__secondary">
+              <span>HOW IT WORKS</span>
+              <span aria-hidden="true">↓</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how-it-works" class="bg-[#eef2f5] text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">How It Works</div>
+      <div class="home-split-grid">
+        <h2 class="text-5xl font-extrabold tracking-tight text-ink">
+          Direction without inventory is malpractice.
+        </h2>
+        <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
+          <p>
+            We will not tell a business what to do with its AI until we know
+            exactly what it already has, what is built, what is shadow IT, what
+            is actually working, and what has simply been bought and left idle.
+          </p>
+          <p class="mt-6">
+            Every engagement starts with an agentic due diligence pass across
+            the organisation's AI estate: technical, operational, and
+            commercial. It is not a formality. It is the only honest way to know
+            which decisions are actually needed.
+          </p>
+        </div>
+      </div>
+
+      <div class="due-diligence-checklist" aria-label="Agentic due diligence checklist">
+        {
+          dueDiligenceAreas.map((area, index) => (
+            <article class="due-diligence-check">
+              <div class="due-diligence-check__mark" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+              </div>
+              <p>
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                {area}
+              </p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-paper text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">The Directorship Sequence</div>
+      <h2 class="mx-auto max-w-4xl text-center text-5xl font-extrabold tracking-tight text-ink">
+        Diligence first. Direction second. Build if wanted.
+      </h2>
+      <div class="sequence-grid">
+        <article class="sequence-card sequence-card--pale">
+          <p class="sequence-card__num">01</p>
+          <h3>Due diligence first</h3>
+          <p>
+            We map the AI estate before giving direction, identifying live
+            systems, unused tools, shadow practice, risk, and evidence.
+          </p>
+        </article>
+        <article class="sequence-card sequence-card--teal">
+          <p class="sequence-card__num">02</p>
+          <h3>Then direction</h3>
+          <p>
+            With the inventory in hand, we set priorities: what to keep, stop,
+            build, govern, fund, and where accountability should sit.
+          </p>
+        </article>
+        <article class="sequence-card sequence-card--deep">
+          <p class="sequence-card__num">03</p>
+          <h3>Then build, if wanted</h3>
+          <p>
+            If the business wants delivery, we build through our own asset
+            library and skills, reducing the cost and time of assembling a team.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-slate text-paper">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Three Ways To Work Together</div>
+      <h2 class="mx-auto max-w-4xl text-center text-5xl font-semibold tracking-tight text-paper">
+        Choose the level of responsibility the business needs.
+      </h2>
+      <div class="mt-14 grid gap-12 lg:grid-cols-3">
+        {
+          engagementModels.map((model) => (
+            <article>
+              <p class="eyebrow text-[#14B8A6]">{model.rhythm}</p>
+              <h3 class="mt-5 text-3xl font-semibold tracking-tight text-paper">
+                {model.title}
+              </h3>
+              <p class="mt-5 text-base leading-relaxed text-paper/76">
+                {model.body}
+              </p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-[#eef2f5] text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">
+        Why Interim Rather Than Recruit
+      </div>
+      <div class="home-split-grid">
+        <div>
+          <h2 class="text-5xl font-extrabold tracking-tight text-ink">
+            Hiring a permanent AI director is slow. Getting it wrong is
+            expensive.
+          </h2>
+        </div>
+        <p class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
+          The search alone can take months, and the brief is often unclear until
+          the work has already started. A bad hire costs far more than the
+          salary: wasted time, stalled decisions, misdirected investment, and
+          lost credibility with the board. Interim leadership gives the business
+          accountable direction now, while keeping the permanent decision
+          properly informed.
+        </p>
+      </div>
+      <div class="reason-accordion-grid">
+        {
+          interimReasons.map((reason, index) => (
+            <details class="reason-accordion" open={index === 0}>
+              <summary>
+                <span>{reason.title}</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </summary>
+              <p>{reason.body}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-paper text-ink">
+    <div class="container-wide py-20">
+      <div class="eyebrow mb-8 text-center text-[#14B8A6]">
+        From first conversation to mobilisation
+      </div>
+      <div class="mobilisation-grid">
+        {
+          mobilisationSteps.map((step, index) => (
+            <article
+              class:list={[
+                "mobilisation-card",
+                index === 0 && "mobilisation-card--pale",
+                index === 1 && "mobilisation-card--teal",
+                index === 2 && "mobilisation-card--deep",
+              ]}
+            >
+              <h3 class="mobilisation-card__title">
+                <span>{step.num}</span> {step.title}
+              </h3>
+              <p class="mobilisation-card__body">
+                {step.body}
+              </p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-paper text-ink">
+    <div class="container-wide py-20">
+      <div class="home-split-grid">
+        <h2 class="text-5xl font-extrabold tracking-tight text-ink">
+          When the stakes are high, experience matters.
+        </h2>
+        <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
+          <p>
+            If AI has become material to your strategy, operations, brand,
+            risk, or cost base, it needs named ownership. Fractional Chief AI
+            Officer services and interim AI directorship give the business that
+            ownership without waiting for a permanent hire.
+          </p>
+          <div class="home-hero__actions mt-8">
+            <a href="/company/contact/" class="home-hero__button">START THE CONVERSATION</a>
+            <a href="/company/about/" class="home-outline-cta">
+              <span>ABOUT ADVANCED ANALYTICA</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .home-split-grid {
+      display: grid;
+      gap: 2.5rem;
+    }
+
+    .home-hero {
+      border-bottom: 1px solid color-mix(in srgb, var(--color-ink) 10%, white);
+    }
+
+    .home-hero__inner {
+      padding-top: 7rem;
+      padding-bottom: 5rem;
+    }
+
+    .home-hero__title {
+      max-width: 19ch;
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: clamp(38px, 4.5vw, 62px);
+      font-weight: 1000;
+      letter-spacing: -0.016em;
+      line-height: 1.12;
+      color: var(--color-ink);
+      -webkit-text-stroke: 0.3px var(--color-ink);
+      text-wrap: balance;
+    }
+
+    .home-hero__lead {
+      max-width: 34rem;
+      margin: 0 0 2rem;
+      font-family: var(--font-body);
+      font-size: 1.125rem;
+      font-weight: 400;
+      line-height: 1.625;
+      color: color-mix(in srgb, var(--color-ink) 62%, white);
+      text-wrap: pretty;
+    }
+
+    .home-hero__actions {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .home-hero__button,
+    .home-dark-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px solid #14b8a6;
+      border-radius: 0.875rem;
+      background: #14b8a6;
+      padding: 15px 32px;
+      color: #fff;
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+      transition:
+        background 180ms ease,
+        border-color 180ms ease,
+        transform 180ms ease,
+        box-shadow 180ms ease;
+    }
+
+    .home-hero__button:hover,
+    .home-dark-cta:hover {
+      background: #0f766e;
+      border-color: #0f766e;
+      transform: translateY(-1px);
+      box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    }
+
+    .home-hero__secondary,
+    .home-outline-cta,
+    .home-dark-outline-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.7rem;
+      padding: 15px 32px;
+      border: 1.5px solid #14b8a6;
+      border-radius: 0.875rem;
+      background: transparent;
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 600;
+      color: #0f766e;
+      text-decoration: none;
+      white-space: nowrap;
+      transition:
+        color 180ms ease,
+        border-color 180ms ease,
+        background-color 180ms ease,
+        transform 180ms ease,
+        box-shadow 180ms ease;
+    }
+
+    .home-dark-outline-cta {
+      color: #5eead4;
+    }
+
+    .home-hero__secondary:hover,
+    .home-outline-cta:hover,
+    .home-dark-outline-cta:hover {
+      color: #ffffff;
+      background: #14b8a6;
+      border-color: #14b8a6;
+      transform: translateY(-1px);
+      box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    }
+
+    .home-proof-note {
+      max-width: 42rem;
+      margin: 2rem 0 0;
+      border-top: 1px solid color-mix(in srgb, var(--color-ink) 14%, white);
+      padding-top: 1.25rem;
+      color: var(--color-ink);
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.45;
+      text-wrap: pretty;
+    }
+
+    .due-diligence-checklist {
+      display: grid;
+      gap: 0.9rem;
+      margin-top: 3.5rem;
+    }
+
+    .due-diligence-check {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 1rem;
+      min-height: 8.5rem;
+      border: 1px solid color-mix(in srgb, var(--color-ink) 12%, white);
+      border-radius: 1rem;
+      background: #ffffff;
+      padding: 1.2rem;
+      box-shadow: 0 18px 44px rgba(15, 23, 42, 0.045);
+    }
+
+    .due-diligence-check__mark {
+      display: grid;
+      place-items: center;
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 999px;
+      background: #14b8a6;
+      color: #ffffff;
+    }
+
+    .due-diligence-check__mark svg {
+      width: 1.2rem;
+      height: 1.2rem;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .due-diligence-check p {
+      margin: 0;
+      color: var(--color-ink);
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 800;
+      line-height: 1.28;
+      text-wrap: pretty;
+    }
+
+    .due-diligence-check p span {
+      display: block;
+      margin-bottom: 0.55rem;
+      color: #14b8a6;
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+    }
+
+    .sequence-grid {
+      display: grid;
+      gap: 1rem;
+      margin-top: 3.75rem;
+    }
+
+    .sequence-card {
+      min-height: 16rem;
+      border: 1px solid color-mix(in srgb, var(--color-ink) 12%, white);
+      border-radius: 1rem;
+      padding: 1.65rem;
+      box-shadow: 0 18px 44px rgba(15, 23, 42, 0.045);
+    }
+
+    .sequence-card--pale {
+      background: #ffffff;
+      color: var(--color-ink);
+    }
+
+    .sequence-card--teal {
+      background: #eef2f5;
+      color: var(--color-ink);
+    }
+
+    .sequence-card--deep {
+      background: #334155;
+      color: #ffffff;
+    }
+
+    .sequence-card__num {
+      margin: 0 0 2.8rem;
+      color: #14b8a6;
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+    }
+
+    .sequence-card h3 {
+      margin: 0;
+      color: inherit;
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 850;
+      letter-spacing: 0;
+      line-height: 1.16;
+    }
+
+    .sequence-card p:not(.sequence-card__num) {
+      margin: 1.1rem 0 0;
+      color: color-mix(in srgb, var(--color-ink) 66%, white);
+      font-size: 1rem;
+      line-height: 1.58;
+    }
+
+    .sequence-card--deep p:not(.sequence-card__num) {
+      color: rgba(255, 255, 255, 0.78);
+    }
+
+    .reason-accordion-grid {
+      display: grid;
+      align-items: start;
+      gap: 0.75rem;
+      margin-top: 3.5rem;
+    }
+
+    .reason-accordion {
+      border: 1px solid color-mix(in srgb, var(--color-ink) 12%, white);
+      border-radius: 0.85rem;
+      background: #ffffff;
+      box-shadow: 0 18px 44px rgba(15, 23, 42, 0.05);
+      overflow: hidden;
+    }
+
+    .reason-accordion summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      cursor: pointer;
+      list-style: none;
+      padding: 1.15rem 1.25rem;
+      background: var(--color-slate);
+      color: var(--color-paper);
+      font-family: var(--font-display);
+      font-size: 1.12rem;
+      font-weight: 800;
+      letter-spacing: 0;
+      line-height: 1.18;
+    }
+
+    .reason-accordion summary:focus {
+      outline: none;
+    }
+
+    .reason-accordion summary:focus-visible {
+      outline: 2px solid #14b8a6;
+      outline-offset: -2px;
+    }
+
+    .reason-accordion summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .reason-accordion summary svg {
+      width: 1.1rem;
+      height: 1.1rem;
+      flex: 0 0 auto;
+      fill: none;
+      stroke: #14b8a6;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform 160ms ease;
+    }
+
+    .reason-accordion[open] summary svg {
+      transform: rotate(180deg);
+    }
+
+    .reason-accordion p {
+      margin: 0;
+      padding: 0.95rem 1.25rem 1.25rem;
+      color: var(--color-steel);
+      font-size: 1rem;
+      line-height: 1.58;
+    }
+
+    .mobilisation-title {
+      max-width: 42rem;
+      margin: 0 0 1.25rem;
+      color: #0f766e;
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 2.8vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: 0;
+      line-height: 1.12;
+    }
+
+    .mobilisation-grid {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .mobilisation-card {
+      min-height: 13.8rem;
+      border-radius: 1.35rem;
+      padding: 1.65rem;
+    }
+
+    .mobilisation-card--pale {
+      border: 1px solid color-mix(in srgb, var(--color-ink) 12%, white);
+      background: #ffffff;
+      color: var(--color-ink);
+    }
+
+    .mobilisation-card--teal {
+      border: 1px solid color-mix(in srgb, var(--color-ink) 12%, white);
+      background: #eef2f5;
+      color: var(--color-ink);
+    }
+
+    .mobilisation-card--deep {
+      background: #334155;
+      color: #ffffff;
+    }
+
+    .mobilisation-card__title {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: 0;
+      line-height: 1.35;
+    }
+
+    .mobilisation-card__title span {
+      margin-right: 0.4rem;
+      font-weight: 900;
+    }
+
+    .mobilisation-card__body {
+      margin: 1.15rem 0 0;
+      font-size: 1.05rem;
+      font-weight: 500;
+      line-height: 1.45;
+    }
+
+    .mobilisation-card--pale .mobilisation-card__title {
+      color: var(--color-ink);
+    }
+
+    .mobilisation-card--pale .mobilisation-card__body {
+      color: color-mix(in srgb, var(--color-ink) 66%, white);
+    }
+
+    .mobilisation-card--teal .mobilisation-card__body {
+      color: color-mix(in srgb, var(--color-ink) 66%, white);
+    }
+
+    @media (max-width: 960px) {
+      .home-hero__inner {
+        padding-top: 6.5rem;
+        padding-bottom: 4rem;
+      }
+
+      .home-hero__title {
+        max-width: 12ch;
+      }
+
+      h2 {
+        font-size: 2.65rem;
+        line-height: 1.08;
+      }
+
+      .due-diligence-check {
+        min-height: auto;
+      }
+
+      .sequence-card {
+        min-height: auto;
+      }
+
+      .mobilisation-card {
+        min-height: auto;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .home-split-grid {
+        grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+        gap: 4.5rem;
+        align-items: start;
+      }
+
+      .home-split-grid--hero {
+        grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+        gap: 5rem;
+      }
+
+      .due-diligence-checklist {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+      }
+
+      .reason-accordion-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .sequence-grid {
+        grid-template-columns: 1.1fr 1fr 1fr;
+      }
+
+      .mobilisation-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+  </style>
+</BaseLayout>

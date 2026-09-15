@@ -159,6 +159,16 @@ export async function GET() {
         'Jonny Bowker Jonathan Bowker founder Advanced Analytica AI strategy architecture consultancy Intelligent Business Operating Models IBOM spec-driven AI development governed agentic AI systems MCP architecture'
     },
     {
+      title: 'Fractional Chief AI Officer Services & Interim AI Directorship',
+      description: 'Accountable AI direction from Jonny Bowker.',
+      url: '/company/interim-ai-directorship',
+      type: 'Service',
+      snippet:
+        'Fractional Chief AI Officer services and interim AI directorship for organisations that need accountable AI due diligence, direction, governance, and delivery leadership without a permanent hire.',
+      searchText:
+        'Fractional Chief AI Officer Services Interim AI Directorship fractional CAIO interim AI director Jonny Bowker AI due diligence AI governance operational responsibility Disney PwC Law Society Scotland AI Expert accreditation advisory embedded defined programme'
+    },
+    {
       title: 'Contact',
       description: 'Get in touch with Advanced Analytica.',
       url: '/company/contact',
