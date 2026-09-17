@@ -69,6 +69,18 @@ const products = defineCollection({
   })
 });
 
+const company = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: plainTitle(),
+    description: plainText('description'),
+    url: z.string().optional(),
+    section: z.string().default('Company'),
+    status: z.string().optional(),
+    draft: z.boolean().default(false)
+  })
+});
+
 const caseStudies = defineCollection({
   type: 'content',
   schema: z.object({
@@ -137,6 +149,7 @@ export const collections = {
   resources,
   portalContent,
   products,
+  company,
   'case-studies': caseStudies,
   roles,
   personas
