@@ -190,11 +190,10 @@ const subtleButtonClass =
   'inline-flex items-center justify-center rounded-md border border-white/14 px-4 py-2 text-sm font-semibold text-paper transition hover:border-white/28';
 
 function getCallbackUrlFor(nextPath) {
-  const configuredOrigin = String(import.meta.env.PUBLIC_SITE_URL || '').trim().replace(/\/+$/, '');
-  const hostname = window.location.hostname;
-  const isLocalHost = isLocalHostname(hostname);
-  const baseOrigin = !isLocalHost && configuredOrigin ? configuredOrigin : window.location.origin;
-  const url = new URL('/auth/callback', baseOrigin);
+  // Supabase's PKCE verifier is stored against the browser origin that starts
+  // the flow. Returning to a different configured origin loses that verifier
+  // and the callback fails with "PKCE code verifier not found".
+  const url = new URL('/auth/callback', window.location.origin);
   url.searchParams.set('next', nextPath || defaultPortalPath);
   return url.toString();
 }
