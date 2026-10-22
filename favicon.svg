@@ -1,21 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
-  <defs>
-    <style>
-      .cls-1 {
-        fill: none;
-        stroke: #000;
-        stroke-miterlimit: 10;
-        stroke-width: 200px;
-      }
-    </style>
-  </defs>
-  <g id="Layer_1-2" data-name="Layer 1">
-    <g>
-      <rect x="504.79" y="200.31" width="200" height="200"/>
-      <path class="cls-1" d="M898.12,492.09c0,150.4,1.88,257.51,1.88,407.91H100V100h404.11"/>
-      <rect x="855.24" y="200.46" width="95" height="95"/>
-      <polygon points="854.77 199.52 705.64 199.31 705.64 49.52 855.64 50.93 854.77 199.52"/>
-    </g>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 5" role="img" aria-labelledby="title">
+  <title id="title">Advanced Analytica</title>
+  <path d="M.5.5h1v1h-1zM2.5.5h2v1h-2zM1.5 1.5h1v1h-1zM3.5 1.5h1v2h-1zM.5 2.5h1v1h-1zM.5 3.5h4v1h-4z"/>
 </svg>
