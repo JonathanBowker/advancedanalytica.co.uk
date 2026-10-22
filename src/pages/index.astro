@@ -64,15 +64,16 @@ const pathways = [
       <div class="eyebrow mb-10 text-left font-bold">MOVE FAST. STAY SAFE.</div>
       <div class="home-split-grid home-split-grid--hero">
         <h1 class="home-hero__title">
-          You've adopted AI. <br />Now make it deliver.
+          <span class="home-hero__title-line">You've adopted AI.</span>
+          <span class="home-hero__title-line">Now give it direction.</span>
         </h1>
         <div>
           <p class="home-hero__lead">
             As your independent partner, with no ties to any software, data or
-            AI provider, we support the full life cycle of agentic AI system
-            development, and apply it wherever your business runs on repeatable
-            processes, knowledge, judgement and rules, across every function,
-            team and market you operate in.
+            AI provider, we support the full life cycle of AI system development.
+            We apply it wherever your business runs on repeatable processes,
+            knowledge, judgement and rules, across every function, team and
+            market.
           </p>
           <div class="home-hero__actions">
             <a href="#agentic-consultancy" class="mt-6 home-hero__secondary">
@@ -449,8 +450,6 @@ const pathways = [
     }
 
     .home-hero__title {
-      max-width: 13.1ch;
-
       margin: 0;
 
       font-family: var(--font-display);
@@ -468,6 +467,12 @@ const pathways = [
       -webkit-text-stroke: 0.3px var(--color-ink);
 
       text-wrap: balance;
+    }
+
+    .home-hero__title-line {
+      display: block;
+
+      white-space: nowrap;
     }
 
     .home-hero__lead {
@@ -764,10 +769,6 @@ const pathways = [
         padding-top: 6.5rem;
 
         padding-bottom: 4rem;
-      }
-
-      .home-hero__title {
-        max-width: 12ch;
       }
 
       h2 {
