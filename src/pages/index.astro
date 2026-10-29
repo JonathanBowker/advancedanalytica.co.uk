@@ -47,8 +47,8 @@ const latestCaseStudies = (
     <div class="container-wide home-hero__inner">
       <div class="home-hero__content">
         <h1 class="home-hero__title">
-          <span class="home-hero__title-line">Bring your data to life</span>
-          <span class="home-hero__title-line">and give your business a voice</span>
+          <span class="home-hero__title-line">Bring your data to life.</span>
+          <span class="home-hero__title-line">Give your business a voice.</span>
         </h1>
         <a
           class="home-hero__arrow"
@@ -63,7 +63,7 @@ const latestCaseStudies = (
 
   <section id="home-introduction" class="home-intro scroll-mt-20 bg-[#eef2f5] text-ink">
     <div class="container-wide home-intro__inner">
-      <div class="eyebrow font-bold text-[#0f766e]">MOVE FAST. STAY SAFE.</div>
+      <div class="eyebrow font-bold text-[#14B8A6]">MOVE FAST. STAY SAFE.</div>
       <p class="home-intro__copy">
         As an independent partner, with no ties to any software, data or AI
         provider, we advise, design and engineer AI systems around the way
@@ -654,11 +654,15 @@ const latestCaseStudies = (
     }
 
     .home-hero__content {
+      position: relative;
+
       display: grid;
 
       width: min(70rem, 100%);
 
       justify-items: center;
+
+      margin-inline: auto;
 
       text-align: center;
     }
@@ -694,6 +698,12 @@ const latestCaseStudies = (
     }
 
     .home-hero__arrow {
+      position: absolute;
+
+      top: 100%;
+
+      left: 50%;
+
       display: inline-grid;
 
       width: 3.5rem;
@@ -701,6 +711,8 @@ const latestCaseStudies = (
       height: 3.5rem;
 
       margin-top: clamp(1.75rem, 4vh, 3.5rem);
+
+      transform: translateX(-50%);
 
       place-items: center;
 
@@ -727,7 +739,7 @@ const latestCaseStudies = (
 
       color: #0f766e;
 
-      transform: translateY(3px);
+      transform: translate(-50%, 3px);
     }
 
     .home-intro__inner {

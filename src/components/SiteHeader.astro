@@ -12,6 +12,24 @@ type NavItem = {
 const nav: NavItem[] = [
   { label: 'Home', href: '/' },
   {
+    label: 'Technology',
+    href: '/ibom/',
+    children: [
+      { label: 'IBOM®', href: '/ibom/' },
+      { label: 'Agent in the Room®', href: '/#agent-in-the-room' },
+    ]
+  },
+  {
+    label: 'Services',
+    href: '/services/',
+    children: [
+      { label: 'Data Due Diligence', href: '/services/#data-due-diligence' },
+      { label: 'Agent Skill Building', href: '/services/#agent-skill-building' },
+      { label: 'Our Methodology', href: '/#agentic-consultancy' },
+      { label: 'View all services', href: '/services/' },
+    ]
+  },
+  {
     label: 'Case Studies',
     href: '/case-studies/',
     children: [
@@ -70,7 +88,7 @@ const nav: NavItem[] = [
       />
       <span class="sr-only">Advanced Analytica: IBOM</span>
     </a>
-    <div class="flex items-center gap-3 md:hidden">
+    <div class="flex items-center gap-3 xl:hidden">
       <a
         href={authHref}
         data-header-auth-link
@@ -135,9 +153,9 @@ const nav: NavItem[] = [
         </svg>
       </button>
     </div>
-    <div class="hidden md:flex md:flex-1 md:items-center md:justify-end md:gap-7">
-      <div class="relative flex flex-1 items-center justify-end gap-7">
-        <nav data-main-nav class="flex items-center gap-9 text-[0.96rem] text-white/78 transition-opacity duration-200">
+    <div class="hidden xl:flex xl:flex-1 xl:items-center xl:justify-end xl:gap-4">
+      <div class="relative flex flex-1 items-center justify-end gap-4">
+        <nav data-main-nav class="flex items-center gap-5 text-[0.92rem] text-white/78 transition-opacity duration-200">
           {nav.map((item) =>
             item.children ? (
               <div class="relative group after:absolute after:inset-x-0 after:top-full after:h-4 after:content-[''] after:bg-transparent">
@@ -349,7 +367,7 @@ const nav: NavItem[] = [
   <div
     id="mobile-nav-panel"
     data-mobile-menu-panel
-    class="hidden border-t border-white/15 bg-[#050505] md:hidden"
+    class="hidden border-t border-white/15 bg-[#050505] xl:hidden"
   >
     <nav class="container-nav grid gap-1 py-4 text-base font-medium text-white/78" aria-label="Mobile navigation">
       {nav.map((item) => (
@@ -566,7 +584,7 @@ const nav: NavItem[] = [
     });
 
     window.addEventListener('resize', () => {
-      if (window.matchMedia('(min-width: 768px)').matches) setOpen(false);
+      if (window.matchMedia('(min-width: 1280px)').matches) setOpen(false);
     });
   })();
 </script>
