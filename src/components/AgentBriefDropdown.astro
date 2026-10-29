@@ -4,9 +4,7 @@ const prompt = `Read from ${briefUrl} and follow the brief so I can ask question
 const encodedPrompt = encodeURIComponent(prompt);
 const claudeUrl = `https://claude.ai/new?q=${encodedPrompt}`;
 const chatGptUrl = `https://chatgpt.com/?hint=search&q=${encodedPrompt}`;
-const codexUrl = `codex://threads/new?${new URLSearchParams({ prompt }).toString()}`;
-const claudeCodeUrl = `claude-cli://open?q=${encodedPrompt}`;
-const cursorUrl = `cursor://anysphere.cursor-deeplink/prompt?text=${encodedPrompt}`;
+const perplexityUrl = `https://www.perplexity.ai/search/new?q=${encodedPrompt}`;
 const {
   label = "YOUR AGENT",
   action = "copy",
@@ -23,13 +21,6 @@ const {
   <div class:list={["agent-brief__control", variant === "primary" && "agent-brief__control--primary"]}>
     <button class="agent-brief__copy" type="button" data-agent-brief-copy>
       <span data-agent-brief-label data-default-label={label}>{label}</span>
-      <span class="agent-brief__logos" aria-hidden="true">
-        <img src="/images/logos/claude.svg" alt="" />
-        <img src="/images/logos/openai.svg" alt="" />
-        <svg class="agent-brief__cursor" viewBox="0 0 24 24">
-          <path d="M11.5.13 1.89 5.68a.84.84 0 0 0-.42.72v11.19c0 .3.16.58.42.73l9.61 5.55a1 1 0 0 0 1 0l9.61-5.55a.84.84 0 0 0 .42-.73V6.4a.84.84 0 0 0-.42-.72L12.5.13a1 1 0 0 0-1 0M2.66 6.34h18.55c.26 0 .43.29.29.51l-9.27 16.07c-.06.1-.23.06-.23-.06V12.34a.59.59 0 0 0-.3-.51L2.6 6.57c-.11-.06-.06-.23.06-.23"></path>
-        </svg>
-      </span>
     </button>
 
     <details class="agent-brief__details">
@@ -41,30 +32,21 @@ const {
       <div class="agent-brief__menu">
         <a href={claudeUrl} target="_blank" rel="noreferrer">
           <img src="/images/logos/claude.svg" alt="" />
-          <span>OPEN IN CLAUDE</span><span aria-hidden="true">↗</span>
+          <span>CLAUDE</span><span aria-hidden="true">↗</span>
         </a>
         <a href={chatGptUrl} target="_blank" rel="noreferrer">
           <img src="/images/logos/openai.svg" alt="" />
-          <span>OPEN IN CHATGPT</span><span aria-hidden="true">↗</span>
+          <span>GPT</span><span aria-hidden="true">↗</span>
         </a>
-        <div class="agent-brief__divider"></div>
-        <a href={claudeCodeUrl}>
-          <img src="/images/logos/claude.svg" alt="" />
-          <span>OPEN IN CLAUDE CODE</span><span aria-hidden="true">↗</span>
-        </a>
-        <a href={codexUrl}>
-          <img src="/images/logos/openai.svg" alt="" />
-          <span>OPEN IN CODEX</span><span aria-hidden="true">↗</span>
-        </a>
-        <a href={cursorUrl}>
-          <svg class="agent-brief__cursor" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M11.5.13 1.89 5.68a.84.84 0 0 0-.42.72v11.19c0 .3.16.58.42.73l9.61 5.55a1 1 0 0 0 1 0l9.61-5.55a.84.84 0 0 0 .42-.73V6.4a.84.84 0 0 0-.42-.72L12.5.13a1 1 0 0 0-1 0M2.66 6.34h18.55c.26 0 .43.29.29.51l-9.27 16.07c-.06.1-.23.06-.23-.06V12.34a.59.59 0 0 0-.3-.51L2.6 6.57c-.11-.06-.06-.23.06-.23"></path>
+        <a href={perplexityUrl} target="_blank" rel="noreferrer">
+          <svg class="agent-brief__perplexity-mark" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M22.398 7.09h-2.31V.068l-7.51 6.354V.158h-1.156v6.196L4.49 0v7.09H1.602v10.397H4.49V24l6.933-6.36v6.201h1.155v-6.047l6.932 6.181v-6.488h2.888zm-3.466-4.531v4.53h-5.355zm-13.286.067l4.869 4.464h-4.87zM2.758 16.332V8.245h7.847L4.49 14.36v1.972zm2.888 5.04v-6.534l5.776-5.776v7.011zm12.708.025l-5.776-5.15V9.061l5.776 5.776zm2.889-5.065H19.51V14.36l-6.115-6.115h7.848z" />
           </svg>
-          <span>OPEN IN CURSOR</span><span aria-hidden="true">↗</span>
+          <span>PERPLEXITY</span><span aria-hidden="true">↗</span>
         </a>
         <div class="agent-brief__divider"></div>
         <a href="/agents/advanced-analytica.md" target="_blank" rel="noreferrer">
-          <span>VIEW AGENT BRIEF</span><span aria-hidden="true">↗</span>
+          <span>VIEW MD</span><span aria-hidden="true">↗</span>
         </a>
       </div>
     </details>
@@ -77,16 +59,10 @@ const {
     if (!(element instanceof HTMLElement)) return;
     const button = element.querySelector("[data-agent-brief-copy]");
     const label = element.querySelector("[data-agent-brief-label]");
-    const details = element.querySelector(".agent-brief__details");
     const status = element.querySelector(".agent-brief__status");
     if (!(button instanceof HTMLButtonElement) || !(label instanceof HTMLElement)) return;
 
     button.addEventListener("click", async () => {
-      if (element.dataset.agentBriefAction === "menu") {
-        if (details instanceof HTMLDetailsElement) details.open = !details.open;
-        return;
-      }
-
       try {
         await navigator.clipboard.writeText(element.dataset.copyPrompt || "");
         label.textContent = "PROMPT COPIED";
@@ -119,17 +95,18 @@ const {
   }
   .agent-brief__copy {
     display: flex; align-items: center; gap: 0.65rem; padding: 0.85rem 1rem 0.85rem 1.15rem;
+    border-radius: calc(0.875rem - 1.5px) 0 0 calc(0.875rem - 1.5px);
     font-family: var(--font-display); font-size: 0.875rem; font-weight: 700;
     letter-spacing: 0.02em; white-space: nowrap;
   }
-  .agent-brief__logos { display: inline-flex; align-items: center; gap: 0.42rem; }
-  .agent-brief__logos img, .agent-brief__logos svg, .agent-brief__menu img, .agent-brief__menu svg {
+  .agent-brief__menu img, .agent-brief__menu svg {
     width: 1rem; height: 1rem; flex: 0 0 auto; object-fit: contain;
   }
-  .agent-brief__cursor { fill: currentColor; }
+  .agent-brief__perplexity-mark { color: #6b7280; fill: currentColor; }
   .agent-brief__details { position: relative; display: flex; border-left: 1px solid rgba(11,18,32,.15); }
   .agent-brief__details summary {
     display: grid; width: 3.25rem; height: 100%; min-height: 3.5rem;
+    border-radius: 0 calc(0.875rem - 1.5px) calc(0.875rem - 1.5px) 0;
     list-style: none; place-items: center;
   }
   .agent-brief__details summary::-webkit-details-marker { display: none; }

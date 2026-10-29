@@ -85,7 +85,7 @@ const latestCaseStudies = (
           <span>OUR CONSULTANCY</span>
           <span aria-hidden="true">↓</span>
         </a>
-        <AgentBriefDropdown />
+        <AgentBriefDropdown label="USE YOUR AGENT" />
       </div>
     </div>
   </section>
@@ -146,13 +146,14 @@ const latestCaseStudies = (
               your rules.
             </p>
           </div>
-          <div class="mt-8">
+          <div class="mt-8 flex flex-wrap items-center gap-4">
             <a
               href="/company/contact/"
               class="home-hero__button"
             >
               TALK TO US
             </a>
+            <AgentBriefDropdown label="TALK TO AI" action="menu" variant="primary" />
           </div>
         </div>
         <a
@@ -387,8 +388,9 @@ const latestCaseStudies = (
         </div>
       </div>
 
-      <div class="mt-12 text-center">
+      <div class="mt-12 flex flex-wrap items-center justify-center gap-4">
         <a href="/company/contact/" class="home-hero__button">TALK TO US</a>
+        <AgentBriefDropdown label="TALK TO AI" action="menu" variant="primary" />
       </div>
     </div>
   </section>
@@ -424,6 +426,7 @@ const latestCaseStudies = (
       <div class="mt-12 flex flex-wrap items-center justify-center gap-4">
         <a href="/case-studies/" class="home-outline-cta">CASE STUDIES</a>
         <a href="/company/contact/" class="home-hero__button">TALK TO US</a>
+        <AgentBriefDropdown label="TALK TO AI" action="menu" variant="primary" />
       </div>
     </div>
   </section>
@@ -446,6 +449,7 @@ const latestCaseStudies = (
       <div class="mt-12 flex flex-wrap items-center justify-center gap-4">
         <a href="/opinions/" class="home-outline-cta">MORE THINKING</a>
         <a href="/company/contact/" class="home-hero__button">TALK TO US</a>
+        <AgentBriefDropdown label="TALK TO AI" action="menu" variant="primary" />
       </div>
     </div>
   </section>
