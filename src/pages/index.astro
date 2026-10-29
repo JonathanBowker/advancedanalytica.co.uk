@@ -59,7 +59,22 @@ const pathways = [
 ---
 
 <BaseLayout title={title} description={description} page={page}>
-  <section class="home-hero bg-paper text-ink">
+  <section class="home-hero text-ink">
+    <video
+      class="home-hero__video"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      poster="https://actai.studio/images/hero-porcelain-firefly.jpg"
+      aria-hidden="true"
+    >
+      <source
+        src="https://actai.studio/videos/hero-porcelain-firefly.mp4"
+        type="video/mp4"
+      />
+    </video>
     <div class="container-wide home-hero__inner">
       <div class="eyebrow mb-10 text-left font-bold">MOVE FAST. STAY SAFE.</div>
       <div class="home-split-grid home-split-grid--hero">
@@ -606,10 +621,40 @@ const pathways = [
     }
 
     .home-hero {
+      position: relative;
+
+      isolation: isolate;
+
+      overflow: hidden;
+
+      background: #eef2f5;
+
       border-bottom: 1px solid color-mix(in srgb, var(--color-ink) 10%, white);
     }
 
+    .home-hero__video {
+      position: absolute;
+
+      inset: 0;
+
+      width: 100%;
+
+      height: 100%;
+    }
+
+    .home-hero__video {
+      z-index: 0;
+
+      object-fit: cover;
+
+      object-position: 50% 36%;
+    }
+
     .home-hero__inner {
+      position: relative;
+
+      z-index: 2;
+
       padding-top: 7rem;
 
       padding-bottom: 5rem;
@@ -628,9 +673,13 @@ const pathways = [
 
       line-height: 1.12;
 
-      color: var(--color-ink);
+      color: #ffffff;
 
-      -webkit-text-stroke: 0.3px var(--color-ink);
+      text-shadow:
+        0 2px 3px rgba(0, 0, 0, 0.9),
+        0 7px 24px rgba(0, 0, 0, 0.58);
+
+      -webkit-text-stroke: 0.3px #ffffff;
 
       text-wrap: balance;
     }
@@ -654,9 +703,30 @@ const pathways = [
 
       line-height: 1.625;
 
-      color: color-mix(in srgb, var(--color-ink) 62%, white);
+      color: #ffffff;
+
+      text-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.95),
+        0 5px 16px rgba(0, 0, 0, 0.66);
 
       text-wrap: pretty;
+    }
+
+    .home-hero .eyebrow,
+    .home-hero .home-hero__lead strong {
+      color: #ffffff;
+
+      text-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.95),
+        0 5px 16px rgba(0, 0, 0, 0.66);
+    }
+
+    .home-hero .home-hero__secondary {
+      border-color: #ffffff;
+
+      background: #0f766e;
+
+      color: #ffffff;
     }
 
     .home-hero__actions {
@@ -931,6 +1001,10 @@ const pathways = [
     }
 
     @media (max-width: 960px) {
+      .home-hero__video {
+        object-position: 58% 34%;
+      }
+
       .home-hero__inner {
         padding-top: 6.5rem;
 
@@ -941,6 +1015,12 @@ const pathways = [
         font-size: 2.65rem;
 
         line-height: 1.08;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .home-hero__video {
+        display: none;
       }
     }
 
