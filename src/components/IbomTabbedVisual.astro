@@ -245,7 +245,7 @@ const outputConnections = [
           <span><img class="ibom-tabs__model-logo--openai" src="/images/logos/openai.svg" alt="" width="24" height="24" />OpenAI</span>
           <span><img class="ibom-tabs__model-logo--claude" src="/images/logos/claude.svg" alt="" width="24" height="24" />Anthropic</span>
         </div>
-        <h3>Agent in the room®</h3>
+        <h3>Agent in the room<sup>®</sup></h3>
         <p>A question in. A governed action out, with evidence and controls attached.</p>
         <div class="ibom-tabs__output-steps">PLAN → CHECK → ACT → ASSURE</div>
       </article>
@@ -656,6 +656,15 @@ const outputConnections = [
     overflow: hidden;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+  }
+
+  .ibom-tabs__output-card h3 sup {
+    margin-left: 0.12em;
+    font-size: 0.3em;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0;
+    vertical-align: super;
   }
 
   .ibom-tabs__output-card p {
