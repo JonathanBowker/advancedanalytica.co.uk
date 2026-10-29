@@ -239,7 +239,11 @@ const outputConnections = [
         </div>
       </article>
 
-      <article class="ibom-tabs__output-card">
+      <a
+        href="#agent-in-the-room"
+        class="ibom-tabs__output-card ibom-tabs__output-card--link"
+        aria-label="Go to the Agent in the Room section"
+      >
         <span class="ibom-tabs__output-kicker">KNOWLEDGE IN OPERATION</span>
         <div class="ibom-tabs__models" aria-label="Compatible with OpenAI and Anthropic">
           <span><img class="ibom-tabs__model-logo--openai" src="/images/logos/openai.svg" alt="" width="24" height="24" />OpenAI</span>
@@ -248,7 +252,7 @@ const outputConnections = [
         <h3>Agent in the room<sup>®</sup></h3>
         <p>A question spoken or typed. A governed action out, with evidence and controls attached.</p>
         <div class="ibom-tabs__output-steps">PLAN → CHECK → ACT → ASSURE</div>
-      </article>
+      </a>
     </div>
   </div>
 
@@ -636,6 +640,21 @@ const outputConnections = [
 
   .ibom-tabs__output-card--primary {
     border-color: rgba(20, 184, 166, 0.42);
+  }
+
+  .ibom-tabs__output-card--link {
+    color: inherit;
+    text-decoration: none;
+    transition:
+      border-color 180ms ease,
+      background-color 180ms ease;
+  }
+
+  .ibom-tabs__output-card--link:hover,
+  .ibom-tabs__output-card--link:focus-visible {
+    border-color: rgba(20, 184, 166, 0.72);
+    background: rgba(20, 184, 166, 0.08);
+    outline: none;
   }
 
   .ibom-tabs__output-kicker {
