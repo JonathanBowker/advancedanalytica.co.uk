@@ -78,7 +78,8 @@ const pathways = [
     <div class="container-wide home-hero__inner">
       <div class="home-hero__content">
         <h1 class="home-hero__title">
-          Bring your data to life and give your business a voice
+          <span class="home-hero__title-line">Bring your data to life</span>
+          <span class="home-hero__title-line">and give your business a voice</span>
         </h1>
         <a
           class="home-hero__arrow"
@@ -695,7 +696,7 @@ const pathways = [
 
       font-family: "Plus Jakarta Sans", var(--font-display);
 
-      font-size: clamp(3.25rem, 6vw, 6.5rem);
+      font-size: clamp(2.75rem, 5vw, 5.5rem);
 
       font-weight: 800;
 
@@ -1082,9 +1083,13 @@ const pathways = [
       .home-hero__title {
         max-width: 9ch;
 
-        font-size: clamp(3rem, 11vw, 4.5rem);
+        font-size: clamp(2.5rem, 9vw, 3.75rem);
 
         overflow-wrap: anywhere;
+      }
+
+      .home-hero__title-line {
+        white-space: normal;
       }
 
       .home-intro__inner {
