@@ -1,7 +1,12 @@
 ---
 const briefUrl = "https://advancedanalytica.co.uk/agents/advanced-analytica.md";
-const prompt = `Fetch ${briefUrl} (use curl if you have no fetch tool) and follow it to understand Advanced Analytica before answering questions about the business.`;
+const prompt = `Read from ${briefUrl} and follow the brief so I can ask questions about Advanced Analytica.`;
 const encodedPrompt = encodeURIComponent(prompt);
+const claudeUrl = `https://claude.ai/new?q=${encodedPrompt}`;
+const chatGptUrl = `https://chatgpt.com/?hint=search&q=${encodedPrompt}`;
+const codexUrl = `codex://threads/new?${new URLSearchParams({ prompt }).toString()}`;
+const claudeCodeUrl = `claude-cli://open?q=${encodedPrompt}`;
+const cursorUrl = `cursor://anysphere.cursor-deeplink/prompt?text=${encodedPrompt}`;
 ---
 
 <div class="agent-brief" data-agent-brief data-copy-prompt={prompt}>
@@ -24,15 +29,24 @@ const encodedPrompt = encodeURIComponent(prompt);
         </svg>
       </summary>
       <div class="agent-brief__menu">
-        <a href={`claude-cli://open?q=${encodedPrompt}`}>
+        <a href={claudeUrl} target="_blank" rel="noreferrer">
+          <img src="/images/logos/claude.svg" alt="" />
+          <span>OPEN IN CLAUDE</span><span aria-hidden="true">↗</span>
+        </a>
+        <a href={chatGptUrl} target="_blank" rel="noreferrer">
+          <img src="/images/logos/openai.svg" alt="" />
+          <span>OPEN IN CHATGPT</span><span aria-hidden="true">↗</span>
+        </a>
+        <div class="agent-brief__divider"></div>
+        <a href={claudeCodeUrl}>
           <img src="/images/logos/claude.svg" alt="" />
           <span>OPEN IN CLAUDE CODE</span><span aria-hidden="true">↗</span>
         </a>
-        <a href={`codex://new?prompt=${encodedPrompt}`}>
+        <a href={codexUrl}>
           <img src="/images/logos/openai.svg" alt="" />
           <span>OPEN IN CODEX</span><span aria-hidden="true">↗</span>
         </a>
-        <a href={`cursor://anysphere.cursor-deeplink/prompt?text=${encodedPrompt}`}>
+        <a href={cursorUrl}>
           <svg class="agent-brief__cursor" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M11.5.13 1.89 5.68a.84.84 0 0 0-.42.72v11.19c0 .3.16.58.42.73l9.61 5.55a1 1 0 0 0 1 0l9.61-5.55a.84.84 0 0 0 .42-.73V6.4a.84.84 0 0 0-.42-.72L12.5.13a1 1 0 0 0-1 0M2.66 6.34h18.55c.26 0 .43.29.29.51l-9.27 16.07c-.06.1-.23.06-.23-.06V12.34a.59.59 0 0 0-.3-.51L2.6 6.57c-.11-.06-.06-.23.06-.23"></path>
           </svg>
