@@ -1,9 +1,19 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import AgentBriefDropdown from '../../components/AgentBriefDropdown.astro';
 import { SITE_URL } from '../../lib/seo/site';
 
-const title = 'Services';
-const description = 'Data Due Diligence and Agent Skill Building for governed AI operations.';
+const title = 'Data Due Diligence and Agent Skill Building | Advanced Analytica';
+const description = 'We examine and prepare your business data, then build, test and deploy the agent skills that put it to work.';
+
+const methodology = [
+  { step: 'Step 1', title: 'Business Understanding', body: 'We define the goals, decisions, workflows, people and constraints that determine where the work can create measurable value.' },
+  { step: 'Step 2', title: 'Data Understanding', body: 'We map the data, knowledge, policies and systems behind each workflow, including ownership, access, quality and gaps.' },
+  { step: 'Step 3', title: 'Data Preparation', body: 'We collect, clean, structure and govern approved sources, attaching permissions, provenance and controls before agents use them.' },
+  { step: 'Step 4', title: 'IBOM Modelling', body: 'We model the agents, skills, workflows, tools and controls required to turn prepared data into dependable business operations.' },
+  { step: 'Step 5', title: 'IBOM Evaluation', body: 'We test outputs, decisions and actions against agreed measures for performance, quality, safety and governance before live use.' },
+  { step: 'Step 6', title: 'IBOM Deployment', body: 'We introduce agents into live workflows, monitor performance and improve them as your data, knowledge and needs change.' }
+];
 
 const page = {
   title,
@@ -15,32 +25,301 @@ const page = {
   ]
 };
 ---
+
 <BaseLayout title={title} description={description} page={page}>
-  <section class="container-wide py-16">
-    <div class="eyebrow">Services</div>
-    <h1 class="mt-4 text-4xl font-semibold text-ink">Our consultancy services</h1>
-    <p class="mt-4 text-base text-steel">
-      We prepare your business data and build the governed skills and agents that put it to work.
-    </p>
-  </section>
-  <section class="container-wide pb-20">
-    <div class="grid gap-6 lg:grid-cols-2">
-      <article id="data-due-diligence" class="rounded-xl border border-[#14B8A6]/35 bg-[#f0fbf8] p-6 shadow-outline">
-        <div class="text-xs uppercase tracking-[0.2em] text-[#0F766E]">First Step</div>
-        <h2 class="mt-3 text-2xl font-semibold text-ink">Data Due Diligence</h2>
-        <p class="mt-3 text-sm leading-relaxed text-steel">
-          We identify, assess, prepare, and govern the data, knowledge, policies,
-          systems, and workflows your people and agents need.
+  <section class="services-hero bg-[#eef2f5] text-ink">
+    <div class="services-hero__glow services-hero__glow--one" aria-hidden="true"></div>
+    <div class="services-hero__glow services-hero__glow--two" aria-hidden="true"></div>
+    <div class="container-wide services-hero__inner">
+      <div data-reveal>
+        <div class="eyebrow text-[#14B8A6]">Our Consultancy</div>
+        <h1 class="mt-6 max-w-5xl text-5xl font-black leading-[0.98] tracking-tight text-ink md:text-7xl">
+          Prepare the data. Build the agents. Put both to work.
+        </h1>
+      </div>
+      <div class="services-hero__copy" data-reveal>
+        <p>
+          We start with the business need and the data behind it. We examine,
+          prepare and bring that data into IBOM before we build any agent.
         </p>
-      </article>
-      <article id="agent-skill-building" class="rounded-xl border border-fog bg-surface p-6">
-        <div class="text-xs uppercase tracking-[0.2em] text-steel">Build and Deploy</div>
-        <h2 class="mt-3 text-2xl font-semibold text-ink">Agent Skill Building</h2>
-        <p class="mt-3 text-sm leading-relaxed text-steel">
-          We configure, test, package, and deploy the skills and agents required
-          to operate with your approved data, policies, tools, and controls.
+        <p class="mt-6">
+          Then we build, test and deploy the skills required to use it safely
+          inside your real workflows.
         </p>
-      </article>
+        <a href="#service-journey" class="services-down-link mt-8">
+          <span>Explore the journey</span><span aria-hidden="true">↓</span>
+        </a>
+      </div>
     </div>
   </section>
+
+  <section id="service-journey" class="scroll-mt-24 bg-slate text-paper">
+    <div class="container-wide py-20 md:py-24">
+      <div class="mx-auto max-w-4xl text-center" data-reveal>
+        <div class="eyebrow text-[#5eead4]">One Connected Journey</div>
+        <h2 class="mt-5 text-4xl font-extrabold tracking-tight md:text-6xl">Data comes first. Agents come after.</h2>
+        <p class="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-paper/72 md:text-xl">
+          The two services work together. Due diligence establishes what the
+          business knows. Skill building turns that knowledge into controlled action.
+        </p>
+      </div>
+
+      <ol class="services-flow mt-14" aria-label="Service journey">
+        <li data-reveal><span>01</span><strong>Examine</strong><p>Understand the need, sources, ownership, quality and risk.</p></li>
+        <li data-reveal><span>02</span><strong>Prepare</strong><p>Clean, structure and govern approved data for IBOM.</p></li>
+        <li data-reveal><span>03</span><strong>Build</strong><p>Configure the agent skills, tools, rules and workflows.</p></li>
+        <li data-reveal><span>04</span><strong>Operate</strong><p>Test, deploy, monitor and improve work in controlled use.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="data-due-diligence" class="scroll-mt-24 bg-paper text-ink">
+    <div class="container-wide services-chapter">
+      <div class="services-chapter__number" aria-hidden="true">01</div>
+      <div class="services-chapter__intro" data-reveal>
+        <div class="eyebrow text-[#14B8A6]">Data Due Diligence</div>
+        <h2 class="mt-5 text-4xl font-extrabold tracking-tight md:text-6xl">Assure quality of your data before AI uses it.</h2>
+        <p class="mt-7 max-w-2xl text-lg leading-relaxed text-steel md:text-xl">
+          We examine the data itself, not only the story around it. We map what
+          exists, find the gaps and prepare approved sources for IBOM.
+        </p>
+      </div>
+      <div class="services-detail-grid" data-reveal>
+        <article>
+          <h3>What we examine</h3>
+          <ul>
+            <li>Systems, stores, sources and named owners</li>
+            <li>Structure, quality, provenance and permissions</li>
+            <li>Policies, workflows and operational dependencies</li>
+            <li>Privacy, security and integrity risks inside the data</li>
+          </ul>
+        </article>
+        <article>
+          <h3>What you receive</h3>
+          <ul>
+            <li>A clear inventory of approved business sources</li>
+            <li>Auditable findings, ownership and remediation priorities</li>
+            <li>Prepared data with boundaries and controls attached</li>
+            <li>A defined route for each source to enter IBOM</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="agent-skill-building" class="scroll-mt-24 bg-[#eef2f5] text-ink">
+    <div class="container-wide services-chapter services-chapter--reverse">
+      <div class="services-chapter__number" aria-hidden="true">02</div>
+      <div class="services-chapter__intro" data-reveal>
+        <div class="eyebrow text-[#14B8A6]">Agent Skill Building</div>
+        <h2 class="mt-5 text-4xl font-extrabold tracking-tight md:text-6xl">Give agents the skills they need to work.</h2>
+        <p class="mt-7 max-w-2xl text-lg leading-relaxed text-steel md:text-xl">
+          Once the data is ready, we define each agent's responsibility and
+          configure the skills it needs from our Agent Skill Bench.
+        </p>
+      </div>
+      <div class="services-detail-grid" data-reveal>
+        <article>
+          <h3>What we build</h3>
+          <ul>
+            <li>Skills that collect, transform and retrieve data</li>
+            <li>Workflows that use approved tools and business rules</li>
+            <li>Controls, permissions and escalation routes</li>
+            <li>Quality assurance around outputs, decisions and actions</li>
+          </ul>
+        </article>
+        <article>
+          <h3>What you receive</h3>
+          <ul>
+            <li>Defined agent roles, skills and operating boundaries</li>
+            <li>Configured connections to approved data and tools</li>
+            <li>Test evidence against agreed operating measures</li>
+            <li>Packaged agents ready for controlled deployment</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="services-handover bg-paper text-ink">
+    <div class="container-wide py-16 md:py-20">
+      <div class="services-handover__line" data-reveal>
+        <span>Prepared data</span><span aria-hidden="true">→</span>
+        <span>IBOM®</span><span aria-hidden="true">→</span>
+        <span>Agent skills</span><span aria-hidden="true">→</span>
+        <span>Controlled work</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="methodology" class="scroll-mt-24 bg-[#eef2f5] text-ink">
+    <div class="container-wide py-20 md:py-24">
+      <div class="grid gap-8 lg:grid-cols-[0.75fr_1.25fr] lg:items-end" data-reveal>
+        <div>
+          <div class="eyebrow text-[#14B8A6]">Our Methodology</div>
+          <h2 class="mt-5 text-4xl font-extrabold tracking-tight md:text-6xl">A proven route from need to operation.</h2>
+        </div>
+        <p class="max-w-2xl text-lg leading-relaxed text-steel md:text-xl">
+          Each stage produces the evidence and decisions needed for the next.
+          Nothing enters live work before its data, skills and controls are ready.
+        </p>
+      </div>
+
+      <div class="methodology-carousel mt-12" data-methodology-carousel data-reveal>
+        <div class="methodology-track" data-methodology-track>
+          {methodology.map((item) => (
+            <article class="methodology-card">
+              <div class="methodology-step">{item.step}</div>
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
+            </article>
+          ))}
+        </div>
+        <div class="methodology-controls" aria-label="Methodology carousel controls">
+          <button type="button" data-methodology-previous aria-label="Show previous methodology stage">←</button>
+          <button type="button" data-methodology-next aria-label="Show next methodology stage">→</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="services-closing relative z-20 overflow-visible bg-slate text-paper">
+    <div class="container-wide py-20 md:py-24">
+      <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+        <div data-reveal>
+          <div class="eyebrow text-[#5eead4]">Start The Conversation</div>
+          <h2 class="mt-5 text-4xl font-extrabold tracking-tight md:text-6xl">Start with the work that matters.</h2>
+        </div>
+        <div class="relative z-30 max-w-2xl text-lg leading-relaxed text-paper/75 md:text-xl" data-reveal>
+          <p>We find where the value is, identify the data behind it and show what must be done to get things ready before an agent acts.</p>
+          <p class="mt-6 font-bold text-paper">Talk to us. We'll talk to your AI.</p>
+          <div class="mt-7 flex flex-wrap items-center gap-5">
+            <AgentBriefDropdown label="Talk to our AI" action="menu" variant="primary" />
+            <span class="text-paper/55">or</span>
+            <a class="home-hero__button" href="/company/contact/">Talk to a person</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .services-hero { position: relative; isolation: isolate; overflow: hidden; }
+    .services-hero__inner { position: relative; z-index: 1; display: grid; gap: 3rem; min-height: 42rem; align-items: center; padding-block: clamp(6rem, 12vw, 10rem); }
+    .services-hero__copy { max-width: 42rem; font-size: clamp(1.15rem, 1.8vw, 1.45rem); line-height: 1.58; color: var(--color-steel); }
+    .services-hero__glow { position: absolute; z-index: 0; border-radius: 999px; opacity: .7; }
+    .services-hero__glow--one { width: 34rem; height: 34rem; right: -10rem; top: -14rem; background: radial-gradient(circle, rgba(20,184,166,.24), transparent 68%); }
+    .services-hero__glow--two { width: 24rem; height: 24rem; left: -8rem; bottom: -10rem; border: 1px solid rgba(20,184,166,.25); }
+    .services-down-link { display: inline-flex; align-items: center; gap: .75rem; color: #0f766e; font-weight: 750; text-decoration: none; }
+    .services-down-link span:last-child { transition: transform 180ms ease; }
+    .services-down-link:hover span:last-child { transform: translateY(4px); }
+
+    .services-flow { display: grid; gap: 1px; overflow: hidden; border: 1px solid rgba(255,255,255,.13); border-radius: 1rem; background: rgba(255,255,255,.13); }
+    .services-flow li { min-height: 13rem; padding: 1.6rem; background: #0b1220; }
+    .services-flow li > span { color: #5eead4; font-size: .72rem; font-weight: 800; letter-spacing: .18em; }
+    .services-flow strong { display: block; margin-top: 1.8rem; font-family: var(--font-display); font-size: 1.6rem; }
+    .services-flow p { margin-top: .8rem; color: rgba(243,240,232,.68); line-height: 1.55; }
+
+    .services-chapter { position: relative; display: grid; gap: 3rem; padding-block: clamp(5rem, 10vw, 9rem); }
+    .services-chapter__number { position: absolute; top: 2rem; right: 0; color: rgba(20,184,166,.09); font-family: var(--font-display); font-size: clamp(7rem, 18vw, 15rem); font-weight: 900; line-height: 1; pointer-events: none; }
+    .services-detail-grid { position: relative; display: grid; gap: 1.25rem; }
+    .services-detail-grid article { border: 1px solid rgba(11,18,32,.1); border-radius: 1rem; background: rgba(255,255,255,.72); padding: clamp(1.5rem, 3vw, 2.25rem); box-shadow: 0 18px 40px rgba(15,23,42,.05); }
+    .services-detail-grid h3 { font-family: var(--font-display); font-size: 1.35rem; font-weight: 800; color: var(--color-ink); }
+    .services-detail-grid ul { display: grid; gap: .9rem; margin-top: 1.25rem; color: var(--color-steel); }
+    .services-detail-grid li { position: relative; padding-left: 1.35rem; line-height: 1.5; }
+    .services-detail-grid li::before { content: ''; position: absolute; left: 0; top: .65em; width: .42rem; height: .42rem; border-radius: 999px; background: #14b8a6; }
+
+    .services-handover__line { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1rem 1.4rem; font-family: var(--font-display); font-size: clamp(1.1rem, 2vw, 1.55rem); font-weight: 800; text-align: center; }
+    .services-handover__line span:nth-child(even) { color: #14b8a6; }
+
+    .methodology-carousel { min-width: 0; }
+    .methodology-track { display: flex; gap: 1.5rem; overflow-x: auto; padding: .25rem .1rem 1.25rem; scroll-behavior: smooth; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-inline: contain; }
+    .methodology-track::-webkit-scrollbar { display: none; }
+    .methodology-card { position: relative; flex: 0 0 100%; min-height: 18rem; overflow: hidden; border: 1px solid rgba(11,18,32,.11); border-radius: 1rem; background: var(--color-paper); padding: clamp(1.6rem, 3vw, 2.25rem); box-shadow: 0 14px 34px rgba(15,23,42,.05); scroll-snap-align: start; transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease; }
+    .methodology-card::before { content: ''; position: absolute; inset: 0 0 auto; height: 3px; background: #14b8a6; }
+    .methodology-step { color: #0f766e; font-size: .72rem; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; }
+    .methodology-card h3 { margin-top: 1rem; font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; color: var(--color-ink); }
+    .methodology-card p { margin-top: 1.25rem; color: var(--color-steel); font-size: 1.05rem; line-height: 1.65; }
+    .methodology-card:hover { border-color: rgba(20,184,166,.45); transform: translateY(-3px); box-shadow: 0 20px 46px rgba(15,23,42,.09); }
+    .methodology-controls { display: flex; justify-content: flex-end; gap: .75rem; margin-top: 1rem; }
+    .methodology-controls button { display: inline-grid; width: 2.8rem; height: 2.8rem; place-items: center; border: 1px solid rgba(20,184,166,.55); border-radius: 999px; background: transparent; color: #0f766e; font-size: 1.15rem; transition: border-color 180ms ease, background 180ms ease, color 180ms ease; }
+    .methodology-controls button:hover, .methodology-controls button:focus-visible { border-color: #14b8a6; background: #14b8a6; color: #f3f0e8; outline: none; }
+
+    @media (min-width: 768px) {
+      .services-flow { grid-template-columns: repeat(4, 1fr); }
+      .services-detail-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .methodology-card { flex-basis: calc((100% - 1.5rem) / 2); }
+    }
+    @media (min-width: 1024px) {
+      .services-hero__inner { grid-template-columns: minmax(0, 1.1fr) minmax(22rem, .7fr); gap: 5rem; }
+      .services-chapter { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); align-items: start; gap: 5rem; }
+      .services-chapter--reverse .services-chapter__intro { order: 2; }
+      .services-chapter--reverse .services-detail-grid { order: 1; }
+      .methodology-card { flex-basis: calc((100% - 3rem) / 3); }
+    }
+
+    :global(.services-motion-ready) [data-reveal] { opacity: 0; transform: translateY(1.4rem); transition: opacity 620ms ease, transform 620ms cubic-bezier(.2,.75,.25,1); }
+    :global(.services-motion-ready) [data-reveal].is-visible { opacity: 1; transform: translateY(0); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .services-hero__glow { display: none; }
+      .methodology-track { scroll-behavior: auto; }
+      .methodology-card, .services-down-link span:last-child { transition: none; }
+      .methodology-card:hover { transform: none; }
+      :global(.services-motion-ready) [data-reveal] { opacity: 1; transform: none; transition: none; }
+    }
+  </style>
+
+  <script>
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.documentElement.classList.add('services-motion-ready');
+
+    const revealItems = document.querySelectorAll('[data-reveal]');
+    if (reducedMotion || !('IntersectionObserver' in window)) {
+      revealItems.forEach((item) => item.classList.add('is-visible'));
+    } else {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.14, rootMargin: '0px 0px -8% 0px' });
+      revealItems.forEach((item) => observer.observe(item));
+    }
+
+    document.querySelectorAll('[data-methodology-carousel]').forEach((carousel) => {
+      if (!(carousel instanceof HTMLElement)) return;
+      const track = carousel.querySelector('[data-methodology-track]');
+      const previous = carousel.querySelector('[data-methodology-previous]');
+      const next = carousel.querySelector('[data-methodology-next]');
+      if (!(track instanceof HTMLElement)) return;
+
+      const move = (direction) => {
+        const firstCard = track.querySelector('.methodology-card');
+        if (!(firstCard instanceof HTMLElement)) return;
+        const gap = Number.parseFloat(getComputedStyle(track).columnGap || '0');
+        const step = firstCard.getBoundingClientRect().width + gap;
+        const maximum = track.scrollWidth - track.clientWidth;
+        const atEnd = track.scrollLeft >= maximum - 2;
+        const atStart = track.scrollLeft <= 2;
+
+        if (direction > 0 && atEnd) track.scrollTo({ left: 0, behavior: 'smooth' });
+        else if (direction < 0 && atStart) track.scrollTo({ left: maximum, behavior: 'smooth' });
+        else track.scrollBy({ left: direction * step, behavior: 'smooth' });
+      };
+
+      previous?.addEventListener('click', () => move(-1));
+      next?.addEventListener('click', () => move(1));
+
+      if (!reducedMotion) {
+        let paused = false;
+        carousel.addEventListener('mouseenter', () => { paused = true; });
+        carousel.addEventListener('mouseleave', () => { paused = false; });
+        carousel.addEventListener('focusin', () => { paused = true; });
+        carousel.addEventListener('focusout', () => { paused = false; });
+        window.setInterval(() => { if (!paused) move(1); }, 4800);
+      }
+    });
+  </script>
 </BaseLayout>

@@ -63,7 +63,7 @@ const latestCaseStudies = (
 
   <section id="home-introduction" class="home-intro scroll-mt-20 bg-[#eef2f5] text-ink">
     <div class="container-wide home-intro__inner">
-      <div class="eyebrow font-bold text-[#14B8A6]">MOVE FAST. STAY SAFE.</div>
+      <div class="eyebrow mb-6 text-center text-[#14B8A6]">MOVE FAST. STAY SAFE.</div>
       <p class="home-intro__copy">
         As an independent partner, with no ties to any software, data or AI
         provider, we advise, design and engineer AI systems around the way
@@ -463,18 +463,20 @@ const latestCaseStudies = (
         </div>
         <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
           <p>
-            The useful first step is not another deck. It is a clear view of
-            where Agentic AI can improve performance, which workflows carry the
-            greatest opportunity and risk, and what needs to change before
-            agents go into production.
+            We find where the value is, identify the data behind it, and bring
+            that data into IBOM.
           </p>
           <p class="mt-6">
-            We turn that into a practical route from opportunity to governed
-            Agentic AI in production.
+            Then we give your business a voice that your people and AI can use.
           </p>
-          <div class="mt-8">
+          <p class="mt-8 font-bold text-ink">
+            Talk to us. We'll talk to your AI.
+          </p>
+          <div class="mt-5 flex flex-wrap items-center gap-4">
+            <AgentBriefDropdown label="Talk to our AI" action="menu" variant="primary" />
+            <span class="text-steel/70">or</span>
             <a href="/company/contact/" class="home-hero__button">
-              TALK TO US
+              TALK TO A PERSON
             </a>
           </div>
         </div>
@@ -747,7 +749,7 @@ const latestCaseStudies = (
 
       justify-items: center;
 
-      padding-top: clamp(4rem, 8vw, 7rem);
+      padding-top: 5rem;
 
       padding-bottom: clamp(4rem, 8vw, 7rem);
 
@@ -757,7 +759,7 @@ const latestCaseStudies = (
     .home-intro__copy {
       max-width: 52rem;
 
-      margin: 1.5rem auto 0;
+      margin: 0 auto;
 
       font-size: clamp(1.125rem, 1.6vw, 1.4rem);
 

@@ -1,11 +1,12 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import AgentBriefDropdown from "../components/AgentBriefDropdown.astro";
+import IbomTabbedVisual from "../components/IbomTabbedVisual.astro";
 import { SITE_URL } from "../lib/seo/site";
-import { ibomBenefits } from "../lib/brandoContent";
 
-const title = "IBOM Technology";
+const title = "IBOM® and Agent in the Room® Technology";
 const description =
-  "IBOM is the Intelligent Business Operations Manager that gives people and AI agents governed access to trusted business data, knowledge, tools, and workflows.";
+  "Explore IBOM and Agent in the Room, the connected Advanced Analytica technologies that turn business data into governed intelligence people and AI can use.";
 
 const page = {
   title,
@@ -13,33 +14,212 @@ const page = {
   url: `${SITE_URL}/ibom`,
   breadcrumbs: [
     { name: "Home", url: `${SITE_URL}/` },
-    { name: "IBOM Technology", url: `${SITE_URL}/ibom` },
+    { name: "Technology", url: `${SITE_URL}/ibom` },
   ],
 };
+
+const ibomCapabilities = [
+  {
+    label: "Sources",
+    heading: "Bring approved business data together",
+    body: "Connect the data, documents, policies, systems, workflows and specialist sources your business makes available.",
+  },
+  {
+    label: "Context",
+    heading: "Keep meaning attached",
+    body: "Preserve ownership, provenance, permissions, relationships and status as information moves into AI-assisted work.",
+  },
+  {
+    label: "Control",
+    heading: "Govern how intelligence is used",
+    body: "Give people and agents controlled access to the right knowledge, tools and actions for each piece of work.",
+  },
+  {
+    label: "Evidence",
+    heading: "Make outputs traceable",
+    body: "Return structured outputs with the sources, rules and controls needed to understand how work was completed.",
+  },
+];
+
+const airCapabilities = [
+  {
+    heading: "Natural conversation",
+    body: "People can speak to the agent naturally or use chat, without learning a new technical interface.",
+  },
+  {
+    heading: "Expert-led sessions",
+    body: "Our experts guide the workshop, challenge assumptions and keep the conversation focused on useful decisions.",
+  },
+  {
+    heading: "Your business context",
+    body: "The agent works from the approved data and knowledge held in IBOM, governed by your policies.",
+  },
+];
+
+const technologyFlow = [
+  {
+    step: "01",
+    heading: "Prepare the data",
+    body: "We examine, structure and govern the data, knowledge and policies needed for the work.",
+  },
+  {
+    step: "02",
+    heading: "Bring it into IBOM",
+    body: "IBOM connects approved sources and keeps their context, ownership and controls attached.",
+  },
+  {
+    step: "03",
+    heading: "Give it a voice",
+    body: "Agent in the Room lets your people question, explore and work with that intelligence naturally.",
+  },
+  {
+    step: "04",
+    heading: "Put it to work",
+    body: "Tested agents use the same governed intelligence across research, decisions and operational workflows.",
+  },
+];
 ---
 
 <BaseLayout title={title} description={description} page={page}>
-  <section class="bg-paper text-ink">
-    <div class="container-wide py-20">
-      <div class="eyebrow text-[#14B8A6]">INTELLIGENT BUSINESS OPERATIONS MANAGER</div>
-      <div class="mt-8 grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
-        <h1 class="text-6xl font-black leading-none tracking-tight text-ink">
-          Govern your business data. Give your AI direction.
-        </h1>
-        <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
-          <p>
-            IBOM<sup>®</sup> is the Intelligent Business Operations Manager. It is
-            Advanced Analytica's technology for bringing approved business data,
-            knowledge, policies, tools, and workflows into one governed environment.
-          </p>
-          <p class="mt-6">
-            IBOM gives people and AI agents controlled access to the context and
-            capabilities they need. Agent in the Room brings that intelligence
-            into a live, expert-led workshop where your business can have a voice.
-          </p>
-          <div class="mt-8 flex flex-wrap gap-4">
-            <a href="/company/contact/" class="home-hero__button">TALK TO US</a>
-            <a href="/how-it-works/" class="aa-outline-cta">HOW IT WORKS</a>
+  <section class="overflow-x-clip bg-paper text-ink">
+    <div class="container-wide py-20 md:py-28">
+      <div class="eyebrow text-center text-[#14B8A6]">Our Technology</div>
+      <h1 class="mx-auto mt-7 max-w-[20rem] break-words text-center text-4xl font-black leading-[1] tracking-tight text-ink sm:max-w-5xl sm:text-5xl md:text-7xl">
+        Turn business data into governed intelligence. Give it a voice.
+      </h1>
+      <p class="mx-auto mt-8 max-w-[20rem] text-center text-lg leading-relaxed text-steel sm:max-w-3xl md:text-xl">
+        Our technology has two connected parts. IBOM<sup>®</sup> organises and
+        governs business intelligence. Agent in the Room<sup>®</sup> lets your
+        people work with that intelligence through natural conversation.
+      </p>
+      <div class="mx-auto mt-9 flex max-w-[20rem] flex-col items-stretch justify-center gap-4 sm:max-w-none sm:flex-row sm:flex-wrap sm:items-center">
+        <a href="#ibom" class="home-hero__button">EXPLORE IBOM</a>
+        <a href="#agent-in-the-room" class="technology-outline-cta">EXPLORE AIR</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-y border-ink/10 bg-[#eef2f5] text-ink">
+    <div class="container-wide grid gap-px py-16 md:grid-cols-2 md:py-20">
+      <a href="#ibom" class="technology-intro-card md:mr-3">
+        <div class="eyebrow text-[#14B8A6]">IBOM<sup>®</sup></div>
+        <h2 class="mt-5 text-3xl font-extrabold tracking-tight md:text-4xl">
+          The governed intelligence layer.
+        </h2>
+        <p class="mt-5 max-w-xl text-lg leading-relaxed text-steel">
+          Bring approved data, knowledge, policies, tools and workflows into one
+          controlled environment for people and AI.
+        </p>
+        <span class="mt-7 inline-flex font-bold text-[#0F766E]">EXPLORE IBOM ↓</span>
+      </a>
+      <a href="#agent-in-the-room" class="technology-intro-card mt-4 md:ml-3 md:mt-0">
+        <div class="eyebrow text-[#14B8A6]">Agent in the Room<sup>®</sup></div>
+        <h2 class="mt-5 text-3xl font-extrabold tracking-tight md:text-4xl">
+          AI enabled expertise with a voice.
+        </h2>
+        <p class="mt-5 max-w-xl text-lg leading-relaxed text-steel">
+          Bring a live AI agent into the room so your people can speak with the
+          intelligence held across your business.
+        </p>
+        <span class="mt-7 inline-flex font-bold text-[#0F766E]">EXPLORE AIR ↓</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="ibom" class="scroll-mt-20 bg-slate text-paper">
+    <div class="container-wide py-20 md:py-28">
+      <div class="eyebrow text-center text-[#14B8A6]">
+        IBOM<sup>®</sup> · Intelligent Business Operations Manager
+      </div>
+      <h2 class="mx-auto mt-6 max-w-5xl text-center text-4xl font-extrabold tracking-tight md:text-6xl">
+        One controlled layer between your workforce, your data and your AI.
+      </h2>
+      <p class="mx-auto mt-7 max-w-[82ch] text-center text-lg leading-relaxed text-paper/80 md:text-xl">
+        IBOM gives people and AI controlled access to specialist, proprietary
+        and web data. It supports research, decisions and agent work with
+        structured outputs grounded in approved business sources.
+      </p>
+
+      <div class="mx-auto mt-12 max-w-6xl" aria-label="IBOM technology visualisation">
+        <IbomTabbedVisual />
+      </div>
+
+      <div class="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        {ibomCapabilities.map((capability) => (
+          <article class="rounded-2xl border border-paper/15 bg-paper/[0.05] p-6">
+            <div class="eyebrow text-[#5eead4]">{capability.label}</div>
+            <h3 class="mt-4 text-2xl font-bold tracking-tight text-paper">
+              {capability.heading}
+            </h3>
+            <p class="mt-4 leading-relaxed text-paper/70">{capability.body}</p>
+          </article>
+        ))}
+      </div>
+
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+        <a href="/how-it-works/" class="home-dark-outline-cta">SEE HOW IBOM WORKS</a>
+        <a href="/services/#data-due-diligence" class="home-dark-outline-cta">PREPARE YOUR DATA</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="agent-in-the-room" class="scroll-mt-20 bg-paper text-ink">
+    <div class="container-wide py-20 md:py-28">
+      <div class="eyebrow text-center text-[#14B8A6]">
+        Agent in the Room<sup class="align-super text-[0.55em] font-normal">®</sup>
+      </div>
+      <div class="mt-10 grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+        <div>
+          <h2 class="text-4xl font-extrabold tracking-tight text-ink md:text-6xl">
+            AI enabled expertise with a voice.
+          </h2>
+          <div class="mt-7 max-w-prose space-y-6 text-lg leading-relaxed text-steel md:text-xl">
+            <p class="font-semibold text-ink">
+              We bring a live AI agent into the room to provide a voice for your business.
+            </p>
+            <p>
+              We build the agent around the data, knowledge and challenges that
+              make your business distinct. Your people can speak with it naturally
+              or work with it through chat.
+            </p>
+            <p>
+              In an expert-led workshop, the agent helps question assumptions,
+              explore evidence and shape a practical way forward. It remains
+              governed by your policies throughout the session.
+            </p>
+          </div>
+          <div class="mt-9 grid gap-5 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+            {airCapabilities.map((capability) => (
+              <article class="border-t border-ink/15 pt-5">
+                <h3 class="font-bold text-ink">{capability.heading}</h3>
+                <p class="mt-2 text-sm leading-relaxed text-steel">{capability.body}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div class="air-visual overflow-hidden rounded-3xl bg-black">
+          <video
+            src="https://actai.studio/videos/air-texture.mp4"
+            poster="https://actai.studio/images/air-texture-poster.jpg"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            aria-hidden="true"
+            class="aspect-video h-full w-full object-cover"
+          ></video>
+          <div class="air-mark" aria-hidden="true">
+            <svg viewBox="0 0 800 450">
+              <path d="M 192 154 C 152 190, 152 260, 192 296" />
+              <path d="M 152 114 C 92 168, 92 282, 152 336" />
+              <path d="M 112 74 C 28 148, 28 302, 112 376" />
+              <path d="M 608 154 C 648 190, 648 260, 608 296" />
+              <path d="M 648 114 C 708 168, 708 282, 648 336" />
+              <path d="M 688 74 C 772 148, 772 302, 688 376" />
+              <text x="400" y="225">AIR</text>
+            </svg>
           </div>
         </div>
       </div>
@@ -47,44 +227,46 @@ const page = {
   </section>
 
   <section class="bg-[#eef2f5] text-ink">
-    <div class="container-wide py-20">
-      <div class="eyebrow mb-10 text-center text-[#14B8A6]">What IBOM Gives You</div>
-      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {ibomBenefits.map((benefit) => (
+    <div class="container-wide py-20 md:py-28">
+      <div class="eyebrow text-center text-[#14B8A6]">One Connected System</div>
+      <h2 class="mx-auto mt-6 max-w-4xl text-center text-4xl font-extrabold tracking-tight md:text-6xl">
+        IBOM gives intelligence control. AIR makes it conversational.
+      </h2>
+      <div class="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        {technologyFlow.map((item) => (
           <article class="rounded-2xl border border-ink/10 bg-paper p-7 shadow-outline">
-            <div class="eyebrow text-[#14B8A6]">{benefit.label}</div>
-            <h2 class="mt-4 text-2xl font-semibold tracking-tight text-ink">
-              {benefit.heading}
-            </h2>
-            <p class="mt-4 text-base leading-relaxed text-steel">
-              {benefit.body}
-            </p>
+            <div class="text-sm font-bold tracking-[0.18em] text-[#14B8A6]">STEP {item.step}</div>
+            <h3 class="mt-5 text-2xl font-extrabold tracking-tight text-ink">{item.heading}</h3>
+            <p class="mt-4 leading-relaxed text-steel">{item.body}</p>
           </article>
         ))}
       </div>
     </div>
   </section>
 
-  <section class="bg-paper text-ink">
-    <div class="container-wide py-20">
-      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Next Step</div>
-      <div class="grid items-start gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+  <section class="technology-closing relative z-20 overflow-visible bg-slate text-paper">
+    <div class="container-wide py-20 md:py-24">
+      <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
         <div>
-          <h2 class="text-5xl font-extrabold tracking-tight text-ink">
-            Find out what your business data can do.
+          <div class="eyebrow text-[#5eead4]">Start The Conversation</div>
+          <h2 class="mt-5 text-4xl font-extrabold tracking-tight md:text-6xl">
+            Start with the intelligence your business already holds.
           </h2>
         </div>
-        <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
+        <div class="relative z-30 max-w-2xl text-lg leading-relaxed text-paper/75 md:text-xl">
           <p>
-            A short conversation can identify which data, knowledge, policies,
-            and workflows should enter IBOM first.
+            We identify the work that matters, prepare the data behind it and
+            connect it through IBOM.
           </p>
           <p class="mt-6">
-            We will help you identify what to map, structure, govern, and test
-            before people and agents use that knowledge in live work.
+            Then Agent in the Room gives your people a natural way to question,
+            explore and use that intelligence.
           </p>
-          <div class="mt-8">
-            <a href="/company/contact/" class="home-hero__button">TALK TO US</a>
+          <p class="mt-6 font-bold text-paper">Talk to us. We'll talk to your AI.</p>
+          <div class="mt-7 flex flex-wrap items-center gap-5">
+            <AgentBriefDropdown label="Talk to our AI" action="menu" variant="primary" />
+            <span class="text-paper/55">or</span>
+            <a href="/company/contact/" class="home-hero__button">TALK TO A PERSON</a>
           </div>
         </div>
       </div>
@@ -92,28 +274,70 @@ const page = {
   </section>
 
   <style>
-    .aa-primary-cta,
-    .aa-dark-cta,
-    .aa-outline-cta {
+    .technology-outline-cta {
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      min-height: 3.5rem;
+      border: 1.5px solid #14b8a6;
       border-radius: 0.875rem;
-      padding: 15px 32px;
+      padding: 0.9rem 1.5rem;
+      color: #0f766e;
       font-weight: 700;
       text-decoration: none;
+      transition: background-color 180ms ease, color 180ms ease;
     }
 
-    .aa-primary-cta,
-    .aa-dark-cta {
-      border: 1.5px solid #14b8a6;
+    .technology-outline-cta:hover {
       background: #14b8a6;
       color: #fff;
     }
 
-    .aa-outline-cta {
-      border: 1.5px solid #14b8a6;
-      color: #0f766e;
+    .technology-intro-card {
+      display: block;
+      border: 1px solid rgba(11, 18, 32, 0.1);
+      border-radius: 1rem;
+      background: #fff;
+      padding: clamp(1.75rem, 4vw, 3rem);
+      color: inherit;
+      text-decoration: none;
+      transition: border-color 180ms ease, transform 180ms ease;
+    }
+
+    .technology-intro-card:hover {
+      border-color: #14b8a6;
+      transform: translateY(-3px);
+    }
+
+    .air-visual {
+      position: relative;
+    }
+
+    .air-mark {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .air-mark svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .air-mark path {
+      fill: none;
+      stroke: #fff;
+      stroke-width: 16;
+    }
+
+    .air-mark text {
+      fill: #fff;
+      text-anchor: middle;
+      dominant-baseline: central;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 218px;
+      font-weight: 700;
+      letter-spacing: -8px;
     }
   </style>
 </BaseLayout>

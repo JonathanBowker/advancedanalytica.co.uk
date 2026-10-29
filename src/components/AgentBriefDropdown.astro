@@ -7,12 +7,22 @@ const chatGptUrl = `https://chatgpt.com/?hint=search&q=${encodedPrompt}`;
 const codexUrl = `codex://threads/new?${new URLSearchParams({ prompt }).toString()}`;
 const claudeCodeUrl = `claude-cli://open?q=${encodedPrompt}`;
 const cursorUrl = `cursor://anysphere.cursor-deeplink/prompt?text=${encodedPrompt}`;
+const {
+  label = "YOUR AGENT",
+  action = "copy",
+  variant = "outline",
+} = Astro.props;
 ---
 
-<div class="agent-brief" data-agent-brief data-copy-prompt={prompt}>
-  <div class="agent-brief__control">
+<div
+  class="agent-brief"
+  data-agent-brief
+  data-agent-brief-action={action}
+  data-copy-prompt={prompt}
+>
+  <div class:list={["agent-brief__control", variant === "primary" && "agent-brief__control--primary"]}>
     <button class="agent-brief__copy" type="button" data-agent-brief-copy>
-      <span data-agent-brief-label>YOUR AGENT</span>
+      <span data-agent-brief-label data-default-label={label}>{label}</span>
       <span class="agent-brief__logos" aria-hidden="true">
         <img src="/images/logos/claude.svg" alt="" />
         <img src="/images/logos/openai.svg" alt="" />
@@ -67,16 +77,22 @@ const cursorUrl = `cursor://anysphere.cursor-deeplink/prompt?text=${encodedPromp
     if (!(element instanceof HTMLElement)) return;
     const button = element.querySelector("[data-agent-brief-copy]");
     const label = element.querySelector("[data-agent-brief-label]");
+    const details = element.querySelector(".agent-brief__details");
     const status = element.querySelector(".agent-brief__status");
     if (!(button instanceof HTMLButtonElement) || !(label instanceof HTMLElement)) return;
 
     button.addEventListener("click", async () => {
+      if (element.dataset.agentBriefAction === "menu") {
+        if (details instanceof HTMLDetailsElement) details.open = !details.open;
+        return;
+      }
+
       try {
         await navigator.clipboard.writeText(element.dataset.copyPrompt || "");
         label.textContent = "PROMPT COPIED";
         if (status) status.textContent = "Agent prompt copied to clipboard.";
         window.setTimeout(() => {
-          label.textContent = "YOUR AGENT";
+          label.textContent = label.dataset.defaultLabel || "YOUR AGENT";
           if (status) status.textContent = "";
         }, 1800);
       } catch {
@@ -92,6 +108,12 @@ const cursorUrl = `cursor://anysphere.cursor-deeplink/prompt?text=${encodedPromp
     display: flex; min-height: 3.5rem; align-items: stretch; overflow: visible;
     border: 1.5px solid #14b8a6; border-radius: 0.875rem; background: transparent; color: #0f766e;
   }
+  .agent-brief__control--primary {
+    border-color: #14b8a6; background: #14b8a6; color: #ffffff;
+  }
+  .agent-brief__control--primary .agent-brief__details { border-left-color: rgba(255,255,255,.32); }
+  .agent-brief__control--primary .agent-brief__copy:hover,
+  .agent-brief__control--primary .agent-brief__details summary:hover { background: #0f766e; }
   .agent-brief__copy, .agent-brief__details summary {
     border: 0; background: transparent; color: inherit; cursor: pointer;
   }
