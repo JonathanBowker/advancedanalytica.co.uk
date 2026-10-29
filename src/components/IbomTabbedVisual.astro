@@ -99,7 +99,10 @@ const outputConnections = [
     <span class="ibom-tabs__trigger"><small>WORKFLOW TRIGGER</small><strong data-trigger-text>{triggers[0]}</strong></span>
   </div>
 
-  <div class="ibom-tabs__label" data-category-label>{categories[0]}</div>
+  <div class="ibom-tabs__label">
+    <span>Our search indexes:</span>
+    <strong data-category-label>{categories[0]}</strong>
+  </div>
 
   <div class="ibom-tabs__layout">
     <div class="ibom-tabs__list" role="tablist" aria-label="IBOM knowledge inputs">
@@ -272,11 +275,20 @@ const outputConnections = [
   }
 
   .ibom-tabs__label {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
     margin: 2rem 0 1.25rem;
-    color: var(--ibom-accent);
+    color: rgba(255, 255, 255, 0.62);
     font-size: 0.72rem;
     font-weight: 800;
     letter-spacing: 0.18em;
+  }
+
+  .ibom-tabs__label strong {
+    color: var(--ibom-accent);
+    font: inherit;
   }
 
   .ibom-tabs__layout {
