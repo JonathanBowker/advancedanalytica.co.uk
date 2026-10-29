@@ -1,0 +1,6 @@
+flowchart BT
+  C[Crawl]:::ok --> I[Index]:::ok --> S[Search API]:::ok --> E[Extraction and enrichment]:::ok --> V[Semantic layer]:::ok --> Q[Query API]:::ok --> A[Agent access]:::ok
+  R[Assurance and rights span every layer]:::warn
+  classDef ok fill:#b7e4c7,stroke:#257a4a,color:#111
+  classDef warn fill:#ffe29a,stroke:#9a6b00,color:#111
+  classDef no fill:#ffb3b3,stroke:#9a2424,color:#111

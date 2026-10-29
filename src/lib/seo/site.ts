@@ -21,7 +21,7 @@ export const ENTITY_TOPICS = [
   'Agentic AI',
   'AI governance',
   'AI operating models',
-  'Intelligent Business Operating Models',
+  'Intelligent Business Operations Managers',
   'Spec-driven AI development',
   'Controlled AI workflows',
   'Machine-readable policy',
@@ -34,9 +34,9 @@ export const ENTITY_TOPICS = [
 
 export const iBOM = {
   name: 'IBOM®',
-  alternateName: 'Intelligent Business Operating Model',
+  alternateName: 'Intelligent Business Operations Manager',
   description:
-    'Intelligent Business Operating Model for turning business knowledge, policy, workflow logic, skills, and controls into governed agentic AI systems.',
+    'Intelligent Business Operations Manager for turning business knowledge, policy, workflow logic, skills, and controls into governed agentic AI systems.',
   url: `${SITE_URL}/ibom/`
 };
 
@@ -51,7 +51,7 @@ export const JONNY_BOWKER = {
   ],
   jobTitle: 'Founder, Advanced Analytica',
   description:
-    'Jonny Bowker is the founder of Advanced Analytica, an AI strategy and architecture consultancy specialising in Intelligent Business Operating Models, spec-driven AI development, and governed agentic AI systems.',
+    'Jonny Bowker is the founder of Advanced Analytica, an AI strategy and architecture consultancy specialising in Intelligent Business Operations Managers, spec-driven AI development, and governed agentic AI systems.',
   knowsAbout: ENTITY_TOPICS
 };
 

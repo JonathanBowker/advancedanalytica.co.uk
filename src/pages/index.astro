@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PostCard from "../components/PostCard.astro";
-import AiceGatewayCluster from "../components/AiceGatewayCluster.astro";
+import IbomTabbedVisual from "../components/IbomTabbedVisual.astro";
 import { getCollection } from "astro:content";
 import { SITE_URL } from "../lib/seo/site";
 
@@ -34,7 +34,7 @@ const pathways = [
   {
     eyebrow: "Framework",
     title: "IBOM",
-    body: "See the Intelligent Business Operating Model that turns business knowledge, rules, workflows, skills, and controls into governed Agentic AI.",
+    body: "See the Intelligent Business Operations Manager that turns business knowledge, rules, workflows, skills, and controls into governed Agentic AI.",
     href: "/ibom/",
   },
   {
@@ -64,80 +64,60 @@ const pathways = [
       <div class="eyebrow mb-10 text-left font-bold">MOVE FAST. STAY SAFE.</div>
       <div class="home-split-grid home-split-grid--hero">
         <h1 class="home-hero__title">
-          <span class="home-hero__title-line">You've adopted AI.</span>
-          <span class="home-hero__title-line">Now give it direction.</span>
+          You’ve adopted AI. Now govern how it operates.
         </h1>
         <div>
           <p class="home-hero__lead">
-            As your independent partner, with no ties to any software, data or
-            AI provider, we support the full life cycle of AI system development.
-            We apply it wherever your business runs on repeatable processes,
-            knowledge, judgement and rules, across every function, team and
-            market.
+            As an independent partner, with no ties to any software, data or AI
+            provider, we advise, design and engineer AI systems around the way
+            your business actually works. We turn its processes, knowledge,
+            judgement and rules into governed operations that can scale across
+            functions, teams and markets.
           </p>
           <div class="home-hero__actions">
+            <a href="#ibom" class="mt-6 home-hero__secondary">
+              <span>OUR TECHNOLOGY</span>
+              <span aria-hidden="true">↓</span>
+            </a>
+
             <a href="#agentic-consultancy" class="mt-6 home-hero__secondary">
               <span>OUR CONSULTANCY</span>
               <span aria-hidden="true">↓</span>
             </a>
-
-            <a href="#agentic-technology" class="mt-6 home-hero__secondary">
-              <span>OUR TECHNOLOGY</span>
-              <span aria-hidden="true">↓</span>
-            </a>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="chatbot-vs-agentic-ai" class="bg-[#eef2f5] text-ink">
+  <section id="ibom" class="bg-slate text-paper">
     <div class="container-wide py-20">
-      <div class="eyebrow mb-10 text-center text-[#14B8A6]">
-        Chatbot Or Agentic AI
+      <div class="eyebrow mb-6 text-center text-[#14B8A6]">
+        Our Technology
       </div>
-      <div class="home-split-grid">
-        <div>
-          <h2 class="text-5xl font-extrabold tracking-tight text-ink">
-            What is the difference between a chatbot and agentic AI?
-          </h2>
-        </div>
-        <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
-          <p>
-            A chatbot supports a dialogue, the human stays in the loop, interprets the response, and decides what happens next. Agentic AI is different: give it information, rules, tools, and a defined objective, and it completes the task itself, inside agreed boundaries, without needing a human to carry the process.
-          </p>
-          <div class="mt-8">
-            <a href="#why" class="home-outline-cta">WHAT IS AGENTIC AI?</a>
-          </div>
-        </div>
+      <h2
+        class="mx-auto max-w-4xl text-center text-3xl font-semibold tracking-tight text-paper sm:text-4xl md:text-5xl"
+      >
+        One controlled layer between your workforce, your data, and your AI.
+      </h2>
+      <p
+        class="mx-auto mt-6 max-w-[82ch] text-center text-base leading-relaxed text-paper/80 sm:mt-8 sm:text-lg md:text-xl"
+      >
+        IBOM<sup>®</sup> gives AI controlled access to specialist, proprietary and web data,
+        enabling multi-step research and agent execution with cited, structured
+        outputs across business functions and R&amp;D.
+      </p>
+      <div
+        id="ibom-visual"
+        class="relative mx-auto mt-10 w-full max-w-6xl scroll-mt-28"
+        aria-label="Business operations delivered through IBOM visualisation"
+      >
+        <IbomTabbedVisual />
       </div>
-    </div>
-  </section>
-
-  <section id="why" class="bg-paper text-ink">
-    <div class="container-wide py-20">
-      <div class="eyebrow mb-10 text-center">What is Agentic AI</div>
-      <div class="home-split-grid">
-        <div>
-          <h2 class="text-5xl font-extrabold tracking-tight text-ink">
-            What is Agentic AI and why does it matter?
-          </h2>
-        </div>
-        <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
-          <p>
-            Agentic AI systems plan, decide and act across multiple steps to
-            reach a defined goal, working within the boundaries you set. Unlike
-            generative AI, which simply responds to a prompt with text or an
-            image, an agentic system can use tools, call APIs, and take real
-            action inside your operational workflows.
-          </p>
-          <div class="mt-8">
-            <a href="#how" class="home-hero__secondary">
-              <span>HOW AGENTIC AI HELPS</span>
-              <span aria-hidden="true">↓</span>
-            </a>
-          </div>
-        </div>
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+        <a href="/how-it-works/" class="home-dark-outline-cta">
+          SEE HOW IT WORKS
+        </a>
       </div>
     </div>
   </section>
@@ -145,21 +125,21 @@ const pathways = [
   <section id="how" class="bg-[#eef2f5] text-ink">
     <div class="container-wide py-20">
       <div class="eyebrow mb-10 text-center text-[#14B8A6]">
-        How Agentic AI Helps
+        Agentic AI, Grounded In Your Data
       </div>
       <div class="home-split-grid">
         <div>
           <h2 class="text-5xl font-extrabold tracking-tight text-ink">
-            How does agentic AI help your business?
+            Turn business knowledge into data AI can use.
           </h2>
         </div>
         <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
           <p>
-            Agentic AI is an efficiency accelerator. It turns your knowledge,
-            policies and judgement into structured data that agents can consume
-            and act on, giving them defined rules to follow rather than leaving
-            them to infer how your business operates. A governed operating
-            capability, built on your knowledge and your rules.
+            AI is only as useful as the information it can access. We collect
+            and structure the knowledge, policies, processes and judgement your
+            business relies on, then add ownership, permissions and controls.
+            The result is trusted, machine-readable data that agents can use
+            reliably.
           </p>
           <div class="mt-8 flex flex-wrap gap-4">
             <a href="#our-services" class="home-outline-cta">OUR SERVICES</a>
@@ -171,19 +151,20 @@ const pathways = [
 
   <section id="our-services" class="bg-paper text-ink">
     <div class="container-wide py-20">
-      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Our Services</div>
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Our Consultancy</div>
       <div class="grid gap-12 md:grid-cols-2 lg:gap-x-18 lg:gap-y-16">
         <div>
           <h2
             class="text-4xl font-extrabold tracking-tight text-ink md:text-5xl"
           >
-            Agentic Due Diligence
+            Data Due Diligence
           </h2>
           <p class="mt-6 text-lg leading-relaxed text-steel md:text-xl">
-            We find the hidden agents already at work inside your business,
-            then define the skills and agents needed to build them properly.
-            Every finding becomes an inventory item, ready to specify and
-            build against.
+            We identify the data, knowledge, policies and systems your business
+            already relies on, then assess how each source is collected,
+            structured and governed. Each source is added to a clear inventory
+            and matched to a dedicated agent specification, ready for
+            development.
           </p>
           <a href="#agentic-consultancy" class="mt-6 home-hero__secondary">
             <span>OUR CONSULTANCY</span>
@@ -194,15 +175,16 @@ const pathways = [
           <h2
             class="text-4xl font-extrabold tracking-tight text-ink md:text-5xl"
           >
-            Agentic Worker Skilling
+            Agent Skill Building
           </h2>
           <p class="mt-6 text-lg leading-relaxed text-steel md:text-xl">
-            We select the appropriate skills your agent needs from our Skill
-            Bench, our large library of proven capabilities. Each agent is trained
-            on your rules, engineered into a working system, then tested
-            before it touches work.
+            The Agent Skill Bench provides proven capabilities to collect and
+            transform data, retrieve knowledge, operate workflows, apply rules
+            and assure quality. We configure the skills each agent needs,
+            connect them to your systems and test them before they enter live
+            operations.
           </p>
-          <a href="#agentic-technology" class="mt-6 home-hero__secondary">
+          <a href="#ibom" class="mt-6 home-hero__secondary">
             <span>OUR TECHNOLOGY</span>
             <span aria-hidden="true">↓</span>
           </a>
@@ -214,132 +196,90 @@ const pathways = [
   <section id="agentic-consultancy" class="bg-[#eef2f5] text-ink">
     <div class="container-wide py-20">
       <div class="eyebrow mb-10 text-center text-[#14B8A6]">
-        Our Consultancy
+        Our Methodology
       </div>
-      <div class="grid gap-12 lg:grid-cols-3">
-        <div>
+      <div class="methodology-carousel" data-methodology-carousel>
+        <div class="methodology-track" data-methodology-track>
+        <div class="methodology-card">
+          <div class="methodology-step">Step 1</div>
           <h2 class="text-3xl font-extrabold tracking-tight text-ink">
-            Business needs
+            Business Understanding
           </h2>
-          <p class="mt-6 text-lg leading-relaxed text-steel md:text-xl">
-            We use our Agentic Due Diligence framework to find the hidden agents in your business, then define the skills and agents needed to build them.
+          <p class="mt-5 text-lg leading-relaxed text-steel">
+            We begin by defining goals, decisions, workflows, people and
+            constraints that determine where governed AI can create measurable
+            business value.
           </p>
         </div>
 
-        <div>
+        <div class="methodology-card">
+          <div class="methodology-step">Step 2</div>
           <h2 class="text-3xl font-extrabold tracking-tight text-ink">
-            Proof of value
+            Data Understanding
           </h2>
-          <p class="mt-6 text-lg leading-relaxed text-steel md:text-xl">
-            We take one real workflow and build it out using our technology, so
-            you see agentic AI working on your own operations before you commit.
+          <p class="mt-5 text-lg leading-relaxed text-steel">
+            With priorities clear, we map the data, knowledge, policies and
+            systems each workflow depends on, identifying ownership, quality
+            and gaps.
           </p>
         </div>
 
-        <div>
+        <div class="methodology-card">
+          <div class="methodology-step">Step 3</div>
           <h2 class="text-3xl font-extrabold tracking-tight text-ink">
-            System delivery
+            Data Preparation
           </h2>
-          <p class="mt-6 text-lg leading-relaxed text-steel md:text-xl">
-            We design, deploy and operate your agentic system across every
-            layer, managing trade-offs with you as it moves into production and
-            scales.
+          <p class="mt-5 text-lg leading-relaxed text-steel">
+            We then collect, clean, structure and govern those sources,
+            attaching permissions, provenance and controls so agents can use
+            them reliably.
           </p>
         </div>
-      </div>
 
-      <div class="mt-12 text-center">
-        <a href="/company/contact/" class="home-hero__button">TALK TO US</a>
-      </div>
-    </div>
-  </section>
-
-  <section id="agentic-technology" class="bg-paper text-ink">
-    <div class="container-wide py-20">
-      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Our Technology</div>
-
-      <p
-        class="mt-6 mb-6 text-center text-lg leading-relaxed text-steel md:text-xl"
-      >
-        Our agentic system management supports two key operating models.
-      </p>
-
-      <div class="grid gap-12 lg:grid-cols-2">
-        <div>
-          <h2
-            class="text-4xl font-extrabold tracking-tight text-ink md:text-5xl"
-          >
-            Single agent operation
+        <div class="methodology-card">
+          <div class="methodology-step">Step 4</div>
+          <h2 class="text-3xl font-extrabold tracking-tight text-ink">
+            IBOM Modeling
           </h2>
-
-          <p class="mt-6 text-lg leading-relaxed text-steel md:text-xl">
-            Autonomous agents that own and execute one clearly defined business
-            workflow end to end.
+          <p class="mt-5 text-lg leading-relaxed text-steel">
+            Using the prepared sources, we model the agents, skills, workflows,
+            tools and controls needed to deliver reliable, governed business
+            operations.
           </p>
+        </div>
 
-          <p class="mt-6">
-            A single AI agent understands its environment, makes decisions, uses
-            tools and takes action to achieve a defined goal, without constant
-            human prompting, creating focused, repeatable value across a bounded
+        <div class="methodology-card">
+          <div class="methodology-step">Step 5</div>
+          <h2 class="text-3xl font-extrabold tracking-tight text-ink">
+            IBOM Evaluation
+          </h2>
+          <p class="mt-5 text-lg leading-relaxed text-steel">
+            Before release, we test each output, decision and action against
+            agreed measures for performance, quality, safety and governance in
             operation.
           </p>
         </div>
 
-        <div>
-          <h2
-            class="text-4xl font-extrabold tracking-tight text-ink md:text-5xl"
-          >
-            Multi-agent operation
+        <div class="methodology-card">
+          <div class="methodology-step">Step 6</div>
+          <h2 class="text-3xl font-extrabold tracking-tight text-ink">
+            IBOM Deployment
           </h2>
-
-          <p class="mt-6 text-lg leading-relaxed text-steel md:text-xl">
-            Connected agents that collaborate across complex workflows no single
-            agent can manage alone.
+          <p class="mt-5 text-lg leading-relaxed text-steel">
+            Once validated, we deploy agents into live workflows, monitor their
+            performance and improve them as business needs and knowledge evolve.
           </p>
+        </div>
+        </div>
 
-          <p class="mt-6">
-            A multi-agent system coordinates specialised agents, skills, data
-            and actions across multiple tasks to achieve broader goals, driving
-            value through faster sales cycles, cost reduction, customer service
-            and automated operations.
-          </p>
+        <div class="methodology-controls" aria-label="Methodology carousel controls">
+          <button type="button" data-methodology-previous aria-label="Show previous methodology stage">←</button>
+          <button type="button" data-methodology-next aria-label="Show next methodology stage">→</button>
         </div>
       </div>
 
       <div class="mt-12 text-center">
         <a href="/company/contact/" class="home-hero__button">TALK TO US</a>
-      </div>
-    </div>
-  </section>
-
-  <section id="ibom" class="bg-slate text-paper">
-    <div class="container-wide py-20">
-      <div class="eyebrow mb-6 text-center text-[#14B8A6]">
-        IBOM<sup>®</sup> - Intelligent Business Operating Model
-      </div>
-      <h2
-        class="mx-auto max-w-4xl text-center text-5xl font-semibold tracking-tight text-paper"
-      >
-        One controlled layer between your workforce, your workflows, your
-        systems, and your AI.
-      </h2>
-      <p
-        class="mx-auto mt-8 max-w-[82ch] text-center text-lg leading-relaxed text-paper/80 md:text-xl"
-      >
-        IBOM connects people, agents, workflows, knowledge, systems, policies,
-        and controls through one centralised control layer.
-      </p>
-      <div
-        id="ibom-visual"
-        class="relative mx-auto mt-10 w-full max-w-6xl scroll-mt-28"
-        aria-label="Business operations delivered through IBOM visualisation"
-      >
-        <AiceGatewayCluster />
-      </div>
-      <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
-        <a href="/how-it-works/" class="home-dark-outline-cta">
-          SEE HOW IT WORKS
-        </a>
       </div>
     </div>
   </section>
@@ -367,6 +307,7 @@ const pathways = [
                 post={caseStudy}
                 basePath="/case-studies"
                 showTags={false}
+                showDate
               />
             ))
         }
@@ -433,6 +374,118 @@ const pathways = [
   </section>
 
   <style>
+    .methodology-carousel {
+      min-width: 0;
+    }
+
+    .methodology-track {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      gap: 1.5rem;
+      overflow-x: auto;
+      padding: 0.25rem 0.1rem 1.25rem;
+      scroll-behavior: smooth;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      overscroll-behavior-inline: contain;
+    }
+
+    .methodology-track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .methodology-card {
+      position: relative;
+      flex: 0 0 calc((100% - 3rem) / 3);
+      min-height: 15rem;
+      overflow: hidden;
+      border: 1px solid color-mix(in srgb, var(--color-ink) 11%, transparent);
+      border-radius: 0.9rem;
+      background: var(--color-paper);
+      padding: clamp(1.5rem, 2.5vw, 2rem);
+      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.05);
+      scroll-snap-align: start;
+      transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .methodology-controls {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .methodology-controls button {
+      display: inline-grid;
+      width: 2.75rem;
+      height: 2.75rem;
+      place-items: center;
+      border: 1px solid rgba(20, 184, 166, 0.55);
+      border-radius: 999px;
+      background: transparent;
+      color: #0f766e;
+      font-size: 1.15rem;
+      transition: border-color 180ms ease, background 180ms ease, color 180ms ease;
+    }
+
+    .methodology-controls button:hover,
+    .methodology-controls button:focus-visible {
+      border-color: #14b8a6;
+      background: #14b8a6;
+      color: #f3f0e8;
+      outline: none;
+    }
+
+    .methodology-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 3px;
+      background: #14b8a6;
+    }
+
+    .methodology-step {
+      margin-bottom: 0.85rem;
+      color: #0f766e;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .methodology-card:hover {
+      border-color: rgba(20, 184, 166, 0.45);
+      transform: translateY(-3px);
+      box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .methodology-track {
+        scroll-behavior: auto;
+      }
+
+      .methodology-card {
+        transition: none;
+      }
+
+      .methodology-card:hover {
+        transform: none;
+      }
+    }
+
+    @media (max-width: 1023px) {
+      .methodology-card {
+        flex-basis: calc((100% - 1.5rem) / 2);
+      }
+    }
+
+    @media (max-width: 639px) {
+      .methodology-card {
+        flex-basis: 100%;
+      }
+    }
+
     .home-split-grid {
       display: grid;
 
@@ -454,7 +507,7 @@ const pathways = [
 
       font-family: var(--font-display);
 
-      font-size: clamp(38px, 4.5vw, 62px);
+      font-size: clamp(36px, 3.8vw, 54px);
 
       font-weight: 1000;
 
@@ -792,6 +845,48 @@ const pathways = [
       }
     }
   </style>
+
+  <script>
+    document.querySelectorAll("[data-methodology-carousel]").forEach((carousel) => {
+      if (!(carousel instanceof HTMLElement)) return;
+      const track = carousel.querySelector("[data-methodology-track]");
+      const previous = carousel.querySelector("[data-methodology-previous]");
+      const next = carousel.querySelector("[data-methodology-next]");
+      if (!(track instanceof HTMLElement)) return;
+
+      const move = (direction) => {
+        const firstCard = track.querySelector(".methodology-card");
+        if (!(firstCard instanceof HTMLElement)) return;
+        const gap = Number.parseFloat(getComputedStyle(track).columnGap || "0");
+        const step = firstCard.getBoundingClientRect().width + gap;
+        const maximum = track.scrollWidth - track.clientWidth;
+        const atEnd = track.scrollLeft >= maximum - 2;
+        const atStart = track.scrollLeft <= 2;
+
+        if (direction > 0 && atEnd) {
+          track.scrollTo({ left: 0, behavior: "smooth" });
+        } else if (direction < 0 && atStart) {
+          track.scrollTo({ left: maximum, behavior: "smooth" });
+        } else {
+          track.scrollBy({ left: direction * step, behavior: "smooth" });
+        }
+      };
+
+      previous?.addEventListener("click", () => move(-1));
+      next?.addEventListener("click", () => move(1));
+
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        let paused = false;
+        carousel.addEventListener("mouseenter", () => { paused = true; });
+        carousel.addEventListener("mouseleave", () => { paused = false; });
+        carousel.addEventListener("focusin", () => { paused = true; });
+        carousel.addEventListener("focusout", () => { paused = false; });
+        window.setInterval(() => {
+          if (!paused) move(1);
+        }, 4500);
+      }
+    });
+  </script>
 
   <script is:inline>
     const ensureSalesFunnelOverlayStyles = () => {

@@ -154,9 +154,9 @@ export async function GET() {
       url: '/company/jonny-bowker',
       type: 'Page',
       snippet:
-        'Jonny Bowker is the founder of Advanced Analytica, an AI strategy and architecture consultancy specialising in Intelligent Business Operating Models, spec-driven AI development, and governed agentic AI systems.',
+        'Jonny Bowker is the founder of Advanced Analytica, an AI strategy and architecture consultancy specialising in Intelligent Business Operations Managers, spec-driven AI development, and governed agentic AI systems.',
       searchText:
-        'Jonny Bowker Jonathan Bowker founder Advanced Analytica AI strategy architecture consultancy Intelligent Business Operating Models IBOM spec-driven AI development governed agentic AI systems MCP architecture'
+        'Jonny Bowker Jonathan Bowker founder Advanced Analytica AI strategy architecture consultancy Intelligent Business Operations Managers IBOM spec-driven AI development governed agentic AI systems MCP architecture'
     },
     {
       title: 'Fractional Chief AI Officer Services & Interim AI Directorship',

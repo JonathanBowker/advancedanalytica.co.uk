@@ -44,7 +44,7 @@ const renderSvg = ({
   tags: string[];
 }) => {
   const plainTitle = stripHtml(title);
-  const label = kind === 'opinion' ? 'OPINION' : kind === 'use-case' ? 'USE CASE' : 'RESOURCE';
+  const label = kind === 'opinion' ? 'OPINION' : kind === 'use-case' ? 'CASE STUDY' : 'RESOURCE';
   const accent =
     kind === 'opinion' ? '#14B8A6' : kind === 'use-case' ? '#0F766E' : '#94a3b8';
   const labelFill =
@@ -115,11 +115,11 @@ export async function getStaticPaths() {
   return [
     ...opinions.map((entry) => ({
       params: { kind: 'opinion', slug: entry.slug },
-      props: { kind: 'opinion' as CoverKind, title: entry.data.title, tags: entry.data.tags ?? [] }
+      props: { kind: 'opinion' as CoverKind, title: entry.data.coverTitle ?? entry.data.title, tags: entry.data.tags ?? [] }
     })),
     ...useCases.map((entry) => ({
       params: { kind: 'use-case', slug: entry.slug },
-      props: { kind: 'use-case' as CoverKind, title: entry.data.title, tags: entry.data.tags ?? [] }
+      props: { kind: 'use-case' as CoverKind, title: entry.data.coverTitle ?? entry.data.title, tags: entry.data.tags ?? [] }
     })),
     ...resources.map((entry) => ({
       params: { kind: 'resource', slug: entry.slug },

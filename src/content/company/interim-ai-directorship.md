@@ -25,9 +25,9 @@ When a business needs real direction on AI, not another document to file away, t
 
 We will not tell a business what to do with its AI until we know exactly what it already has, what is built, what is shadow IT, what is actually working, and what has simply been bought and left idle.
 
-Every engagement starts with an agentic due diligence pass across the organisation's AI estate: technical, operational, and commercial. It is not a formality. It is the only honest way to know which decisions are actually needed.
+Every engagement starts with an technical due diligence pass across the organisation's AI estate: technical, operational, and commercial. It is not a formality. It is the only honest way to know which decisions are actually needed.
 
-### Agentic due diligence checklist
+### Technical due diligence checklist
 
 | Area | What we check |
 | --- | --- |

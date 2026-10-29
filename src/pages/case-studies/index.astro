@@ -21,6 +21,12 @@ const caseStudyCategories = [
       'global-brand-language-governance-agent',
       'global-travel-brand-content-approval-agent',
       'entertainment-ai-asset-compliance-agent',
+      'professional-services-brand-atomisation',
+      'global-brand-fifteen-ai-skill-sets',
+      'multimodal-guidelines-machine-readable-brand-data',
+      'structured-guidance-higher-quality-brand-assets',
+      'brand-creative-approval-scale',
+      'off-grid-power-governed-product-catalogue',
       'brand-copy-language-adapter-training-data-agent',
       'stock-imagery-visual-adapter-training-data-agent',
       'regulated-visual-ai-siglip-adapter-training-flow'
@@ -33,7 +39,8 @@ const caseStudyCategories = [
       'agronomy-regulation-application-agent',
       'gdpr-disclosure-transaction-compliance-agent',
       'fund-investor-continuous-risk-agent',
-      'business-integrity-risk-guidance'
+      'business-integrity-risk-guidance',
+      'ai-assurance-agent-evaluation-before-production'
     ]
   },
   {
@@ -96,8 +103,8 @@ const page = {
         Case Studies
       </h1>
       <p class="mt-6 text-lg leading-relaxed text-steel md:text-xl">
-        Practical case studies showing how agentic AI has turned knowledge, policy, data, and operational judgement
-        into controlled workflows that support better decisions and more reliable execution.
+        Practical case studies showing how structured data and agentic AI turn business knowledge, policy and
+        operational judgement into controlled workflows that support better decisions and more reliable execution.
       </p>
       <div class="mt-8 flex flex-col gap-5 sm:flex-row sm:flex-wrap sm:items-center">
         <RssLink href="/rss/case-studies.xml" label="Case Studies RSS" />
@@ -189,7 +196,7 @@ const page = {
             data-categories={categories.map((category) => category.title).join('|')}
             class={`listing-card ${idx >= INITIAL_COUNT ? 'hidden' : 'listing-card-in'}`.trim()}
           >
-            <PostCard post={post} basePath="/case-studies" />
+            <PostCard post={post} basePath="/case-studies" showDate />
           </div>
         );
       })}

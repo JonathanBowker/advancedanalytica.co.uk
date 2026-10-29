@@ -19,6 +19,7 @@ const blog = defineCollection({
   type: 'content',
   schema: z.object({
     title: plainTitle(),
+    coverTitle: plainTitle().optional(),
     description: plainText('description'),
     coverImage: z.string().optional(),
     publishedAt: z.date(),
@@ -85,6 +86,7 @@ const caseStudies = defineCollection({
   type: 'content',
   schema: z.object({
     title: plainTitle(),
+    coverTitle: plainTitle().optional(),
     description: plainText('description'),
     coverImage: z.string().optional(),
     publishedAt: z.date(),

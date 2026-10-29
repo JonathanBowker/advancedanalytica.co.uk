@@ -28,6 +28,12 @@ const description = post.data.description;
 const url = `${SITE_URL}/case-studies/${post.slug}`;
 const coverImage = getGeneratedCoverPath('use-case', post.slug);
 const coverAlt = `${displayTitle} — ${description}`;
+const publishedDate = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC'
+}).format(post.data.publishedAt);
 
 const page = {
   title: displayTitle,
@@ -111,7 +117,11 @@ const page = {
             <h1 class="mt-4 text-[clamp(2rem,4vw,3.25rem)] font-normal tracking-tight text-white">
               {displayTitle}
             </h1>
-            <div class="mt-6 text-sm text-white/70">{post.data.author}</div>
+            <div class="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-white/70">
+              <span>{post.data.author}</span>
+              <span aria-hidden="true">·</span>
+              <time datetime={post.data.publishedAt.toISOString()}>{publishedDate}</time>
+            </div>
             <div class="mt-6">
               <ShareButtons url={url} title={displayTitle} description={description} variant="dark" />
             </div>
@@ -212,6 +222,9 @@ const page = {
       {related.map((entry) => (
         <a href={`/case-studies/${entry.slug}/`} class="rounded-xl border border-fog bg-surface p-6">
           <div class="text-xs uppercase tracking-[0.2em] text-steel">Case Study</div>
+          <time datetime={entry.data.publishedAt.toISOString()} class="mt-2 block text-xs font-semibold uppercase tracking-[0.14em] text-steel">
+            {new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(entry.data.publishedAt)}
+          </time>
           <div class="mt-3 text-lg font-semibold text-ink">{toSentenceCaseTitle(entry.data.title)}</div>
           <p class="mt-2 text-sm text-steel">{entry.data.description}</p>
         </a>

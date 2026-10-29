@@ -1,0 +1,6 @@
+flowchart BT
+  C[Crawl: confirmed 4,5]:::ok --> I[Index: confirmed 4]:::ok --> S[Search API: confirmed 4,5]:::ok --> E[Enrichment: not evidenced]:::no --> V[Semantic fields: not evidenced]:::no --> Q[Semantic query API: not evidenced]:::no --> A[Agent access: not evidenced]:::no
+  R[Assurance and rights: partial, 4]:::warn
+  classDef ok fill:#b7e4c7,stroke:#257a4a,color:#111
+  classDef warn fill:#ffe29a,stroke:#9a6b00,color:#111
+  classDef no fill:#ffb3b3,stroke:#9a2424,color:#111

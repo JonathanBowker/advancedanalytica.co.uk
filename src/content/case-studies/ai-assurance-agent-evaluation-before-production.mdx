@@ -1,0 +1,75 @@
+---
+title: "AI Assurance: Evaluating Governed Agents Before Production"
+coverTitle: "Test Agents Before They Act"
+description: A repeatable evaluation framework for testing compliance, factual accuracy, traceability, task relevance, and planted errors before deployment.
+publishedAt: 2026-10-25
+author: Advanced Analytica
+tags: [AI Assurance, Evaluation, Governance, Agent Testing]
+industry: AI Governance
+outcomes:
+  - Blind evaluation against an answer key derived from approved source rules
+  - Comparative evidence across unguided, raw, structured, and skill-based conditions
+  - Compliance, factual accuracy, and traceability tested before production
+draft: false
+---
+# An agent should prove how it behaves before it is trusted with live work
+
+This anonymised case study shows how a controlled evaluation framework can test whether an AI system is ready to operate against real business rules. Demonstrations often judge an output by whether it appears plausible. Production assurance requires a harder standard: did the system apply the right rules, avoid invented facts, retrieve only relevant guidance, explain its decisions, and identify errors deliberately placed in the task?
+
+We designed an evaluation that compared four information conditions across repeated business briefs. Independent reviewers scored every output blind against an answer key built from the approved source material. This created measurable evidence of how data structure and task-specific skills changed system behaviour before any decision was made about deployment.
+
+## The assurance problem
+
+AI outputs can sound confident while failing silently. A fluent response may omit a policy condition, invent a supporting fact, apply the wrong guidance family, or make a recommendation that cannot be traced to an approved source.
+
+These failures are difficult to govern through demonstration alone. The organisation needed a method that could compare system configurations under controlled conditions and expose both visible errors and weaknesses in the reasoning trail.
+
+## The evaluation design
+
+The same model completed four types of business task under four conditions:
+
+- no approved guidance;
+- raw pages retrieved from the source website;
+- guidance converted into structured data; and
+- structured guidance delivered through task-specific skills.
+
+Every brief was run twice under each condition. Two independent reviewers then scored the results without knowing which configuration had produced them.
+
+The answer key came from the organisation's approved guidance. This allowed the evaluation to test rule application rather than reviewer preference.
+
+## What was measured
+
+The framework assessed several dimensions of production readiness:
+
+- compliance with applicable rules;
+- readiness for first-pass human sign-off;
+- invented facts and unsupported specifics;
+- connection between decisions, rules, and evidence;
+- retrieval of task-relevant guidance; and
+- detection of deliberately planted mistakes.
+
+Separate analysis examined how well decisions were connected to related rules across several guidance families, including areas where important meaning was embedded in images rather than accessible through page text alone.
+
+## Comparative findings
+
+Without guidance, the system followed only around a third of the applicable rules, and no evaluated piece was considered ready for first-pass sign-off.
+
+Raw pages improved the apparent quality of the work but did not make decisions consistently traceable. Structured guidance raised rule compliance to nearly nine in ten and eliminated invented facts in the tested outputs. Unsupported specifics fell by more than half compared with the raw-page condition.
+
+The skills condition achieved the highest sign-off rate, loaded only the guidance needed for each task, and made none of the planted mistakes. This showed that source quality alone was not the full answer: the operating skill determining how and when knowledge was applied also mattered.
+
+## Turning findings into a release decision
+
+The evaluation did not reduce readiness to one score. Results could be inspected by task, rule family, failure type, and system configuration. That allowed the organisation to see where the system was dependable, where rules needed restructuring, and where human escalation remained necessary.
+
+Because the answer key and evidence trail were retained, future versions can be tested against the same standard. Evaluation becomes part of change control rather than a one-off demonstration before launch.
+
+## Outcome
+
+The organisation gained a repeatable assurance method for comparing agent configurations before production. Brand owners could see the effect of structured knowledge and skills in measurable terms, while technical teams received concrete failure patterns to correct.
+
+The framework established a practical release principle: an agent should not enter live operations because its output looks good. It should enter only when its decisions, errors, evidence, and boundaries have been tested against the rules it is expected to follow.
+
+## What this case study demonstrates
+
+Governed AI requires evaluation at the level of operational behaviour. Testing rule compliance, factual discipline, relevance, and traceability creates stronger evidence than subjective review and provides a repeatable control for future model, data, and skill changes.

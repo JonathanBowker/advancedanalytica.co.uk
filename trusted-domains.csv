@@ -1,0 +1,8 @@
+domain,harmonic_centrality_rank,pagerank_rank,source_type,reason_trusted
+learn.microsoft.com,not-recorded,not-recorded,primary,Official product lifecycle record
+developers.google.com,not-recorded,not-recorded,primary,Official API documentation
+brave.com,not-recorded,not-recorded,primary,Provider documentation
+mojeek.com,not-recorded,not-recorded,primary,Provider documentation
+commoncrawl.org,not-recorded,not-recorded,primary,Dataset operator documentation
+gdeltproject.org,not-recorded,not-recorded,primary,Dataset operator documentation
+gs.statcounter.com,not-recorded,not-recorded,measurement,Published measurement source with methodology

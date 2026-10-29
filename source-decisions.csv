@@ -1,0 +1,8 @@
+claim_category,domain,hierarchy,decision,reason
+API retirement,learn.microsoft.com,1,accepted,Official lifecycle announcement
+API restriction,developers.google.com,1,accepted,Official API documentation
+Provider capability,provider domains,2,accepted,Used only as provider claim and labelled confirmed to documentation
+Consumer search share,gs.statcounter.com,3,accepted,Measurement source but figures require live dated export
+Market revenue,anonymous market-report domains,5,rejected,Methods and counted market not disclosed
+Buyer pain,community sources,5,not used,Insufficient time to validate individual identity and context
+Common Crawl graph ranks,commoncrawl.org,1,incomplete,Release files available but ranks were not calculated in this study

@@ -2,7 +2,7 @@
 import { getCoverPathForBasePath } from '../lib/contentCover';
 import { toSentenceCaseTitle } from '../lib/titleFormat';
 
-const { post, showTags = true } = Astro.props as {
+const { post, showTags = true, showDate = false } = Astro.props as {
   post: {
     slug: string;
     data: {
@@ -17,6 +17,7 @@ const { post, showTags = true } = Astro.props as {
   basePath?: string;
   tagBasePath?: string;
   showTags?: boolean;
+  showDate?: boolean;
 };
 
 const basePath = Astro.props.basePath ?? '/opinions';
@@ -24,6 +25,12 @@ const tagBasePath = Astro.props.tagBasePath ?? `${basePath}/tag`;
 const coverImage = getCoverPathForBasePath(basePath, post.slug, post.data.coverImage);
 const displayTitle = toSentenceCaseTitle(post.data.title);
 const coverAlt = `${displayTitle} — ${post.data.description}`;
+const publishedDate = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC'
+}).format(post.data.publishedAt);
 ---
 <article class="group flex h-full flex-col rounded-xl border border-fog bg-surface p-6 shadow-outline">
   <a href={`${basePath}/${post.slug}/`} class="block overflow-hidden rounded-xl bg-[#0b0e14] shadow-outline">
@@ -64,5 +71,10 @@ const coverAlt = `${displayTitle} — ${post.data.description}`;
       {displayTitle}
     </a>
   </h3>
+  {showDate ? (
+    <time datetime={post.data.publishedAt.toISOString()} class="mt-2 text-xs font-semibold uppercase tracking-[0.14em] text-steel">
+      {publishedDate}
+    </time>
+  ) : null}
   <p class="mt-3 text-sm leading-relaxed text-steel">{post.data.description}</p>
 </article>

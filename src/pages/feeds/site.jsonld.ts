@@ -35,7 +35,7 @@ export async function GET() {
       url: `${SITE_URL}/company/jonny-bowker/`,
       title: 'Jonny Bowker',
       description:
-        'Jonny Bowker is the founder of Advanced Analytica, specialising in Intelligent Business Operating Models, spec-driven AI development, and governed agentic AI systems.',
+        'Jonny Bowker is the founder of Advanced Analytica, specialising in Intelligent Business Operations Managers, spec-driven AI development, and governed agentic AI systems.',
       itemType: 'ProfilePage',
       tags: ['Jonny Bowker', 'Founder', 'Advanced Analytica', 'Agentic AI']
     },
@@ -67,7 +67,7 @@ export async function GET() {
       url: `${SITE_URL}/ibom/`,
       title: 'IBOM',
       description:
-        'The Intelligent Business Operating Model for turning brand meaning, policy, and operational logic into executable systems.',
+        'The Intelligent Business Operations Manager for turning brand meaning, policy, and operational logic into executable systems.',
       itemType: 'Service',
       tags: ['IBOM', 'Service']
     },

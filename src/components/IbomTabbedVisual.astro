@@ -1,0 +1,1037 @@
+---
+const queries = [
+  "How can we make a controlled decision using everything our business knows?",
+  "Can this pesticide be used on this crop under current regulations?",
+  "Can we use this product name without creating brand or trademark risk?",
+  "Create campaign content using our brand standards and business policies.",
+  "Where is the strongest opportunity in our market, and what could change it?"
+];
+
+const categories = [
+  "Leadership & strategy sources",
+  "Agriculture & regulatory sources",
+  "Legal, risk & compliance sources",
+  "Brand & marketing sources",
+  "Market strategy sources"
+];
+
+const triggers = [
+  "Decision request submitted",
+  "Treatment plan submitted",
+  "New product name proposed",
+  "Campaign brief approved",
+  "Strategy review scheduled"
+];
+
+const brand = {
+  title: "Brand guidelines",
+  description: "Your brand guidelines",
+  detail: "Apply your brand foundations, standards, assets and toolkits consistently across agent work."
+};
+
+const workflows = {
+  title: "Your workflows",
+  description: "Agentic business workflows",
+  detail: "Give agents the approved process, decision points, controls and escalation route for the work."
+};
+
+const groups = [
+  [
+    brand,
+    workflows,
+    { title: "Websites & live news", description: "The open web", detail: "Bring current public information into decisions with sources and traceable evidence." },
+    { title: "Company filings", description: "Company data", detail: "Ground company research in official filings and registered information." },
+    { title: "Earnings", description: "Company data", detail: "Connect reported performance and management commentary to operational analysis." },
+    { title: "Statistics", description: "Company data", detail: "Use structured statistics as controlled evidence for research and decisions." }
+  ],
+  [
+    brand,
+    workflows,
+    { title: "Pesticide data", description: "Products & active substances", detail: "Check active substances, products, approved uses and application constraints." },
+    { title: "Regulatory guidelines", description: "Agricultural regulation", detail: "Apply current statutory guidance, codes of practice and regulatory requirements." },
+    { title: "Product authorisations", description: "Approved uses", detail: "Verify that the product, crop, rate and application method are authorised." },
+    { title: "Crop & field records", description: "Operational evidence", detail: "Use crop, field, treatment and local condition records to assess the proposed action." }
+  ],
+  [
+    brand,
+    workflows,
+    { title: "Business policies", description: "Rules & controls", detail: "Check proposed decisions against approved business policy before action." },
+    { title: "Trademark records", description: "Papers & patents", detail: "Check registered marks and ownership evidence alongside brand decisions." },
+    { title: "Company filings", description: "Company data", detail: "Confirm ownership, directors and registered company information." },
+    { title: "Websites & live news", description: "The open web", detail: "Review current use, market context and public claims." }
+  ],
+  [
+    brand,
+    workflows,
+    { title: "Business policies", description: "Rules & controls", detail: "Keep generated content inside approved business and regulatory policy." },
+    { title: "Brand assets", description: "Approved creative", detail: "Use approved logos, imagery, templates and design components." },
+    { title: "Product information", description: "Product knowledge", detail: "Ground campaign content in accurate product features and benefits." },
+    { title: "Approved claims", description: "Evidence & assurance", detail: "Use substantiated claims with the supporting evidence attached." }
+  ],
+  [
+    brand,
+    workflows,
+    { title: "Market research", description: "Research & insight", detail: "Combine validated market evidence with the business context." },
+    { title: "Competitor intelligence", description: "Market data", detail: "Track competitor actions, claims and positioning over time." },
+    { title: "Customer feedback", description: "Voice of customer", detail: "Connect customer needs and friction to strategic decisions." },
+    { title: "Risk registers", description: "Risk & compliance", detail: "Keep known risks, mitigations and ownership inside the decision." }
+  ]
+];
+
+const tabs = groups.flat();
+const visibleTabs = groups[0];
+const outputConnections = [
+  {
+    forward: "M0 208 C72 208, 34 104, 120 104",
+    reverse: "M120 104 C34 104, 72 208, 0 208"
+  },
+  {
+    forward: "M0 208 C72 208, 34 312, 120 312",
+    reverse: "M120 312 C34 312, 72 208, 0 208"
+  }
+];
+---
+
+<div class="ibom-tabs" data-ibom-tabs>
+  <div class="ibom-tabs__query">
+    <span class="ibom-tabs__query-icon" aria-hidden="true"></span>
+    <span class="ibom-tabs__query-copy"><span data-query-text>{queries[0]}</span><span class="ibom-tabs__cursor" aria-hidden="true"></span></span>
+    <span class="ibom-tabs__trigger"><small>WORKFLOW TRIGGER</small><strong data-trigger-text>{triggers[0]}</strong></span>
+  </div>
+
+  <div class="ibom-tabs__label" data-category-label>{categories[0]}</div>
+
+  <div class="ibom-tabs__layout">
+    <div class="ibom-tabs__list" role="tablist" aria-label="IBOM knowledge inputs">
+      {visibleTabs.map((tab, index) => (
+        <button
+          class:list={["ibom-tabs__tab", { "is-active": index === 0 }]}
+          type="button"
+          role="tab"
+          id={`ibom-tab-${index}`}
+          aria-controls="ibom-tab-panel"
+          aria-selected={index === 0 ? "true" : "false"}
+          tabindex={index === 0 ? "0" : "-1"}
+          data-tab-index={index}
+        >
+          <span class="ibom-tabs__icon" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+          </span>
+          <span class="ibom-tabs__copy">
+            <strong data-tab-title>{tab.title}</strong>
+            <small><span data-tab-description>{tab.description}</span> <em data-tab-badge class:list={{ "is-visible": Boolean(tab.badge) }}>{tab.badge || ""}</em></small>
+          </span>
+          <span class="ibom-tabs__node" aria-hidden="true"></span>
+        </button>
+      ))}
+    </div>
+
+    <svg class="ibom-tabs__connections" viewBox="0 0 280 416" preserveAspectRatio="none" aria-hidden="true">
+      {visibleTabs.map((_, index) => {
+        const y = 31 + index * 70.8;
+        const path = `M0 ${y} C145 ${y}, 145 208, 280 208`;
+        const reversePath = `M280 208 C145 208, 145 ${y}, 0 ${y}`;
+        const offset = index * 0.34;
+        const duration = index === 0 ? "1.15s" : "2.8s";
+        return (
+          <g class:list={["ibom-tabs__flow", { "is-active": index === 0 }]} data-path-index={index}>
+            <path class="ibom-tabs__path" d={path} />
+            {[0, 0.11, 0.22].map((spacing) => (
+              <rect class="ibom-tabs__flow-dash" x="-5" y="-1.5" width="10" height="3" rx="1.5">
+                <animateMotion
+                  class="ibom-tabs__flow-motion"
+                  path={path}
+                  dur={duration}
+                  begin={`-${offset + spacing}s`}
+                  repeatCount="indefinite"
+                  calcMode="linear"
+                  rotate="auto"
+                />
+              </rect>
+            ))}
+            {[0, 0.11, 0.22].map((spacing) => (
+              <rect class="ibom-tabs__flow-dash ibom-tabs__flow-dash--return" x="-5" y="-1.5" width="10" height="3" rx="1.5">
+              <animateMotion
+                class="ibom-tabs__flow-motion"
+                path={reversePath}
+                dur={duration}
+                begin={`-${offset + 1.1 + spacing}s`}
+                repeatCount="indefinite"
+                calcMode="linear"
+                rotate="auto"
+              />
+              </rect>
+            ))}
+          </g>
+        );
+      })}
+    </svg>
+
+    <div
+      class="ibom-tabs__panel"
+      id="ibom-tab-panel"
+      role="tabpanel"
+      aria-labelledby="ibom-tab-0"
+      tabindex="0"
+    >
+      <div class="ibom-tabs__panel-content">
+        <svg class="ibom-tabs__ibom-mark" viewBox="0 0 147.84 147.84" aria-hidden="true">
+          <g class="ibom-tabs__ibom-dots">
+            <path d="M93.08,107.24c.66,5.88-3.94,10.88-9.69,10.88-3.62,0-6.77-1.98-8.45-4.91-.44-.77-1.58-.77-2.02,0-1.68,2.93-4.84,4.91-8.45,4.91-5.75,0-10.36-5-9.69-10.88.5-4.46,4.1-8.06,8.56-8.57,4.08-.46,7.72,1.6,9.58,4.83.45.79,1.58.79,2.04,0,1.86-3.22,5.51-5.29,9.58-4.83,4.46.51,8.06,4.11,8.56,8.57Z"></path>
+            <path d="M64.46,61.35c3.62,0,6.77-1.98,8.45-4.91.44-.77,1.58-.77,2.02,0,1.68,2.93,4.84,4.91,8.45,4.91,5.75,0,10.36-5,9.69-10.88-.5-4.46-4.1-8.06-8.56-8.57-4.07-.46-7.72,1.6-9.58,4.83-.45.79-1.58.79-2.04,0-1.86-3.22-5.51-5.29-9.58-4.83-4.46.51-8.06,4.11-8.56,8.57-.66,5.88,3.94,10.88,9.69,10.88Z"></path>
+            <path d="M50.4,81c-.79-.45-.79-1.58,0-2.04,3.22-1.86,5.29-4.91,4.83-9.58-.51-4.46-4.11-8.06-8.57-8.56-5.88-.66-10.88,3.94-10.88,9.69,0,3.62,1.98,6.77,4.91,8.45.77.44.77,1.58,0,2.02-2.93,1.68-4.91,4.84-4.91,8.45,0,5.75,5,10.36,10.88,9.69,4.46-.5,8.06-4.1,8.57-8.56.46-4.08-1.6-7.72-4.83-9.58Z"></path>
+            <path d="M107.18,81c-.79-.45-.79-1.58,0-2.04,3.22-1.86,5.29-4.91,4.83-9.58-.51-4.46-4.11-8.06-8.57-8.56-5.88-.66-10.88,3.94-10.88,9.69,0,3.62,1.98,6.77,4.91,8.45.77.44.77,1.58,0,2.02-2.93,1.68-4.91,4.84-4.91,8.45,0,5.75,5,10.36,10.88,9.69,4.46-.5,8.06-4.1,8.57-8.56.46-4.08-1.6-7.72-4.83-9.58Z"></path>
+            <circle class="ibom-tabs__ibom-single-dot" cx="45.54" cy="32.67" r="9.76"></circle>
+          </g>
+        </svg>
+        <h3>IBOM<sup>®</sup></h3>
+        <p class="ibom-tabs__panel-name">Intelligent Business Operations Manager</p>
+        <p class="ibom-tabs__panel-description">One controlled layer between data, knowledge, people and AI.</p>
+        <div class="ibom-tabs__status">
+          AI GOVERNANCE FOR SMARTER BUSINESSES
+        </div>
+      </div>
+    </div>
+
+    <svg class="ibom-tabs__output-lines" viewBox="0 0 120 416" preserveAspectRatio="none" aria-hidden="true">
+      {outputConnections.map((connection, pathIndex) => (
+        <g class="ibom-tabs__output-flow">
+          <path class="ibom-tabs__output-path" d={connection.forward}></path>
+          {[0, 0.1, 0.2].map((spacing) => (
+            <rect class="ibom-tabs__output-flow-dash" x="-4" y="-1.4" width="8" height="2.8" rx="1.4">
+              <animateMotion
+                path={connection.forward}
+                dur="1.8s"
+                begin={`-${pathIndex * 0.3 + spacing}s`}
+                repeatCount="indefinite"
+                calcMode="linear"
+                rotate="auto"
+              />
+            </rect>
+          ))}
+          {[0, 0.1, 0.2].map((spacing) => (
+            <rect class="ibom-tabs__output-flow-dash ibom-tabs__output-flow-dash--return" x="-4" y="-1.4" width="8" height="2.8" rx="1.4">
+              <animateMotion
+                path={connection.reverse}
+                dur="1.8s"
+                begin={`-${pathIndex * 0.3 + 0.75 + spacing}s`}
+                repeatCount="indefinite"
+                calcMode="linear"
+                rotate="auto"
+              />
+            </rect>
+          ))}
+        </g>
+      ))}
+    </svg>
+
+    <div class="ibom-tabs__outputs">
+      <article class="ibom-tabs__output-card ibom-tabs__output-card--primary">
+        <span class="ibom-tabs__output-kicker">YOUR AI, WITH BETTER KNOWLEDGE</span>
+        <h3 data-panel-title>{tabs[0].title}</h3>
+        <p data-panel-detail>{tabs[0].detail}</p>
+        <div class="ibom-tabs__output-proof">
+          <span aria-hidden="true">✓</span>
+          CONTROLLED, RELEVANT AND TRACEABLE
+        </div>
+      </article>
+
+      <article class="ibom-tabs__output-card">
+        <span class="ibom-tabs__output-kicker">KNOWLEDGE IN OPERATION</span>
+        <div class="ibom-tabs__models" aria-label="Compatible with OpenAI and Anthropic">
+          <span><img class="ibom-tabs__model-logo--openai" src="/images/logos/openai.svg" alt="" width="24" height="24" />OpenAI</span>
+          <span><img class="ibom-tabs__model-logo--claude" src="/images/logos/claude.svg" alt="" width="24" height="24" />Anthropic</span>
+        </div>
+        <h3>Agent execution</h3>
+        <p>A question in. A governed action out, with evidence and controls attached.</p>
+        <div class="ibom-tabs__output-steps">PLAN → CHECK → ACT → ASSURE</div>
+      </article>
+    </div>
+  </div>
+
+  <script type="application/json" data-ibom-tabs-data set:html={JSON.stringify(tabs)}></script>
+  <script type="application/json" data-ibom-query-data set:html={JSON.stringify(queries)}></script>
+  <script type="application/json" data-ibom-category-data set:html={JSON.stringify(categories)}></script>
+  <script type="application/json" data-ibom-trigger-data set:html={JSON.stringify(triggers)}></script>
+</div>
+
+<style>
+  .ibom-tabs {
+    --ibom-accent: #14b8a6;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 1.5rem;
+    background:
+      radial-gradient(circle at 80% 50%, rgba(20, 184, 166, 0.13), transparent 34%),
+      #090d13;
+    padding: clamp(1.25rem, 3vw, 2.5rem);
+    overflow: hidden;
+  }
+
+  .ibom-tabs__label {
+    margin: 2rem 0 1.25rem;
+    color: var(--ibom-accent);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+  }
+
+  .ibom-tabs__layout {
+    display: grid;
+    grid-template-columns: minmax(280px, 1.35fr) minmax(50px, 0.35fr) minmax(225px, 0.82fr) minmax(40px, 0.28fr) minmax(245px, 0.95fr);
+    align-items: center;
+    min-width: 0;
+  }
+
+  .ibom-tabs__query {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-height: 76px;
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.055);
+    padding: 1rem 1.35rem;
+    color: #f3f0e8;
+    font-size: clamp(1rem, 1.55vw, 1.3rem);
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+  }
+
+  .ibom-tabs__query-copy {
+    display: inline-flex;
+    flex: 1 1 auto;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .ibom-tabs__trigger {
+    flex: 0 0 auto;
+    max-width: 15rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.13);
+    padding-left: 1rem;
+  }
+
+  .ibom-tabs__trigger small,
+  .ibom-tabs__trigger strong {
+    display: block;
+  }
+
+  .ibom-tabs__trigger small {
+    color: var(--ibom-accent);
+    font-size: 0.52rem;
+    font-weight: 900;
+    letter-spacing: 0.13em;
+  }
+
+  .ibom-tabs__trigger strong {
+    margin-top: 0.28rem;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .ibom-tabs__query-icon {
+    position: relative;
+    flex: 0 0 auto;
+    width: 1.2rem;
+    height: 1.2rem;
+    border: 2px solid var(--ibom-accent);
+    border-radius: 50%;
+  }
+
+  .ibom-tabs__query-icon::after {
+    content: "";
+    position: absolute;
+    right: -0.42rem;
+    bottom: -0.25rem;
+    width: 0.55rem;
+    height: 2px;
+    background: var(--ibom-accent);
+    transform: rotate(45deg);
+  }
+
+  .ibom-tabs__cursor {
+    width: 2px;
+    height: 1.35em;
+    margin-left: 0.18rem;
+    background: var(--ibom-accent);
+    animation: ibom-cursor 0.7s steps(1) infinite;
+  }
+
+  .ibom-tabs__list {
+    display: grid;
+    grid-template-rows: repeat(6, 62px);
+    gap: 0.55rem;
+    overflow: visible;
+  }
+
+  .ibom-tabs__tab {
+    position: relative;
+    display: grid;
+    grid-template-columns: 2.75rem 1fr;
+    gap: 1rem;
+    align-items: center;
+    min-height: 62px;
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 0.65rem;
+    background: rgba(255, 255, 255, 0.045);
+    padding: 0.48rem 0.8rem;
+    color: #f3f0e8;
+    text-align: left;
+    transition: border-color 180ms ease, background 180ms ease;
+  }
+
+  .ibom-tabs__tab:hover,
+  .ibom-tabs__tab:focus-visible,
+  .ibom-tabs__tab.is-active {
+    border-color: rgba(20, 184, 166, 0.65);
+    background: rgba(20, 184, 166, 0.1);
+    outline: none;
+  }
+
+  .ibom-tabs__icon {
+    display: grid;
+    grid-template-columns: repeat(2, 0.38rem);
+    gap: 0.18rem;
+    place-content: center;
+    width: 2.1rem;
+    height: 2.1rem;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 0.4rem;
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .ibom-tabs__icon span {
+    width: 0.38rem;
+    height: 0.38rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.36);
+    transition: background 180ms ease;
+  }
+
+  .ibom-tabs__tab.is-active .ibom-tabs__icon span {
+    background: var(--ibom-accent);
+  }
+
+  .ibom-tabs__copy strong,
+  .ibom-tabs__copy small {
+    display: block;
+  }
+
+  .ibom-tabs__copy strong {
+    font-size: clamp(0.92rem, 1.15vw, 1.05rem);
+    line-height: 1.2;
+  }
+
+  .ibom-tabs__copy small {
+    margin-top: 0.42rem;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.7rem;
+    line-height: 1.4;
+    letter-spacing: 0.025em;
+  }
+
+  .ibom-tabs__copy em {
+    display: none;
+    margin-left: 0.35rem;
+    border: 1px solid rgba(20, 184, 166, 0.35);
+    padding: 0.1rem 0.3rem;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 0.55rem;
+    font-style: normal;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .ibom-tabs__copy em.is-visible {
+    display: inline-block;
+  }
+
+  .ibom-tabs__node {
+    position: absolute;
+    right: -0.31rem;
+    top: calc(50% - 0.3rem);
+    width: 0.6rem;
+    height: 0.6rem;
+    border: 1px solid rgba(20, 184, 166, 0.75);
+    background: #090d13;
+    transition: border-color 180ms ease, background 180ms ease;
+  }
+
+  .ibom-tabs__tab.is-active .ibom-tabs__node {
+    border-color: var(--ibom-accent);
+    background: var(--ibom-accent);
+  }
+
+  .ibom-tabs__connections {
+    width: 100%;
+    height: 416px;
+    overflow: visible;
+  }
+
+  .ibom-tabs__path {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.16);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+    transition: stroke 180ms ease;
+  }
+
+  .ibom-tabs__flow-dash {
+    fill: var(--ibom-accent);
+    opacity: 0.48;
+    vector-effect: non-scaling-stroke;
+    transition: opacity 180ms ease;
+  }
+
+  .ibom-tabs__flow-dash--return {
+    opacity: 0.34;
+  }
+
+  .ibom-tabs__flow.is-active .ibom-tabs__path {
+    stroke: rgba(20, 184, 166, 0.38);
+  }
+
+  .ibom-tabs__flow.is-active .ibom-tabs__flow-dash {
+    opacity: 1;
+    filter: drop-shadow(0 0 4px rgba(20, 184, 166, 0.8));
+  }
+
+  .ibom-tabs__panel {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 285px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 0.85rem;
+    background: linear-gradient(145deg, rgba(25, 33, 43, 0.98), rgba(4, 7, 11, 0.98));
+    padding: 1.25rem;
+    overflow: hidden;
+  }
+
+  .ibom-tabs__panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 18px 18px;
+    opacity: 0.24;
+  }
+
+  .ibom-tabs__panel-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+
+  .ibom-tabs__ibom-mark {
+    display: block;
+    width: 3.6rem;
+    height: 3.6rem;
+    margin: 0 auto;
+    overflow: visible;
+  }
+
+  .ibom-tabs__ibom-dots {
+    fill: var(--ibom-accent);
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: ibom-dot-system 3.8s ease-in-out infinite;
+  }
+
+  .ibom-tabs__ibom-single-dot {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: ibom-single-dot 3.8s ease-in-out infinite;
+  }
+
+  .ibom-tabs__panel-kicker {
+    color: var(--ibom-accent);
+    font-size: 0.75rem;
+    font-weight: 900;
+    letter-spacing: 0.2em;
+  }
+
+  .ibom-tabs__panel h3 {
+    position: relative;
+    display: inline-block;
+    margin-top: 0.7rem;
+    font-size: clamp(1.7rem, 2.45vw, 2.3rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.055em;
+  }
+
+  .ibom-tabs__panel h3 sup {
+    position: absolute;
+    top: 0.02em;
+    right: -0.72em;
+    margin: 0;
+    font-size: 0.34em;
+    line-height: 1;
+    letter-spacing: 0;
+  }
+
+  .ibom-tabs__output-lines {
+    width: 100%;
+    height: 416px;
+    overflow: visible;
+  }
+
+  .ibom-tabs__output-lines path {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.18);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .ibom-tabs__output-lines .ibom-tabs__output-path {
+    stroke: rgba(255, 255, 255, 0.18);
+  }
+
+  .ibom-tabs__output-flow-dash {
+    fill: var(--ibom-accent);
+    filter: drop-shadow(0 0 3px rgba(20, 184, 166, 0.68));
+    vector-effect: non-scaling-stroke;
+  }
+
+  .ibom-tabs__output-flow-dash--return {
+    opacity: 0.72;
+  }
+
+  .ibom-tabs__outputs {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .ibom-tabs__output-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 260px;
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: clamp(1rem, 1.5vw, 1.35rem);
+  }
+
+  .ibom-tabs__output-card--primary {
+    border-color: rgba(20, 184, 166, 0.42);
+  }
+
+  .ibom-tabs__output-kicker {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+  }
+
+  .ibom-tabs__output-card h3 {
+    display: -webkit-box;
+    margin-top: 1rem;
+    color: #f3f0e8;
+    font-size: clamp(1.15rem, 1.7vw, 1.55rem);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .ibom-tabs__output-card p {
+    margin-top: 0.45rem;
+    color: rgba(255, 255, 255, 0.63);
+    font-size: 0.76rem;
+    line-height: 1.55;
+  }
+
+  .ibom-tabs__models {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-top: 0.8rem;
+  }
+
+  .ibom-tabs__models span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.32rem;
+    color: #f3f0e8;
+    font-size: clamp(0.68rem, 0.8vw, 0.78rem);
+    font-weight: 700;
+  }
+
+  .ibom-tabs__models img {
+    width: 1.4rem;
+    height: 1.4rem;
+  }
+
+  .ibom-tabs__models + h3 {
+    margin-top: 0.75rem;
+  }
+
+  .ibom-tabs__model-logo--openai {
+    filter: invert(1);
+  }
+
+  .ibom-tabs__model-logo--claude {
+    filter: invert(55%) sepia(76%) saturate(1325%) hue-rotate(331deg) brightness(93%) contrast(82%);
+  }
+
+
+  .ibom-tabs__output-proof,
+  .ibom-tabs__output-steps {
+    margin-top: auto;
+    padding-top: 0.8rem;
+    color: rgba(255, 255, 255, 0.48);
+    font-size: 0.58rem;
+    font-weight: 800;
+    line-height: 1.5;
+    letter-spacing: 0.1em;
+  }
+
+  .ibom-tabs__output-proof span {
+    margin-right: 0.4rem;
+    color: var(--ibom-accent);
+  }
+
+  .ibom-tabs__panel p {
+    max-width: 31ch;
+    margin: 1.2rem auto 0;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 0.8rem;
+    line-height: 1.65;
+  }
+
+  .ibom-tabs__panel .ibom-tabs__panel-name {
+    max-width: 24ch;
+    margin-top: 1rem;
+    color: #f3f0e8;
+    font-size: clamp(0.72rem, 1vw, 0.88rem);
+    font-weight: 800;
+    line-height: 1.35;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+
+  .ibom-tabs__panel .ibom-tabs__panel-description {
+    margin-top: 0.9rem;
+    font-size: 0.72rem;
+  }
+
+  .ibom-tabs__status {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 1.8rem;
+    color: var(--ibom-accent);
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+  }
+
+  @keyframes ibom-cursor {
+    50% { opacity: 0; }
+  }
+
+  @keyframes ibom-dot-system {
+    0%, 24% { transform: rotate(0deg); }
+    55%, 100% { transform: rotate(360deg); }
+  }
+
+  @keyframes ibom-single-dot {
+    0%, 12% { transform: translate(0, 0); }
+    24%, 62% { transform: translate(0, 42px); }
+    78%, 100% { transform: translate(0, 0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ibom-tabs__ibom-dots,
+    .ibom-tabs__ibom-single-dot,
+    .ibom-tabs__cursor,
+    .ibom-tabs__flow-dash,
+    .ibom-tabs__output-flow-dash {
+      animation: none;
+      display: none;
+    }
+
+    .ibom-tabs__flow-dash {
+      display: none;
+    }
+  }
+
+  @media (max-width: 1050px) {
+    .ibom-tabs__layout {
+      grid-template-columns: minmax(280px, 1fr) minmax(70px, 0.35fr) minmax(260px, 0.9fr);
+      gap: 1rem;
+    }
+
+    .ibom-tabs__output-lines {
+      display: none;
+    }
+
+    .ibom-tabs__outputs {
+      grid-column: 1 / -1;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ibom-tabs__output-card {
+      min-height: 260px;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .ibom-tabs {
+      padding: 1rem;
+      border-radius: 1rem;
+    }
+
+    .ibom-tabs__query {
+      align-items: flex-start;
+      flex-wrap: wrap;
+      width: 100%;
+      min-width: 0;
+      min-height: auto;
+      padding: 0.9rem;
+    }
+
+    .ibom-tabs__trigger {
+      flex-basis: 100%;
+      width: 100%;
+      min-width: 0;
+      max-width: none;
+      margin-left: 0;
+      border-left: 0;
+      padding-left: 0;
+    }
+
+    .ibom-tabs__layout {
+      grid-template-columns: 1fr;
+      width: 100%;
+      min-width: 0;
+    }
+
+    .ibom-tabs__list,
+    .ibom-tabs__tab,
+    .ibom-tabs__copy,
+    .ibom-tabs__panel,
+    .ibom-tabs__outputs,
+    .ibom-tabs__output-card {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .ibom-tabs__copy strong,
+    .ibom-tabs__copy small,
+    .ibom-tabs__query-copy,
+    .ibom-tabs__trigger {
+      overflow-wrap: anywhere;
+    }
+
+    .ibom-tabs__connections,
+    .ibom-tabs__node {
+      display: none;
+    }
+
+    .ibom-tabs__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: repeat(3, 78px);
+    }
+
+    .ibom-tabs__tab.is-active {
+      transform: none;
+    }
+
+    .ibom-tabs__panel {
+      min-height: 330px;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .ibom-tabs__label {
+      margin-top: 1.4rem;
+    }
+
+    .ibom-tabs__list {
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(6, 78px);
+    }
+
+    .ibom-tabs__outputs {
+      grid-template-columns: 1fr;
+    }
+
+    .ibom-tabs__tab {
+      min-height: 78px;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll("[data-ibom-tabs]").forEach((root) => {
+    if (!(root instanceof HTMLElement)) return;
+    const dataNode = root.querySelector("[data-ibom-tabs-data]");
+    const queryDataNode = root.querySelector("[data-ibom-query-data]");
+    const categoryDataNode = root.querySelector("[data-ibom-category-data]");
+    const triggerDataNode = root.querySelector("[data-ibom-trigger-data]");
+    const queryText = root.querySelector("[data-query-text]");
+    const categoryLabel = root.querySelector("[data-category-label]");
+    const triggerText = root.querySelector("[data-trigger-text]");
+    const tabs = Array.from(root.querySelectorAll("[role='tab']"));
+    const paths = Array.from(root.querySelectorAll("[data-path-index]"));
+    const panel = root.querySelector("[role='tabpanel']");
+    const title = root.querySelector("[data-panel-title]");
+    const detail = root.querySelector("[data-panel-detail]");
+    if (!(dataNode instanceof HTMLScriptElement) || !(queryDataNode instanceof HTMLScriptElement) || !(categoryDataNode instanceof HTMLScriptElement) || !(triggerDataNode instanceof HTMLScriptElement) || !(panel instanceof HTMLElement)) return;
+
+    const items = JSON.parse(dataNode.textContent || "[]");
+    const queries = JSON.parse(queryDataNode.textContent || "[]");
+    const categories = JSON.parse(categoryDataNode.textContent || "[]");
+    const triggers = JSON.parse(triggerDataNode.textContent || "[]");
+    const pageSize = 6;
+    let group = 0;
+    let activeIndex = 0;
+    let typingTimer = 0;
+    let visibleItems = items.slice(0, pageSize);
+    let hoverPaused = false;
+    let mobilePaused = false;
+
+    const isMobilePointer = () => window.matchMedia("(hover: none), (pointer: coarse)").matches;
+    const isPaused = () => hoverPaused || mobilePaused;
+
+    const shuffle = (values) => {
+      const shuffled = [...values];
+      for (let index = shuffled.length - 1; index > 0; index -= 1) {
+        const swapIndex = Math.floor(Math.random() * (index + 1));
+        [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+      }
+      return shuffled;
+    };
+
+    const typeQuery = (query) => {
+      if (!(queryText instanceof HTMLElement)) return;
+      window.clearTimeout(typingTimer);
+      queryText.textContent = "";
+      const duration = 5000;
+      const step = Math.max(45, duration / query.length);
+      let position = 0;
+      const typeNext = () => {
+        if (isPaused()) {
+          typingTimer = window.setTimeout(typeNext, 100);
+          return;
+        }
+        position += 1;
+        queryText.textContent = query.slice(0, position);
+        if (position < query.length) typingTimer = window.setTimeout(typeNext, step);
+      };
+      typeNext();
+    };
+
+    const activate = (index) => {
+      activeIndex = index;
+      tabs.forEach((tab, tabIndex) => {
+        const active = tabIndex === index;
+        tab.classList.toggle("is-active", active);
+        tab.setAttribute("aria-selected", String(active));
+        tab.setAttribute("tabindex", active ? "0" : "-1");
+      });
+      paths.forEach((path, pathIndex) => {
+        const active = pathIndex === index;
+        path.classList.toggle("is-active", active);
+        path.querySelectorAll(".ibom-tabs__flow-motion").forEach((motion) => {
+          motion.setAttribute("dur", active ? "1.15s" : "2.8s");
+        });
+      });
+      panel.setAttribute("aria-labelledby", `ibom-tab-${index}`);
+      const item = visibleItems[index];
+      if (title) title.textContent = item.title;
+      if (detail) detail.textContent = item.detail;
+    };
+
+    const showGroup = (nextGroup) => {
+      group = nextGroup;
+      visibleItems = shuffle(items.slice(group * pageSize, (group + 1) * pageSize));
+      if (categoryLabel) categoryLabel.textContent = categories[group];
+      if (triggerText) triggerText.textContent = triggers[group];
+      tabs.forEach((tab, index) => {
+        const item = visibleItems[index];
+        const tabTitle = tab.querySelector("[data-tab-title]");
+        const tabDescription = tab.querySelector("[data-tab-description]");
+        const tabBadge = tab.querySelector("[data-tab-badge]");
+        if (tabTitle) tabTitle.textContent = item.title;
+        if (tabDescription) tabDescription.textContent = item.description;
+        if (tabBadge) {
+          tabBadge.textContent = item.badge || "";
+          tabBadge.classList.toggle("is-visible", Boolean(item.badge));
+        }
+      });
+      activate(activeIndex);
+    };
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => activate(index));
+      tab.addEventListener("keydown", (event) => {
+        if (!(event instanceof KeyboardEvent)) return;
+        if (!["ArrowDown", "ArrowUp", "ArrowRight", "ArrowLeft"].includes(event.key)) return;
+        event.preventDefault();
+        const direction = event.key === "ArrowDown" || event.key === "ArrowRight" ? 1 : -1;
+        const next = (index + direction + tabs.length) % tabs.length;
+        activate(next);
+        if (tabs[next] instanceof HTMLElement) tabs[next].focus();
+      });
+    });
+
+    const pauseTargets = Array.from(
+      root.querySelectorAll(".ibom-tabs__tab, .ibom-tabs__output-card")
+    );
+
+    pauseTargets.forEach((target) => {
+      target.addEventListener("mouseenter", () => {
+        hoverPaused = true;
+      });
+      target.addEventListener("mouseleave", () => {
+        hoverPaused = false;
+      });
+      target.addEventListener("click", () => {
+        if (isMobilePointer()) mobilePaused = true;
+      });
+    });
+
+    root.addEventListener("click", (event) => {
+      if (!isMobilePointer() || !(event.target instanceof Element)) return;
+      if (!event.target.closest(".ibom-tabs__tab, .ibom-tabs__output-card")) {
+        mobilePaused = false;
+      }
+    });
+
+    showGroup(0);
+    typeQuery(queries[0]);
+    let cyclePosition = 0;
+    window.setInterval(() => {
+      if (isPaused()) return;
+      cyclePosition += 1;
+      if (cyclePosition < pageSize) {
+        let nextIndex = activeIndex;
+        while (nextIndex === activeIndex) {
+          nextIndex = Math.floor(Math.random() * pageSize);
+        }
+        activate(nextIndex);
+        return;
+      }
+
+      cyclePosition = 0;
+      activeIndex = 0;
+      const nextGroup = (group + 1) % queries.length;
+      showGroup(nextGroup);
+      typeQuery(queries[nextGroup]);
+    }, 1000);
+  });
+</script>

@@ -1237,7 +1237,7 @@ Why it works:
 
 Key: advanced-analytica.standards.verbal-identity.tone-of-voice.exemplar.case-study
 
-"The result: an intelligent business operating model built to lead, not follow."
+"The result: an intelligent business operations manager built to lead, not follow."
 
 Why it works:
 
