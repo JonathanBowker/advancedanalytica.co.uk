@@ -21,7 +21,7 @@ export async function GET() {
       description:
         'Advanced Analytica helps organisations turn business logic into governed, executable infrastructure for AI systems, starting with brand governance.',
       itemType: 'WebPage',
-      tags: ['Homepage', 'IBOM', 'AICE']
+      tags: ['Homepage', 'IBOM', 'Agent in the Room']
     },
     {
       url: `${SITE_URL}/company/about/`,
@@ -35,7 +35,7 @@ export async function GET() {
       url: `${SITE_URL}/company/jonny-bowker/`,
       title: 'Jonny Bowker',
       description:
-        'Jonny Bowker is the founder of Advanced Analytica, specialising in Intelligent Business Operations Managers, spec-driven AI development, and governed agentic AI systems.',
+        'Jonny Bowker is the founder and principal expert behind Advanced Analytica, an Accredited Legal Technologist advising Fortune 500 businesses on data, governance, and agentic AI systems.',
       itemType: 'ProfilePage',
       tags: ['Jonny Bowker', 'Founder', 'Advanced Analytica', 'Agentic AI']
     },
@@ -51,7 +51,7 @@ export async function GET() {
       url: `${SITE_URL}/company/contact/`,
       title: 'Contact Advanced Analytica',
       description:
-        'Contact Advanced Analytica to discuss governed AI systems, IBOM, AICE, and practical next steps.',
+        'Contact Advanced Analytica to discuss governed AI systems, IBOM, Agent in the Room, and practical next steps.',
       itemType: 'ContactPage',
       tags: ['Contact']
     },
@@ -67,7 +67,7 @@ export async function GET() {
       url: `${SITE_URL}/ibom/`,
       title: 'IBOM',
       description:
-        'The Intelligent Business Operations Manager for turning brand meaning, policy, and operational logic into executable systems.',
+        'The Intelligent Business Operations Manager for governing business data, knowledge, policies, agents, and workflows.',
       itemType: 'Service',
       tags: ['IBOM', 'Service']
     },

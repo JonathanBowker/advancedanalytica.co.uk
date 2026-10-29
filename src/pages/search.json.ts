@@ -40,25 +40,25 @@ export async function GET() {
     },
     {
       title: 'Services',
-      description: 'Operational brand systems and frameworks.',
+      description: 'Data Due Diligence and Agent Skill Building.',
       url: '/services',
       type: 'Page',
       snippet:
-        'Operational services for governed AI systems, policy-aware delivery, and the models, controls, and workflows needed to run them in practice.'
+        'Prepare governed business data, then configure, test, package, and deploy the skills and agents required for live operations.'
       ,
       searchText:
-        'services operational brand systems frameworks governed AI systems policy aware delivery models controls workflows'
+        'services Data Due Diligence Agent Skill Building governed business data skills agents controls workflows'
     },
     {
       title: 'IBOM',
-      description: 'Intelligent Brand Operating Model overview.',
+      description: 'Intelligent Business Operations Manager overview.',
       url: '/ibom',
       type: 'Page',
       snippet:
-        'Overview of the Intelligent Brand Operating Model, designed to turn brand rules and policy into operational systems that AI can execute and teams can govern.'
+        'Overview of the Intelligent Business Operations Manager, technology for governing business data, knowledge, policies, agents, and workflows.'
       ,
       searchText:
-        'IBOM Intelligent Brand Operating Model overview brand rules policy operational systems AI teams govern'
+        'IBOM Intelligent Business Operations Manager technology business data knowledge policy agents workflows govern'
     },
     {
       title: 'Enterprise',
@@ -154,9 +154,9 @@ export async function GET() {
       url: '/company/jonny-bowker',
       type: 'Page',
       snippet:
-        'Jonny Bowker is the founder of Advanced Analytica, an AI strategy and architecture consultancy specialising in Intelligent Business Operations Managers, spec-driven AI development, and governed agentic AI systems.',
+        'Jonny Bowker is the founder of Advanced Analytica, an asset-backed consultancy specialising in Intelligent Business Operations Managers, spec-driven AI development, and governed agentic AI systems.',
       searchText:
-        'Jonny Bowker Jonathan Bowker founder Advanced Analytica AI strategy architecture consultancy Intelligent Business Operations Managers IBOM spec-driven AI development governed agentic AI systems MCP architecture'
+        'Jonny Bowker Jonathan Bowker founder Advanced Analytica asset-backed consultancy Accredited Legal Technologist Law Society Scotland Fortune 500 data security privacy AI NLP agentic AI systems IBOM'
     },
     {
       title: 'Fractional Chief AI Officer Services & Interim AI Directorship',
@@ -166,7 +166,7 @@ export async function GET() {
       snippet:
         'Fractional Chief AI Officer services and interim AI directorship for organisations that need accountable AI due diligence, direction, governance, and delivery leadership without a permanent hire.',
       searchText:
-        'Fractional Chief AI Officer Services Interim AI Directorship fractional CAIO interim AI director Jonny Bowker AI due diligence AI governance operational responsibility Disney PwC Law Society Scotland AI Expert accreditation advisory embedded defined programme'
+        'Fractional Chief AI Officer Services Interim AI Directorship fractional CAIO interim AI director Jonny Bowker AI due diligence AI governance operational responsibility Fortune 500 Law Society Scotland Accredited Legal Technologist advisory embedded defined programme'
     },
     {
       title: 'Contact',

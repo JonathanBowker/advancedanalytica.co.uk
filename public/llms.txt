@@ -1,12 +1,14 @@
 # Advanced Analytica
 
-Advanced Analytica is an AI strategy and architecture consultancy based at https://advancedanalytica.co.uk. The company advises, designs, engineers, and operates governed agentic AI solutions for enterprise clients and regulated industries.
+Advanced Analytica is an asset-backed consultancy based at https://advancedanalytica.co.uk. The company advises, designs, engineers, and operates governed agentic AI solutions for enterprise clients and regulated industries.
 
 Advanced Analytica helps organisations turn knowledge, policy, data, workflow logic, and operational judgement into controlled AI systems. Its work includes Intelligent Business Operations Managers, spec-driven AI development, machine-readable policy, AI governance, MCP architecture, controlled agent deployment, and ongoing agentic network management.
 
 ## Jonny Bowker
 
-Jonny Bowker is the founder of Advanced Analytica. He works on AI strategy and architecture, Intelligent Business Operations Managers, spec-driven AI development, governed agentic AI systems, machine-readable policy, and controlled AI workflows.
+Jonny Bowker is the founder and principal expert behind Advanced Analytica. He advises Fortune 500 businesses on data, governance, and agentic AI systems.
+
+He is an Accredited Legal Technologist recognised by the Law Society of Scotland. His accredited areas include data security, privacy, artificial intelligence, and natural language processing.
 
 Canonical profile: https://advancedanalytica.co.uk/company/jonny-bowker/
 LinkedIn: https://uk.linkedin.com/in/jonnybowker

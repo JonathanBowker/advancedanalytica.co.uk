@@ -6,8 +6,8 @@ import { getDefaultTenant, getTenantHomePath, getTenantLoginPath, resolveTenantF
 const protectedPaths = ['/portal'];
 const authPages = ['/login'];
 const legacyRedirects: Record<string, string> = {
-  '/activate': '/brando/',
-  '/activate/': '/brando/',
+  '/activate': '/ibom/',
+  '/activate/': '/ibom/',
   '/agronomy': '/case-studies/agriculture-regulatory-knowledge/',
   '/agronomy/': '/case-studies/agriculture-regulatory-knowledge/',
   '/about': '/company/about/',
@@ -24,10 +24,12 @@ const legacyRedirects: Record<string, string> = {
   '/creative-ai-labs/gen-ai-framework/': '/developers/',
   '/digividuals': '/brand-operator/',
   '/digividuals/': '/brand-operator/',
-  '/dots-brand-operator-animation': '/brando/',
-  '/dots-brand-operator-animation/': '/brando/',
-  '/dots-brand-operator-wordmark-animation': '/brando/',
-  '/dots-brand-operator-wordmark-animation/': '/brando/',
+  '/brando': '/ibom/',
+  '/brando/': '/ibom/',
+  '/dots-brand-operator-animation': '/ibom/',
+  '/dots-brand-operator-animation/': '/ibom/',
+  '/dots-brand-operator-wordmark-animation': '/ibom/',
+  '/dots-brand-operator-wordmark-animation/': '/ibom/',
   '/home': '/',
   '/home/': '/',
   '/home/responsible-capability-scaling': '/opinions/ai-agents-are-scaling-faster-than-their-guardrails/',
@@ -42,6 +44,10 @@ const legacyRedirects: Record<string, string> = {
   '/services/iBOM/': '/ibom/',
   '/services/ibom': '/ibom/',
   '/services/ibom/': '/ibom/',
+  '/services/ai-ready-knowledge-packs': '/services/',
+  '/services/ai-ready-knowledge-packs/': '/services/',
+  '/ibom-way': '/how-it-works/',
+  '/ibom-way/': '/how-it-works/',
 };
 
 const apexOrigin = 'https://advancedanalytica.co.uk';

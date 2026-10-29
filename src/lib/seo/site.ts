@@ -14,8 +14,7 @@ export const toAbsoluteUrl = (value?: string) => {
   }
 };
 
-// TODO: Replace with the verified public URL for the Brando Schema project.
-export const BRANDO_SCHEMA_URL = 'https://brandoschema.com';
+export const IBOM_TECHNOLOGY_URL = `${SITE_URL}/ibom/`;
 
 export const ENTITY_TOPICS = [
   'Agentic AI',
@@ -51,7 +50,7 @@ export const JONNY_BOWKER = {
   ],
   jobTitle: 'Founder, Advanced Analytica',
   description:
-    'Jonny Bowker is the founder of Advanced Analytica, an AI strategy and architecture consultancy specialising in Intelligent Business Operations Managers, spec-driven AI development, and governed agentic AI systems.',
+    'Jonny Bowker is the founder and principal expert behind Advanced Analytica. He is an Accredited Legal Technologist advising Fortune 500 businesses on data, governance, and agentic AI systems.',
   knowsAbout: ENTITY_TOPICS
 };
 
@@ -60,7 +59,7 @@ export const ORGANIZATION = {
   legalName: 'Advanced Analytica Ltd',
   url: SITE_URL,
   description:
-    'Advanced Analytica is an AI strategy and architecture consultancy that advises, designs, engineers, and operates governed agentic AI solutions for enterprise clients and regulated industries.',
+    'Advanced Analytica is an asset-backed consultancy that advises, designs, engineers, and operates governed agentic AI solutions for enterprise clients and regulated industries.',
   logo: ORGANIZATION_LOGO,
   sameAs: [
     'https://www.linkedin.com/company/advancedanalytica/'

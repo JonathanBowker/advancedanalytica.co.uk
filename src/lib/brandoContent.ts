@@ -4,36 +4,36 @@ import usesSpecificationDesignImg from "../components/uses/codification.svg?url"
 import usesValidationEvaluationImg from "../components/uses/evaluation.svg?url";
 import usesExecutionGenerationImg from "../components/uses/operation.svg?url";
 
-export const brandoBenefits = [
+export const ibomBenefits = [
   {
     label: "Knowledge Asset",
-    heading: "Brand knowledge you can keep",
-    body: "Your brand standards, rules, exceptions, and judgement are captured in a structured format your business owns outright.",
+    heading: "Business knowledge you can govern",
+    body: "Your data, knowledge, policies, rules, exceptions, and judgement become controlled information your people and agents can use.",
   },
   {
     label: "Structure",
-    heading: "Rules AI can actually follow",
-    body: "Your standards, approvals, and escalation paths become specifications AI agents can interpret consistently.",
+    heading: "Every source keeps its context",
+    body: "Ownership, provenance, permissions, relationships, and status stay attached as information moves into AI-assisted work.",
   },
   {
     label: "Control",
     heading: "A controlled governance layer",
-    body: "Access, behaviour, and execution are controlled through one layer connecting your people, knowledge, and AI systems.",
+    body: "Access, behaviour, and execution are controlled through one technology layer connecting your people, data, knowledge, and AI.",
   },
   {
     label: "Alignment",
     heading: "One shared operating logic",
-    body: "Brand and communication operations, and all other business functions can work from the same governed knowledge base.",
+    body: "Business functions can work from the same governed information while retaining their own rules, permissions, workflows, and responsibilities.",
   },
   {
     label: "Assurance",
-    heading: "Testable, traceable systems",
-    body: "Specifications, controls, and runtime behaviour are reviewable, testable, and traceable as the system evolves.",
+    heading: "Brand detail stays usable",
+    body: "Brand colours, typography, imagery, language, assets, standards, and approval rules remain available as governed business data.",
   },
   {
     label: "Continuity",
-    heading: "Systems that can evolve safely",
-    body: "As needs, risks, tools, and models change, you can revise the knowledge base and controls without losing alignment.",
+    heading: "Agent in the Room has context",
+    body: "IBOM gives Agent in the Room approved business context so live conversations remain useful, controlled, and grounded in evidence.",
   },
 ] as const;
 
@@ -41,7 +41,7 @@ export const personaPositioningCards = [
   {
     role: "CMO",
     heading: "For the CMO",
-    body: "Your teams are already pasting brand guidelines into ChatGPT. The output looks plausible and drifts off-brand at scale, because fragments carry no governance. Brando deploys an AI agent governed by your Brand Operator, enforcing your rules at the moment content is created, so approval happens in hours, not days.",
+    body: "Your teams are already pasting brand guidelines into ChatGPT. The output looks plausible and drifts off-brand at scale, because fragments carry no governance. IBOM deploys an AI agent governed by your Brand Operator, enforcing your rules at the moment content is created, so approval happens in hours, not days.",
   },
   {
     role: "Head of Brand",
@@ -56,17 +56,17 @@ export const personaPositioningCards = [
   {
     role: "Head of AI",
     heading: "For the Head of AI",
-    body: "You need brand knowledge your systems can actually consume. Brando delivers a structured, schema-defined Brand Operator served over Model Context Protocol, with validators, an LLM judge, and drift measurement in the loop.",
+    body: "You need brand knowledge your systems can actually consume. IBOM delivers a structured, schema-defined Brand Operator served over Model Context Protocol, with validators, an LLM judge, and drift measurement in the loop.",
   },
   {
     role: "CTO",
     heading: "For the CTO",
-    body: "No new platform to run. Brando ships as code: the pipeline, the Brand Operator, the MCP endpoint, and the governing agent. Deploy it in your infrastructure or take it as a container.",
+    body: "No new platform to run. IBOM ships as code: the pipeline, the Brand Operator, the MCP endpoint, and the governing agent. Deploy it in your infrastructure or take it as a container.",
   },
   {
     role: "CFO",
     heading: "For the CFO",
-    body: "Brand is a shortcut to trust, and trust is the asset nobody prices until it is damaged. Brando automates governance at scale, cutting manual review cycles and the cost of brand inconsistency.",
+    body: "Brand is a shortcut to trust, and trust is the asset nobody prices until it is damaged. IBOM automates governance at scale, cutting manual review cycles and the cost of brand inconsistency.",
   },
 ] as const;
 
@@ -98,7 +98,7 @@ export const ibomStages = [
     phase: "Phase 2",
     heading: "Specify",
     subheading: "Produce the interconnected brand data asset AI can read.",
-    body: "Every element is tagged, categorised, and structured against the Brando schema. The output is your governed Brand Operator.",
+    body: "Every element is tagged, categorised, and structured against the IBOM schema. The output is your governed Brand Operator.",
     image: usesExecutionGenerationImg,
   },
   {
@@ -117,7 +117,7 @@ export const ibomStages = [
     stage: "Stage 5",
     phase: "Phase 3",
     heading: "Execute",
-    subheading: "Build Brando against validated tasks.",
+    subheading: "Build IBOM against validated tasks.",
     body: "Execution starts from the checked plan, not from loose intent. Agents do the work at speed while senior practitioners hold the standard, resolve judgement calls, and sign off each section.",
     image: usesValidationEvaluationImg,
   },
@@ -144,6 +144,6 @@ export const howItWorksCards = [
   },
   {
     heading: "Agent Deployment",
-    body: "We build, test, and deploy Brando into controlled workflows, review paths, and agent behaviours.",
+    body: "We build, test, and deploy IBOM into controlled workflows, review paths, and agent behaviours.",
   },
 ] as const;

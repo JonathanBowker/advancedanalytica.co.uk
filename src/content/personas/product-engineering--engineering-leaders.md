@@ -50,7 +50,7 @@ contentStages:
 contentNeeds:
   - "Technical examples that connect specification, architecture, and runtime control."
   - "Patterns for governed tool access, evaluation, and operational traceability."
-  - "Clear explanations of how Brando and its implementation layer reduce build ambiguity."
+  - "Clear explanations of how IBOM and its implementation layer reduce build ambiguity."
 messagingNotes:
   - "Responds to architectural clarity and delivery discipline more than marketing language."
   - "Needs to see how runtime control improves engineering quality rather than constrains it."
@@ -84,7 +84,7 @@ editorialVoice:
   - "Confident about design tradeoffs and operational realities."
   - "Minimal fluff."
 contentObjectives:
-  - "Position Brando and its implementation layer as credible parts of system design, not marketing abstractions."
+  - "Position IBOM and its implementation layer as credible parts of system design, not marketing abstractions."
   - "Help engineering readers see how structured knowledge reduces build ambiguity."
   - "Create a content bridge from technical curiosity into product and role pages."
 ctaPatterns:
@@ -200,7 +200,7 @@ Reduce ambiguity in AI builds by grounding teams in one specification base and o
 
 ## Content Objectives
 
-- Position Brando and its implementation layer as credible parts of system design, not marketing abstractions.
+- Position IBOM and its implementation layer as credible parts of system design, not marketing abstractions.
 - Help engineering readers see how structured knowledge reduces build ambiguity.
 - Create a content bridge from technical curiosity into product and role pages.
 
@@ -224,7 +224,7 @@ Review weekly against technical RSS and monthly against engineering-reader engag
 
 - Technical examples that connect specification, architecture, and runtime control.
 - Patterns for governed tool access, evaluation, and operational traceability.
-- Clear explanations of how Brando and its implementation layer reduce build ambiguity.
+- Clear explanations of how IBOM and its implementation layer reduce build ambiguity.
 
 ## Messaging Notes
 

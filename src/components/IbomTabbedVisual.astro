@@ -4,7 +4,8 @@ const queries = [
   "Can this pesticide be used on this crop under current regulations?",
   "Can we use this product name without creating brand or trademark risk?",
   "Create campaign content using our brand standards and business policies.",
-  "Where is the strongest opportunity in our market, and what could change it?"
+  "Where is the strongest opportunity in our market, and what could change it?",
+  "Which cyber threats need action based on our security logs and current intelligence?"
 ];
 
 const categories = [
@@ -12,7 +13,8 @@ const categories = [
   "Agriculture & regulatory sources",
   "Legal, risk & compliance sources",
   "Brand & marketing sources",
-  "Market strategy sources"
+  "Market strategy sources",
+  "Cyber security sources"
 ];
 
 const triggers = [
@@ -20,7 +22,8 @@ const triggers = [
   "Treatment plan submitted",
   "New product name proposed",
   "Campaign brief approved",
-  "Strategy review scheduled"
+  "Strategy review scheduled",
+  "Security alert raised"
 ];
 
 const brand = {
@@ -75,6 +78,14 @@ const groups = [
     { title: "Competitor intelligence", description: "Market data", detail: "Track competitor actions, claims and positioning over time." },
     { title: "Customer feedback", description: "Voice of customer", detail: "Connect customer needs and friction to strategic decisions." },
     { title: "Risk registers", description: "Risk & compliance", detail: "Keep known risks, mitigations and ownership inside the decision." }
+  ],
+  [
+    brand,
+    workflows,
+    { title: "Cyber security", description: "Your security logs", detail: "Use your security logs to identify suspicious activity, affected systems and the evidence behind each alert." },
+    { title: "Threat intelligence", description: "External threat signals", detail: "Connect current threat indicators, adversary activity and known attack patterns to your operating context." },
+    { title: "Business policies", description: "Rules & controls", detail: "Apply approved security policies, response rules and escalation routes before action." },
+    { title: "Risk registers", description: "Risk & compliance", detail: "Connect live threats to known risks, controls, owners and required mitigations." }
   ]
 ];
 
@@ -964,10 +975,6 @@ const outputConnections = [
       const step = Math.max(45, duration / query.length);
       let position = 0;
       const typeNext = () => {
-        if (isPaused()) {
-          typingTimer = window.setTimeout(typeNext, 100);
-          return;
-        }
         position += 1;
         queryText.textContent = query.slice(0, position);
         if (position < query.length) typingTimer = window.setTimeout(typeNext, step);

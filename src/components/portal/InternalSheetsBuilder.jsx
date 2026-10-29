@@ -438,7 +438,7 @@ export default function InternalSheetsBuilder({ initialSheetId = '', view = 'ind
             label="Title"
             value={activeSheet.title}
             onChange={(value) => updateActive({ title: value })}
-            placeholder="e.g. AI Knowledge Pack"
+            placeholder="e.g. Data Due Diligence"
           />
           <Field
             label="Strapline"

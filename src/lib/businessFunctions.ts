@@ -42,14 +42,14 @@ export const businessFunctions: BusinessFunction[] = [
     eyebrow: "Brand & Marketing",
     heading: "Controlled AI for brand, content, approvals, and machine-readable standards.",
     homeBody:
-      "We often start with brand because it spans the whole organisation. See how Brando turns identity, standards, and approvals into a usable operating asset for AI.",
+      "We often start with brand because it spans the whole organisation. See how IBOM turns identity, standards, and approvals into a usable operating asset for AI.",
     title: "Brand & Marketing",
     description:
       "Controlled AI for brand and marketing teams: turn brand standards, approvals, and identity into machine-usable operating assets.",
     intro:
-      "Brand is often the first place we begin because it crosses the whole organisation. Brando turns brand standards, approval logic, and institutional knowledge into structured assets that teams, tools, and AI systems can all work from consistently.",
+      "Brand is often the first place we begin because it crosses the whole organisation. IBOM turns brand standards, approval logic, and institutional knowledge into structured assets that teams, tools, and AI systems can all work from consistently.",
     startingPoint:
-      "This function is where organisations most clearly feel the gap between written guidance and machine behaviour. By structuring brand knowledge in Brando first, you create an operating logic that can later be extended into other business functions.",
+      "This function is where organisations most clearly feel the gap between written guidance and machine behaviour. By structuring brand knowledge in IBOM first, you create an operating logic that can later be extended into other business functions.",
     focusAreas: [
       {
         title: "Turn brand standards into structured assets",
@@ -89,11 +89,11 @@ export const businessFunctions: BusinessFunction[] = [
       },
       {
         question: "Is this just for content generation?",
-        answer: "No. The aim is to use Brando as a governed brand control layer that can shape approvals, decision-making, channel execution, and AI-assisted workflows more broadly.",
+        answer: "No. The aim is to use IBOM as a governed brand control layer that can shape approvals, decision-making, channel execution, and AI-assisted workflows more broadly.",
       },
       {
-        question: "How does Brando help brand teams?",
-        answer: "Brando controls how AI systems access brand knowledge, apply rules, and interact with approved tools, which makes outputs easier to govern and operations easier to assure.",
+        question: "How does IBOM help brand teams?",
+        answer: "IBOM controls how AI systems access brand knowledge, apply rules, and interact with approved tools, which makes outputs easier to govern and operations easier to assure.",
       },
       {
         question: "What kinds of brand material can be structured?",
@@ -109,7 +109,7 @@ export const businessFunctions: BusinessFunction[] = [
       },
     ],
     closing:
-      "This is the fastest way to move brand from static guidance into Brando: a governed, reusable operating asset for AI-assisted delivery.",
+      "This is the fastest way to move brand from static guidance into IBOM: a governed, reusable operating asset for AI-assisted delivery.",
   },
   {
     slug: "sales-operations-service",
@@ -121,7 +121,7 @@ export const businessFunctions: BusinessFunction[] = [
     description:
       "Controlled AI for sales, operations, and service teams: bring workflow rules, service logic, and runtime control into one operating layer.",
     intro:
-      "Sales, operational, and service teams need AI to work inside live workflows, not beside them. Brando structures the knowledge these functions rely on and turns that knowledge into governed behaviour across day-to-day systems and decisions.",
+      "Sales, operational, and service teams need AI to work inside live workflows, not beside them. IBOM structures the knowledge these functions rely on and turns that knowledge into governed behaviour across day-to-day systems and decisions.",
     startingPoint:
       "This function benefits when playbooks, service logic, workflow rules, and operational exceptions are captured once and reused consistently across teams, channels, and tools.",
     focusAreas: [
@@ -131,7 +131,7 @@ export const businessFunctions: BusinessFunction[] = [
       },
       {
         title: "Connect governed workflow execution",
-        body: "Use Brando to coordinate access to CRM, service systems, internal tooling, and operational data through one controlled layer.",
+        body: "Use IBOM to coordinate access to CRM, service systems, internal tooling, and operational data through one controlled layer.",
       },
       {
         title: "Reduce contradiction and drift",
@@ -145,7 +145,7 @@ export const businessFunctions: BusinessFunction[] = [
       },
       {
         title: "Create governed execution",
-        body: "Use Brando to translate requests into controlled actions across systems, approvals, and operational boundaries.",
+        body: "Use IBOM to translate requests into controlled actions across systems, approvals, and operational boundaries.",
       },
       {
         title: "Run and refine live operations",
@@ -166,12 +166,12 @@ export const businessFunctions: BusinessFunction[] = [
         answer: "Yes. The goal is to create one governed operating logic that can support CRM workflows, handoffs, service processes, and live operational execution across connected functions.",
       },
       {
-        question: "What changes once Brando is in place?",
-        answer: "Brando becomes the governed control layer between AI systems and your operational tools, which makes access, actions, and runtime behaviour easier to manage and observe.",
+        question: "What changes once IBOM is in place?",
+        answer: "IBOM becomes the governed control layer between AI systems and your operational tools, which makes access, actions, and runtime behaviour easier to manage and observe.",
       },
       {
         question: "Do we have to replace existing tools?",
-        answer: "No. Brando is designed to sit between AI systems and the tools you already use, so the emphasis is on governed coordination rather than wholesale replacement.",
+        answer: "No. IBOM is designed to sit between AI systems and the tools you already use, so the emphasis is on governed coordination rather than wholesale replacement.",
       },
       {
         question: "How does this reduce operational drift?",
@@ -190,12 +190,12 @@ export const businessFunctions: BusinessFunction[] = [
     eyebrow: "Product & Engineering",
     heading: "Controlled AI systems built from clear specification, runtime control, and delivery assurance.",
     homeBody:
-      "See how structured specifications, governed runtime controls, and Brando create a clearer path from business logic to production systems.",
+      "See how structured specifications, governed runtime controls, and IBOM create a clearer path from business logic to production systems.",
     title: "Product & Engineering",
     description:
       "Controlled AI for product and engineering teams: move from business logic to production systems through structured specification and controlled runtime behaviour.",
     intro:
-      "Product and engineering teams need business logic that can be used directly in system design, delivery, and runtime control. Brando gives these teams a structured specification base and a governed interface for deployment and operation.",
+      "Product and engineering teams need business logic that can be used directly in system design, delivery, and runtime control. IBOM gives these teams a structured specification base and a governed interface for deployment and operation.",
     startingPoint:
       "When product and engineering teams inherit vague requirements, AI builds drift quickly. When they inherit structured specifications, delivery becomes faster, clearer, and easier to assure.",
     focusAreas: [
@@ -205,7 +205,7 @@ export const businessFunctions: BusinessFunction[] = [
       },
       {
         title: "Control runtime behaviour",
-        body: "Deploy Brando as the governed layer between systems, tools, models, and internal data sources.",
+        body: "Deploy IBOM as the governed layer between systems, tools, models, and internal data sources.",
       },
       {
         title: "Improve delivery assurance",
@@ -219,7 +219,7 @@ export const businessFunctions: BusinessFunction[] = [
       },
       {
         title: "Build through governed infrastructure",
-        body: "Use Brando to coordinate tool connection, instruction flow, and controlled machine action in production.",
+        body: "Use IBOM to coordinate tool connection, instruction flow, and controlled machine action in production.",
       },
       {
         title: "Assure and evolve",
@@ -237,14 +237,14 @@ export const businessFunctions: BusinessFunction[] = [
       },
       {
         question: "Does this replace engineering teams?",
-        answer: "No. It gives engineering teams a clearer governed foundation for building and operating systems, while Brando provides a controlled runtime layer for connected tools and models.",
+        answer: "No. It gives engineering teams a clearer governed foundation for building and operating systems, while IBOM provides a controlled runtime layer for connected tools and models.",
       },
       {
-        question: "Why bring Brando into product delivery?",
+        question: "Why bring IBOM into product delivery?",
         answer: "Because it reduces ambiguity. When product and engineering teams work from the same specification base, delivery becomes easier to control, test, and evolve.",
       },
       {
-        question: "Where does Brando sit in the architecture?",
+        question: "Where does IBOM sit in the architecture?",
         answer: "It sits as the governed interface between AI systems and the tools, models, and internal data sources they need to use, helping control runtime access and behaviour.",
       },
       {
@@ -264,12 +264,12 @@ export const businessFunctions: BusinessFunction[] = [
     eyebrow: "Research & Development",
     heading: "Controlled AI for specialist knowledge, applied research, and high-complexity domains.",
     homeBody:
-      "Use structured specifications, linked knowledge, and Brando to move from exploration and domain insight into practical, testable AI systems.",
+      "Use structured specifications, linked knowledge, and IBOM to move from exploration and domain insight into practical, testable AI systems.",
     title: "Research & Development",
     description:
       "Controlled AI for research and development teams: translate specialist knowledge, domain insight, and experimental work into structured assets and operational systems.",
     intro:
-      "Research and development teams often sit on high-value specialist knowledge that is difficult to operationalise. Brando structures that domain insight into reusable knowledge assets and helps turn it into controlled, testable systems.",
+      "Research and development teams often sit on high-value specialist knowledge that is difficult to operationalise. IBOM structures that domain insight into reusable knowledge assets and helps turn it into controlled, testable systems.",
     startingPoint:
       "This function works best when experimentation is connected to structured knowledge, clear evaluation, and a path into operational deployment rather than isolated prototypes.",
     focusAreas: [
@@ -283,7 +283,7 @@ export const businessFunctions: BusinessFunction[] = [
       },
       {
         title: "Create repeatable learning loops",
-        body: "Use specifications and Brando to connect new knowledge, testing, and revision without losing control of the system.",
+        body: "Use specifications and IBOM to connect new knowledge, testing, and revision without losing control of the system.",
       },
     ],
     journey: [
@@ -293,7 +293,7 @@ export const businessFunctions: BusinessFunction[] = [
       },
       {
         title: "Build governed applications",
-        body: "Use Brando to connect knowledge, tools, and runtime control so systems can operate safely in real environments.",
+        body: "Use IBOM to connect knowledge, tools, and runtime control so systems can operate safely in real environments.",
       },
       {
         title: "Evaluate and refine",
@@ -314,7 +314,7 @@ export const businessFunctions: BusinessFunction[] = [
         answer: "Concepts, evidence, rules, edge cases, and expert reasoning can all be structured in formats and linked datasets that support machine use and controlled revision.",
       },
       {
-        question: "Why is Brando relevant to R&D?",
+        question: "Why is IBOM relevant to R&D?",
         answer: "Because it helps operationalise specialist knowledge safely. It provides the governed runtime layer that connects new knowledge assets to systems, tools, and live environments.",
       },
       {
@@ -343,7 +343,7 @@ export const businessFunctions: BusinessFunction[] = [
     description:
       "Controlled AI for legal, risk, and compliance teams: turn policy, controls, and risk requirements into enforceable operating logic.",
     intro:
-      "Legal, risk, and compliance teams need more than policies on paper. Brando helps convert policy into structured operating logic and enforce that logic at runtime across systems, agents, and AI-assisted workflows.",
+      "Legal, risk, and compliance teams need more than policies on paper. IBOM helps convert policy into structured operating logic and enforce that logic at runtime across systems, agents, and AI-assisted workflows.",
     startingPoint:
       "This function becomes much stronger when policy is not simply documented but translated into testable, traceable rules that can shape behaviour before problems reach production.",
     focusAreas: [
@@ -353,7 +353,7 @@ export const businessFunctions: BusinessFunction[] = [
       },
       {
         title: "Enforce controlled access and action",
-        body: "Use Brando to control data exposure, permitted actions, and system behaviour across AI-assisted workflows.",
+        body: "Use IBOM to control data exposure, permitted actions, and system behaviour across AI-assisted workflows.",
       },
       {
         title: "Strengthen auditability and assurance",
@@ -367,7 +367,7 @@ export const businessFunctions: BusinessFunction[] = [
       },
       {
         title: "Deploy governed runtime enforcement",
-        body: "Use Brando to apply those controls at the point of interaction with data, tools, and AI systems.",
+        body: "Use IBOM to apply those controls at the point of interaction with data, tools, and AI systems.",
       },
       {
         title: "Review, assure, and update",
@@ -384,7 +384,7 @@ export const businessFunctions: BusinessFunction[] = [
         answer: "It turns controls and obligations into structured operating logic that can influence behaviour directly, rather than relying only on static documents and after-the-fact review.",
       },
       {
-        question: "Can Brando enforce policy at runtime?",
+        question: "Can IBOM enforce policy at runtime?",
         answer: "Yes. That is one of its core roles. It helps control what systems can access, what actions are allowed, and how policy constraints are applied during live operation.",
       },
       {
@@ -412,12 +412,12 @@ export const businessFunctions: BusinessFunction[] = [
     eyebrow: "Leadership",
     heading: "The operating model for scaling governed AI across functions, systems, and teams.",
     homeBody:
-      "If you are shaping the wider operating model, see how Brando connects knowledge assets, governed infrastructure, and phased delivery into one commercial programme.",
+      "If you are shaping the wider operating model, see how IBOM connects knowledge assets, governed infrastructure, and phased delivery into one commercial programme.",
     title: "Leadership",
     description:
       "Controlled AI for leadership teams: connect business knowledge, governed infrastructure, and phased delivery into one operating model.",
     intro:
-      "Leadership teams need a way to move beyond disconnected pilots and tool purchases. Brando gives you a structured operating model for knowledge capture, system delivery, and governed runtime control that can be put to work in live systems.",
+      "Leadership teams need a way to move beyond disconnected pilots and tool purchases. IBOM provides governed technology for knowledge access, agent activity, and runtime control inside live systems.",
     startingPoint:
       "This is about choosing where to begin, how to sequence delivery, and how to turn business knowledge into a long-term operating asset rather than a short-lived experiment.",
     focusAreas: [
@@ -431,7 +431,7 @@ export const businessFunctions: BusinessFunction[] = [
       },
       {
         title: "Build with governance from the start",
-        body: "Use Brando and shared specifications so scale does not come at the cost of control, trust, or operating discipline.",
+        body: "Use IBOM and shared specifications so scale does not come at the cost of control, trust, or operating discipline.",
       },
     ],
     journey: [
@@ -441,7 +441,7 @@ export const businessFunctions: BusinessFunction[] = [
       },
       {
         title: "Build the shared operating model",
-        body: "Use Brando to structure knowledge and deploy governed controls so delivery and runtime control work from the same foundation.",
+        body: "Use IBOM to structure knowledge and deploy governed controls so delivery and runtime control work from the same foundation.",
       },
       {
         title: "Scale across functions",
@@ -459,7 +459,7 @@ export const businessFunctions: BusinessFunction[] = [
       },
       {
         question: "How does this differ from buying AI tools?",
-        answer: "Tools alone do not create an operating model. Brando creates the structured knowledge layer and the governed infrastructure needed to turn that knowledge into reliable capability.",
+        answer: "Tools alone do not create an operating model. IBOM provides the governed technology needed to turn approved business knowledge into reliable capability.",
       },
       {
         question: "Can this scale across multiple functions?",
@@ -470,7 +470,7 @@ export const businessFunctions: BusinessFunction[] = [
         answer: "Starting with one function creates a clearer commercial and operational entry point. Once the model is proven there, the same logic can be extended into other areas with more confidence.",
       },
       {
-        question: "What role does Brando play at leadership level?",
+        question: "What role does IBOM play at leadership level?",
         answer: "It is the infrastructure layer that turns strategy into governed operation. It helps ensure scale does not come at the cost of control, visibility, or policy adherence.",
       },
       {

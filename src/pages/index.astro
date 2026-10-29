@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PostCard from "../components/PostCard.astro";
 import IbomTabbedVisual from "../components/IbomTabbedVisual.astro";
+import AgentBriefDropdown from "../components/AgentBriefDropdown.astro";
 import { getCollection } from "astro:content";
 import { SITE_URL } from "../lib/seo/site";
 
@@ -24,38 +25,6 @@ const latestCaseStudies = (
   await getCollection("case-studies", ({ data }) => !data.draft)
 ).sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
 
-const pathways = [
-  {
-    eyebrow: "First Step",
-    title: "AI Knowledge Packs",
-    body: "Prepare scattered documents, policies, process knowledge, and expert judgement as structured data assets that AI systems can use reliably.",
-    href: "/services/ai-ready-knowledge-packs/",
-  },
-  {
-    eyebrow: "Framework",
-    title: "IBOM",
-    body: "See the Intelligent Business Operations Manager that turns business knowledge, rules, workflows, skills, and controls into governed Agentic AI.",
-    href: "/ibom/",
-  },
-  {
-    eyebrow: "Delivery",
-    title: "How It Works",
-    body: "See how we move from opportunity identification through mapping, modelling, validation, deployment, and controlled operation.",
-    href: "/how-it-works/",
-  },
-  {
-    eyebrow: "Example Agent",
-    title: "Brando",
-    body: "See how the same governed approach can turn brand knowledge, standards, and judgement into a production-ready AI Brand Operator.",
-    href: "/brando/",
-  },
-  {
-    eyebrow: "Leadership",
-    title: "For Leaders",
-    body: "Understand the value, governance, operating model, and control implications of deploying Agentic AI across the enterprise.",
-    href: "/for-leaders/",
-  },
-] as const;
 ---
 
 <BaseLayout title={title} description={description} page={page}>
@@ -116,6 +85,7 @@ const pathways = [
           <span>OUR CONSULTANCY</span>
           <span aria-hidden="true">↓</span>
         </a>
+        <AgentBriefDropdown />
       </div>
     </div>
   </section>
@@ -684,12 +654,18 @@ const pathways = [
     }
 
     .home-hero__content {
+      display: grid;
+
       width: min(70rem, 100%);
+
+      justify-items: center;
 
       text-align: center;
     }
 
     .home-hero__title {
+      width: 100%;
+
       max-width: 66rem;
 
       margin: 0 auto;
@@ -711,6 +687,8 @@ const pathways = [
 
     .home-hero__title-line {
       display: block;
+
+      text-align: center;
 
       white-space: nowrap;
     }

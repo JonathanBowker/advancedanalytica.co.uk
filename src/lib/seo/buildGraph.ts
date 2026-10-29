@@ -1,4 +1,4 @@
-import { BRANDO_SCHEMA_URL, DEFAULT_OG_IMAGE, iBOM, JONNY_BOWKER, ORGANIZATION, SITE_NAME, SITE_URL, toAbsoluteUrl } from './site';
+import { IBOM_TECHNOLOGY_URL, DEFAULT_OG_IMAGE, iBOM, JONNY_BOWKER, ORGANIZATION, SITE_NAME, SITE_URL, toAbsoluteUrl } from './site';
 
 type Breadcrumb = {
   name: string;
@@ -57,7 +57,7 @@ export const buildGraph = (page: PageMeta) => {
   ensure(Boolean(page.description), 'description is required');
   ensure(Boolean(page.url), 'url is required');
   ensure(page.breadcrumbs?.length > 0, 'breadcrumbs are required');
-  ensure(Boolean(BRANDO_SCHEMA_URL), 'Brando Schema URL must be set');
+  ensure(Boolean(IBOM_TECHNOLOGY_URL), 'IBOM technology URL must be set');
 
   ensureUrl(page.url, 'page.url');
   page.breadcrumbs.forEach((crumb, index) => {
@@ -70,7 +70,7 @@ export const buildGraph = (page: PageMeta) => {
   const personId = `${JONNY_BOWKER.url}#person`;
   const websiteId = `${SITE_URL}#website`;
   const serviceId = `${iBOM.url}#service`;
-  const brandoId = `${BRANDO_SCHEMA_URL}#project`;
+  const brandoId = `${IBOM_TECHNOLOGY_URL}#project`;
   const pageId = `${page.url}#webpage`;
   const pageSchemaType = page.schemaType ?? 'WebPage';
   const pageImage = toAbsoluteUrl(page.image) ?? toAbsoluteUrl(page.article?.image) ?? DEFAULT_OG_IMAGE;
@@ -149,8 +149,8 @@ export const buildGraph = (page: PageMeta) => {
     {
       '@type': 'CreativeWork',
       '@id': brandoId,
-      name: 'Brando Schema',
-      url: BRANDO_SCHEMA_URL,
+      name: 'IBOM Schema',
+      url: IBOM_TECHNOLOGY_URL,
       creator: { '@id': organisationId }
     },
     {

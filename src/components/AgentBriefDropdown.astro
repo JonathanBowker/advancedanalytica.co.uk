@@ -1,0 +1,130 @@
+---
+const briefUrl = "https://advancedanalytica.co.uk/agents/advanced-analytica.md";
+const prompt = `Fetch ${briefUrl} (use curl if you have no fetch tool) and follow it to understand Advanced Analytica before answering questions about the business.`;
+const encodedPrompt = encodeURIComponent(prompt);
+---
+
+<div class="agent-brief" data-agent-brief data-copy-prompt={prompt}>
+  <div class="agent-brief__control">
+    <button class="agent-brief__copy" type="button" data-agent-brief-copy>
+      <span data-agent-brief-label>YOUR AGENT</span>
+      <span class="agent-brief__logos" aria-hidden="true">
+        <img src="/images/logos/claude.svg" alt="" />
+        <img src="/images/logos/openai.svg" alt="" />
+        <svg class="agent-brief__cursor" viewBox="0 0 24 24">
+          <path d="M11.5.13 1.89 5.68a.84.84 0 0 0-.42.72v11.19c0 .3.16.58.42.73l9.61 5.55a1 1 0 0 0 1 0l9.61-5.55a.84.84 0 0 0 .42-.73V6.4a.84.84 0 0 0-.42-.72L12.5.13a1 1 0 0 0-1 0M2.66 6.34h18.55c.26 0 .43.29.29.51l-9.27 16.07c-.06.1-.23.06-.23-.06V12.34a.59.59 0 0 0-.3-.51L2.6 6.57c-.11-.06-.06-.23.06-.23"></path>
+        </svg>
+      </span>
+    </button>
+
+    <details class="agent-brief__details">
+      <summary aria-label="More agent onboarding options">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m6 9 6 6 6-6"></path>
+        </svg>
+      </summary>
+      <div class="agent-brief__menu">
+        <a href={`claude-cli://open?q=${encodedPrompt}`}>
+          <img src="/images/logos/claude.svg" alt="" />
+          <span>OPEN IN CLAUDE CODE</span><span aria-hidden="true">↗</span>
+        </a>
+        <a href={`codex://new?prompt=${encodedPrompt}`}>
+          <img src="/images/logos/openai.svg" alt="" />
+          <span>OPEN IN CODEX</span><span aria-hidden="true">↗</span>
+        </a>
+        <a href={`cursor://anysphere.cursor-deeplink/prompt?text=${encodedPrompt}`}>
+          <svg class="agent-brief__cursor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M11.5.13 1.89 5.68a.84.84 0 0 0-.42.72v11.19c0 .3.16.58.42.73l9.61 5.55a1 1 0 0 0 1 0l9.61-5.55a.84.84 0 0 0 .42-.73V6.4a.84.84 0 0 0-.42-.72L12.5.13a1 1 0 0 0-1 0M2.66 6.34h18.55c.26 0 .43.29.29.51l-9.27 16.07c-.06.1-.23.06-.23-.06V12.34a.59.59 0 0 0-.3-.51L2.6 6.57c-.11-.06-.06-.23.06-.23"></path>
+          </svg>
+          <span>OPEN IN CURSOR</span><span aria-hidden="true">↗</span>
+        </a>
+        <div class="agent-brief__divider"></div>
+        <a href="/agents/advanced-analytica.md" target="_blank" rel="noreferrer">
+          <span>VIEW AGENT BRIEF</span><span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </details>
+  </div>
+  <span class="agent-brief__status" role="status" aria-live="polite"></span>
+</div>
+
+<script>
+  document.querySelectorAll("[data-agent-brief]").forEach((element) => {
+    if (!(element instanceof HTMLElement)) return;
+    const button = element.querySelector("[data-agent-brief-copy]");
+    const label = element.querySelector("[data-agent-brief-label]");
+    const status = element.querySelector(".agent-brief__status");
+    if (!(button instanceof HTMLButtonElement) || !(label instanceof HTMLElement)) return;
+
+    button.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(element.dataset.copyPrompt || "");
+        label.textContent = "PROMPT COPIED";
+        if (status) status.textContent = "Agent prompt copied to clipboard.";
+        window.setTimeout(() => {
+          label.textContent = "YOUR AGENT";
+          if (status) status.textContent = "";
+        }, 1800);
+      } catch {
+        window.location.href = "/agents/advanced-analytica.md";
+      }
+    });
+  });
+</script>
+
+<style>
+  .agent-brief { position: relative; display: inline-flex; flex-direction: column; align-items: flex-start; }
+  .agent-brief__control {
+    display: flex; min-height: 3.5rem; align-items: stretch; overflow: visible;
+    border: 1.5px solid #14b8a6; border-radius: 0.875rem; background: transparent; color: #0f766e;
+  }
+  .agent-brief__copy, .agent-brief__details summary {
+    border: 0; background: transparent; color: inherit; cursor: pointer;
+  }
+  .agent-brief__copy {
+    display: flex; align-items: center; gap: 0.65rem; padding: 0.85rem 1rem 0.85rem 1.15rem;
+    font-family: var(--font-display); font-size: 0.875rem; font-weight: 700;
+    letter-spacing: 0.02em; white-space: nowrap;
+  }
+  .agent-brief__logos { display: inline-flex; align-items: center; gap: 0.42rem; }
+  .agent-brief__logos img, .agent-brief__logos svg, .agent-brief__menu img, .agent-brief__menu svg {
+    width: 1rem; height: 1rem; flex: 0 0 auto; object-fit: contain;
+  }
+  .agent-brief__cursor { fill: currentColor; }
+  .agent-brief__details { position: relative; display: flex; border-left: 1px solid rgba(11,18,32,.15); }
+  .agent-brief__details summary {
+    display: grid; width: 3.25rem; height: 100%; min-height: 3.5rem;
+    list-style: none; place-items: center;
+  }
+  .agent-brief__details summary::-webkit-details-marker { display: none; }
+  .agent-brief__details summary svg {
+    width: .9rem; height: .9rem; fill: none; stroke: currentColor; stroke-linecap: round;
+    stroke-linejoin: round; stroke-width: 2; transition: transform 180ms ease;
+  }
+  .agent-brief__details[open] summary svg { transform: rotate(180deg); }
+  .agent-brief__copy:hover, .agent-brief__details summary:hover { background: rgba(20,184,166,.08); }
+  .agent-brief__menu {
+    position: absolute; z-index: 30; top: calc(100% + .65rem); right: 0;
+    width: min(19rem, calc(100vw - 2.5rem)); overflow: hidden;
+    border: 1px solid rgba(11,18,32,.12); border-radius: 1rem; background: #fff;
+    box-shadow: 0 20px 55px rgba(11,18,32,.18);
+  }
+  .agent-brief__menu a {
+    display: grid; grid-template-columns: 1.25rem 1fr auto; align-items: center;
+    gap: .75rem; padding: .9rem 1rem; color: #0b1220; font-size: .875rem;
+    font-weight: 650; text-decoration: none;
+  }
+  .agent-brief__menu a:last-child { grid-template-columns: 1fr auto; }
+  .agent-brief__menu a:hover { background: #eef2f5; color: #0f766e; }
+  .agent-brief__divider { height: 1px; margin: .25rem 0; background: rgba(11,18,32,.1); }
+  .agent-brief__status {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap;
+  }
+  @media (max-width: 520px) {
+    .agent-brief, .agent-brief__control { width: 100%; }
+    .agent-brief__copy {
+      min-width: 0; flex: 1; justify-content: center; padding-inline: .75rem; font-size: .78rem;
+    }
+  }
+</style>

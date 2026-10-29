@@ -134,12 +134,12 @@ function createPortalPersonalization({ access, services, tenantName, portalConte
       },
       {
         eyebrow: 'Service content',
-        title: featuredContent?.title || 'AI Knowledge Packs briefing',
+        title: featuredContent?.title || 'Data Due Diligence',
         description:
           featuredContent?.summary ||
-          'Use the signed-in workspace to move from offer material into the content that explains where structured AI-ready assets fit first.',
-        href: featuredContent?.href || '/portal/content/ai-knowledge-packs-briefing/',
-        cta: featuredContent?.ctaLabel || 'Open briefing',
+          'See how approved business data and knowledge are prepared before agents enter live work.',
+        href: featuredContent?.href || '/services/#data-due-diligence',
+        cta: featuredContent?.ctaLabel || 'Explore service',
       },
     );
   } else {
@@ -165,12 +165,12 @@ function createPortalPersonalization({ access, services, tenantName, portalConte
       },
       {
         eyebrow: 'Background',
-        title: featuredContent?.title || 'Understand Brando',
+        title: featuredContent?.title || 'Understand IBOM technology',
         description:
           featuredContent?.summary ||
-          'See how the product and the IBOM framework fit together before you move into a live service request.',
-        href: featuredContent?.href || '/brando/',
-        cta: featuredContent?.ctaLabel || 'Open Brando',
+          'See how IBOM governs business data, knowledge, policies, agents, and workflows.',
+        href: featuredContent?.href || '/ibom/',
+        cta: featuredContent?.ctaLabel || 'Open IBOM',
       },
     );
   }
@@ -1374,29 +1374,29 @@ function PortalInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced
   const serviceOfferings = [
     {
       eyebrow: 'First step',
-      title: 'AI Knowledge Packs',
+      title: 'Data Due Diligence',
       description:
-        'Prepare documents, policy, screenshots, expert knowledge, and operating context for reliable AI use before committing to a governed agent build.',
-      href: '/services/ai-ready-knowledge-packs/',
-      cta: 'View offer',
+        'Identify, assess, prepare, and govern the business data and knowledge required for reliable AI use.',
+      href: '/services/#data-due-diligence',
+      cta: 'Explore service',
       stage: 'Readiness',
     },
     {
-      eyebrow: 'Core product',
-      title: 'Brando',
+      eyebrow: 'Technology',
+      title: 'IBOM',
       description:
-        'Turn brand intent into an AI Brand Operator: structured knowledge, controls, approval logic, and evidence that can operate inside live workflows.',
-      href: '/brando/',
-      cta: 'Open Brando',
+        'Give people and agents governed access to approved business data, knowledge, policies, tools, and workflows.',
+      href: '/ibom/',
+      cta: 'Open IBOM',
       stage: 'Operate',
     },
     {
-      eyebrow: 'Delivery model',
-      title: 'IBOM Framework',
+      eyebrow: 'Build and deploy',
+      title: 'Agent Skill Building',
       description:
-        'Scope, define, design, checkpoint, build, and evolve AI-ready operating assets with expert-supervised specification and validation.',
-      href: '/ibom-way/',
-      cta: 'See IBOM',
+        'Configure, test, package, and deploy skills and agents around approved data, policies, tools, and controls.',
+      href: '/services/#agent-skill-building',
+      cta: 'Explore service',
       stage: 'Deliver',
     },
   ];
