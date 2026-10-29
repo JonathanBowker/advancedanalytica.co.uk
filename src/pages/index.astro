@@ -67,44 +67,54 @@ const pathways = [
       loop
       playsinline
       preload="metadata"
-      poster="https://actai.studio/images/hero-porcelain-firefly.jpg"
+      poster="/images/hero-porcelain-firefly.jpg"
       aria-hidden="true"
     >
       <source
-        src="https://actai.studio/videos/hero-porcelain-firefly.mp4"
+        src="/videos/hero-porcelain-firefly.mp4"
         type="video/mp4"
       />
     </video>
     <div class="container-wide home-hero__inner">
-      <div class="eyebrow mb-10 text-left font-bold">MOVE FAST. STAY SAFE.</div>
-      <div class="home-split-grid home-split-grid--hero">
+      <div class="home-hero__content">
         <h1 class="home-hero__title">
-          Turn your business data into knowledge your AI can use.
+          Bring your business data to life.
         </h1>
-        <div>
-          <p class="home-hero__lead">
-            As an independent partner, with no ties to any software, data or AI
-            provider, we advise, design and engineer AI systems around the way
-            your business actually works. We turn its processes, knowledge,
-            judgement and rules into governed data operations that can scale across
-            functions, teams and markets.
-            <strong class="mt-4 block font-bold text-ink">
-              Build AI that works from trusted business knowledge and
-              stays within the boundaries set by you.
-            </strong>
-          </p>
-          <div class="home-hero__actions">
-            <a href="#ibom" class="mt-6 home-hero__secondary">
-              <span>OUR TECHNOLOGY</span>
-              <span aria-hidden="true">↓</span>
-            </a>
+        <a
+          class="home-hero__arrow"
+          href="#home-introduction"
+          aria-label="Continue to the introduction"
+        >
+          <span aria-hidden="true">↓</span>
+        </a>
+      </div>
+    </div>
+  </section>
 
-            <a href="#our-services" class="mt-6 home-hero__secondary">
-              <span>OUR CONSULTANCY</span>
-              <span aria-hidden="true">↓</span>
-            </a>
-          </div>
-        </div>
+  <section id="home-introduction" class="home-intro scroll-mt-20 bg-[#eef2f5] text-ink">
+    <div class="container-wide home-intro__inner">
+      <div class="eyebrow font-bold text-[#0f766e]">MOVE FAST. STAY SAFE.</div>
+      <p class="home-intro__copy">
+        As an independent partner, with no ties to any software, data or AI
+        provider, we advise, design and engineer AI systems around the way
+        your business actually works. We turn its processes, knowledge,
+        judgement and rules into governed data operations that can scale across
+        functions, teams and markets.
+      </p>
+      <p class="home-intro__statement">
+        Build AI that works from trusted business knowledge and stays within
+        the boundaries set by you.
+      </p>
+      <div class="home-hero__actions">
+        <a href="#ibom" class="home-hero__secondary">
+          <span>OUR TECHNOLOGY</span>
+          <span aria-hidden="true">↓</span>
+        </a>
+
+        <a href="#our-services" class="home-hero__secondary">
+          <span>OUR CONSULTANCY</span>
+          <span aria-hidden="true">↓</span>
+        </a>
       </div>
     </div>
   </section>
@@ -627,7 +637,11 @@ const pathways = [
 
       overflow: hidden;
 
-      min-height: calc(100svh - 5rem);
+      height: calc(100svh - 5rem);
+
+      min-height: 44rem;
+
+      max-height: 85.375rem;
 
       background: #eef2f5;
 
@@ -641,7 +655,7 @@ const pathways = [
 
       width: 100%;
 
-      height: 100%;
+      height: 143%;
     }
 
     .home-hero__video {
@@ -649,7 +663,7 @@ const pathways = [
 
       object-fit: cover;
 
-      object-position: 50% 36%;
+      object-position: center 35%;
     }
 
     .home-hero__inner {
@@ -657,39 +671,39 @@ const pathways = [
 
       z-index: 2;
 
-      display: flex;
+      display: grid;
 
-      min-height: calc(100svh - 5rem);
+      height: 100%;
 
-      flex-direction: column;
+      place-items: center;
 
-      justify-content: center;
+      padding-top: 4rem;
 
-      padding-top: 7rem;
+      padding-bottom: 4rem;
+    }
 
-      padding-bottom: 5rem;
+    .home-hero__content {
+      width: min(70rem, 100%);
+
+      text-align: center;
     }
 
     .home-hero__title {
-      margin: 0;
+      max-width: 66rem;
 
-      font-family: var(--font-display);
+      margin: 0 auto;
 
-      font-size: clamp(36px, 3.8vw, 54px);
+      font-family: "Plus Jakarta Sans", var(--font-display);
 
-      font-weight: 1000;
+      font-size: clamp(4rem, 7.5vw, 8rem);
 
-      letter-spacing: -0.016em;
+      font-weight: 800;
 
-      line-height: 1.12;
+      letter-spacing: -0.015em;
+
+      line-height: 1.1;
 
       color: #ffffff;
-
-      text-shadow:
-        0 2px 3px rgba(0, 0, 0, 0.9),
-        0 7px 24px rgba(0, 0, 0, 0.58);
-
-      -webkit-text-stroke: 0.3px #ffffff;
 
       text-wrap: balance;
     }
@@ -700,43 +714,81 @@ const pathways = [
       white-space: nowrap;
     }
 
-    .home-hero__lead {
-      max-width: 34rem;
+    .home-hero__arrow {
+      display: inline-grid;
 
-      margin: 0 0 2rem;
+      width: 3.5rem;
 
-      font-family: var(--font-body);
+      height: 3.5rem;
 
-      font-size: 1.125rem;
+      margin-top: clamp(1.75rem, 4vh, 3.5rem);
 
-      font-weight: 400;
+      place-items: center;
 
-      line-height: 1.625;
+      border: 1.5px solid rgba(255, 255, 255, 0.9);
+
+      border-radius: 999px;
 
       color: #ffffff;
 
-      text-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.95),
-        0 5px 16px rgba(0, 0, 0, 0.66);
+      font-size: 1.65rem;
+
+      line-height: 1;
+
+      text-decoration: none;
+
+      transition:
+        color 180ms ease,
+        background-color 180ms ease,
+        transform 180ms ease;
+    }
+
+    .home-hero__arrow:hover {
+      background: #ffffff;
+
+      color: #0f766e;
+
+      transform: translateY(3px);
+    }
+
+    .home-intro__inner {
+      display: grid;
+
+      justify-items: center;
+
+      padding-top: clamp(4rem, 8vw, 7rem);
+
+      padding-bottom: clamp(4rem, 8vw, 7rem);
+
+      text-align: center;
+    }
+
+    .home-intro__copy {
+      max-width: 52rem;
+
+      margin: 1.5rem auto 0;
+
+      font-size: clamp(1.125rem, 1.6vw, 1.4rem);
+
+      line-height: 1.6;
+
+      color: var(--color-steel);
 
       text-wrap: pretty;
     }
 
-    .home-hero .eyebrow,
-    .home-hero .home-hero__lead strong {
-      color: #ffffff;
+    .home-intro__statement {
+      max-width: 48rem;
 
-      text-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.95),
-        0 5px 16px rgba(0, 0, 0, 0.66);
-    }
+      margin: 1rem auto 0;
 
-    .home-hero .home-hero__secondary {
-      border-color: #ffffff;
+      font-size: clamp(1.125rem, 1.6vw, 1.4rem);
 
-      background: #0f766e;
+      font-weight: 800;
 
-      color: #ffffff;
+      line-height: 1.5;
+
+      text-wrap: balance;
     }
 
     .home-hero__actions {
@@ -744,9 +796,13 @@ const pathways = [
 
       align-items: center;
 
-      gap: 2rem;
+      justify-content: center;
+
+      gap: 1rem;
 
       flex-wrap: wrap;
+
+      margin-top: clamp(1.5rem, 3vh, 2.5rem);
     }
 
     .home-hero__button,
@@ -1016,9 +1072,27 @@ const pathways = [
       }
 
       .home-hero__inner {
-        padding-top: 6.5rem;
+        width: 100vw;
 
-        padding-bottom: 4rem;
+        margin-inline: 0;
+
+        padding: 4rem 1.25rem;
+      }
+
+      .home-hero__title {
+        max-width: 9ch;
+
+        font-size: clamp(3.5rem, 14vw, 5.5rem);
+
+        overflow-wrap: anywhere;
+      }
+
+      .home-intro__inner {
+        width: 100vw;
+
+        margin-inline: 0;
+
+        padding-inline: 1.25rem;
       }
 
       h2 {
