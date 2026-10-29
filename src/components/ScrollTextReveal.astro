@@ -1,0 +1,116 @@
+<style is:global>
+  .scroll-copy-word {
+    opacity: 0.2;
+    transition: opacity 240ms ease;
+    transition-delay: var(--scroll-copy-delay, 0ms);
+  }
+
+  .scroll-copy.is-revealed .scroll-copy-word {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-copy-word {
+      opacity: 1;
+      transition: none;
+    }
+  }
+</style>
+
+<script is:inline>
+  (() => {
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) return;
+
+    const excludedAncestors = [
+      ".ibom-tabs",
+      "form",
+      "dialog",
+      "nav",
+      "[role='status']",
+      "[aria-hidden='true']",
+      "[data-no-text-reveal]",
+    ].join(",");
+
+    const excludedParagraphClasses = [
+      "eyebrow",
+      "sr-only",
+      "visually-hidden",
+    ];
+
+    const paragraphs = Array.from(document.querySelectorAll("main p")).filter(
+      (paragraph) => {
+        if (!(paragraph instanceof HTMLParagraphElement)) return false;
+        if (paragraph.closest(excludedAncestors)) return false;
+        if (excludedParagraphClasses.some((name) => paragraph.classList.contains(name))) return false;
+        return (paragraph.textContent || "").trim().length >= 40;
+      },
+    );
+
+    const enhanceParagraph = (paragraph) => {
+      if (paragraph.dataset.scrollCopyEnhanced === "true") return;
+
+      const walker = document.createTreeWalker(
+        paragraph,
+        NodeFilter.SHOW_TEXT,
+        {
+          acceptNode(node) {
+            if (!node.textContent?.trim()) return NodeFilter.FILTER_REJECT;
+            if (node.parentElement?.closest("script, style, code, pre")) {
+              return NodeFilter.FILTER_REJECT;
+            }
+            return NodeFilter.FILTER_ACCEPT;
+          },
+        },
+      );
+
+      const textNodes = [];
+      while (walker.nextNode()) textNodes.push(walker.currentNode);
+
+      let wordIndex = 0;
+      textNodes.forEach((node) => {
+        const fragment = document.createDocumentFragment();
+        const parts = node.textContent?.match(/\S+|\s+/g) || [];
+
+        parts.forEach((part) => {
+          if (/^\s+$/.test(part)) {
+            fragment.append(document.createTextNode(part));
+            return;
+          }
+
+          const word = document.createElement("span");
+          word.className = "scroll-copy-word";
+          word.style.setProperty(
+            "--scroll-copy-delay",
+            `${Math.min(wordIndex * 20, 1600)}ms`,
+          );
+          word.textContent = part;
+          fragment.append(word);
+          wordIndex += 1;
+        });
+
+        node.replaceWith(fragment);
+      });
+
+      paragraph.dataset.scrollCopyEnhanced = "true";
+      paragraph.classList.add("scroll-copy");
+    };
+
+    paragraphs.forEach(enhanceParagraph);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-revealed");
+          observer.unobserve(entry.target);
+        });
+      },
+      {
+        threshold: 0.12,
+        rootMargin: "0px 0px -12% 0px",
+      },
+    );
+
+    paragraphs.forEach((paragraph) => observer.observe(paragraph));
+  })();
+</script>

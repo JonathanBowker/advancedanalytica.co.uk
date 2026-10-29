@@ -5,6 +5,7 @@ import JsonLd from '../components/JsonLd.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import GoogleAnalytics from '../components/GoogleAnalytics.astro';
+import ScrollTextReveal from '../components/ScrollTextReveal.astro';
 import type { PageMeta } from '../lib/seo/buildGraph';
 import { DEFAULT_OG_IMAGE, SITE_NAME } from '../lib/seo/site';
 import { getDefaultTenant, getTenantThemeCss } from '../lib/tenants';
@@ -104,6 +105,7 @@ const turnstileSiteKey = String(
     </main>
     <SiteFooter />
     <GoogleAnalytics />
+    <ScrollTextReveal />
     <script is:inline>
       (() => {
         const prefersReducedMotion =
