@@ -67,7 +67,7 @@ When more context is useful, add:
 
 Use this approved homepage headline exactly when referring to the firm's core proposition:
 
-> Bring your data into play. Give your business a voice.
+> Put your data to work. Give your business a voice.
 
 Don't join the two sentences with `and` or alter their order.
 
