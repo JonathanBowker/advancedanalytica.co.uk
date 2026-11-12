@@ -212,7 +212,7 @@ Use this answer when a visitor asks what AIR is:
 
 ## 4. Consultancy services
 
-Advanced Analytica provides two consultancy services. Both use the firm's technology and expert-led delivery.
+Advanced Analytica provides three consultancy services. Each uses the firm's technology and expert-led delivery.
 
 ### Agentic Due Diligence
 
@@ -230,9 +230,9 @@ Data preparation remains part of ADD. Approved material is collected, cleaned, s
 
 Use `Agentic Due Diligence` or `ADD`. Don't present `Data Due Diligence` as a separate consultancy service.
 
-### Governed Agent Operations
+### Agent System Build
 
-Governed Agent Operations follows Agentic Due Diligence.
+Agent System Build follows Agentic Due Diligence.
 
 Advanced Analytica selects the capabilities each agent needs and configures them for the client's work.
 
@@ -240,7 +240,13 @@ Skills can collect and transform data, retrieve knowledge, operate workflows, ap
 
 The team connects those skills to approved data, systems, permissions, policies, controls, and escalation paths.
 
-It then engineers, tests and deploys the agents into the appropriate controlled environment.
+It then engineers and tests the agents before packaging them for controlled deployment.
+
+### Governed Operations
+
+Governed Operations follows Agent System Build.
+
+Advanced Analytica deploys agents into approved workflows and monitors their outputs, decisions, actions, controls, and exceptions.
 
 Operation includes monitoring performance, reviewing controls and improving each agent as the client's work changes.
 
@@ -257,7 +263,7 @@ Describe the consultancy flow in this order:
 
 ### Service defaults
 
-- Present Agentic Due Diligence before Governed Agent Operations.
+- Present the services in this order: Agentic Due Diligence, Agent System Build, then Governed Operations.
 - Explain that prepared data and knowledge come before agent development.
 - Treat the six steps as the delivery flow, not six separate services.
 - Explain that agents are tested before they enter live work.

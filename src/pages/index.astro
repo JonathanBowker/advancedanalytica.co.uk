@@ -259,40 +259,62 @@ const latestCaseStudies = (
   <section id="our-services" class="bg-paper text-ink">
     <div class="container-wide py-20">
       <div class="eyebrow mb-10 text-center text-[#14B8A6]">Our consultancy</div>
-      <div class="grid gap-12 md:grid-cols-2 lg:gap-x-18 lg:gap-y-16">
-        <div>
+      <div class="consultancy-grid">
+        <article class="consultancy-card">
+          <div class="consultancy-card__stage">01</div>
           <h2
-            class="text-4xl font-extrabold tracking-tight text-ink md:text-5xl"
+            class="text-3xl font-extrabold tracking-tight text-ink"
           >
             Agentic Due Diligence
           </h2>
-          <p class="mt-6 text-lg leading-relaxed text-steel md:text-xl">
-            Before an agent acts, we establish whether the business is ready.
-            We map the work, data, decisions, authority, risk and human
-            oversight, then define clear operating boundaries for design and
-            delivery.
+          <p class="mt-5 text-lg leading-relaxed text-steel">
+            We start with your AI risk policy and test it against the decisions
+            and actions you want agents to take. We map the work, data,
+            authority and oversight, then define clear boundaries. The output
+            is a scoped brief, ready to implement.
           </p>
-          <a href="#agentic-consultancy" class="mt-6 home-hero__secondary">
-            <span>OUR CONSULTANCY</span>
-            <span aria-hidden="true">↓</span>
-          </a>
-        </div>
-        <div>
+        </article>
+
+        <article class="consultancy-card">
+          <div class="consultancy-card__stage">02</div>
           <h2
-            class="text-4xl font-extrabold tracking-tight text-ink md:text-5xl"
+            class="text-3xl font-extrabold tracking-tight text-ink"
           >
-            Governed Agent Operations
+            Agent System Build
           </h2>
-          <p class="mt-6 text-lg leading-relaxed text-steel md:text-xl">
-            We turn approved designs into working agents. We build and connect
-            their skills, data and tools, test performance and controls, then
-            monitor and improve each agent as the work changes.
+          <p class="mt-5 text-lg leading-relaxed text-steel">
+            We build to that scope. We create the skills, workflows, tools and
+            controls, connect only authorised data, and test the whole system
+            against your policy before any live use. Nothing is built that the
+            policy hasn't approved for controlled use.
           </p>
-          <a href="#ibom" class="mt-6 home-hero__secondary">
-            <span>OUR TECHNOLOGY</span>
-            <span aria-hidden="true">↓</span>
-          </a>
-        </div>
+        </article>
+
+        <article class="consultancy-card">
+          <div class="consultancy-card__stage">03</div>
+          <h2
+            class="text-3xl font-extrabold tracking-tight text-ink"
+          >
+            Governed Operations
+          </h2>
+          <p class="mt-5 text-lg leading-relaxed text-steel">
+            We turn your policy into machine-readable rules for agents. We
+            deploy them into controlled work and monitor performance. Our
+            experts jockey the agents alongside your team, continually adding
+            skills and value over time.
+          </p>
+        </article>
+      </div>
+
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+        <a href="/services/" class="home-hero__secondary">
+          <span>OUR CONSULTANCY</span>
+          <span aria-hidden="true">→</span>
+        </a>
+        <a href="#ibom" class="home-hero__secondary">
+          <span>OUR TECHNOLOGY</span>
+          <span aria-hidden="true">↑</span>
+        </a>
       </div>
     </div>
   </section>
@@ -331,7 +353,7 @@ const latestCaseStudies = (
         </div>
 
         <div class="methodology-card">
-          <div class="methodology-phase">Phase 2 · Build</div>
+          <div class="methodology-phase">Phase 2 · Agent System Build</div>
           <div class="methodology-step">Step 3</div>
           <h2 class="text-3xl font-extrabold tracking-tight text-ink">
             Agent preparation
@@ -344,7 +366,7 @@ const latestCaseStudies = (
         </div>
 
         <div class="methodology-card">
-          <div class="methodology-phase">Phase 2 · Build</div>
+          <div class="methodology-phase">Phase 2 · Agent System Build</div>
           <div class="methodology-step">Step 4</div>
           <h2 class="text-3xl font-extrabold tracking-tight text-ink">
             Agent modelling
@@ -356,7 +378,7 @@ const latestCaseStudies = (
         </div>
 
         <div class="methodology-card">
-          <div class="methodology-phase">Phase 3 · Deploy</div>
+          <div class="methodology-phase">Phase 3 · Governed Operations</div>
           <div class="methodology-step">Step 5</div>
           <h2 class="text-3xl font-extrabold tracking-tight text-ink">
             Agent evaluation
@@ -369,7 +391,7 @@ const latestCaseStudies = (
         </div>
 
         <div class="methodology-card">
-          <div class="methodology-phase">Phase 3 · Deploy</div>
+          <div class="methodology-phase">Phase 3 · Governed Operations</div>
           <div class="methodology-step">Step 6</div>
           <h2 class="text-3xl font-extrabold tracking-tight text-ink">
             Agent deployment
@@ -487,6 +509,46 @@ const latestCaseStudies = (
   </section>
 
   <style>
+    .consultancy-grid {
+      display: grid;
+      gap: 1.25rem;
+    }
+
+    .consultancy-card {
+      position: relative;
+      min-height: 20rem;
+      overflow: hidden;
+      border: 1px solid color-mix(in srgb, var(--color-ink) 11%, transparent);
+      border-radius: 1rem;
+      background: #eef2f5;
+      padding: clamp(1.75rem, 3vw, 2.25rem);
+      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.05);
+      transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .consultancy-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 3px;
+      background: #14b8a6;
+    }
+
+    .consultancy-card__stage {
+      margin-bottom: 1.5rem;
+      color: #0f766e;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .consultancy-card:hover {
+      border-color: rgba(20, 184, 166, 0.45);
+      transform: translateY(-3px);
+      box-shadow: 0 20px 46px rgba(15, 23, 42, 0.09);
+    }
+
     .methodology-carousel {
       min-width: 0;
     }
@@ -602,9 +664,25 @@ const latestCaseStudies = (
       }
     }
 
+    @media (min-width: 1024px) {
+      .consultancy-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
     @media (max-width: 639px) {
       .methodology-card {
         flex-basis: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .consultancy-card {
+        transition: none;
+      }
+
+      .consultancy-card:hover {
+        transform: none;
       }
     }
 

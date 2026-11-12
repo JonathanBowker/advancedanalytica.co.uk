@@ -3,16 +3,16 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import AgentBriefDropdown from '../../components/AgentBriefDropdown.astro';
 import { SITE_URL } from '../../lib/seo/site';
 
-const title = 'Agentic Due Diligence and Governed Agent Operations | Advanced Analytica';
-const description = 'We establish whether an AI agent should act, then build, deploy and govern it through live work.';
+const title = 'Agentic Due Diligence, Agent System Build and Governed Operations | Advanced Analytica';
+const description = 'We establish whether an AI agent should act, build the system, then deploy and govern it through live work.';
 
 const methodology = [
   { phase: 'Phase 1', phaseName: 'Agentic Due Diligence', step: 'Step 1', title: 'Business understanding', body: 'Agentic Due Diligence starts with your goals and decisions. We map the workflows, people and constraints that determine where an agent can create measurable value.' },
   { phase: 'Phase 1', phaseName: 'Agentic Due Diligence', step: 'Step 2', title: 'Data understanding', body: 'During Agentic Due Diligence, we identify the data, documents, policies and systems each workflow relies on. We record who owns each source, its quality and what is missing.' },
-  { phase: 'Phase 2', phaseName: 'Build', step: 'Step 3', title: 'Agent preparation', body: 'We collect, clean and structure those sources. We attach permissions, provenance and controls, so each agent sees only what it should and every answer can be traced.' },
-  { phase: 'Phase 2', phaseName: 'Build', step: 'Step 4', title: 'Agent modelling', body: 'We design the agents, skills, workflows and tools. We define what each agent can see, decide and change.' },
-  { phase: 'Phase 3', phaseName: 'Deploy', step: 'Step 5', title: 'Agent evaluation', body: 'Before release, we test outputs, decisions and actions against measures agreed in advance. These cover quality, safety, performance and governance.' },
-  { phase: 'Phase 3', phaseName: 'Deploy', step: 'Step 6', title: 'Agent deployment', body: 'We put agents into live work and monitor them. An expert works alongside your team, improving each agent as your business changes.' }
+  { phase: 'Phase 2', phaseName: 'Agent System Build', step: 'Step 3', title: 'Agent preparation', body: 'We collect, clean and structure those sources. We attach permissions, provenance and controls, so each agent sees only what it should and every answer can be traced.' },
+  { phase: 'Phase 2', phaseName: 'Agent System Build', step: 'Step 4', title: 'Agent modelling', body: 'We design the agents, skills, workflows and tools. We define what each agent can see, decide and change.' },
+  { phase: 'Phase 3', phaseName: 'Governed Operations', step: 'Step 5', title: 'Agent evaluation', body: 'Before release, we test outputs, decisions and actions against measures agreed in advance. These cover quality, safety, performance and governance.' },
+  { phase: 'Phase 3', phaseName: 'Governed Operations', step: 'Step 6', title: 'Agent deployment', body: 'We put agents into live work and monitor them. An expert works alongside your team, improving each agent as your business changes.' }
 ];
 
 const page = {
@@ -43,8 +43,8 @@ const page = {
           work and establish the evidence and data controls each agent needs.
         </p>
         <p class="mt-6">
-          Governed Agent Operations then builds, deploys and monitors the agent
-          inside approved workflows and operating boundaries.
+          Agent System Build turns that decision into a tested system.
+          Governed Operations then deploys and monitors it inside approved boundaries.
         </p>
         <a href="#service-journey" class="services-down-link mt-8">
           <span>Explore the journey</span><span aria-hidden="true">↓</span>
@@ -59,8 +59,8 @@ const page = {
         <div class="eyebrow text-[#5eead4]">One connected journey</div>
         <h2 class="mt-5 text-4xl font-extrabold tracking-tight md:text-6xl">Due diligence comes first. Agents come after.</h2>
         <p class="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-paper/72 md:text-xl">
-          The two services work together. Due diligence defines whether and how
-          an agent should act. Governed operation puts that decision into practice.
+          The three services work together. Due diligence defines whether and
+          how an agent should act. We then build the system and govern its live operation.
         </p>
       </div>
 
@@ -108,17 +108,16 @@ const page = {
     </div>
   </section>
 
-  <section id="governed-agent-operations" class="scroll-mt-24 bg-[#eef2f5] text-ink">
-    <span id="governed-agent-operation" class="absolute -translate-y-24" aria-hidden="true"></span>
+  <section id="agentic-system-building" class="scroll-mt-24 bg-[#eef2f5] text-ink">
     <span id="agent-skill-building" class="absolute -translate-y-24" aria-hidden="true"></span>
     <div class="container-wide services-chapter services-chapter--reverse">
       <div class="services-chapter__number" aria-hidden="true">02</div>
       <div class="services-chapter__intro" data-reveal>
-        <div class="eyebrow text-[#14B8A6]">Governed Agent Operations</div>
-        <h2 class="mt-5 text-4xl font-extrabold tracking-tight md:text-6xl">Build the agent. Govern the work.</h2>
+        <div class="eyebrow text-[#14B8A6]">Agent System Build</div>
+        <h2 class="mt-5 text-4xl font-extrabold tracking-tight md:text-6xl">Turn approved designs into working agents.</h2>
         <p class="mt-7 max-w-2xl text-lg leading-relaxed text-steel md:text-xl">
-          Once the foundations are ready, we define each agent's responsibility
-          and build the skills it needs. We then deploy, monitor and improve it.
+          We define each agent's responsibility, build the skills it needs and
+          connect approved data, tools and workflows. We test the complete system before deployment.
         </p>
       </div>
       <div class="services-detail-grid" data-reveal>
@@ -138,6 +137,42 @@ const page = {
             <li>Configured connections to approved data and tools</li>
             <li>Test evidence against agreed operating measures</li>
             <li>Packaged agents ready for controlled deployment</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="governed-operations" class="scroll-mt-24 bg-paper text-ink">
+    <span id="governed-agent-operations" class="absolute -translate-y-24" aria-hidden="true"></span>
+    <span id="governed-agent-operation" class="absolute -translate-y-24" aria-hidden="true"></span>
+    <div class="container-wide services-chapter">
+      <div class="services-chapter__number" aria-hidden="true">03</div>
+      <div class="services-chapter__intro" data-reveal>
+        <div class="eyebrow text-[#14B8A6]">Governed Operations</div>
+        <h2 class="mt-5 text-4xl font-extrabold tracking-tight md:text-6xl">Put agents to work without losing control.</h2>
+        <p class="mt-7 max-w-2xl text-lg leading-relaxed text-steel md:text-xl">
+          We deploy agents into approved workflows, monitor how they perform and
+          manage changes to data, tools and controls as the business evolves.
+        </p>
+      </div>
+      <div class="services-detail-grid" data-reveal>
+        <article>
+          <h3>How we operate</h3>
+          <ul>
+            <li>Controlled release into approved workflows</li>
+            <li>Monitoring across outputs, decisions and actions</li>
+            <li>Escalation routes for exceptions and human review</li>
+            <li>Managed changes to data, tools, skills and controls</li>
+          </ul>
+        </article>
+        <article>
+          <h3>What you receive</h3>
+          <ul>
+            <li>A clear view of agent performance and operating status</li>
+            <li>Auditable evidence of controls, exceptions and decisions</li>
+            <li>Named accountability for live agent operations</li>
+            <li>Continuous improvement within approved boundaries</li>
           </ul>
         </article>
       </div>
