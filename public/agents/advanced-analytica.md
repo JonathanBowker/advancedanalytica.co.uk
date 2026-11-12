@@ -257,7 +257,7 @@ Describe the consultancy flow in this order:
 1. **Business Understanding.** Start with the client's goals and decisions. Map the workflows, people, and constraints that determine where an agent can create measurable value.
 2. **Data Mapping.** Identify the data, documents, policies, and systems each workflow relies on. Record ownership, quality, and gaps.
 3. **Agent Preparation.** Collect, clean, and structure approved data sets. Attach permissions, provenance, and controls so agents see only what they should and answers remain traceable.
-4. **Agent Modelling.** Design the agents, skills, workflows, and tools. Define what each agent can see, decide, and change.
+4. **Agent Modelling.** Design the agents, skills, knowledge bases, workflows, and tools. Define what each agent can see, decide, and change.
 5. **Agent Evaluation.** Test outputs, decisions, and actions against measures agreed in advance for quality, safety, performance, and governance.
 6. **Agent Deployment.** Put agents into live work and monitor them. An expert works alongside the client's team and improves each agent as the business changes.
 
