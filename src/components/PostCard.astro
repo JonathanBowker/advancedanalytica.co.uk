@@ -24,7 +24,7 @@ const basePath = Astro.props.basePath ?? '/opinions';
 const tagBasePath = Astro.props.tagBasePath ?? `${basePath}/tag`;
 const coverImage = getCoverPathForBasePath(basePath, post.slug, post.data.coverImage);
 const displayTitle = toSentenceCaseTitle(post.data.title);
-const coverAlt = `${displayTitle} — ${post.data.description}`;
+const coverAlt = `${displayTitle}: ${post.data.description}`;
 const publishedDate = new Intl.DateTimeFormat('en-GB', {
   day: 'numeric',
   month: 'long',

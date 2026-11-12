@@ -6,9 +6,9 @@ import AgentBriefDropdown from "../components/AgentBriefDropdown.astro";
 import { getCollection } from "astro:content";
 import { SITE_URL } from "../lib/seo/site";
 
-const title = "Agentic AI for UK Enterprises | Advanced Analytica";
+const title = "Governed AI for Business | Advanced Analytica";
 const description =
-  "Advanced Analytica gets Agentic AI into production for UK enterprises. Using IBOM®, we identify high-value opportunities, prove value in weeks, and deploy governed AI agents and skills that scale.";
+  "Advanced Analytica prepares business data, builds governed AI agents and connects both through IBOM® and Agent in the Room®.";
 
 const latestPosts = (
   await getCollection("blog", ({ data }) => !data.draft)
@@ -93,7 +93,7 @@ const latestCaseStudies = (
   <section id="ibom" class="bg-slate text-paper">
     <div class="container-wide py-20">
       <div class="eyebrow mb-6 text-center text-[#14B8A6]">
-        Our Technology — IBOM
+        Our technology: IBOM
       </div>
       <h2
         class="mx-auto max-w-4xl text-center text-3xl font-semibold tracking-tight text-paper sm:text-4xl md:text-5xl"
@@ -125,7 +125,7 @@ const latestCaseStudies = (
   <section id="agent-in-the-room" class="bg-paper text-ink">
     <div class="container-wide py-20">
       <div class="eyebrow mb-10 text-center text-[#14B8A6]">
-        Our Technology — Agent in the Room<sup class="align-super text-[0.55em] font-normal">®</sup>
+        Our technology: Agent in the Room<sup class="align-super text-[0.55em] font-normal">®</sup>
       </div>
       <div class="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
         <div>
@@ -134,16 +134,13 @@ const latestCaseStudies = (
           </h2>
           <div class="mt-6 max-w-prose space-y-6 text-lg leading-relaxed text-steel md:text-xl">
             <p>
-              We build AI agents grounded in your data, shaped by your knowledge
-              and focused on the challenges that matter most to your business —
-              agents your people can talk to naturally, as well as use through
-              chat.
+              We build AI agents grounded in your data and shaped by your
+              knowledge. Your people can talk to them naturally or use chat.
             </p>
             <p>
-              Then we bring those agents into the room alongside your people
-              and our experts. Together, they challenge assumptions, explore
-              possibilities and shape a practical way forward — always within
-              your rules.
+              We bring those agents into the room alongside your people and our
+              experts. Together, they challenge assumptions, explore evidence
+              and shape a practical way forward, governed by your policies.
             </p>
           </div>
           <div class="mt-8 flex flex-wrap items-center gap-4">
@@ -235,7 +232,7 @@ const latestCaseStudies = (
   <section id="how" class="bg-[#eef2f5] text-ink">
     <div class="container-wide py-20">
       <div class="eyebrow mb-10 text-center text-[#14B8A6]">
-        Agentic AI, Grounded In Your Data
+        AI grounded in your data
       </div>
       <div class="home-split-grid">
         <div>
@@ -261,7 +258,7 @@ const latestCaseStudies = (
 
   <section id="our-services" class="bg-paper text-ink">
     <div class="container-wide py-20">
-      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Our Consultancy</div>
+      <div class="eyebrow mb-10 text-center text-[#14B8A6]">Our consultancy</div>
       <div class="grid gap-12 md:grid-cols-2 lg:gap-x-18 lg:gap-y-16">
         <div>
           <h2
@@ -270,10 +267,10 @@ const latestCaseStudies = (
             Agentic Due Diligence
           </h2>
           <p class="mt-6 text-lg leading-relaxed text-steel md:text-xl">
-            We examine governance, map how the business operates and establish
-            the data controls an agent needs. ADD makes authority, evidence,
-            risk and human oversight explicit before the work moves into
-            design and delivery.
+            Before an agent acts, we establish whether the business is ready.
+            We map the work, data, decisions, authority, risk and human
+            oversight, then define clear operating boundaries for design and
+            delivery.
           </p>
           <a href="#agentic-consultancy" class="mt-6 home-hero__secondary">
             <span>OUR CONSULTANCY</span>
@@ -284,14 +281,12 @@ const latestCaseStudies = (
           <h2
             class="text-4xl font-extrabold tracking-tight text-ink md:text-5xl"
           >
-            Agent Skill Building
+            Governed Agent Operations
           </h2>
           <p class="mt-6 text-lg leading-relaxed text-steel md:text-xl">
-            The Agent Skill Bench provides proven capabilities to collect and
-            transform data, retrieve knowledge, operate workflows, apply rules
-            and assure quality. We configure the skills each agent needs,
-            connect them to your systems and test them before they enter live
-            operations.
+            We turn approved designs into working agents. We build and connect
+            their skills, data and tools, test performance and controls, then
+            monitor and improve each agent as the work changes.
           </p>
           <a href="#ibom" class="mt-6 home-hero__secondary">
             <span>OUR TECHNOLOGY</span>
@@ -305,78 +300,77 @@ const latestCaseStudies = (
   <section id="agentic-consultancy" class="bg-[#eef2f5] text-ink">
     <div class="container-wide py-20">
       <div class="eyebrow mb-10 text-center text-[#14B8A6]">
-        Our Methodology
+        Our methodology
       </div>
       <div class="methodology-carousel" data-methodology-carousel>
         <div class="methodology-track" data-methodology-track>
         <div class="methodology-card">
           <div class="methodology-step">Step 1</div>
           <h2 class="text-3xl font-extrabold tracking-tight text-ink">
-            Business Understanding
+            Business understanding
           </h2>
           <p class="mt-5 text-lg leading-relaxed text-steel">
-            We begin by defining goals, decisions, workflows, people and
-            constraints that determine where governed AI can create measurable
-            business value.
+            We start with your goals and decisions. We map the workflows,
+            people and constraints that determine where an agent can create
+            measurable value.
           </p>
         </div>
 
         <div class="methodology-card">
           <div class="methodology-step">Step 2</div>
           <h2 class="text-3xl font-extrabold tracking-tight text-ink">
-            Data Understanding
+            Data understanding
           </h2>
           <p class="mt-5 text-lg leading-relaxed text-steel">
-            With priorities clear, we map the data, knowledge, policies and
-            systems each workflow depends on, identifying ownership, quality
-            and gaps.
+            We identify the data, documents, policies and systems each workflow
+            relies on. We record who owns each source, its quality and what is
+            missing.
           </p>
         </div>
 
         <div class="methodology-card">
           <div class="methodology-step">Step 3</div>
           <h2 class="text-3xl font-extrabold tracking-tight text-ink">
-            Data Preparation
+            Agent preparation
           </h2>
           <p class="mt-5 text-lg leading-relaxed text-steel">
-            We then collect, clean, structure and govern those sources,
-            attaching permissions, provenance and controls so agents can use
-            them reliably.
+            We collect, clean and structure those sources. We attach
+            permissions, provenance and controls, so each agent sees only what
+            it should and every answer can be traced.
           </p>
         </div>
 
         <div class="methodology-card">
           <div class="methodology-step">Step 4</div>
           <h2 class="text-3xl font-extrabold tracking-tight text-ink">
-            IBOM Modeling
+            Agent modelling
           </h2>
           <p class="mt-5 text-lg leading-relaxed text-steel">
-            Using the prepared sources, we model the agents, skills, workflows,
-            tools and controls needed to deliver reliable, governed business
-            operations.
+            We design the agents, skills, workflows and tools. We define what
+            each agent can see, decide and change.
           </p>
         </div>
 
         <div class="methodology-card">
           <div class="methodology-step">Step 5</div>
           <h2 class="text-3xl font-extrabold tracking-tight text-ink">
-            IBOM Evaluation
+            Agent evaluation
           </h2>
           <p class="mt-5 text-lg leading-relaxed text-steel">
-            Before release, we test each output, decision and action against
-            agreed measures for performance, quality, safety and governance in
-            operation.
+            Before release, we test outputs, decisions and actions against
+            measures agreed in advance. These cover quality, safety,
+            performance and governance.
           </p>
         </div>
 
         <div class="methodology-card">
           <div class="methodology-step">Step 6</div>
           <h2 class="text-3xl font-extrabold tracking-tight text-ink">
-            IBOM Deployment
+            Agent deployment
           </h2>
           <p class="mt-5 text-lg leading-relaxed text-steel">
-            Once validated, we deploy agents into live workflows, monitor their
-            performance and improve them as business needs and knowledge evolve.
+            We put agents into live work and monitor them. An expert works
+            alongside your team, improving each agent as your business changes.
           </p>
         </div>
         </div>
@@ -396,17 +390,16 @@ const latestCaseStudies = (
 
   <section class="bg-[#eef2f5] text-ink">
     <div class="container-wide py-20">
-      <div class="eyebrow mb-6 text-center text-[#14B8A6]">Case Studies</div>
+      <div class="eyebrow mb-6 text-center text-[#14B8A6]">Case studies</div>
       <h2 class="text-center text-5xl font-extrabold tracking-tight text-ink">
         Problems solved, not logos displayed.
       </h2>
       <p
         class="mx-auto mt-5 max-w-[76ch] text-center text-lg leading-relaxed text-steel md:text-xl"
       >
-        We work with challenger businesses and Fortune 500 brands to advise on,
-        design, and build agentic AI systems for complex operating
-        environments. Much of that work sits behind confidentiality, so we focus
-        on the problems solved.
+        We advise, design and build AI systems for challenger businesses and
+        Fortune 500 companies. Much of that work is confidential, so these case
+        studies focus on the operating problems solved.
       </p>
       <div class="mt-12 grid items-stretch gap-8 lg:grid-cols-3">
         {
@@ -432,15 +425,15 @@ const latestCaseStudies = (
 
   <section class="bg-paper text-ink">
     <div class="container-wide py-20">
-      <div class="eyebrow mb-6 text-center text-[#14B8A6]">Latest Thinking</div>
+      <div class="eyebrow mb-6 text-center text-[#14B8A6]">Latest thinking</div>
       <h2 class="text-center text-5xl font-extrabold tracking-tight text-ink">
-        Latest Posts
+        Latest posts
       </h2>
       <p
         class="mx-auto mt-5 max-w-[70ch] text-center text-lg leading-relaxed text-steel md:text-xl"
       >
-        Recent thinking on Agentic AI, governed business operations, and
-        knowledge-first deployment.
+        Practical thinking on business data, governed AI and the decisions
+        required to put agents into real work.
       </p>
       <div class="mt-12 grid items-stretch gap-8 lg:grid-cols-3">
         {latestPosts.slice(0, 3).map((post) => <PostCard post={post} />)}
@@ -456,7 +449,7 @@ const latestCaseStudies = (
   <section class="bg-paper text-ink">
     <div class="container-wide py-20">
       <div class="eyebrow mb-10 text-center text-[#14B8A6]">
-        Start The Conversation
+        Start the conversation
       </div>
       <div class="grid items-start gap-10 lg:grid-cols-[0.9fr_1.1fr]">
         <div>

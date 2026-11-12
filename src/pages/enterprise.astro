@@ -4,7 +4,7 @@ import { getCollection } from 'astro:content';
 import { SITE_URL } from '../lib/seo/site';
 
 const title = 'Enterprise';
-const description = 'Governance-ready brand systems for complex enterprises.';
+const description = 'Governed AI systems for businesses working across teams, markets and regulatory boundaries.';
 
 const useCases = (await getCollection('case-studies', ({ data }) => !data.draft)).filter(
   (entry) => Boolean(entry.data.industry || entry.data.outcomes?.length)
@@ -23,10 +23,10 @@ const page = {
 <BaseLayout title={title} description={description} page={page}>
   <section class="container-wide py-16">
     <div class="eyebrow">Enterprise</div>
-    <h1 class="mt-4 text-4xl font-semibold text-ink">Governance at scale</h1>
-    <p class="mt-4 text-base text-steel">
-      Advanced Analytica supports enterprises with multi-team, multi-market governance requirements.
-      IBOM provides the operating layer that keeps execution consistent and auditable.
+    <h1 class="mt-4 max-w-4xl text-5xl font-extrabold tracking-tight text-ink">One governed intelligence layer across a complex business</h1>
+    <p class="mt-6 max-w-3xl text-lg leading-relaxed text-steel">
+      Advanced Analytica prepares approved business data and builds the agents that use it.
+      IBOM keeps ownership, permissions and controls attached across teams, markets and systems.
     </p>
   </section>
 

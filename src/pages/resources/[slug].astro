@@ -27,7 +27,7 @@ const description = item.data.description;
 const downloadUrl = item.data.downloadUrl;
 const url = `${SITE_URL}/resources/${item.slug}`;
 const coverImage = getGeneratedCoverPath('resource', item.slug);
-const coverAlt = `${displayTitle} — ${description}`;
+const coverAlt = `${displayTitle}: ${description}`;
 
 const page = {
   title: displayTitle,

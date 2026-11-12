@@ -7,7 +7,7 @@ import { getCollection } from 'astro:content';
 import { SITE_URL } from '../../lib/seo/site';
 
 const title = 'Case Studies';
-const description = 'Real-world examples of IBOM in action: policy, execution, and assurance.';
+const description = 'Practical examples of structured business data and governed AI supporting better decisions and more reliable work.';
 
 const posts = (await getCollection('case-studies', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf()
@@ -100,11 +100,11 @@ const page = {
   <section class="container-wide py-16">
     <div class="mx-auto max-w-[980px]">
       <h1 class="text-[clamp(2.25rem,5vw,4rem)] font-semibold tracking-tight text-ink">
-        Case Studies
+        Case studies
       </h1>
       <p class="mt-6 text-lg leading-relaxed text-steel md:text-xl">
-        Practical case studies showing how structured data and agentic AI turn business knowledge, policy and
-        operational judgement into controlled workflows that support better decisions and more reliable execution.
+        Practical case studies showing how structured business data and governed
+        AI support better decisions, clearer controls and more reliable work.
       </p>
       <div class="mt-8 flex flex-col gap-5 sm:flex-row sm:flex-wrap sm:items-center">
         <RssLink href="/rss/case-studies.xml" label="Case Studies RSS" />

@@ -41,32 +41,32 @@ export const personaPositioningCards = [
   {
     role: "CMO",
     heading: "For the CMO",
-    body: "Your teams are already pasting brand guidelines into ChatGPT. The output looks plausible and drifts off-brand at scale, because fragments carry no governance. IBOM deploys an AI agent governed by your Brand Operator, enforcing your rules at the moment content is created, so approval happens in hours, not days.",
+    body: "Your teams already use AI to create and review content. IBOM connects agents to approved brand data, policies and assets, so every output starts from the same governed source.",
   },
   {
     role: "Head of Brand",
     heading: "For the Head of Brand",
-    body: "You own the nuance, but a PDF cannot enforce it. Your Brand Operator holds the interlinked intent behind every rule, and the agent that reads it applies them. Update a policy once and the agent cascades that change across everything it governs.",
+    body: "A PDF can explain a rule, but it cannot apply one. IBOM turns approved guidance into structured data that agents can retrieve, follow and cite during real work.",
   },
   {
     role: "Chief Legal Officer",
     heading: "For the Chief Legal Officer",
-    body: "AI-generated brand content is a liability surface: IP misuse, regulatory exposure, unapproved claims. The agent validates every output against your Brand Operator before content ships, with audit trails recording what was generated, against which policy, and who approved it.",
+    body: "AI introduces questions of authority, provenance and accountability. IBOM keeps the relevant policies and evidence attached, so decisions can be reviewed before an agent acts.",
   },
   {
     role: "Head of AI",
     heading: "For the Head of AI",
-    body: "You need brand knowledge your systems can actually consume. IBOM delivers a structured, schema-defined Brand Operator served over Model Context Protocol, with validators, an LLM judge, and drift measurement in the loop.",
+    body: "AI needs business data it can use safely. IBOM organises approved sources, permissions and controls, then makes that intelligence available to governed agents and workflows.",
   },
   {
     role: "CTO",
     heading: "For the CTO",
-    body: "No new platform to run. IBOM ships as code: the pipeline, the Brand Operator, the MCP endpoint, and the governing agent. Deploy it in your infrastructure or take it as a container.",
+    body: "IBOM connects approved data, systems and agents through one controlled technology layer. Your team retains clear ownership of access, changes and operating boundaries.",
   },
   {
     role: "CFO",
     heading: "For the CFO",
-    body: "Brand is a shortcut to trust, and trust is the asset nobody prices until it is damaged. IBOM automates governance at scale, cutting manual review cycles and the cost of brand inconsistency.",
+    body: "Unclear ownership and poor data create cost before an agent creates value. IBOM makes the operating controls visible, helping teams focus investment on work they can measure.",
   },
 ] as const;
 
@@ -135,15 +135,15 @@ export const ibomStages = [
 
 export const howItWorksCards = [
   {
-    heading: "Process Mapping",
-    body: "We map the rules, approvals, exceptions, and judgement your teams already use. The system starts with how your business really works.",
+    heading: "Process mapping",
+    body: "We map the rules, approvals, exceptions and judgement your teams already use. The system starts with how your business really works.",
   },
   {
-    heading: "Data Modelling",
-    body: "We turn brand and business logic into an interconnected, machine-readable data asset that AI can interpret and follow.",
+    heading: "Data modelling",
+    body: "We turn approved business data and operating logic into structured intelligence that AI can retrieve, interpret and follow.",
   },
   {
-    heading: "Agent Deployment",
-    body: "We build, test, and deploy IBOM into controlled workflows, review paths, and agent behaviours.",
+    heading: "Agent deployment",
+    body: "We build and test agents against agreed measures, then put them into controlled workflows with clear review and escalation routes.",
   },
 ] as const;

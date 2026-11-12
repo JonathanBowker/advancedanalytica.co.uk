@@ -1392,10 +1392,10 @@ function PortalInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced
     },
     {
       eyebrow: 'Build and deploy',
-      title: 'Agent Skill Building',
+      title: 'Governed Agent Operations',
       description:
         'Configure, test, package, and deploy skills and agents around approved data, policies, tools, and controls.',
-      href: '/services/#agent-skill-building',
+      href: '/services/#governed-agent-operations',
       cta: 'Explore service',
       stage: 'Deliver',
     },

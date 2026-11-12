@@ -7,7 +7,7 @@ import { getCollection } from 'astro:content';
 import { SITE_URL } from '../../lib/seo/site';
 
 const title = 'Opinions';
-const description = 'Opinionated perspectives on operating brand as policy-aware systems.';
+const description = 'Practical perspectives on business data, governed AI and accountable agent operations.';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf()
@@ -46,7 +46,7 @@ const page = {
         Opinions
       </h1>
       <p class="mt-6 text-lg leading-relaxed text-steel md:text-xl">
-        Opinionated perspectives on building policy-aware brand systems across operations, governance, and AI workflows.
+        Clear thinking on the data, controls and decisions required to put AI agents into real business work.
       </p>
       <div class="mt-8 flex flex-col gap-5 sm:flex-row sm:flex-wrap sm:items-center">
         <RssLink href="/rss/opinions.xml" label="Opinions RSS" />

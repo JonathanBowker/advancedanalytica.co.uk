@@ -230,32 +230,34 @@ Data preparation remains part of ADD. Approved material is collected, cleaned, s
 
 Use `Agentic Due Diligence` or `ADD`. Don't present `Data Due Diligence` as a separate consultancy service.
 
-### Agent Skill Building
+### Governed Agent Operations
 
-Agent Skill Building follows Agentic Due Diligence.
+Governed Agent Operations follows Agentic Due Diligence.
 
-Advanced Analytica selects the capabilities each agent needs from its Skill Bench and configures them for the client's work.
+Advanced Analytica selects the capabilities each agent needs and configures them for the client's work.
 
 Skills can collect and transform data, retrieve knowledge, operate workflows, apply rules, use tools, and support quality assurance.
 
 The team connects those skills to approved data, systems, permissions, policies, controls, and escalation paths.
 
-It then engineers, tests, packages, and deploys the skills and agents into the appropriate controlled environment.
+It then engineers, tests and deploys the agents into the appropriate controlled environment.
+
+Operation includes monitoring performance, reviewing controls and improving each agent as the client's work changes.
 
 ### Service sequence
 
 Describe the consultancy flow in this order:
 
-1. **Business Understanding.** Define goals, decisions, workflows, people, constraints, and measurable value.
-2. **Data Understanding.** Map required data, knowledge, policies, systems, ownership, quality, and gaps.
-3. **Data Preparation.** Collect, clean, structure, and govern approved sources with permissions and provenance.
-4. **IBOM Modelling.** Define the agents, skills, workflows, tools, and controls required for governed operations.
-5. **IBOM Evaluation.** Test outputs, decisions, and actions against agreed performance, quality, safety, and governance measures.
-6. **IBOM Deployment.** Introduce agents into live workflows, monitor performance, and improve them as business needs evolve.
+1. **Business Understanding.** Start with the client's goals and decisions. Map the workflows, people, and constraints that determine where an agent can create measurable value.
+2. **Data Understanding.** Identify the data, documents, policies, and systems each workflow relies on. Record ownership, quality, and gaps.
+3. **Agent Preparation.** Collect, clean, and structure approved sources. Attach permissions, provenance, and controls so agents see only what they should and answers remain traceable.
+4. **Agent Modelling.** Design the agents, skills, workflows, and tools. Define what each agent can see, decide, and change.
+5. **Agent Evaluation.** Test outputs, decisions, and actions against measures agreed in advance for quality, safety, performance, and governance.
+6. **Agent Deployment.** Put agents into live work and monitor them. An expert works alongside the client's team and improves each agent as the business changes.
 
 ### Service defaults
 
-- Present Agentic Due Diligence before Agent Skill Building.
+- Present Agentic Due Diligence before Governed Agent Operations.
 - Explain that prepared data and knowledge come before agent development.
 - Treat the six steps as the delivery flow, not six separate services.
 - Explain that agents are tested before they enter live work.

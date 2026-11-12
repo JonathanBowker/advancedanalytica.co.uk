@@ -27,7 +27,7 @@ const displayTitle = toSentenceCaseTitle(title);
 const description = post.data.description;
 const url = `${SITE_URL}/opinions/${post.slug}`;
 const coverImage = getGeneratedCoverPath('opinion', post.slug);
-const coverAlt = `${displayTitle} — ${description}`;
+const coverAlt = `${displayTitle}: ${description}`;
 
 const page = {
   title: displayTitle,
@@ -168,22 +168,23 @@ const page = {
   <section class="bg-paper text-ink">
     <div class="container-wide py-20">
       <div class="eyebrow mb-10 text-center text-[#14B8A6]">
-        Start The Conversation
+        Start the conversation
       </div>
       <div class="grid items-start gap-10 lg:grid-cols-[0.9fr_1.1fr]">
         <div>
           <h2 class="text-5xl font-extrabold tracking-tight text-ink">
-            Turn this perspective into a practical agentic AI plan.
+            Turn this perspective into a decision you can act on.
           </h2>
         </div>
         <div class="max-w-prose text-lg leading-relaxed text-steel md:text-xl">
           <p>
-            This opinion sets out a practical issue for organisations putting AI into real workflows. The useful next
-            step is to locate where that issue appears in your business, define the rules and judgement agents need to
-            apply, and decide what should be tested before the work moves into production.
+            This opinion examines a practical issue for businesses putting AI
+            into real work. The next step is to find where it appears in your
+            data, workflows and controls.
           </p>
           <p class="mt-6">
-            We turn that into a clear path from strategic intent to governed agentic AI that can operate reliably.
+            We help you define what should change, what must be tested and who
+            needs to own the decision.
           </p>
           <div class="mt-8">
             <a href="/company/contact/" class="home-hero__button">

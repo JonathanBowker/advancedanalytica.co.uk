@@ -17,7 +17,7 @@ const { resource } = Astro.props as {
 
 const coverPath = getGeneratedCoverPath('resource', resource.slug);
 const displayTitle = toSentenceCaseTitle(resource.data.title);
-const coverAlt = `${displayTitle} — ${resource.data.description}`;
+const coverAlt = `${displayTitle}: ${resource.data.description}`;
 ---
 <article class="group rounded-xl border border-fog bg-surface p-6 shadow-outline">
   <a href={`/resources/${resource.slug}`} class="block overflow-hidden rounded-xl bg-[#0b0e14] shadow-outline">

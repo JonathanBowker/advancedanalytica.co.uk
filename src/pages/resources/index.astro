@@ -7,7 +7,7 @@ import { getCollection } from 'astro:content';
 import { SITE_URL } from '../../lib/seo/site';
 
 const title = 'Resources';
-const description = 'Guides, checklists, and templates for policy-aware brand systems.';
+const description = 'Guides, checklists and reference material for business data, governed AI and agent operations.';
 
 const resources = (await getCollection('resources', ({ data }) => !data.draft)).sort((a, b) =>
   a.data.title.localeCompare(b.data.title)
@@ -34,7 +34,7 @@ const page = {
         Resources
       </h1>
       <p class="mt-6 text-lg leading-relaxed text-steel md:text-xl">
-        Practical resources for teams building policy-aware brand systems: patterns, checklists, and reference guides.
+        Practical guides, checklists and reference material for preparing data, governing agents and putting AI into real work.
       </p>
       <div class="mt-8 flex flex-col gap-5 sm:flex-row sm:flex-wrap sm:items-center">
         <RssLink href="/rss/resources.xml" label="Resources RSS" />

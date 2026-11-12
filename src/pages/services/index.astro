@@ -3,16 +3,16 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import AgentBriefDropdown from '../../components/AgentBriefDropdown.astro';
 import { SITE_URL } from '../../lib/seo/site';
 
-const title = 'Agentic Due Diligence and Agent Skill Building | Advanced Analytica';
-const description = 'We establish whether the foundations support an AI agent, then build, test and deploy the skills that put it to work.';
+const title = 'Agentic Due Diligence and Governed Agent Operations | Advanced Analytica';
+const description = 'We establish whether an AI agent should act, then build, deploy and govern it through live work.';
 
 const methodology = [
-  { step: 'Step 1', title: 'Business Understanding', body: 'We define the goals, decisions, workflows, people and constraints that determine where the work can create measurable value.' },
-  { step: 'Step 2', title: 'Data Understanding', body: 'We map the data, knowledge, policies and systems behind each workflow, including ownership, access, quality and gaps.' },
-  { step: 'Step 3', title: 'Data Preparation', body: 'We collect, clean, structure and govern approved sources, attaching permissions, provenance and controls before agents use them.' },
-  { step: 'Step 4', title: 'IBOM Modelling', body: 'We model the agents, skills, workflows, tools and controls required to turn prepared data into dependable business operations.' },
-  { step: 'Step 5', title: 'IBOM Evaluation', body: 'We test outputs, decisions and actions against agreed measures for performance, quality, safety and governance before live use.' },
-  { step: 'Step 6', title: 'IBOM Deployment', body: 'We introduce agents into live workflows, monitor performance and improve them as your data, knowledge and needs change.' }
+  { step: 'Step 1', title: 'Business understanding', body: 'We start with your goals and decisions. We map the workflows, people and constraints that determine where an agent can create measurable value.' },
+  { step: 'Step 2', title: 'Data understanding', body: 'We identify the data, documents, policies and systems each workflow relies on. We record who owns each source, its quality and what is missing.' },
+  { step: 'Step 3', title: 'Agent preparation', body: 'We collect, clean and structure those sources. We attach permissions, provenance and controls, so each agent sees only what it should and every answer can be traced.' },
+  { step: 'Step 4', title: 'Agent modelling', body: 'We design the agents, skills, workflows and tools. We define what each agent can see, decide and change.' },
+  { step: 'Step 5', title: 'Agent evaluation', body: 'Before release, we test outputs, decisions and actions against measures agreed in advance. These cover quality, safety, performance and governance.' },
+  { step: 'Step 6', title: 'Agent deployment', body: 'We put agents into live work and monitor them. An expert works alongside your team, improving each agent as your business changes.' }
 ];
 
 const page = {
@@ -32,19 +32,19 @@ const page = {
     <div class="services-hero__glow services-hero__glow--two" aria-hidden="true"></div>
     <div class="container-wide services-hero__inner">
       <div data-reveal>
-        <div class="eyebrow text-[#14B8A6]">Our Consultancy</div>
+        <div class="eyebrow text-[#14B8A6]">Our consultancy</div>
         <h1 class="mt-6 max-w-5xl text-5xl font-black leading-[0.98] tracking-tight text-ink md:text-7xl">
           Establish the foundations. Build the agents. Put both to work.
         </h1>
       </div>
       <div class="services-hero__copy" data-reveal>
         <p>
-          We start with Agentic Due Diligence. We examine governance, map how
-          the business works and establish the data controls an agent needs.
+          We start with Agentic Due Diligence. We examine governance, map the
+          work and establish the evidence and data controls each agent needs.
         </p>
         <p class="mt-6">
-          Then we prepare approved data in IBOM and build, test and deploy the
-          skills required inside your real workflows.
+          Governed Agent Operations then builds, deploys and monitors the agent
+          inside approved workflows and operating boundaries.
         </p>
         <a href="#service-journey" class="services-down-link mt-8">
           <span>Explore the journey</span><span aria-hidden="true">↓</span>
@@ -56,11 +56,11 @@ const page = {
   <section id="service-journey" class="scroll-mt-24 bg-slate text-paper">
     <div class="container-wide py-20 md:py-24">
       <div class="mx-auto max-w-4xl text-center" data-reveal>
-        <div class="eyebrow text-[#5eead4]">One Connected Journey</div>
+        <div class="eyebrow text-[#5eead4]">One connected journey</div>
         <h2 class="mt-5 text-4xl font-extrabold tracking-tight md:text-6xl">Due diligence comes first. Agents come after.</h2>
         <p class="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-paper/72 md:text-xl">
-          The two services work together. ADD establishes whether the foundations
-          support progression. Skill building turns an approved design into controlled action.
+          The two services work together. Due diligence defines whether and how
+          an agent should act. Governed operation puts that decision into practice.
         </p>
       </div>
 
@@ -108,15 +108,17 @@ const page = {
     </div>
   </section>
 
-  <section id="agent-skill-building" class="scroll-mt-24 bg-[#eef2f5] text-ink">
+  <section id="governed-agent-operations" class="scroll-mt-24 bg-[#eef2f5] text-ink">
+    <span id="governed-agent-operation" class="absolute -translate-y-24" aria-hidden="true"></span>
+    <span id="agent-skill-building" class="absolute -translate-y-24" aria-hidden="true"></span>
     <div class="container-wide services-chapter services-chapter--reverse">
       <div class="services-chapter__number" aria-hidden="true">02</div>
       <div class="services-chapter__intro" data-reveal>
-        <div class="eyebrow text-[#14B8A6]">Agent Skill Building</div>
-        <h2 class="mt-5 text-4xl font-extrabold tracking-tight md:text-6xl">Give agents the skills they need to work.</h2>
+        <div class="eyebrow text-[#14B8A6]">Governed Agent Operations</div>
+        <h2 class="mt-5 text-4xl font-extrabold tracking-tight md:text-6xl">Build the agent. Govern the work.</h2>
         <p class="mt-7 max-w-2xl text-lg leading-relaxed text-steel md:text-xl">
-          Once the data is ready, we define each agent's responsibility and
-          configure the skills it needs from our Agent Skill Bench.
+          Once the foundations are ready, we define each agent's responsibility
+          and build the skills it needs. We then deploy, monitor and improve it.
         </p>
       </div>
       <div class="services-detail-grid" data-reveal>
@@ -157,7 +159,7 @@ const page = {
     <div class="container-wide py-20 md:py-24">
       <div class="grid gap-8 lg:grid-cols-[0.75fr_1.25fr] lg:items-end" data-reveal>
         <div>
-          <div class="eyebrow text-[#14B8A6]">Our Methodology</div>
+          <div class="eyebrow text-[#14B8A6]">Our methodology</div>
           <h2 class="mt-5 text-4xl font-extrabold tracking-tight md:text-6xl">A proven route from need to operation.</h2>
         </div>
         <p class="max-w-2xl text-lg leading-relaxed text-steel md:text-xl">
@@ -188,11 +190,11 @@ const page = {
     <div class="container-wide py-20 md:py-24">
       <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
         <div data-reveal>
-          <div class="eyebrow text-[#5eead4]">Start The Conversation</div>
+          <div class="eyebrow text-[#5eead4]">Start the conversation</div>
           <h2 class="mt-5 text-4xl font-extrabold tracking-tight md:text-6xl">Start with the work that matters.</h2>
         </div>
         <div class="relative z-30 max-w-2xl text-lg leading-relaxed text-paper/75 md:text-xl" data-reveal>
-          <p>We find where the value is, identify the data behind it and show what must be done to get things ready before an agent acts.</p>
+          <p>We find where the value is, identify the data behind it and make clear what must change before an agent acts.</p>
           <p class="mt-6 font-bold text-paper">Talk to us. We'll talk to your AI.</p>
           <div class="mt-7 flex flex-wrap items-center gap-5">
             <AgentBriefDropdown label="Talk to our AI" action="menu" variant="primary" />

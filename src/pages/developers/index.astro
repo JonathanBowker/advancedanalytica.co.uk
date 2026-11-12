@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { SITE_URL } from '../../lib/seo/site';
 
 const title = 'Developers';
-const description = 'Implementation entrypoints for IBOM and brand governance systems.';
+const description = 'Technical entry points for connecting approved business data, policies and agents through IBOM®.';
 
 const page = {
   title,
@@ -18,31 +18,31 @@ const page = {
 <BaseLayout title={title} description={description} page={page}>
   <section class="container-wide py-16">
     <div class="eyebrow">Developers</div>
-    <h1 class="mt-4 text-4xl font-semibold text-ink">Build on governed brand systems</h1>
+    <h1 class="mt-4 text-4xl font-semibold text-ink">Build on governed business intelligence</h1>
     <p class="mt-4 text-base text-steel">
-      IBOM<sup>®</sup> provides schemas, policies, and interfaces that developers can integrate into product workflows.
+      IBOM<sup>®</sup> connects approved business data, policies and controls to the agents and workflows that need them.
     </p>
 
     <h2 class="mt-12 text-2xl font-semibold tracking-tight text-ink">
-      Teach your brand to:
+      Give agents controlled access to:
     </h2>
     <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {[
         {
           title: 'Apply policy',
-          body: 'Run deterministic rules in pipelines and AI tooling.'
+          body: 'Apply approved business rules inside workflows and AI tooling.'
         },
         {
           title: 'Stay versioned',
-          body: 'Track changes, approvals, and exceptions over time.'
+          body: 'Keep changes, approvals and exceptions visible over time.'
         },
         {
           title: 'Explain decisions',
-          body: 'Make outcomes reviewable and auditable by design.'
+          body: 'Return the evidence needed to understand and review outcomes.'
         },
         {
           title: 'Measure drift',
-          body: 'Detect misalignment and trigger controlled updates.'
+          body: 'Identify material changes and route them through controlled review.'
         }
       ].map((item) => (
         <div class="rounded-2xl border border-fog bg-surface p-6 shadow-outline">
@@ -56,11 +56,11 @@ const page = {
     <div class="grid gap-6 lg:grid-cols-2">
       <a href="/developers/quickstart" class="rounded-xl border border-fog bg-surface p-6">
         <div class="text-sm font-semibold text-ink">Quickstart</div>
-        <p class="mt-3 text-sm text-steel">Bootstrap IBOM compliance with a minimal workflow.</p>
+        <p class="mt-3 text-sm text-steel">Connect one approved workflow to IBOM and test its controls.</p>
       </a>
       <a href="/developers/mcp-servers" class="rounded-xl border border-fog bg-surface p-6">
         <div class="text-sm font-semibold text-ink">MCP Servers</div>
-        <p class="mt-3 text-sm text-steel">Policy-aware interfaces for brand governance automation.</p>
+        <p class="mt-3 text-sm text-steel">Serve approved business context to agents through controlled interfaces.</p>
       </a>
     </div>
   </section>
