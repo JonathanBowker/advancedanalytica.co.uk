@@ -7,12 +7,12 @@ const title = 'Agentic Due Diligence and Governed Agent Operations | Advanced An
 const description = 'We establish whether an AI agent should act, then build, deploy and govern it through live work.';
 
 const methodology = [
-  { step: 'Step 1', title: 'Business understanding', body: 'We start with your goals and decisions. We map the workflows, people and constraints that determine where an agent can create measurable value.' },
-  { step: 'Step 2', title: 'Data understanding', body: 'We identify the data, documents, policies and systems each workflow relies on. We record who owns each source, its quality and what is missing.' },
-  { step: 'Step 3', title: 'Agent preparation', body: 'We collect, clean and structure those sources. We attach permissions, provenance and controls, so each agent sees only what it should and every answer can be traced.' },
-  { step: 'Step 4', title: 'Agent modelling', body: 'We design the agents, skills, workflows and tools. We define what each agent can see, decide and change.' },
-  { step: 'Step 5', title: 'Agent evaluation', body: 'Before release, we test outputs, decisions and actions against measures agreed in advance. These cover quality, safety, performance and governance.' },
-  { step: 'Step 6', title: 'Agent deployment', body: 'We put agents into live work and monitor them. An expert works alongside your team, improving each agent as your business changes.' }
+  { phase: 'Phase 1', phaseName: 'Agentic Due Diligence', step: 'Step 1', title: 'Business understanding', body: 'Agentic Due Diligence starts with your goals and decisions. We map the workflows, people and constraints that determine where an agent can create measurable value.' },
+  { phase: 'Phase 1', phaseName: 'Agentic Due Diligence', step: 'Step 2', title: 'Data understanding', body: 'During Agentic Due Diligence, we identify the data, documents, policies and systems each workflow relies on. We record who owns each source, its quality and what is missing.' },
+  { phase: 'Phase 2', phaseName: 'Build', step: 'Step 3', title: 'Agent preparation', body: 'We collect, clean and structure those sources. We attach permissions, provenance and controls, so each agent sees only what it should and every answer can be traced.' },
+  { phase: 'Phase 2', phaseName: 'Build', step: 'Step 4', title: 'Agent modelling', body: 'We design the agents, skills, workflows and tools. We define what each agent can see, decide and change.' },
+  { phase: 'Phase 3', phaseName: 'Deploy', step: 'Step 5', title: 'Agent evaluation', body: 'Before release, we test outputs, decisions and actions against measures agreed in advance. These cover quality, safety, performance and governance.' },
+  { phase: 'Phase 3', phaseName: 'Deploy', step: 'Step 6', title: 'Agent deployment', body: 'We put agents into live work and monitor them. An expert works alongside your team, improving each agent as your business changes.' }
 ];
 
 const page = {
@@ -172,6 +172,11 @@ const page = {
         <div class="methodology-track" data-methodology-track>
           {methodology.map((item) => (
             <article class="methodology-card">
+              <div class="methodology-phase">
+                <span>{item.phase}</span>
+                <span aria-hidden="true">·</span>
+                <span>{item.phaseName}</span>
+              </div>
               <div class="methodology-step">{item.step}</div>
               <h3>{item.title}</h3>
               <p>{item.body}</p>
@@ -240,8 +245,9 @@ const page = {
     .methodology-track::-webkit-scrollbar { display: none; }
     .methodology-card { position: relative; flex: 0 0 100%; min-height: 18rem; overflow: hidden; border: 1px solid rgba(11,18,32,.11); border-radius: 1rem; background: var(--color-paper); padding: clamp(1.6rem, 3vw, 2.25rem); box-shadow: 0 14px 34px rgba(15,23,42,.05); scroll-snap-align: start; transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease; }
     .methodology-card::before { content: ''; position: absolute; inset: 0 0 auto; height: 3px; background: #14b8a6; }
-    .methodology-step { color: #0f766e; font-size: .72rem; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; }
-    .methodology-card h3 { margin-top: 1rem; font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; color: var(--color-ink); }
+    .methodology-phase { display: flex; flex-wrap: wrap; gap: .35rem; color: var(--color-steel); font-size: .68rem; font-weight: 750; letter-spacing: .14em; text-transform: uppercase; }
+    .methodology-step { margin-top: 1.4rem; color: #0f766e; font-size: .95rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+    .methodology-card h3 { margin-top: .65rem; font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; color: var(--color-ink); }
     .methodology-card p { margin-top: 1.25rem; color: var(--color-steel); font-size: 1.05rem; line-height: 1.65; }
     .methodology-card:hover { border-color: rgba(20,184,166,.45); transform: translateY(-3px); box-shadow: 0 20px 46px rgba(15,23,42,.09); }
     .methodology-controls { display: flex; justify-content: flex-end; gap: .75rem; margin-top: 1rem; }
