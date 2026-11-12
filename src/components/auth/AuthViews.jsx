@@ -134,11 +134,11 @@ function createPortalPersonalization({ access, services, tenantName, portalConte
       },
       {
         eyebrow: 'Service content',
-        title: featuredContent?.title || 'Data Due Diligence',
+        title: featuredContent?.title || 'Agentic Due Diligence',
         description:
           featuredContent?.summary ||
-          'See how approved business data and knowledge are prepared before agents enter live work.',
-        href: featuredContent?.href || '/services/#data-due-diligence',
+          'See how governance, business mapping and data controls are established before agents enter live work.',
+        href: featuredContent?.href || '/services/#agentic-due-diligence',
         cta: featuredContent?.ctaLabel || 'Explore service',
       },
     );
@@ -1374,10 +1374,10 @@ function PortalInner({ tenantName = 'Advanced Analytica', tenantSlug = 'advanced
   const serviceOfferings = [
     {
       eyebrow: 'First step',
-      title: 'Data Due Diligence',
+      title: 'Agentic Due Diligence',
       description:
-        'Identify, assess, prepare, and govern the business data and knowledge required for reliable AI use.',
-      href: '/services/#data-due-diligence',
+        'Establish the governance, business mapping, and data controls required before an AI agent acts.',
+      href: '/services/#agentic-due-diligence',
       cta: 'Explore service',
       stage: 'Readiness',
     },

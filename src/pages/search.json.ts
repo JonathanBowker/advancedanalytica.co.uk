@@ -40,14 +40,14 @@ export async function GET() {
     },
     {
       title: 'Services',
-      description: 'Data Due Diligence and Agent Skill Building.',
+      description: 'Agentic Due Diligence and Agent Skill Building.',
       url: '/services',
       type: 'Page',
       snippet:
         'Prepare governed business data, then configure, test, package, and deploy the skills and agents required for live operations.'
       ,
       searchText:
-        'services Data Due Diligence Agent Skill Building governed business data skills agents controls workflows'
+        'services Agentic Due Diligence ADD Agent Skill Building governance business mapping data controls agents workflows'
     },
     {
       title: 'IBOM',

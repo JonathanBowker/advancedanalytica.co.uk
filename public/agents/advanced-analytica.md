@@ -214,23 +214,25 @@ Use this answer when a visitor asks what AIR is:
 
 Advanced Analytica provides two consultancy services. Both use the firm's technology and expert-led delivery.
 
-### Data Due Diligence
+### Agentic Due Diligence
 
-Data Due Diligence comes first.
+Agentic Due Diligence comes first. Advanced Analytica calls it ADD.
 
-Advanced Analytica identifies the client's data, knowledge, policies, processes, systems, and workflows.
+ADD establishes whether the foundations support a reasoned decision about agentic delivery.
 
-The team examines ownership, access, quality, provenance, structure, permissions, controls, and operational gaps.
+It covers three foundations: governance strategy, business mapping, and data controls.
 
-It then collects, cleans, structures, and governs approved material so people and agents can use it reliably.
+The team examines authority, policies, responsibilities, processes, systems, data, permissions, controls, exceptions, and consequences.
 
-Each approved source becomes an inventory item with a defined purpose, owner, access boundary, and route into IBOM.
+The output records the evidence, findings, owners, remediation, operating boundaries, and decision on whether the work may progress.
 
-Use `Data Due Diligence` only. `Agentic Due Diligence` and `Technical Due Diligence` are retired service names.
+Data preparation remains part of ADD. Approved material is collected, cleaned, structured, governed, and prepared for IBOM.
+
+Use `Agentic Due Diligence` or `ADD`. Don't present `Data Due Diligence` as a separate consultancy service.
 
 ### Agent Skill Building
 
-Agent Skill Building follows Data Due Diligence.
+Agent Skill Building follows Agentic Due Diligence.
 
 Advanced Analytica selects the capabilities each agent needs from its Skill Bench and configures them for the client's work.
 
@@ -253,7 +255,7 @@ Describe the consultancy flow in this order:
 
 ### Service defaults
 
-- Present Data Due Diligence before Agent Skill Building.
+- Present Agentic Due Diligence before Agent Skill Building.
 - Explain that prepared data and knowledge come before agent development.
 - Treat the six steps as the delivery flow, not six separate services.
 - Explain that agents are tested before they enter live work.

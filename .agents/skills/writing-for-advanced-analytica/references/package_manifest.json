@@ -1,0 +1,52 @@
+{
+  "skill_name": "writing-for-advanced-analytica",
+  "package_version": "1.0.0",
+  "policies": {
+    "governance_policy.json": {
+      "element_id": "aa.standard.writing_for_aa.tone_of_voice",
+      "version": "1.4.0",
+      "status": "DRAFT"
+    },
+    "grammar_and_punctuation_policy.json": {
+      "element_id": "aa.standard.writing_for_aa.grammar_and_punctuation",
+      "version": "1.0.0",
+      "status": "DRAFT"
+    }
+  },
+  "sources": [
+    {
+      "source": "governance_policy.json",
+      "packaged_path": "references/governance_policy.json",
+      "source_sha256": "9073abd46a9ef8aaae795bd0d4c909c8dd6001003ed5d1fab7d4ee642dace8da",
+      "packaged_sha256": "9073abd46a9ef8aaae795bd0d4c909c8dd6001003ed5d1fab7d4ee642dace8da",
+      "policy_version": "1.4.0",
+      "transformations": []
+    },
+    {
+      "source": "grammar_and_punctuation_policy.json",
+      "packaged_path": "references/grammar_and_punctuation_policy.json",
+      "source_sha256": "8793315179e7ae88fd9b4559ae754d681662e300c0c7b814619526dbc2998535",
+      "packaged_sha256": "cb3377b2a19b9dd428aff996b5b64ba149ffffe80e11f20085f06731da343722",
+      "policy_version": "1.0.0",
+      "transformations": [
+        "Replaced machine-local provenance and renderer metadata with portable source information; operative rules unchanged."
+      ]
+    },
+    {
+      "source": "Grammar-and-punctuation-guide.md",
+      "packaged_path": "references/Grammar-and-punctuation-guide.md",
+      "source_sha256": "594c750b183623072770fc02f55fdf7cc416892ccc3ea445d492498d2a74d17d",
+      "packaged_sha256": "2a87ad7880ca9016116d2eaac67d328555c74309bc0ba1c3f99b16567e408ac2",
+      "transformations": [
+        "Replaced authoring-project renderer instructions with snapshot maintenance guidance."
+      ]
+    }
+  ],
+  "files": {
+    "SKILL.md": "2a9ba97d578933d62f3f8145f261b8381b8f9b72ef764cb4fc8a1d05f80b5f6c",
+    "agents/openai.yaml": "20977f867fb5008318ccb900d33bdeea1255e3efbc3a7dc573d753e716832dc2",
+    "references/Grammar-and-punctuation-guide.md": "2a87ad7880ca9016116d2eaac67d328555c74309bc0ba1c3f99b16567e408ac2",
+    "references/governance_policy.json": "9073abd46a9ef8aaae795bd0d4c909c8dd6001003ed5d1fab7d4ee642dace8da",
+    "references/grammar_and_punctuation_policy.json": "cb3377b2a19b9dd428aff996b5b64ba149ffffe80e11f20085f06731da343722"
+  }
+}

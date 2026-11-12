@@ -1,0 +1,575 @@
+{
+  "governance_policy": {
+    "schema_version": "1.0.0",
+    "element_id": "aa.standard.writing_for_aa.tone_of_voice",
+    "policy_name": "Advanced Analytica Tone of Voice Policy",
+    "policy_status": "DRAFT",
+    "effective_date": null,
+    "approval_signoff": "Pending Advanced Analytica brand review for policy version 1.4.0.",
+    "policy_summary": "Governs Creative, Assured and Practical writing across Advanced Analytica communications. We bring a fresh perspective, speak with evidence-based confidence and make the way forward clear. Collaboration is a supporting behaviour across all three principles: respect the reader's expertise, invite their perspective where relevant and work towards decisions together. All three principles guide the voice; use_case_routing and principle_coexistence determine their application. Deterministic checks measure surface features; semantic assessment and editorial judgement determine meaning and fit. Accuracy, faithful quotation and required legal wording take precedence over stylistic preferences. Where useful, lead with the point and build understanding in layers. Explain design as connected decisions that serve a business need. Optional design trees organise those decisions during planning and review; finished copy includes the connections and depth the reader needs. Apply the linked Grammar and Punctuation Standard for mechanical house conventions; shared definitions are resolved from their canonical policy.",
+    "mandatory_principles": [
+      {
+        "principle_id": "aa.tov.creative",
+        "name": "Creative",
+        "status": "MANDATORY",
+        "enforcement_mode": "ALL_APPLICABLE_RULES",
+        "rules": [
+          {
+            "rule_id": "aa.tov.creative.01",
+            "rule_name": "Fresh, relevant perspective",
+            "control_objective": "Help the reader see the problem or opportunity from a useful angle.",
+            "enforcement": "REQUIRED",
+            "constraints": [
+              {
+                "constraint_type": "SEMANTIC",
+                "requirement": "Choose a specific, relevant way into the subject: a revealing question, an overlooked connection or a different framing of the work. Explain why it matters to the reader. Avoid generic AI claims and stock transformation language. Freshness does not require an unprecedented idea or an unsupported claim of originality. In routine communications, a clear, specific framing is sufficient.",
+                "example_pass": "Before choosing an agent, look at where your team has to carry information between systems.",
+                "example_fail": "AI is changing everything. The future is now.",
+                "machine_check": "Assess the framing against the purpose and supplied context. Identify the relevant insight or useful angle with an excerpt and rationale. Do not infer originality from unusual words or demand evidence that an idea has never been expressed before. Return REVIEW if the context needed to judge relevance is missing."
+              }
+            ]
+          },
+          {
+            "rule_id": "aa.tov.creative.02",
+            "rule_name": "Useful connections and concrete examples",
+            "control_objective": "Make unfamiliar or complex ideas easier to understand through an apt connection or example.",
+            "enforcement": "CONDITIONAL",
+            "condition": "Applies when explaining unfamiliar or complex ideas. Optional in short, self-explanatory, operational or transactional messages.",
+            "constraints": [
+              {
+                "constraint_type": "SEMANTIC",
+                "requirement": "Use a concrete scenario, comparison or connection when it helps explain an idea. Keep it accurate, audience-relevant and easy to follow. Label invented scenarios as illustrations and distinguish them from client results. Direct explanation is acceptable when clearer; metaphors and storytelling are optional.",
+                "example_pass": "For example, an invoice agent can gather the purchase order and delivery record so your finance team can investigate a mismatch.",
+                "example_fail": "Imagine a magical digital brain that understands every part of your business and never gets anything wrong.",
+                "machine_check": "Assess whether an example, comparison or direct explanation improves understanding without distorting the capability. Cross-check factual claims under aa.tov.assured.01. Do not require figurative language or a scenario in every paragraph. Return NOT_APPLICABLE when the subject needs no elaboration."
+              }
+            ]
+          },
+          {
+            "rule_id": "aa.tov.creative.03",
+            "rule_name": "Memorable, purposeful expression",
+            "control_objective": "Give the message character and make its central idea easy to remember.",
+            "enforcement": "CONDITIONAL",
+            "condition": "Applies to brand-led headlines, campaign copy and substantive capability or thought-leadership writing. Operational and transactional content can use direct functional wording without creative embellishment.",
+            "constraints": [
+              {
+                "constraint_type": "SEMANTIC",
+                "requirement": "Use specific words, thoughtful structure, rhythm or an apt image to express the central idea. Prefer language that earns attention by making the point clearer. Avoid cliches, decorative wordplay and novelty that obscures the meaning. Not every sentence needs a creative device.",
+                "example_pass": "From policy on a page to a check in the workflow.",
+                "example_fail": "An innovative approach to facilitating enterprise transformation.",
+                "machine_check": "Identify the central idea and assess whether the expression makes it clearer and more memorable for the intended audience. Do not score creativity from adjective counts, slogans, puns or metaphor presence alone. Return NOT_APPLICABLE where expressive treatment would reduce precision."
+              },
+              {
+                "constraint_type": "SEMANTIC",
+                "requirement": "Where an explanation benefits from layers, open with a short, direct statement of the useful outcome or main point. Then add the problem, context, relevant decisions and evidence in the order the reader needs. Finish with a clear action when the communication calls for one. Keep material conditions and qualifications close to the claims they support. The phrases take one step back and another step back are optional transitions. Use only the layers needed; a short answer can stand alone.",
+                "example_pass": "Put your knowledge to work. Start with one task your team needs to complete. Take one step back: what information and rules does it depend on? Then agree the sources and permissions before testing the workflow.",
+                "example_fail": "We will explain the background first. After a comprehensive history of our methodology, we will eventually reveal what the service does and what you should do next.",
+                "machine_check": "Assess whether the opening gives the reader a clear point and whether each additional layer adds relevant understanding. Check that qualifications remain beside their claims under aa.tov.assured.01 and that actions follow aa.tov.practical.02 when applicable. Do not require a fixed number of layers, a slogan, repeated step-back phrases or a call to action in purely descriptive content. Return NOT_APPLICABLE for this optional pattern when a direct answer needs no further layers."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "principle_id": "aa.tov.assured",
+        "name": "Assured",
+        "status": "MANDATORY",
+        "enforcement_mode": "ALL_APPLICABLE_RULES",
+        "rules": [
+          {
+            "rule_id": "aa.tov.assured.01",
+            "rule_name": "Evidence-based confidence",
+            "control_objective": "State the point clearly and match the strength of a claim to the available evidence.",
+            "enforcement": "REQUIRED",
+            "constraints": [
+              {
+                "constraint_type": "SEMANTIC",
+                "requirement": "Make direct, specific claims you can support. Attribute external findings and state material assumptions or limits. Use may, might, could and other qualifications when they express genuine uncertainty or conditional outcomes. Avoid filler hedging, unsupported guarantees and unsubstantiated superlatives. A number alone is not evidence.",
+                "example_pass": "An agent could reduce manual checks. We'll test that against your current process before recommending a rollout.",
+                "example_fail": "This strategy will deliver unmatched results for every client.",
+                "machine_check": "Assess claims against supplied evidence, attribution, scope and stated uncertainty. Modal verbs do not trigger failure. Return REVIEW when evidence cannot be inspected; return FAIL for a demonstrably unsupported guarantee or a claim that contradicts the evidence."
+              }
+            ]
+          },
+          {
+            "rule_id": "aa.tov.assured.02",
+            "rule_name": "Clarity and directness",
+            "control_objective": "Make the main point easy to find and technical detail easy to understand.",
+            "enforcement": "REQUIRED",
+            "constraints": [
+              {
+                "constraint_type": "SYNTAX",
+                "requirement": "Lead with the main point. Aim for an average of no more than 16 words per sentence. Review individual sentences over 24 words and prose paragraphs over 4 sentences. These are inclusive guidance thresholds, not automatic failure limits. Longer wording is acceptable when it improves precision or understanding.",
+                "example_pass": "We'll map the workflow, identify the gaps and agree what to build.",
+                "example_fail": "It is in relation to the aforementioned operational considerations that a comprehensive exercise in workflow mapping may potentially be undertaken for the purpose of facilitating a subsequent determination of future implementation priorities.",
+                "machine_check": "Measure sentence and paragraph lengths in authored prose. Exactly 24 words or 4 sentences does not trigger review. Exceedances trigger REVIEW, not FAIL. Exclude headings, tables, code, citations, approved quotations and required legal wording from length metrics."
+              },
+              {
+                "constraint_type": "SEMANTIC",
+                "requirement": "Use plain, natural British English at a level suited to the audience. Use familiar words and define specialist terms when the audience needs them. Replace corporate filler with concrete meaning; retain technical terms when they add precision. Contractions are optional. Formal wording and expanded forms are acceptable when appropriate to the context.",
+                "example_pass": "We connect the systems your team uses to check an order.",
+                "example_fail": "We leverage synergistic capabilities to optimise utilisation across the enterprise ecosystem.",
+                "machine_check": "Assess accessibility, natural phrasing and audience fit. Flag possible jargon for contextual review; do not fail a technical term solely because it appears on a word list. Expanded forms such as we are or it is do not cause failure. Return REVIEW if required audience context is missing."
+              }
+            ]
+          },
+          {
+            "rule_id": "aa.tov.assured.03",
+            "rule_name": "Clear ownership and measured emphasis",
+            "control_objective": "Make responsibility visible and keep emphasis calm and deliberate.",
+            "enforcement": "REQUIRED",
+            "constraints": [
+              {
+                "constraint_type": "SEMANTIC",
+                "requirement": "Prefer active voice when it clarifies who acts. Use passive voice when the actor is unknown, irrelevant or less important than the event. Name the responsible person or team for commitments.",
+                "example_pass": "We'll map the workflow. Your process owner will approve the proposed changes.",
+                "example_fail": "Changes will be made and approval will be obtained by the relevant parties.",
+                "machine_check": "Use verb parsing to identify possible passive constructions for review. Assess whether responsibility is clear; passive voice alone is not a failure."
+              }
+            ],
+            "rule_references": [
+              {
+                "file": "grammar_and_punctuation_policy.json",
+                "element_id": "aa.standard.writing_for_aa.grammar_and_punctuation",
+                "rule_id": "aa.grammar.emphasis.01",
+                "relationship": "Canonical authored-prose punctuation and exclamation-mark requirements supporting measured emphasis."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "principle_id": "aa.tov.practical",
+        "name": "Practical",
+        "status": "MANDATORY",
+        "enforcement_mode": "ALL_APPLICABLE_RULES",
+        "rules": [
+          {
+            "rule_id": "aa.tov.practical.01",
+            "rule_name": "Concrete work and deliverables",
+            "control_objective": "Explain what happens in real work and what useful output it produces.",
+            "enforcement": "REQUIRED",
+            "constraints": [
+              {
+                "constraint_type": "SEMANTIC",
+                "requirement": "Connect abstract capabilities to a specific task, workflow, decision or deliverable. Explain what the capability does in terms the reader can use. Avoid naming technologies or promising transformation without describing their role.",
+                "example_pass": "The agent compares invoice records and gives your finance team a list of mismatches to review.",
+                "example_fail": "Our transformative AI ecosystem unlocks limitless enterprise potential.",
+                "machine_check": "Identify a concrete task, decision or deliverable and its relationship to the capability. Evaluate the complete communication; do not require an example in every sentence or paragraph."
+              }
+            ]
+          },
+          {
+            "rule_id": "aa.tov.practical.02",
+            "rule_name": "Clear next steps and responsibilities",
+            "control_objective": "Help the reader understand what to do next and who needs to act.",
+            "enforcement": "CONDITIONAL",
+            "condition": "Applies where the communication asks for action or makes a recommendation. Does not require a call to action in every historical account, research finding or explanatory passage.",
+            "constraints": [
+              {
+                "constraint_type": "SEMANTIC",
+                "requirement": "For recommendations, instructions, proposals or invitations, give an actionable next step and identify who acts. State necessary inputs, dependencies, approvals or timing when they affect that step. Do not invent deadlines or commitments just to satisfy the rule. Where participation is needed, make the invitation relevant and easy to answer. Avoid generic rhetorical questions and repeated calls to action; a question mark alone does not establish compliance.",
+                "example_pass": "Send us one workflow and its process owner's name. We'll use them to scope the first review.",
+                "example_fail": "Embrace the future and begin your transformation journey.",
+                "machine_check": "Identify the action, its owner and any material prerequisites. An imperative or the word next alone is insufficient. Return NOT_APPLICABLE for descriptive content that requires no action."
+              }
+            ]
+          },
+          {
+            "rule_id": "aa.tov.practical.03",
+            "rule_name": "Useful outcomes and proportionate scope",
+            "control_objective": "Connect the proposed work to the business need and explain how usefulness will be judged.",
+            "enforcement": "REQUIRED",
+            "constraints": [
+              {
+                "constraint_type": "SEMANTIC",
+                "requirement": "Explain how the work helps the reader, using relevant outcomes such as time, quality, cost, consistency or decision usefulness. For pilots, proposals and delivery recommendations, identify a success measure or review criterion and material dependencies. Describe forecasts as forecasts; report achieved results only with supporting evidence. Keep scope proportionate to the requirement.",
+                "example_pass": "Start with invoice checks. Compare review time and missed mismatches with the current process before expanding.",
+                "example_fail": "Deploy agents across every process now. Success will follow.",
+                "machine_check": "Assess the link between the work and its intended outcome. Check for a suitable measure or review criterion when delivery is proposed, without requiring numerical targets for every statement. Flag missing scope or material dependencies for review. Check factual claims under aa.tov.assured.01. Future-tense words and optimism are not scoring criteria."
+              }
+            ]
+          },
+          {
+            "rule_id": "aa.tov.practical.04",
+            "rule_name": "Make the connections clear",
+            "control_objective": "Explain how relevant design decisions and system parts work together to produce a useful outcome.",
+            "enforcement": "CONDITIONAL",
+            "condition": "Applies when explaining the design or operation of a solution, service, workflow or system whose relationships affect reader understanding or a decision. Not required for standalone facts, short self-explanatory messages or required legal wording.",
+            "constraints": [
+              {
+                "constraint_type": "SEMANTIC",
+                "requirement": "Connect the business or user need to the relevant inputs, decisions, interactions, controls and intended outcome. Explain the relationships the reader needs, using a concrete example when useful. Show material dependencies, ownership or trade-offs where they affect a decision. Describe design as a connected set of decisions; select only the parts relevant to the communication. Label assumptions and illustrations rather than inventing facts or dependencies.",
+                "example_pass": "For example, a delivery-query service needs a confirmed order status and delivery estimate. The interface shows those details first. If the records conflict, it routes the query to your service team for review.",
+                "example_fail": "Our platform combines intelligence, design, integration and governance in one ecosystem.",
+                "machine_check": "Identify the relevant need, the relationships between parts or decisions and the intended outcome. Check whether missing dependencies would change the reader's understanding or action. A list of components or the word system is insufficient. Assess clarity using the supplied context; return REVIEW where a material relationship is unclear or unsupported. Return NOT_APPLICABLE where the communication needs no explanation of connected parts. No tree, diagram or architecture vocabulary is required in finished copy."
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "supporting_behaviours": [
+      {
+        "behaviour_id": "aa.tov.behaviour.collaboration",
+        "name": "Collaborative working",
+        "scope": "Applies across Creative, Assured and Practical wherever the communication involves the reader or shared decisions.",
+        "guidance": "Respect the reader's expertise. Address them directly where useful and explain the roles of your team and ours when relevant. Invite their perspective when participation is needed. Use natural language, with contractions optional. Third-person company descriptions are allowed. Avoid patronising, presumptive or self-congratulatory phrasing and forced questions.",
+        "example_pass": "You know the process. We'll work with your team to test where an agent can help.",
+        "example_fail": "Leave the thinking to us. Your team would not understand the technology.",
+        "assessment": "Review respect, reader relevance and clarity of shared responsibilities across the whole communication. Record an excerpt and rationale when a concern needs revision. No pronoun quota, contraction quota or fourth principle score is required. Resolve confirmed concerns or document contextual exceptions during editorial review."
+      }
+    ],
+    "writing_patterns": [
+      {
+        "pattern_id": "aa.tov.pattern.layered_explanation",
+        "name": "Lead with the point. Build the understanding.",
+        "application": "OPTIONAL_WRITING_STRUCTURE",
+        "rule_links": [
+          "aa.tov.creative.03",
+          "aa.tov.assured.01",
+          "aa.tov.assured.02",
+          "aa.tov.practical.02"
+        ],
+        "purpose": "Give the reader the useful point immediately, then reveal supporting context at the depth they need.",
+        "steps": [
+          "Open with the outcome, answer or main point. Use direct, energetic language that conveys useful meaning.",
+          "Step back to the problem or decision when the reader needs that context.",
+          "Add relevant information, dependencies and evidence one layer at a time. Keep material qualifications beside the relevant claim.",
+          "Return to a concrete next action when the purpose calls for one, naming the owner and necessary inputs."
+        ],
+        "usage": "Short copy can use only the first step. Longer explanations can include several layers. Transitions such as take one step back can help, but are optional. Sequence layers to support understanding rather than following a fixed script."
+      },
+      {
+        "pattern_id": "aa.tov.pattern.design_tree",
+        "name": "Design as a system: use a design tree",
+        "application": "OPTIONAL_PLANNING_AND_REVIEW_METHOD",
+        "rule_links": [
+          "aa.tov.practical.01",
+          "aa.tov.practical.03",
+          "aa.tov.practical.04"
+        ],
+        "purpose": "Trace design decisions to a business need and turn the relevant decisions into requirements or checks.",
+        "steps": [
+          "Define the root: whose need is being addressed, the useful outcome and how it will be judged.",
+          "Choose relevant branches, such as information, interaction, controls, expression and ownership. Add or remove branches to fit the work.",
+          "End each working branch with a specific decision, requirement or check. Name the responsible person or team when responsibility affects delivery.",
+          "Record material dependencies between branches. The tree is a planning view; cross-branch relationships still matter.",
+          "When a source or requirement changes, review the dependent decisions and wording.",
+          "Use the tree to choose what the reader needs to see. Write the point first, then reveal the necessary connections and depth."
+        ],
+        "example_tree": {
+          "scenario_type": "ILLUSTRATION",
+          "root": {
+            "audience": "Customers asking about a delivery",
+            "need": "Understand the current delivery position and what to do next",
+            "review_criterion": "Check whether the answer includes source-backed status and a useful next action"
+          },
+          "branches": [
+            {
+              "branch": "Information",
+              "decision": "Use approved order-status and delivery-estimate sources.",
+              "check": "The answer identifies its supporting source and any material uncertainty."
+            },
+            {
+              "branch": "Interaction",
+              "decision": "Show the answer first, with relevant supporting detail available.",
+              "check": "The customer can find the status and next action without reading the background."
+            },
+            {
+              "branch": "Controls",
+              "decision": "Route conflicting records to the service team.",
+              "check": "A conflicting-record scenario reaches the named review route."
+            },
+            {
+              "branch": "Expression",
+              "decision": "Use Creative, Assured and Practical wording with respectful collaborative behaviour.",
+              "check": "The explanation is clear, distinguishes facts from estimates and gives a useful next action."
+            }
+          ],
+          "dependencies": [
+            "Conflicting information changes the interaction: explain the uncertainty and the review route.",
+            "A changed delivery source requires review of dependent checks and customer wording."
+          ]
+        },
+        "usage": "Use when connected decisions need organising or tracing. Small tasks can use a brief outline; no tree is required for every email, FAQ or short message. Keep architecture and planning detail in working material unless it helps the reader make a decision. A design tree supports planning and review; its presence is not a tone compliance score."
+      }
+    ],
+    "principle_coexistence": {
+      "rule": "Creative, Assured and Practical guide all authored brand writing. Where a route has coexistence_required=true, assess all three together across the complete brand-led, capability, thought-leadership or client-facing communication of 150 or more words. Shorter content still follows applicable rules, with expression proportionate to its purpose. Creative brings a fresh perspective; Assured makes it credible; Practical makes it useful. No paragraph must demonstrate all three. Collaboration supports their expression without becoming a fourth principle.",
+      "exception": "Operational, internal and transactional communications use applicable principles without a requirement to demonstrate all three explicitly. Clear, functional wording can satisfy Creative in routine contexts; do not force novelty, metaphors or storytelling. Conditional rules can be NOT_APPLICABLE. Legal and compliance sections follow approved wording. Quoted sources, code and required legal wording are excluded from stylistic metrics; authored introductions and commentary remain in scope. Exclude labelled examples of wording to revise from whole-document style counts.",
+      "assessment": "Resolve the use case and section scope before assessment. Record PASS, FAIL, REVIEW or NOT_APPLICABLE for each rule, with a supporting excerpt and rationale. REVIEW is unresolved, not a pass or failure. All applicable mandatory rules must pass before final sign-off; NOT_APPLICABLE requires a documented reason. Automated semantic results are review recommendations. Editors confirm them and record any contextual exception. Optional aggregate scores cannot override a confirmed rule failure or unresolved review. Review supporting_behaviours alongside the applicable principle rules; a creative device cannot justify disrespectful language, factual overstatement or an unclear action."
+    },
+    "approval_workflow": {
+      "roles": [
+        {
+          "role_id": "approver.aa.brand_manager",
+          "title": "Advanced Analytica Brand Manager",
+          "authority_scope": "All tone of voice content",
+          "approval_level": "PRIMARY",
+          "escalation_trigger": "An applicable mandatory rule remains unmet, or a contextual exception needs approval.",
+          "sla": "2 working days"
+        },
+        {
+          "role_id": "approver.aa.creative_director",
+          "title": "Creative Director (Advanced Analytica or partner agency)",
+          "authority_scope": "Campaign-level tone customisation",
+          "approval_level": "SECONDARY",
+          "condition": "Required only for new campaign launches or significant persona adjustments",
+          "sla": "3 working days"
+        },
+        {
+          "role_id": "approver.aa.global_brand_team",
+          "title": "Advanced Analytica Brand Team",
+          "authority_scope": "Precedent-setting or policy interpretation decisions",
+          "approval_level": "ESCALATION",
+          "condition": "Required when a piece sets new tone benchmark or contradicts previous approval",
+          "sla": "5 working days"
+        }
+      ],
+      "conflict_resolution": {
+        "scenario": "Brand Manager approves, but Creative Director raises an unresolved tone or campaign-fit concern.",
+        "resolution": "Record the concern and its rule-level evidence. Resolve it before final sign-off; escalate unresolved policy interpretation or precedent-setting exceptions to the Advanced Analytica Brand Team. Assigned roles describe responsibilities, not evidence that approval has occurred.",
+        "escalation_criteria": "Unresolved failure of an applicable mandatory rule, unsupported material claim, conflicting interpretation or a precedent-setting exception. A calibrated evaluation score may support review but does not replace rule-level evidence."
+      }
+    },
+    "use_case_routing": [
+      {
+        "use_case_id": "uc.aa.capability_website",
+        "use_case_name": "Capability and service pages (advancedanalytica.co.uk)",
+        "applicable_principles": [
+          "aa.tov.creative",
+          "aa.tov.assured",
+          "aa.tov.practical"
+        ],
+        "coexistence_required": true,
+        "audience_context": "C-suite, mid-market leaders, industry professionals",
+        "tone_adjustment": "Apply Creative, Assured and Practical together. Offer a relevant perspective on the business need, explain the capability with evidence and make the useful next step clear. Keep the reader's expertise and role visible. Lead with the useful outcome, then reveal supporting context in layers where needed. Explain relevant system connections when they help the reader understand the service or choose a next step.",
+        "approver": "approver.aa.brand_manager",
+        "enforcement_checkpoint": "Editorial review of applicable rules and coexistence; optional calibrated evaluation score as supporting evidence."
+      },
+      {
+        "use_case_id": "uc.aa.thought_leadership",
+        "use_case_name": "Thought leadership, articles, research",
+        "applicable_principles": [
+          "aa.tov.creative",
+          "aa.tov.assured",
+          "aa.tov.practical"
+        ],
+        "coexistence_required": true,
+        "audience_context": "Industry peers, academics, media, investors",
+        "tone_adjustment": "Use Creative to offer a useful angle or connection. Express Assured through evidence, attribution and honest qualifications. Make implications Practical and respect the reader's expertise. Formal register and expanded forms are acceptable; invite participation only when it serves the communication's purpose. Lead with the insight. Build the reasoning in layers and make relevant dependencies clear. Keep supporting qualifications close to the claims they affect.",
+        "approver": "approver.aa.brand_manager",
+        "enforcement_checkpoint": "Editorial review; optional semantic evaluation with excerpts and rationales. Any configured Promptfoo evaluation supports, rather than replaces, editorial judgement."
+      },
+      {
+        "use_case_id": "uc.aa.client_facing",
+        "use_case_name": "Client presentations, proposals, decks",
+        "applicable_principles": [
+          "aa.tov.creative",
+          "aa.tov.assured",
+          "aa.tov.practical"
+        ],
+        "coexistence_required": true,
+        "audience_context": "Client stakeholders, procurement, C-suite",
+        "tone_adjustment": "Apply Creative, Assured and Practical together. Frame the client's challenge thoughtfully, establish partnership, substantiate claims and define scope, deliverables, responsibilities and next steps. Do not promise unverified outcomes. Present the proposed outcome first, then explain the decisions, dependencies and evidence the client needs. Use a design tree during planning when it helps trace requirements; show it to the client only when it supports a decision.",
+        "approver": "approver.aa.brand_manager",
+        "enforcement_checkpoint": "Brand Manager sign-off on applicable rules, coexistence and any relevant template requirements."
+      },
+      {
+        "use_case_id": "uc.aa.internal_enablement",
+        "use_case_name": "Internal comms, guidance, newsletters",
+        "applicable_principles": [
+          "aa.tov.creative",
+          "aa.tov.assured",
+          "aa.tov.practical"
+        ],
+        "coexistence_required": false,
+        "audience_context": "Advanced Analytica employees and partners",
+        "tone_adjustment": "Use natural, accessible language and a relevant framing. Keep information accurate, respect colleagues' expertise and make responsibilities or required actions clear. Use examples when useful; do not force novelty, questions, contractions or promotional language. Put the answer or required action first. Include supporting connections only when useful; layered explanation and design trees are optional.",
+        "approver": "approver.aa.brand_manager",
+        "enforcement_checkpoint": "Author self-check; editorial review when publication or policy interpretation requires it."
+      },
+      {
+        "use_case_id": "uc.aa.legal_compliance",
+        "use_case_name": "Legal disclaimers, compliance statements, risk notices",
+        "applicable_principles": [],
+        "coexistence_required": false,
+        "audience_context": "Regulators, stakeholders, legal record",
+        "tone_adjustment": "Use the required legal register and approved wording. Stylistic principles do not override legal precision or faithful source text. Authored brand commentary outside these sections follows its own applicable route.",
+        "approver": "Legal team (override)",
+        "enforcement_checkpoint": "Legal approval of legal wording; brand review only for separately scoped brand commentary."
+      },
+      {
+        "use_case_id": "uc.aa.operational_transactional",
+        "use_case_name": "Operational guidance, FAQs, process documents and transactional messages",
+        "applicable_principles": [
+          "aa.tov.creative",
+          "aa.tov.assured",
+          "aa.tov.practical"
+        ],
+        "coexistence_required": false,
+        "audience_context": "Employees, clients, partners and service users completing a task",
+        "tone_adjustment": "Prioritise precise information, respectful language and clear instructions. Specific, functional wording is sufficient; no creative embellishment, promotional framing, forced invitation or future-facing language is required. Put the answer or required action first. Include supporting connections only when useful; layered explanation and design trees are optional.",
+        "approver": "approver.aa.brand_manager",
+        "enforcement_checkpoint": "Check accuracy, reader understanding and any required action; escalate unresolved tone exceptions to the Brand Manager."
+      }
+    ],
+    "enforcement_checkpoints": [
+      {
+        "checkpoint_id": "ec.01.extraction",
+        "stage": "Content creation",
+        "responsibility": "Author / content creator",
+        "check": "Select the use case and scope authored prose, quotations and required source wording. Self-assess against applicable rules; supply sources for material claims and record proposed exceptions. Define the relevant perspective or framing where the context calls for it; keep collaborative behaviour visible throughout. Where the work involves connected design decisions, an optional design tree can trace the need to requirements, dependencies and checks. Plan a layered explanation only if the reader needs it.",
+        "gate": "INFORMATIONAL (issues identified for revision)"
+      },
+      {
+        "checkpoint_id": "ec.02.draft_review",
+        "stage": "Editorial review",
+        "responsibility": "Editorial team or peer",
+        "check": "Measure in-scope surface features and assess meaning with supporting excerpts. Length exceedances, potential jargon and passive constructions are REVIEW signals. Do not blacklist uncertainty words or require contractions, pronoun quotas or future markers. Resolve REVIEW results, confirmed failures and applicability before sign-off. Evaluate Creative through relevance, insight and purposeful expression, with no requirement for decorative novelty. Review collaborative behaviour across the whole communication. Where layered explanation is used, check that the main point appears early and qualifications remain close to their claims. Assess aa.tov.practical.04 when relevant; do not demand a tree, diagram, repeated step-back phrases or unnecessary background. Load the companion grammar standard and resolve shared rules before reviewing house conventions. Record each issue against its canonical rule without duplicate findings.",
+        "gate": "BLOCKING (resolve confirmed failures and unresolved reviews, or document an approved exception)"
+      },
+      {
+        "checkpoint_id": "ec.03.approver_sign_off",
+        "stage": "Approval",
+        "responsibility": "Assigned approver",
+        "check": "Confirm rule-level decisions, coexistence where required, source support, collaborative behaviour and recorded exceptions. For content approval, record content version, approver and date. Separately, before activating this policy, record policy approval, approval date and effective date; update policy_status and approval_signoff accordingly. No automated score constitutes approval.",
+        "gate": "BLOCKING (recorded sign-off required; this policy version remains DRAFT until policy approval is recorded)"
+      },
+      {
+        "checkpoint_id": "ec.04.post_launch",
+        "stage": "Post-publication",
+        "responsibility": "Brand Manager or assigned reviewer",
+        "check": "Sample published content for applicable rule failures and material claim changes. Use calibrated scores only as review signals. Route confirmed failures or repeated unresolved issues to the Brand Manager with excerpts, affected rules and correction actions.",
+        "gate": "MONITORING (escalate on rule-level evidence rather than an undefined numerical drift threshold)"
+      }
+    ],
+    "machine_evaluable_fields": [
+      {
+        "field": "fresh_perspective_review",
+        "type": "string",
+        "rule_link": "aa.tov.creative.01",
+        "evaluation": "Semantic recommendation: PASS, FAIL, REVIEW or NOT_APPLICABLE, with an excerpt and rationale identifying the relevant framing or insight. Do not claim universal originality or score unusual wording alone. In routine contexts, specific functional framing is sufficient. Editor confirms the result."
+      },
+      {
+        "field": "useful_connection_review",
+        "type": "string",
+        "rule_link": "aa.tov.creative.02",
+        "evaluation": "Semantic recommendation with an excerpt and rationale assessing whether an example, comparison, connection or direct explanation improves understanding accurately. Invented scenarios must be identifiable as illustrations. Metaphors are optional. Return NOT_APPLICABLE with a reason when elaboration is unnecessary."
+      },
+      {
+        "field": "purposeful_expression_review",
+        "type": "string",
+        "rule_link": "aa.tov.creative.03",
+        "evaluation": "Semantic recommendation with an excerpt and rationale assessing whether expression makes the central idea clearer and more memorable for the audience. Slogans, wordplay and novelty are not sufficient evidence. Return NOT_APPLICABLE with a reason for functional contexts where expressive treatment is unnecessary."
+      },
+      {
+        "field": "accessible_language_review",
+        "type": "string",
+        "rule_link": "aa.tov.assured.02",
+        "evaluation": "Semantic recommendation: PASS, FAIL, REVIEW or NOT_APPLICABLE, with an excerpt and rationale. Assess accessibility, natural phrasing and audience fit under aa.tov.assured.02. Contractions are optional. Editor confirms the result."
+      },
+      {
+        "field": "claim_support_review",
+        "type": "string",
+        "rule_link": "aa.tov.assured.01",
+        "evaluation": "Semantic recommendation with claim excerpts, source references and rationale. A statistic alone does not establish support. Return REVIEW if evidence is unavailable. Do not penalise honest uncertainty or demand a numeric source for statements of intention or clearly labelled illustrations."
+      },
+      {
+        "field": "avg_sentence_length_words",
+        "type": "number",
+        "rule_link": "aa.tov.assured.02",
+        "evaluation": "Mean word count across in-scope authored prose sentences. Target <= 16. Exceedance triggers REVIEW, not FAIL. Return null when no eligible sentences exist. Apply the exclusions and inclusive boundaries in aa.tov.assured.02."
+      },
+      {
+        "field": "sentences_over_24_words_count",
+        "type": "integer",
+        "rule_link": "aa.tov.assured.02",
+        "evaluation": "Count eligible prose sentences with word_count > 24, not >= 24. Any exceedance triggers REVIEW. Longer sentences can pass after contextual editorial review."
+      },
+      {
+        "field": "paragraphs_over_4_sentences_count",
+        "type": "integer",
+        "rule_link": "aa.tov.assured.02",
+        "evaluation": "Count eligible prose paragraphs with sentence_count > 4, not >= 4. Any exceedance triggers REVIEW. Do not count tables, lists, headings, code, citations, approved quotations or required legal wording."
+      },
+      {
+        "field": "clear_ownership_review",
+        "type": "string",
+        "rule_link": "aa.tov.assured.03",
+        "evaluation": "Semantic recommendation with an excerpt and rationale. Check whether responsibility is clear when an action or commitment is described. Passive constructions are review signals, not automatic failures."
+      },
+      {
+        "field": "exclamation_point_count",
+        "type": "integer",
+        "rule_link": "aa.tov.assured.03",
+        "evaluation": "Delegate to the canonical exclamation_point_count definition in grammar_and_punctuation_policy.json. Resolve source_reference and apply that definition once; do not maintain a separate threshold or exclusion list here.",
+        "source_reference": {
+          "file": "grammar_and_punctuation_policy.json",
+          "element_id": "aa.standard.writing_for_aa.grammar_and_punctuation",
+          "rule_id": "aa.grammar.emphasis.01",
+          "field": "exclamation_point_count"
+        }
+      },
+      {
+        "field": "concrete_work_review",
+        "type": "string",
+        "rule_link": "aa.tov.practical.01",
+        "evaluation": "Semantic recommendation with an excerpt identifying a concrete task, workflow, decision or deliverable and its role. Assess the full communication; word presence alone cannot establish compliance."
+      },
+      {
+        "field": "actionable_next_step_review",
+        "type": "string",
+        "rule_link": "aa.tov.practical.02",
+        "evaluation": "Semantic recommendation with an excerpt identifying the next action, owner and material prerequisites where required. Return NOT_APPLICABLE with a reason for purely descriptive content requiring no action."
+      },
+      {
+        "field": "useful_outcome_review",
+        "type": "string",
+        "rule_link": "aa.tov.practical.03",
+        "evaluation": "Semantic recommendation with an excerpt linking the work to a useful outcome. For delivery proposals, identify how success will be judged and material dependencies. Do not require future markers, optimism, arbitrary percentages or numerical targets for every statement. Editor confirms the result."
+      },
+      {
+        "field": "layered_explanation_review",
+        "type": "string",
+        "rule_link": "aa.tov.creative.03",
+        "evaluation": "Semantic recommendation with an excerpt and rationale. When the optional layered pattern is used, assess whether the opening gives the useful point, later layers add relevant understanding and qualifications stay beside their claims. Return NOT_APPLICABLE with a reason when layering is unnecessary or this rule is out of scope. No minimum layer count, slogan or literal step-back phrase is required. Editor confirms the result."
+      },
+      {
+        "field": "system_connections_review",
+        "type": "string",
+        "rule_link": "aa.tov.practical.04",
+        "evaluation": "Semantic recommendation with an excerpt identifying the need, relevant relationships and intended outcome. A component list or system keyword alone is insufficient. Check material dependencies against supplied context and flag unverified relationships for REVIEW. Return NOT_APPLICABLE with a reason for content requiring no explanation of connected parts. A design tree is optional planning material and is not required for PASS. Editor confirms the result."
+      }
+    ],
+    "policy_metadata": {
+      "policy_version": "1.4.0",
+      "last_updated": "2026-11-11",
+      "next_review_date": "2026-12-24",
+      "policy_owner": "Advanced Analytica Brand Team",
+      "technical_owner": "Advanced Analytica",
+      "related_elements": [
+        "aa.standard.photography.photography_outside_of_our_library",
+        "aa.toolkit.reinvention",
+        "aa.toolkit.video",
+        "aa.standard.writing_for_aa.grammar_and_punctuation"
+      ],
+      "dependencies": [
+        "Editorial review with use-case context and source evidence for material claims",
+        "Optional prose-aware tokenizer and parser for deterministic surface metrics",
+        "Optional semantic evaluator returning rule-level recommendations, excerpts and rationales",
+        "Optional calibrated Brand Drift Score or Promptfoo evaluation; no undefined numerical approval gate",
+        "grammar_and_punctuation_policy.json: canonical grammar and punctuation conventions and delegated metrics"
+      ]
+    },
+    "companion_policies": [
+      {
+        "file": "grammar_and_punctuation_policy.json",
+        "element_id": "aa.standard.writing_for_aa.grammar_and_punctuation",
+        "relationship": "Owns mechanical grammar and punctuation conventions; complements the three tone principles."
+      }
+    ],
+    "reference_resolution": "Load both local policy files once and index them by element_id and rule_id. A source_reference identifies the canonical definition of a delegated requirement or metric. Apply each canonical rule once per finding; do not recursively expand companion links or count the same issue twice. A missing or mismatched reference is REVIEW and must be resolved before claiming a complete check."
+  }
+}
