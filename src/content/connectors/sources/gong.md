@@ -1,0 +1,255 @@
+---
+generated_record: true
+connector_name: Gong
+connector_type: source
+connector_slug: gong
+connector_directory: source-gong
+definition_id: 32382e40-3b49-4b99-9c5c-4076501914e7
+version: 1.6.0
+support_level: certified
+release_stage: generally_available
+documentation_url: https://docs.airbyte.com/integrations/sources/gong
+logo: /images/connectors/sources/gong.svg
+logo_source_path: airbyte-integrations/connectors/source-gong/icon.svg
+logo_sha256: e465b483f568d4f94a43ff28a6a452898e03c07f8d6e1afedebb95f9eefc5d9d
+original_metadata_path: airbyte-integrations/connectors/source-gong/metadata.yaml
+original_metadata_sha256: ef24bd5b1a1a8ca09d40bbd3684ebaa509f65b952970fc28811a6eef24da091f
+original_document_path: docs/integrations/sources/gong.md
+original_document_sha256: 7f49b781cb35c521bf27505381e2aa872d884134e2ffba099a3c937da2d22b66
+rewrite_status: complete
+rewrite_policy: advanced-analytica.standards.verbal-identity.tone-of-voice
+rewrite_policy_version: 2.5.4
+rewrite_model: codex-default
+rewrite_source_sha256: d2e7e082be3ebcee592d6986c11cddb5d5cebde2e03670c9d4708c86928eadbe
+rewritten_at: 2026-11-12T13:39:59.954816+00:00
+---
+
+# Gong
+
+<HideInUI>
+
+Use this page to set up the [Gong](https://www.gong.io/) source connector and find reference information.
+
+</HideInUI>
+
+## Prerequisites
+
+- A Gong account with technical administrator permissions
+- For OAuth 2.0 authentication, grant these API scopes: `api:calls:read:basic`, `api:calls:read:extensive`, `api:calls:read:transcript`, `api:users:read`, `api:stats:scorecards`, `api:stats:interaction`, `api:settings:scorecards:read`
+- For API Key authentication, generate an access key and access key secret in Gong API settings. Grant the same scopes listed above.
+
+:::note
+The connection test checks connectivity by reading the `users` stream. Therefore, you always need the `api:users:read` scope.
+
+This scope is required even if you only plan to sync call or scorecard streams. Without it, source setup fails with an unauthorised error.
+
+Credentials inherit the data visibility of the Gong user who created them. If that user can't see certain calls, the key silently returns fewer or zero records, without an error.
+:::
+
+## Setup
+
+## Set up Gong
+
+You can authenticate with Gong using OAuth 2.0 or an API key.
+
+### Airbyte Cloud
+
+<!-- env:cloud -->
+
+- **OAuth 2.0 (recommended)**. Click **Authenticate your Gong account** to sign in through Gong's OAuth flow. This method refreshes tokens automatically. You need a Gong account with technical administrator permissions to authorise the connection.
+
+<!-- /env:cloud -->
+
+- **API Key**. Alternatively, use an access key and access key secret. Generate them as described in the Open Source section below.
+
+### Airbyte Open Source
+
+- **API Key**. Authenticate with an access key and access key secret. To generate your credentials:
+  1. Sign in to your Gong account as a technical administrator.
+  2. Go to **Company Settings** > **Ecosystem** > **API**.
+  3. Click **Create** to generate an access key and access key secret.
+  4. Copy both values immediately. The access key secret appears only once.
+
+  For more information, see the [Gong API documentation](https://help.gong.io/docs/receive-access-to-the-api).
+
+### Configure the connector
+
+<FieldAnchor field="start_date">
+
+- **Start Date** (optional). Enter the date from which you want to fetch data in ISO-8601 format, for example, `2024-01-01T00:00:00Z`. This setting applies to incremental streams. If omitted, the connector syncs all available data from the earliest recorded call. Set a start date to limit the initial sync period.
+
+</FieldAnchor>
+
+<FieldAnchor field="num_workers">
+
+- **Number of Concurrent Threads** (optional). Set how many streams sync in parallel. The default is 4, and the valid range is 1–10. The connector stays within Gong's three-requests-per-second limit, regardless of thread count. A higher value mainly helps when streams await Gong's response rather than the rate limit.
+
+</FieldAnchor>
+
+<FieldAnchor field="lookback_window_days">
+
+- **Lookback Window (days)** (optional). Set the days subtracted from the saved state when each incremental sync starts. The default is 0, which syncs strictly forwards. Set this when calls or scorecards can change after replication. Later syncs can then collect those changes.
+
+</FieldAnchor>
+
+<FieldAnchor field="scorecards_review_method">
+
+- **Scorecards Review Method** (optional). Choose which answered scorecards to fetch: `MANUAL`, `AUTOMATIC` (scored by Gong's AI) or `BOTH`. By default, the Gong API only returns manually reviewed scorecards. Choose `AUTOMATIC` or `BOTH` to sync AI-scored scorecards. The default is `MANUAL`, which preserves the previous behaviour. On existing connections, changing this setting only adds scorecards reviewed after the last sync. Refresh the answered scorecards stream to backfill older scorecards.
+
+</FieldAnchor>
+<HideInUI>
+
+## Supported sync modes
+
+The Gong source connector supports these [sync modes](https://docs.airbyte.com/cloud/core-concepts/#connection-sync-modes):
+
+- Full Refresh
+- Incremental
+
+## Supported streams
+
+This source syncs these streams:
+
+| Stream | Sync Mode | Description |
+| :----- | :-------- | :---------- |
+| [answered scorecards](https://gong.app.gong.io/settings/api/documentation#post-/v2/stats/activity/scorecards) | Incremental | Scorecard responses with review timestamps |
+| [calls](https://gong.app.gong.io/settings/api/documentation#get-/v2/calls) | Incremental | Call metadata including participants, duration, and timestamps. Private calls are excluded. |
+| [call transcripts](https://gong.app.gong.io/settings/api/documentation#post-/v2/calls/transcript) | Incremental | Call transcript segments with speaker identification and timestamped sentences. Transcripts for private calls are excluded. |
+| [extensive calls](https://gong.app.gong.io/settings/api/documentation#post-/v2/calls/extensive) | Incremental | Detailed call data including topics, key points, trackers, interaction stats, media, and CRM context. Private calls are excluded. |
+| [scorecards](https://gong.app.gong.io/settings/api/documentation#get-/v2/settings/scorecards) | Full Refresh | Scorecard definitions and configurations |
+| [users](https://gong.app.gong.io/settings/api/documentation#get-/v2/users) | Full Refresh | User profiles and settings |
+
+### Private calls
+
+From version 1.1.0, the connector excludes private calls from the `calls` and `extensive calls` streams. The Gong API marks these calls as `isPrivate: true`. Because `call transcripts` is a substream of `calls`, the connector also excludes transcripts for private calls. Gong requires this behaviour for OAuth app listing approval. The Gong API doesn't provide a server-side filter for this field. Therefore, the connector filters records client-side after fetching them.
+
+### Performance
+
+Gong limits API access to three calls per second and 10,000 calls per day. If you exceed either limit, the API returns HTTP status code 429. The `Retry-After` header shows how long to wait.
+
+From version 1.3.1, the connector handles both limits as follows:
+
+- It limits requests to three per second across all streams. Syncs stay within the per-second limit before Gong rejects requests.
+- If Gong returns a 429, the connector waits for the interval in the `Retry-After` header, then retries. It doesn't use a fixed back-off schedule.
+
+The connector doesn't pace requests against the 10,000-calls-per-day quota. A large backfill or frequent sync schedule can still exhaust it.
+
+The call transcripts stream is a substream of the calls stream. From version 1.3.0, it batches up to 100 call IDs into each `POST /v2/calls/transcript` request. Previously, it sent one request per call. This sharply reduces request volume during large backfills. You're then much less likely to reach Gong's rate limit or daily quota. However, very large tenants can still approach these limits. Later incremental syncs only fetch transcripts for new calls.
+
+## IP allow list
+
+If you use Airbyte Cloud and restrict access to specific IPs, add the [Airbyte Cloud IP addresses](https://docs.airbyte.com/platform/operating-airbyte/ip-allowlist) to your allow list.
+
+## Changelog
+
+<details>
+  <summary>Expand to review</summary>
+
+| Version | Date | Pull Request | Subject |
+| :--- | :--- | :--- | :--- |
+| 1.6.0 | 2026-11-03 | [90976](https://github.com/airbytehq/airbyte/pull/90976) | Add `scorecards_review_method` option to fetch AI-scored (`AUTOMATIC`) answered scorecards; defaults to `MANUAL` |
+| 1.5.7 | 2026-11-10 | [91548](https://github.com/airbytehq/airbyte/pull/91548) | Update dependencies |
+| 1.5.6 | 2026-11-03 | [90575](https://github.com/airbytehq/airbyte/pull/90575) | Update dependencies |
+| 1.5.5 | 2026-10-27 | [84435](https://github.com/airbytehq/airbyte/pull/84435) | Update external documentation URLs and enable autopilot rollouts |
+| 1.5.4 | 2026-10-27 | [89913](https://github.com/airbytehq/airbyte/pull/89913) | Update dependencies |
+| 1.5.3 | 2026-10-20 | [89233](https://github.com/airbytehq/airbyte/pull/89233) | Update dependencies |
+| 1.5.2 | 2026-10-19 | [89089](https://github.com/airbytehq/airbyte/pull/89089) | Add `date-time` format to `start_date` so the setup form renders a datepicker |
+| 1.5.1 | 2026-10-13 | [88636](https://github.com/airbytehq/airbyte/pull/88636) | Update dependencies |
+| 1.5.0 | 2026-10-05 | [87006](https://github.com/airbytehq/airbyte/pull/87006) | Fix `extensiveCalls` schema (`parties[].context`, `media`) and add missing `reviewMethod` and `conferencingProviders` fields |
+| 1.4.4 | 2026-10-06 | [87873](https://github.com/airbytehq/airbyte/pull/87873) | Update dependencies |
+| 1.4.3 | 2026-09-29 | [87189](https://github.com/airbytehq/airbyte/pull/87189) | Update dependencies |
+| 1.4.2 | 2026-09-22 | [86644](https://github.com/airbytehq/airbyte/pull/86644) | Update dependencies |
+| 1.4.1 | 2026-09-15 | [86067](https://github.com/airbytehq/airbyte/pull/86067) | Update dependencies |
+| 1.4.0 | 2026-08-30 | [85192](https://github.com/airbytehq/airbyte/pull/85192) | Promote connector to certified |
+| 1.3.6 | 2026-09-08 | [85501](https://github.com/airbytehq/airbyte/pull/85501) | Update dependencies |
+| 1.3.5 | 2026-08-18 | [84600](https://github.com/airbytehq/airbyte/pull/84600) | Update dependencies |
+| 1.3.4 | 2026-08-11 | [83953](https://github.com/airbytehq/airbyte/pull/83953) | Update dependencies |
+| 1.3.3 | 2026-08-04 | [83474](https://github.com/airbytehq/airbyte/pull/83474) | Update dependencies |
+| 1.3.2 | 2026-07-28 | [82937](https://github.com/airbytehq/airbyte/pull/82937) | Update dependencies |
+| 1.3.1 | 2026-07-27 | [80891](https://github.com/airbytehq/airbyte/pull/80891) | Throttle requests to Gong's 3 requests-per-second limit and honor the `Retry-After` header when a 429 occurs |
+| 1.3.0 | 2026-07-22 | [82260](https://github.com/airbytehq/airbyte/pull/82260) | Batch `call transcripts` requests to fetch up to 100 call IDs per API call, reducing the request volume that drove rate-limit (429) errors and daily-quota exhaustion under one request per call |
+| 1.2.11 | 2026-07-21 | [82434](https://github.com/airbytehq/airbyte/pull/82434) | Update dependencies |
+| 1.2.10 | 2026-07-14 | [81846](https://github.com/airbytehq/airbyte/pull/81846) | Update dependencies |
+| 1.2.9 | 2026-07-07 | [80750](https://github.com/airbytehq/airbyte/pull/80750) | Remove 90-day default lookback window; when `start_date` is not configured the connector now syncs all available data from the earliest recorded call, matching the Gong API default and the spec description |
+| 1.2.8 | 2026-06-30 | [81076](https://github.com/airbytehq/airbyte/pull/81076) | Update dependencies |
+| 1.2.7 | 2026-06-23 | [80481](https://github.com/airbytehq/airbyte/pull/80481) | Update dependencies |
+| 1.2.6 | 2026-06-16 | [79879](https://github.com/airbytehq/airbyte/pull/79879) | Update dependencies |
+| 1.2.5 | 2026-06-10 | [78521](https://github.com/airbytehq/airbyte/pull/78521) | Send OAuth refresh `grant_type` and `refresh_token` as URL query parameters to match Gong's documented refresh endpoint shape |
+| 1.2.4 | 2026-06-10 | [78476](https://github.com/airbytehq/airbyte/pull/78476) | Add `context: Extended` and `contextTiming` to `extensiveCalls` request body so Gong returns context fields |
+| 1.2.3 | 2026-06-09 | [79338](https://github.com/airbytehq/airbyte/pull/79338) | Update dependencies |
+| 1.2.2 | 2026-06-02 | [77254](https://github.com/airbytehq/airbyte/pull/77254) | Update dependencies |
+| 1.2.1 | 2026-05-11 | [77858](https://github.com/airbytehq/airbyte/pull/77858) | Expose num_workers config field for user-configurable concurrency |
+| 1.2.0 | 2026-05-07 | [77859](https://github.com/airbytehq/airbyte/pull/77859) | Promoted release candidate to GA |
+| 1.2.0-rc.3 | 2026-05-05 | [77785](https://github.com/airbytehq/airbyte/pull/77785) | Revert default_concurrency from 5 to 4 based on Phase 2 results |
+| 1.2.0-rc.2 | 2026-04-28 | [77549](https://github.com/airbytehq/airbyte/pull/77549) | Increase default_concurrency from 4 to 5 based on Phase 1 health check results |
+| 1.2.0-rc.1 | 2026-04-27 | [77049](https://github.com/airbytehq/airbyte/pull/77049) | Add concurrency support with default_concurrency=4; enable progressive rollout |
+| 1.1.1 | 2026-04-21 | [76593](https://github.com/airbytehq/airbyte/pull/76593) | Update dependencies |
+| 1.1.0 | 2026-04-20 | [76454](https://github.com/airbytehq/airbyte/pull/76454) | Filter out private calls (`isPrivate: true`) from `calls` and `extensiveCalls` streams per Gong API listing requirements |
+| 1.0.1 | 2026-04-10 | [76229](https://github.com/airbytehq/airbyte/pull/76229) | Set deadlineAction to auto_upgrade for 1.0.0 breaking change |
+| 1.0.0 | 2026-03-30 | [75248](https://github.com/airbytehq/airbyte/pull/75248) | Fix schema bugs in `extensiveCalls` stream: define `context` as array type and widen `value` field to accept string, number, boolean, object, and array types. This is a breaking change for users syncing the `extensiveCalls` stream. See the [migration guide](https://docs.airbyte.com/integrations/sources/gong-migrations). |
+| 0.6.3 | 2026-03-27 | [75195](https://github.com/airbytehq/airbyte/pull/75195) | Migrate OAuth scope to scopes object array for granular scopes support |
+| 0.6.2 | 2026-03-24 | [75388](https://github.com/airbytehq/airbyte/pull/75388) | Update dependencies |
+| 0.6.1 | 2026-03-20 | [75253](https://github.com/airbytehq/airbyte/pull/75253) | Fix incremental sync for extensiveCalls and answeredScorecards not filtering server-side |
+| 0.6.0 | 2026-03-18 | [75132](https://github.com/airbytehq/airbyte/pull/75132) | Add incremental sync support for callTranscripts stream |
+| 0.5.5 | 2026-02-24 | [73782](https://github.com/airbytehq/airbyte/pull/73782) | Update dependencies |
+| 0.5.4 | 2026-02-17 | [71754](https://github.com/airbytehq/airbyte/pull/71754) | Add callTranscripts stream to sync call transcripts |
+| 0.5.3 | 2026-02-10 | [73037](https://github.com/airbytehq/airbyte/pull/73037) | Update dependencies |
+| 0.5.2 | 2026-02-03 | [72579](https://github.com/airbytehq/airbyte/pull/72579) | Update dependencies |
+| 0.5.1 | 2026-01-20 | [65382](https://github.com/airbytehq/airbyte/pull/65382) | Update dependencies |
+| 0.5.0 | 2026-01-16 | [71356](https://github.com/airbytehq/airbyte/pull/71356) | Add OAuth 2.0 authentication support with SelectiveAuthenticator |
+| 0.4.14 | 2026-01-13 | [71344](https://github.com/airbytehq/airbyte/pull/71344) | Add 404 error handlers and fix CDK import path |
+| 0.4.13 | 2025-08-09 | [64594](https://github.com/airbytehq/airbyte/pull/64594) | Update dependencies |
+| 0.4.12 | 2025-08-02 | [64200](https://github.com/airbytehq/airbyte/pull/64200) | Update dependencies |
+| 0.4.11 | 2025-07-19 | [63504](https://github.com/airbytehq/airbyte/pull/63504) | Update dependencies |
+| 0.4.10 | 2025-07-12 | [63139](https://github.com/airbytehq/airbyte/pull/63139) | Update dependencies |
+| 0.4.9 | 2025-07-05 | [62641](https://github.com/airbytehq/airbyte/pull/62641) | Update dependencies |
+| 0.4.8 | 2025-06-21 | [61866](https://github.com/airbytehq/airbyte/pull/61866) | Update dependencies |
+| 0.4.7 | 2025-06-14 | [61085](https://github.com/airbytehq/airbyte/pull/61085) | Update dependencies |
+| 0.4.6 | 2025-05-24 | [60651](https://github.com/airbytehq/airbyte/pull/60651) | Update dependencies |
+| 0.4.5 | 2025-05-10 | [59892](https://github.com/airbytehq/airbyte/pull/59892) | Update dependencies |
+| 0.4.4 | 2025-05-03 | [59272](https://github.com/airbytehq/airbyte/pull/59272) | Update dependencies |
+| 0.4.3 | 2025-04-26 | [57696](https://github.com/airbytehq/airbyte/pull/57696) | Update dependencies |
+| 0.4.2 | 2025-04-05 | [57039](https://github.com/airbytehq/airbyte/pull/57039) | Update dependencies |
+| 0.4.1 | 2025-03-29 | [56494](https://github.com/airbytehq/airbyte/pull/56494) | Update dependencies |
+| 0.4.0 | 2025-03-25 | [55803](https://github.com/airbytehq/airbyte/pull/55803) | Add incremental sync for extensiveCalls |
+| 0.3.16 | 2025-03-22 | [55969](https://github.com/airbytehq/airbyte/pull/55969) | Update dependencies |
+| 0.3.15 | 2025-03-08 | [55269](https://github.com/airbytehq/airbyte/pull/55269) | Update dependencies |
+| 0.3.14 | 2025-03-01 | [54962](https://github.com/airbytehq/airbyte/pull/54962) | Update dependencies |
+| 0.3.13 | 2025-02-22 | [54394](https://github.com/airbytehq/airbyte/pull/54394) | Update dependencies |
+| 0.3.12 | 2025-02-15 | [53718](https://github.com/airbytehq/airbyte/pull/53718) | Update dependencies |
+| 0.3.11 | 2025-02-08 | [53334](https://github.com/airbytehq/airbyte/pull/53334) | Update dependencies |
+| 0.3.10 | 2025-02-01 | [52824](https://github.com/airbytehq/airbyte/pull/52824) | Update dependencies |
+| 0.3.9 | 2025-01-25 | [52342](https://github.com/airbytehq/airbyte/pull/52342) | Update dependencies |
+| 0.3.8 | 2025-01-18 | [51704](https://github.com/airbytehq/airbyte/pull/51704) | Update dependencies |
+| 0.3.7 | 2025-01-11 | [51059](https://github.com/airbytehq/airbyte/pull/51059) | Update dependencies |
+| 0.3.6 | 2024-12-28 | [50521](https://github.com/airbytehq/airbyte/pull/50521) | Update dependencies |
+| 0.3.5 | 2024-12-21 | [50017](https://github.com/airbytehq/airbyte/pull/50017) | Update dependencies |
+| 0.3.4 | 2024-12-14 | [49538](https://github.com/airbytehq/airbyte/pull/49538) | Update dependencies |
+| 0.3.3 | 2024-12-12 | [49155](https://github.com/airbytehq/airbyte/pull/49155) | Update dependencies |
+| 0.3.2 | 2024-11-14 | [36604](https://github.com/airbytehq/airbyte/pull/36604) | Add incremental Feature |
+| 0.3.1 | 2024-10-29 | [47824](https://github.com/airbytehq/airbyte/pull/47824) | Update dependencies |
+| 0.3.0 | 2024-09-04 | [45117](https://github.com/airbytehq/airbyte/pull/45117) | Add new stream `extensive calls` |
+| 0.2.1 | 2024-08-16 | [44196](https://github.com/airbytehq/airbyte/pull/44196) | Bump source-declarative-manifest version |
+| 0.2.0 | 2024-08-15 | [44144](https://github.com/airbytehq/airbyte/pull/44144) | Refactor connector to manifest-only format |
+| 0.1.17 | 2024-08-10 | [43481](https://github.com/airbytehq/airbyte/pull/43481) | Update dependencies |
+| 0.1.16 | 2024-08-03 | [43275](https://github.com/airbytehq/airbyte/pull/43275) | Update dependencies |
+| 0.1.15 | 2024-07-27 | [42614](https://github.com/airbytehq/airbyte/pull/42614) | Update dependencies |
+| 0.1.14 | 2024-07-20 | [42149](https://github.com/airbytehq/airbyte/pull/42149) | Update dependencies |
+| 0.1.13 | 2024-07-13 | [41794](https://github.com/airbytehq/airbyte/pull/41794) | Update dependencies |
+| 0.1.12 | 2024-07-10 | [41408](https://github.com/airbytehq/airbyte/pull/41408) | Update dependencies |
+| 0.1.11 | 2024-07-09 | [41110](https://github.com/airbytehq/airbyte/pull/41110) | Update dependencies |
+| 0.1.10 | 2024-07-06 | [40890](https://github.com/airbytehq/airbyte/pull/40890) | Update dependencies |
+| 0.1.9 | 2024-06-26 | [40374](https://github.com/airbytehq/airbyte/pull/40374) | Update dependencies |
+| 0.1.8 | 2024-06-22 | [40175](https://github.com/airbytehq/airbyte/pull/40175) | Update dependencies |
+| 0.1.7 | 2024-06-06 | [39226](https://github.com/airbytehq/airbyte/pull/39226) | [autopull] Upgrade base image to v1.2.2 |
+| 0.1.6 | 2024-05-28 | [38596](https://github.com/airbytehq/airbyte/pull/38596) | Make connector compatible with builder |
+| 0.1.5 | 2024-04-19 | [37169](https://github.com/airbytehq/airbyte/pull/37169) | Updating to 0.80.0 CDK |
+| 0.1.4 | 2024-04-18 | [37169](https://github.com/airbytehq/airbyte/pull/37169) | Manage dependencies with Poetry. |
+| 0.1.3 | 2024-04-15 | [37169](https://github.com/airbytehq/airbyte/pull/37169) | Base image migration: remove Dockerfile and use the python-connector-base image |
+| 0.1.2 | 2024-04-12 | [37169](https://github.com/airbytehq/airbyte/pull/37169) | schema descriptions |
+| 0.1.1 | 2024-02-05 | [34847](https://github.com/airbytehq/airbyte/pull/34847) | Adjust stream schemas and make ready for airbyte-lib |
+| 0.1.0 | 2022-10-27 | [18819](https://github.com/airbytehq/airbyte/pull/18819) | Add Gong Source Connector |
+
+</details>
+
+</HideInUI>

@@ -63,7 +63,14 @@ const nav: NavItem[] = [
       { label: 'View all opinions', href: '/opinions/', group: 'Explore' },
     ]
   },
-  { label: 'Resources', href: '/resources/' },
+  {
+    label: 'Resources',
+    href: '/resources/',
+    children: [
+      { label: 'Guides and templates', href: '/resources/' },
+      { label: 'Data connectors', href: '/connectors/' },
+    ]
+  },
   {
     label: 'About',
     href: '/company/about/',

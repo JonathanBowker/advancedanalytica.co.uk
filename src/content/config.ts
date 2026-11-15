@@ -146,6 +146,28 @@ const personas = defineCollection({
   })
 });
 
+const connectors = defineCollection({
+  type: 'content',
+  schema: z.object({
+    generated_record: z.boolean(),
+    connector_name: plainTitle(),
+    connector_type: z.enum(['source', 'destination']),
+    connector_slug: z.string(),
+    connector_directory: z.string(),
+    definition_id: z.string(),
+    version: z.union([z.string(), z.number()]).transform(String),
+    support_level: z.string().nullish(),
+    release_stage: z.string().nullish(),
+    documentation_url: z.string().url().nullish(),
+    logo: z.string().nullish(),
+    rewrite_status: z.enum(['complete', 'review']),
+    rewrite_policy: z.string(),
+    rewrite_policy_version: z.union([z.string(), z.number()]).transform(String),
+    rewrite_source_sha256: z.string(),
+    rewritten_at: z.coerce.date()
+  }).passthrough()
+});
+
 export const collections = {
   blog,
   resources,
@@ -154,5 +176,6 @@ export const collections = {
   company,
   'case-studies': caseStudies,
   roles,
-  personas
+  personas,
+  connectors
 };

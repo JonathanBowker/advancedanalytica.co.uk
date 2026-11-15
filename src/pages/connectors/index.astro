@@ -1,0 +1,130 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE_URL } from '../../lib/seo/site';
+
+const connectors = (await getCollection('connectors')).sort((a, b) =>
+  a.data.connector_name.localeCompare(b.data.connector_name)
+);
+const sourceCount = connectors.filter((entry) => entry.data.connector_type === 'source').length;
+const destinationCount = connectors.length - sourceCount;
+const title = 'Data connectors';
+const description = 'Explore source and destination connectors for building dependable data flows.';
+const page = {
+  title,
+  description,
+  url: `${SITE_URL}/connectors/`,
+  schemaType: 'CollectionPage',
+  breadcrumbs: [
+    { name: 'Home', url: `${SITE_URL}/` },
+    { name: 'Data connectors', url: `${SITE_URL}/connectors/` }
+  ]
+};
+---
+
+<BaseLayout title={title} description={description} page={page}>
+  <section class="bg-[#34445c] py-16 text-white md:py-24">
+    <div class="container-wide">
+      <p class="eyebrow">Data connections</p>
+      <h1 class="mt-5 max-w-[16ch] text-[clamp(2.5rem,6vw,5rem)] font-semibold tracking-tight">
+        Connect the systems your business already uses.
+      </h1>
+      <p class="mt-6 max-w-[64ch] text-lg leading-relaxed text-white/75 md:text-xl">
+        Find the source you need, choose where the data should go, and see the exact setup requirements.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3 text-sm">
+        <span class="rounded-full border border-white/25 px-4 py-2">{sourceCount} sources</span>
+        <span class="rounded-full border border-white/25 px-4 py-2">{destinationCount} destinations</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-wide py-14 md:py-20">
+    <div class="grid gap-4 md:grid-cols-[1fr_auto] md:items-end">
+      <label class="block">
+        <span class="text-xs font-semibold uppercase tracking-[0.18em] text-steel">Find a connector</span>
+        <input
+          id="connector-search"
+          type="search"
+          placeholder="Search by name"
+          class="mt-3 w-full rounded-xl border border-fog bg-white px-5 py-4 text-base text-ink outline-none transition focus:border-[#14B8A6] focus:ring-2 focus:ring-[#14B8A6]/20"
+        />
+      </label>
+      <div class="flex gap-2" aria-label="Filter connector type">
+        <button class="connector-filter rounded-lg bg-[#14B8A6] px-5 py-3 text-sm font-semibold text-white" data-filter="all">All</button>
+        <button class="connector-filter rounded-lg border border-fog px-5 py-3 text-sm font-semibold text-ink" data-filter="source">Sources</button>
+        <button class="connector-filter rounded-lg border border-fog px-5 py-3 text-sm font-semibold text-ink" data-filter="destination">Destinations</button>
+      </div>
+    </div>
+
+    <p id="connector-result-count" class="mt-8 text-sm text-steel">Showing {connectors.length} connectors</p>
+    <div id="connector-grid" class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {connectors.map((entry) => {
+        const type = entry.data.connector_type;
+        const section = type === 'source' ? 'sources' : 'destinations';
+        const pageSlug = entry.id.split('/').at(-1)?.replace(/\.md$/, '') ?? entry.data.connector_slug;
+        return (
+          <a
+            href={`/connectors/${section}/${pageSlug}/`}
+            class="connector-card group rounded-xl border border-fog bg-white p-5 transition hover:-translate-y-1 hover:border-[#14B8A6] hover:shadow-lg"
+            data-name={entry.data.connector_name.toLowerCase()}
+            data-type={type}
+          >
+            <div class="flex items-center gap-4">
+              <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-fog bg-surface p-2">
+                {entry.data.logo ? (
+                  <img src={entry.data.logo} alt="" loading="lazy" class="h-full w-full object-contain" />
+                ) : (
+                  <span class="text-sm font-semibold text-steel">{entry.data.connector_name.slice(0, 2).toUpperCase()}</span>
+                )}
+              </div>
+              <div class="min-w-0">
+                <h2 class="truncate text-base font-semibold text-ink group-hover:text-[#0F766E]">{entry.data.connector_name}</h2>
+                <p class="mt-1 text-xs uppercase tracking-[0.15em] text-steel">{type}</p>
+              </div>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+    <p id="connector-empty" class="mt-10 hidden text-steel">No connectors match that search.</p>
+  </section>
+
+  <script is:inline>
+    (() => {
+      const input = document.getElementById('connector-search');
+      const cards = Array.from(document.querySelectorAll('.connector-card'));
+      const buttons = Array.from(document.querySelectorAll('.connector-filter'));
+      const count = document.getElementById('connector-result-count');
+      const empty = document.getElementById('connector-empty');
+      if (!(input instanceof HTMLInputElement)) return;
+      let filter = 'all';
+      const render = () => {
+        const query = input.value.trim().toLowerCase();
+        let visible = 0;
+        cards.forEach((card) => {
+          const matchesName = (card.getAttribute('data-name') || '').includes(query);
+          const matchesType = filter === 'all' || card.getAttribute('data-type') === filter;
+          const show = matchesName && matchesType;
+          card.classList.toggle('hidden', !show);
+          if (show) visible += 1;
+        });
+        if (count) count.textContent = `Showing ${visible} connector${visible === 1 ? '' : 's'}`;
+        empty?.classList.toggle('hidden', visible !== 0);
+      };
+      input.addEventListener('input', render);
+      buttons.forEach((button) => button.addEventListener('click', () => {
+        filter = button.getAttribute('data-filter') || 'all';
+        buttons.forEach((item) => {
+          const active = item === button;
+          item.classList.toggle('bg-[#14B8A6]', active);
+          item.classList.toggle('text-white', active);
+          item.classList.toggle('border', !active);
+          item.classList.toggle('border-fog', !active);
+          item.classList.toggle('text-ink', !active);
+        });
+        render();
+      }));
+    })();
+  </script>
+</BaseLayout>

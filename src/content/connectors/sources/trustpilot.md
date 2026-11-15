@@ -1,0 +1,136 @@
+---
+generated_record: true
+connector_name: TrustPilot
+connector_type: source
+connector_slug: trustpilot
+connector_directory: source-trustpilot
+definition_id: d7e23ea6-d741-4314-9209-a33c91a2e945
+version: 0.4.12
+support_level: community
+release_stage: alpha
+documentation_url: https://docs.airbyte.com/integrations/sources/trustpilot
+logo: /images/connectors/sources/trustpilot.svg
+logo_source_path: airbyte-integrations/connectors/source-trustpilot/icon.svg
+logo_sha256: 14427c4ae6e29d01531a296a8f1aaef65229461f5e6b34fd35625786010c4b3c
+original_metadata_path: airbyte-integrations/connectors/source-trustpilot/metadata.yaml
+original_metadata_sha256: 401a8c1fb82766de1c0dfa37b641d1eebd97d0def19559222818952385f11cea
+original_document_path: docs/integrations/sources/trustpilot.md
+original_document_sha256: 95d7e66a542bb89f5cda9e3dfb9ab75b1ea082d78815ab7da587efc3b4eaa17f
+rewrite_status: complete
+rewrite_policy: advanced-analytica.standards.verbal-identity.tone-of-voice
+rewrite_policy_version: 2.5.4
+rewrite_model: codex-default
+rewrite_source_sha256: 3b59a7a5169f7b88366e1d558d2d27924a7b5130721c44e60a9844280ee183da
+rewritten_at: 2026-11-12T13:59:09.730308+00:00
+---
+
+# TrustPilot
+
+## Prerequisites
+
+- Trustpilot API Token or Zendesk OAuth 2.0 credentials
+- Trustpilot Business Unit URLs
+
+## Authentication methods
+
+You can authenticate with an API key or OAuth 2.0. OAuth 2.0 takes more setup but gives you access to more streams.
+
+## Setup guide
+
+### Step 1: Set up your Trustpilot App
+
+Create a Trustpilot App by following [Trustpilot docs](https://support.trustpilot.com/hc/en-us/articles/207309867-Getting-started-with-Trustpilot-s-APIs).
+
+Enter the API key in the Airbyte source configuration "API key". If you want OAuth 2.0 authentication, also copy the API secret.
+
+### Step 2: Request an OAuth 2.0 refresh token (Optional)
+
+Request the OAuth 2.0 request token by sending this HTTP request:
+
+```http
+GET https://api.trustpilot.com/v1/oauth/oauth-business-users-for-applications/accesstoken
+Authorization: Basic base64(apikey:secret)
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&username=YOUR_TRUSTPILOT_USERNAME_OR_LOGIN_EMAIL_HERE&password=YOUR_TRUSTPILOT_PASSWORD_HERE
+```
+
+A successful request returns a json object. Extract the properties `access_token`, `refresh_token`.
+
+Complete the remaining fields in the Airbyte source configuration. For the token expiry date, use the current time plus four days. Alternatively, add the seconds in property `expires_in` to the request date and time.
+
+## Supported sync modes
+
+The **Trustpilot** source connector supports these [sync modes](https://docs.airbyte.com/cloud/core-concepts#connection-sync-modes):
+
+- Full Refresh
+- Incremental Sync
+
+## Supported streams
+
+This Source can sync these Streams:
+
+- [Configured Business Units](<https://documentation-apidocumentation.trustpilot.com/business-units-api-(public)#find-a-business-unit>) - loads business units defined in the configuration
+- [Business Units](<https://documentation-apidocumentation.trustpilot.com/business-units-api-(public)#get-a-list-of-all-business-units>) - loads **all** business units
+- [Private Reviews](https://documentation-apidocumentation.trustpilot.com/business-units-api#business-unit-private-reviews) \(Incremental sync\)
+
+## Performance considerations
+
+Trustpilot [rate limit guidelines](https://documentation-apidocumentation.trustpilot.com/#LimitRates) restricts the connector.
+
+The Trustpilot connector shouldn't reach any limits during normal use. Please [create an issue](https://github.com/airbytehq/airbyte/issues) if rate limit issues aren't retried successfully.
+
+## IP allow list
+
+If you use Airbyte Cloud and your organisation restricts access to specific IPs, add the [Airbyte Cloud IP addresses](https://docs.airbyte.com/platform/operating-airbyte/ip-allowlist) to your allow list.
+
+## Changelog
+
+<details>
+  <summary>Expand to review</summary>
+
+| Version | Date       | Pull Request                                             | Subject         |
+| :------ | :--------- | :------------------------------------------------------- | :-------------- |
+| 0.4.12 | 2025-05-10 | [60197](https://github.com/airbytehq/airbyte/pull/60197) | Update dependencies |
+| 0.4.11 | 2025-05-04 | [59622](https://github.com/airbytehq/airbyte/pull/59622) | Update dependencies |
+| 0.4.10 | 2025-04-27 | [58976](https://github.com/airbytehq/airbyte/pull/58976) | Update dependencies |
+| 0.4.9 | 2025-04-19 | [58437](https://github.com/airbytehq/airbyte/pull/58437) | Update dependencies |
+| 0.4.8 | 2025-04-12 | [57986](https://github.com/airbytehq/airbyte/pull/57986) | Update dependencies |
+| 0.4.7 | 2025-04-05 | [57489](https://github.com/airbytehq/airbyte/pull/57489) | Update dependencies |
+| 0.4.6 | 2025-03-29 | [56854](https://github.com/airbytehq/airbyte/pull/56854) | Update dependencies |
+| 0.4.5 | 2025-03-22 | [56310](https://github.com/airbytehq/airbyte/pull/56310) | Update dependencies |
+| 0.4.4 | 2025-03-08 | [55599](https://github.com/airbytehq/airbyte/pull/55599) | Update dependencies |
+| 0.4.3 | 2025-03-01 | [55080](https://github.com/airbytehq/airbyte/pull/55080) | Update dependencies |
+| 0.4.2 | 2025-02-22 | [54466](https://github.com/airbytehq/airbyte/pull/54466) | Update dependencies |
+| 0.4.1 | 2025-02-15 | [54050](https://github.com/airbytehq/airbyte/pull/54050) | Update dependencies |
+| 0.4.0 | 2025-02-11 | [53630](https://github.com/airbytehq/airbyte/pull/53630) | Fix token_refresh method |
+| 0.3.11 | 2025-02-08 | [53531](https://github.com/airbytehq/airbyte/pull/53531) | Update dependencies |
+| 0.3.10 | 2025-02-01 | [53104](https://github.com/airbytehq/airbyte/pull/53104) | Update dependencies |
+| 0.3.9 | 2025-01-25 | [52408](https://github.com/airbytehq/airbyte/pull/52408) | Update dependencies |
+| 0.3.8 | 2025-01-18 | [52025](https://github.com/airbytehq/airbyte/pull/52025) | Update dependencies |
+| 0.3.7 | 2025-01-11 | [51413](https://github.com/airbytehq/airbyte/pull/51413) | Update dependencies |
+| 0.3.6 | 2024-12-28 | [50751](https://github.com/airbytehq/airbyte/pull/50751) | Update dependencies |
+| 0.3.5 | 2024-12-21 | [50371](https://github.com/airbytehq/airbyte/pull/50371) | Update dependencies |
+| 0.3.4 | 2024-12-14 | [49751](https://github.com/airbytehq/airbyte/pull/49751) | Update dependencies |
+| 0.3.3 | 2024-12-12 | [48193](https://github.com/airbytehq/airbyte/pull/48193) | Update dependencies |
+| 0.3.2 | 2024-10-29 | [47937](https://github.com/airbytehq/airbyte/pull/47937) | Update dependencies |
+| 0.3.1 | 2024-10-28 | [47647](https://github.com/airbytehq/airbyte/pull/47647) | Update dependencies |
+| 0.3.0 | 2024-10-06 | [46529](https://github.com/airbytehq/airbyte/pull/46529) | Migrate to Manifest-only |
+| 0.2.13 | 2024-10-05 | [46507](https://github.com/airbytehq/airbyte/pull/46507) | Update dependencies |
+| 0.2.12 | 2024-09-28 | [46134](https://github.com/airbytehq/airbyte/pull/46134) | Update dependencies |
+| 0.2.11 | 2024-09-21 | [45789](https://github.com/airbytehq/airbyte/pull/45789) | Update dependencies |
+| 0.2.10 | 2024-09-14 | [45558](https://github.com/airbytehq/airbyte/pull/45558) | Update dependencies |
+| 0.2.9 | 2024-09-07 | [45227](https://github.com/airbytehq/airbyte/pull/45227) | Update dependencies |
+| 0.2.8 | 2024-08-31 | [45007](https://github.com/airbytehq/airbyte/pull/45007) | Update dependencies |
+| 0.2.7 | 2024-08-24 | [44686](https://github.com/airbytehq/airbyte/pull/44686) | Update dependencies |
+| 0.2.6 | 2024-08-17 | [44253](https://github.com/airbytehq/airbyte/pull/44253) | Update dependencies |
+| 0.2.5 | 2024-08-12 | [43819](https://github.com/airbytehq/airbyte/pull/43819) | Update dependencies |
+| 0.2.4 | 2024-08-10 | [43618](https://github.com/airbytehq/airbyte/pull/43618) | Update dependencies |
+| 0.2.3 | 2024-08-03 | [43213](https://github.com/airbytehq/airbyte/pull/43213) | Update dependencies |
+| `0.2.2` | 2024-08-05 | [42855](https://github.com/airbytehq/airbyte/pull/42855) | Fix refresh token URL |
+| `0.2.1` | 2024-07-27 | [40267](https://github.com/airbytehq/airbyte/pull/40267) | Update dependencies |
+| `0.2.0` | 2024-08-01 | [36200](https://github.com/airbytehq/airbyte/pull/36200) | Migrate to Low Code                               |
+| `0.1.1` | 2024-05-21 | [38487](https://github.com/airbytehq/airbyte/pull/38487) | [autopull] base image + poetry + up_to_date |
+| `0.1.0` | 2023-03-16 | [24009](https://github.com/airbytehq/airbyte/pull/24009) | Initial version |
+
+</details>

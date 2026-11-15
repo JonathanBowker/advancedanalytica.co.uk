@@ -1,0 +1,216 @@
+---
+generated_record: true
+connector_name: Linkedin Pages
+connector_type: source
+connector_slug: linkedin-pages
+connector_directory: source-linkedin-pages
+definition_id: af54297c-e8f8-4d63-a00d-a94695acc9d3
+version: 1.2.3
+support_level: community
+release_stage: alpha
+documentation_url: https://docs.airbyte.com/integrations/sources/linkedin-pages
+logo: /images/connectors/sources/linkedin-pages.svg
+logo_source_path: airbyte-integrations/connectors/source-linkedin-pages/icon.svg
+logo_sha256: 82c387f66d902b945a2bfb082a625a70a72425eea78f234454102d9f63b5f4f4
+original_metadata_path: airbyte-integrations/connectors/source-linkedin-pages/metadata.yaml
+original_metadata_sha256: 49a687fa000ac17b461b776c850340c43995e28084e7df8e7026a4b7fb4fc434
+original_document_path: docs/integrations/sources/linkedin-pages.md
+original_document_sha256: e96092030248969b1cae78ed64a69a28048bc0e9dbedd9781d6fce510afc95af
+rewrite_status: complete
+rewrite_policy: advanced-analytica.standards.verbal-identity.tone-of-voice
+rewrite_policy_version: 2.5.4
+rewrite_model: codex-default
+rewrite_source_sha256: 11333f852d653ea2a6c83d8e0806e21c8359eca18a2b99e6e170ac828ae9c371
+rewritten_at: 2026-11-12T13:45:42.663417+00:00
+---
+
+# LinkedIn Pages
+
+## Sync overview
+
+The LinkedIn Pages source currently supports Full Refresh only. Incremental Sync is coming soon.
+
+Airbyte uses [LinkedIn Marketing Developer Platform - API](https://docs.microsoft.com/en-us/linkedin/marketing/integrations/marketing-integrations-overview) to fetch data from LinkedIn Pages.
+
+### Output schema
+
+You can sync the following data as streams:
+
+* [Organization Lookup](https://learn.microsoft.com/en-us/linkedin/marketing/community-management/organizations/organization-lookup-api?view=li-lms-2024-03&tabs=http#retrieve-organizations)
+* [Follower Statistics](https://learn.microsoft.com/en-us/linkedin/marketing/community-management/organizations/follower-statistics?view=li-lms-2024-03&tabs=http)
+* [Share Statistics](https://learn.microsoft.com/en-us/linkedin/marketing/community-management/organizations/share-statistics?view=li-lms-2024-03&tabs=http)
+* [Total Follower Count](https://learn.microsoft.com/en-us/linkedin/marketing/community-management/organizations/organization-lookup-api?view=li-lms-2024-03&tabs=http#retrieve-organization-follower-count)
+* [Follower Statistics Time Bound (Incremental)](https://learn.microsoft.com/en-us/linkedin/marketing/community-management/organizations/follower-statistics?view=li-lms-2024-03&tabs=http#retrieve-time-bound-follower-statistics)
+* [Share Statistics Time Bound (Incremental)](https://learn.microsoft.com/en-us/linkedin/marketing/community-management/organizations/share-statistics?view=li-lms-2024-03&tabs=http#retrieve-time-bound-share-statistics)
+
+### Data type mapping
+
+| Integration Type | Airbyte Type | Notes                      |
+| :--------------- | :----------- | :------------------------- |
+| `number`         | `number`     | float number               |
+| `integer`        | `integer`    | whole number               |
+| `array`          | `array`      |                            |
+| `boolean`        | `boolean`    | True/False                 |
+| `string`         | `string`     |                            |
+
+### Features
+
+| Feature                                   | Supported?\(Yes/No\) | Notes |
+| :---------------------------------------- |:---------------------| :---- |
+| Full Refresh Overwrite Sync               | Yes                  |       |
+| Full Refresh Append Sync                  | No                   |       |
+| Incremental - Append Sync                 | Yes                  |       |
+| Incremental - Append + Deduplication Sync | No                   |       |
+| Namespaces                                | No                   |       |
+
+### Performance
+
+Official rate limits apply to LinkedIn Pages API usage, [more information here](https://learn.microsoft.com/en-us/linkedin/shared/api-guide/concepts/rate-limits?toc=%2Flinkedin%2Fmarketing%2Ftoc.json&bc=%2Flinkedin%2Fbreadcrumb%2Ftoc.json&view=li-lms-2024-03). Rate-limited requests receive a 429 response.
+
+The limits define the maximum API calls allowed within 24 hours. They reset daily at midnight UTC.
+
+In rare cases, LinkedIn may return a 429 response to protect its infrastructure. API service returns to normal automatically. In these cases, you’ll receive this error message:
+
+```text
+"Caught retryable error '<some_error> or null' after <some_number> tries. Waiting <some_number> seconds then retrying..."
+```
+
+This response is expected when the connector receives a 429 - Rate Limit Exceeded HTTP Error. You’ll receive this message after reaching the available API request capacity:
+
+```text
+"Max try rate limit exceeded..."
+```
+
+The connector stops the sync after five unsuccessful attempts. Check your Rate Limits at [on this page](https://www.linkedin.com/developers/apps) &gt; Choose your app &gt; Analytics.
+
+## Getting started
+
+Assign the API user account the required permissions for each API endpoint.
+
+Endpoints including `Organization Lookup API`, `Follower Statistics`, `Share Statistics`, `Total Follower Count`, `Follower Statistics Time Bound` and `Share Statistics Time Bound` require these permissions:
+
+* `r_organization_social`: Retrieve your company’s posts, comments, reactions and other engagement data.
+* `rw_organization_admin`: Manage your company’s pages and retrieve reporting data.
+
+Assign the API user account the `ADMIN` role.
+
+### Authentication
+
+You can authenticate using Access Token or OAuth2.0.
+
+OAuth2.0 is recommended because it streams data for 12 months. An access token streams data for two months.
+
+##### Create the `Refresh_Token` or `Access_Token`
+
+For OAuth2.0 authentication, the LinkedIn Pages source can use `client_id`, `client_secret` and `refresh_token`.
+
+Alternatively, enter an `access_token` in the connector settings to make API requests. Access tokens expire after `2 months from creation date (60 days)` and require you to authenticate again manually.
+
+Refresh tokens expire after `12 months from creation date (365 days)`. If you receive a `401 invalid token response`, the error logs will confirm that your token has expired. Re-authenticate your connection to generate a new token. You can find more details at [here](https://learn.microsoft.com/en-us/linkedin/shared/authentication/authorization-code-flow?toc=%2Flinkedin%2Fmarketing%2Ftoc.json&bc=%2Flinkedin%2Fbreadcrumb%2Ftoc.json&view=li-lms-2024-03&tabs=HTTPS1).
+
+1. **Log in to LinkedIn as the API user**
+
+2. **Create an App** [here](https://www.linkedin.com/developers/apps):
+
+   - `App Name`: airbyte-source
+   - `Company`: Search for and select your LinkedIn Company Page
+   - `Privacy policy URL`: Link to the company privacy policy
+   - `Business email`: Developer or admin email address
+   - `App logo`: Airbyte's \(or Company's\) logo
+   - Review and accept the legal terms, then create the app
+   - Review the **Auth** tab:
+     - **Save your `client_id` and `client_secret`** \(for later steps\)
+     - Oauth 2.0 settings: Add a `redirect_uri` \(for later steps\): `https://airbyte.com`
+
+3. **Verify App**:
+
+   - Open the **Settings** tab in your app dashboard. Select the **Verify** button.
+   - Generate the verification URL and give it to your Company’s LinkedIn Admin to verify the app.
+
+4. **Request API Access**:
+
+   * Open the **Products** tab
+   * Select the [Advertising API](https://learn.microsoft.com/en-us/linkedin/marketing/overview?view=li-lms-2024-03#advertising-api) and accept the legal terms
+   * Wait a few minutes, then refresh the page. A `View access form` link replaces the **Select** button
+   * Complete the access form. Access should be granted **within 72 hours**, but it’s usually quicker
+
+5. **Create A Refresh Token** (or Access Token):
+   * Open the LinkedIn Developers' [OAuth Token Tools](https://www.linkedin.com/developers/tools/oauth) and select **Create token**
+   * Select your new app and tick the boxes for these scopes:
+     * `r_organization_social`
+     * `rw_organization_admin`
+   * Select **Request access token**. Once generated, **save your Refresh token**
+
+6. Use **Use the `client_id`, `client_secret` and `refresh_token`** from steps 2 and 5 to authorise the LinkedIn Pages connector in the Airbyte UI.
+   - Alternatively, use the Access token authentication method for 60-day access.
+
+## IP allow list
+
+If you use Airbyte Cloud and restrict access to specific IPs, add the [Airbyte Cloud IP addresses](https://docs.airbyte.com/platform/operating-airbyte/ip-allowlist) to your allow list.
+
+## Troubleshooting
+
+- **Invalid or expired access token (401):** Re-authenticate the source to get a valid LinkedIn access token.
+- **Organization access denied (403):** Re-authenticate with the scope named in the error. If LinkedIn names no scope, authorise `r_organization_social` and `rw_organization_admin`. Ensure the authorised member has the `ADMINISTRATOR` role for the configured company.
+- **Organization not found or inaccessible (404):** Check the Organization ID, page status, member’s admin role and app’s API access. The connection check requests one company by ID. It doesn’t list the member’s companies.
+
+## Changelog
+
+<details>
+  <summary>Expand to review</summary>
+
+| Version | Date | Pull Request | Subject |
+| :------ | :--- | :----------- | :------ |
+| 1.2.3 | 2026-11-10 | [91631](https://github.com/airbytehq/airbyte/pull/91631) | Update dependencies |
+| 1.2.2 | 2026-11-03 | [78804](https://github.com/airbytehq/airbyte/pull/78804) | Update dependencies |
+| 1.2.1 | 2026-10-30 | [90259](https://github.com/airbytehq/airbyte/pull/90259) | Explain missing LinkedIn scopes and organization access failures in connection checks without echoing raw API errors |
+| 1.2.0 | 2026-10-26 | [89710](https://github.com/airbytehq/airbyte/pull/89710) | Retry rate limits and server errors with backoff, report expired tokens, missing permissions and retired API versions clearly, request only whole days for `DAY` and complete months for `MONTH` time-bound statistics (each month now arrives 2 days after it ends), add a concurrency option, and migrate legacy configs |
+| 1.1.27 | 2026-10-20 | [89366](https://github.com/airbytehq/airbyte/pull/89366) | Update LinkedIn API version to 202610 |
+| 1.1.26 | 2026-09-14 | [85905](https://github.com/airbytehq/airbyte/pull/85905) | Update LinkedIn Marketing API version from 202503 to 202608 |
+| 1.1.25 | 2025-05-24 | [60685](https://github.com/airbytehq/airbyte/pull/60685) | Update dependencies |
+| 1.1.24 | 2025-05-10 | [59786](https://github.com/airbytehq/airbyte/pull/59786) | Update dependencies |
+| 1.1.23 | 2025-05-03 | [58801](https://github.com/airbytehq/airbyte/pull/58801) | Update dependencies |
+| 1.1.22 | 2025-04-19 | [58174](https://github.com/airbytehq/airbyte/pull/58174) | Update dependencies |
+| 1.1.21 | 2025-04-12 | [57721](https://github.com/airbytehq/airbyte/pull/57721) | Update dependencies |
+| 1.1.20 | 2025-04-05 | [56679](https://github.com/airbytehq/airbyte/pull/56679) | Update dependencies |
+| 1.1.19 | 2025-03-22 | [56029](https://github.com/airbytehq/airbyte/pull/56029) | Update dependencies |
+| 1.1.18 | 2025-03-18 | [55816](https://github.com/airbytehq/airbyte/pull/55816) | Bump LinkedIn API to 202503 |
+| 1.1.17 | 2025-03-08 | [55441](https://github.com/airbytehq/airbyte/pull/55441) | Update dependencies |
+| 1.1.16 | 2025-03-01 | [54775](https://github.com/airbytehq/airbyte/pull/54775) | Update dependencies |
+| 1.1.15 | 2025-02-22 | [54339](https://github.com/airbytehq/airbyte/pull/54339) | Update dependencies |
+| 1.1.14 | 2025-02-15 | [53859](https://github.com/airbytehq/airbyte/pull/53859) | Update dependencies |
+| 1.1.13 | 2025-02-08 | [53256](https://github.com/airbytehq/airbyte/pull/53256) | Update dependencies |
+| 1.1.12 | 2025-02-01 | [52767](https://github.com/airbytehq/airbyte/pull/52767) | Update dependencies |
+| 1.1.11 | 2025-01-25 | [52246](https://github.com/airbytehq/airbyte/pull/52246) | Update dependencies |
+| 1.1.10 | 2025-01-18 | [51798](https://github.com/airbytehq/airbyte/pull/51798) | Update dependencies |
+| 1.1.9 | 2025-01-11 | [51149](https://github.com/airbytehq/airbyte/pull/51149) | Update dependencies |
+| 1.1.8 | 2024-12-28 | [50645](https://github.com/airbytehq/airbyte/pull/50645) | Update dependencies |
+| 1.1.7 | 2024-12-21 | [50114](https://github.com/airbytehq/airbyte/pull/50114) | Update dependencies |
+| 1.1.6 | 2024-12-14 | [49593](https://github.com/airbytehq/airbyte/pull/49593) | Update dependencies |
+| 1.1.5 | 2024-12-12 | [49272](https://github.com/airbytehq/airbyte/pull/49272) | Update dependencies |
+| 1.1.4 | 2024-12-11 | [48924](https://github.com/airbytehq/airbyte/pull/48924) | Starting with this version, the Docker image is now rootless. Please note that this and future versions will not be compatible with Airbyte versions earlier than 0.64 |
+| 1.1.3 | 2024-10-29 | [47749](https://github.com/airbytehq/airbyte/pull/47749) | Update dependencies |
+| 1.1.2 | 2024-10-28 | [47455](https://github.com/airbytehq/airbyte/pull/47455) | Update dependencies |
+| 1.1.1 | 2024-08-16 | [44196](https://github.com/airbytehq/airbyte/pull/44196) | Bump source-declarative-manifest version |
+| 1.1.0 | 2024-08-15 | [44132](https://github.com/airbytehq/airbyte/pull/44132) | Refactor connector to manifest-only format |
+| 1.0.17 | 2024-08-10 | [43560](https://github.com/airbytehq/airbyte/pull/43560) | Update dependencies |
+| 1.0.16 | 2024-08-03 | [43281](https://github.com/airbytehq/airbyte/pull/43281) | Update dependencies |
+| 1.0.15 | 2024-07-27 | [42782](https://github.com/airbytehq/airbyte/pull/42782) | Update dependencies |
+| 1.0.14 | 2024-07-20 | [42218](https://github.com/airbytehq/airbyte/pull/42218) | Update dependencies |
+| 1.0.13 | 2024-07-13 | [41833](https://github.com/airbytehq/airbyte/pull/41833) | Update dependencies |
+| 1.0.12 | 2024-07-10 | [41407](https://github.com/airbytehq/airbyte/pull/41407) | Update dependencies |
+| 1.0.11 | 2024-07-09 | [41274](https://github.com/airbytehq/airbyte/pull/41274) | Update dependencies |
+| 1.0.10 | 2024-07-06 | [40828](https://github.com/airbytehq/airbyte/pull/40828) | Update dependencies |
+| 1.0.9 | 2024-06-25 | [40422](https://github.com/airbytehq/airbyte/pull/40422) | Update dependencies |
+| 1.0.8 | 2024-06-22 | [39975](https://github.com/airbytehq/airbyte/pull/39975) | Update dependencies |
+| 1.0.7 | 2024-06-13 | [36744](https://github.com/airbytehq/airbyte/pull/36744) | Add time bound incremental streams for follower & share statistics. Migrate to Low Code |
+| 1.0.6 | 2024-06-06 | [39171](https://github.com/airbytehq/airbyte/pull/39171) | [autopull] Upgrade base image to v1.2.2 |
+| 1.0.5 | 2024-06-03 | [38918](https://github.com/airbytehq/airbyte/pull/38918) | Replace AirbyteLogger with logging.Logger |
+| 1.0.4 | 2024-06-03 | [38918](https://github.com/airbytehq/airbyte/pull/38918) | Replace AirbyteLogger with logging.Logger |
+| 1.0.3 | 2024-05-21 | [38526](https://github.com/airbytehq/airbyte/pull/38526) | [autopull] base image + poetry + up_to_date |
+| 1.0.2 | 2023-05-30 | [24352](https://github.com/airbytehq/airbyte/pull/24352) | Remove duplicate streams |
+| 1.0.1 | 2023-03-22 | [24352](https://github.com/airbytehq/airbyte/pull/24352) | Remove `authSpecification` as it's not yet supported |
+| 1.0.0 | 2023-03-16 | [18967](https://github.com/airbytehq/airbyte/pull/18967) | Fixed failing connection checks |
+| 0.1.0 | 2022-08-11 | [13098](https://github.com/airbytehq/airbyte/pull/13098) | Initial Release |
+
+</details>

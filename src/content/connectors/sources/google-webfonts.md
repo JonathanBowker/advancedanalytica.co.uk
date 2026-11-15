@@ -1,0 +1,146 @@
+---
+generated_record: true
+connector_name: Google Webfonts
+connector_type: source
+connector_slug: google-webfonts
+connector_directory: source-google-webfonts
+definition_id: a68fbcde-b465-4ab3-b2a6-b0590a875835
+version: 0.2.26
+support_level: community
+release_stage: alpha
+documentation_url: https://docs.airbyte.com/integrations/sources/google-webfonts
+logo: /images/connectors/sources/google-webfonts.svg
+logo_source_path: airbyte-integrations/connectors/source-google-webfonts/icon.svg
+logo_sha256: c2b2d37cd7f1f185d2bf8fd45a7bfd79277e80a0e2782ecc47808be9dd1200b1
+original_metadata_path: airbyte-integrations/connectors/source-google-webfonts/metadata.yaml
+original_metadata_sha256: fb740b081c357b4b5bb359653a50ea4ddcb8627acf0f55014066b89f34627c73
+original_document_path: docs/integrations/sources/google-webfonts.md
+original_document_sha256: e57fe7ebd287c992b283929ed8b3220466f766b4ba653779dd5d049754c7a5e8
+rewrite_status: complete
+rewrite_policy: advanced-analytica.standards.verbal-identity.tone-of-voice
+rewrite_policy_version: 2.5.4
+rewrite_model: codex-default
+rewrite_source_sha256: a8acc9c728203bc362f7642ed8ae5c5110367b30afd5dfe0728fd4a4cd7ede10
+rewritten_at: 2026-11-12T13:41:18.514035+00:00
+---
+
+# Google-webfonts
+
+Use this page to set up the [Google-webfonts](https://developers.google.com/fonts/docs/developer_api) source connector and find reference information.
+
+## Prerequisites
+
+You need an API key for this connector. You can generate one free with a Gmail account at https://console.cloud.google.com/apis/dashboard.
+To connect, provide the generated API key and any optional parameters. Example:123
+
+## Setup guide
+
+### Step 1: Set up the Google-webfonts connection
+
+- Generate an API key (Example: 12345)
+- Add Params if you need specific information
+- Available params
+  - sort: SORT_UNDEFINED, ALPHA, DATE, STYLE, TRENDING, POPULARITY
+  - alt: json, media or proto
+  - prettyPrint: boolean
+
+## Step 2: Set up the Google-webfonts connector in Airbyte
+
+### Airbyte Cloud
+
+1. You need a [Log into your Airbyte Cloud](https://cloud.airbyte.com/workspaces) account.
+2. In the left navigation bar, click **Sources**. Then, in the top-right corner, click **+new source**.
+3. On the Set up the source page, name the Google-webfonts connector. Select **Google-webfonts** from the Source type dropdown.
+4. Enter your `api_key`.
+5. Enter the params configuration if needed. Supported params are: sort, alt, prettyPrint (Optional)
+6. Click **Set up source**.
+
+### Airbyte OSS
+
+1. Open the Airbyte Open Source dashboard.
+2. Enter a name for your source.
+3. Enter your `api_key`.
+4. Enter the params configuration if needed. Supported params are: sort, alt, prettyPrint (Optional)
+5. Click **Set up source**.
+
+## Supported sync modes
+
+The Google-webfonts source connector supports these [sync modes](https://docs.airbyte.com/cloud/core-concepts#connection-sync-modes):
+
+| Feature                       | Supported? |
+| :---------------------------- | :--------- |
+| Full Refresh Sync             | Yes        |
+| Incremental Sync              | No         |
+| Replicate Incremental Deletes | No         |
+| SSL connection                | Yes        |
+| Namespaces                    | No         |
+
+## Supported streams
+
+- Webfonts (Single stream API)
+
+## API method example
+
+`GET https://webfonts.googleapis.com/v1/webfonts?key=<1234567>&sort=SORT_UNDEFINED&prettyPrint=true&alt=json`
+
+## Performance considerations
+
+Google Webfont's [API reference](https://developers.google.com/fonts/docs/developer_api) currently has v1, while v2 is in development. The connector uses v1 by default.
+
+## IP allow list
+
+If you use Airbyte Cloud and restrict access to specific IPs, add the [Airbyte Cloud IP addresses](https://docs.airbyte.com/platform/operating-airbyte/ip-allowlist) to your allow list.
+
+## Changelog
+
+<details>
+  <summary>Expand to review</summary>
+
+| Version | Date       | Pull Request                                             | Subject                                                                         |
+| :------ | :--------- | :------------------------------------------------------- |:--------------------------------------------------------------------------------|
+| 0.2.26 | 2026-11-09 | [91380](https://github.com/airbytehq/airbyte/pull/91380) | Upgrade to `source-declarative-manifest` base image 7.47.0 |
+| 0.2.25 | 2026-10-13 | [78752](https://github.com/airbytehq/airbyte/pull/78752) | Update dependencies |
+| 0.2.24 | 2026-10-07 | [88266](https://github.com/airbytehq/airbyte/pull/88266) | Fix `fonts` stream schema to describe the actual font records instead of the API response envelope |
+| 0.2.23 | 2025-05-24 | [60589](https://github.com/airbytehq/airbyte/pull/60589) | Update dependencies |
+| 0.2.22 | 2025-05-10 | [59881](https://github.com/airbytehq/airbyte/pull/59881) | Update dependencies |
+| 0.2.21 | 2025-05-03 | [58811](https://github.com/airbytehq/airbyte/pull/58811) | Update dependencies |
+| 0.2.20 | 2025-04-19 | [58205](https://github.com/airbytehq/airbyte/pull/58205) | Update dependencies |
+| 0.2.19 | 2025-04-12 | [57668](https://github.com/airbytehq/airbyte/pull/57668) | Update dependencies |
+| 0.2.18 | 2025-04-05 | [57077](https://github.com/airbytehq/airbyte/pull/57077) | Update dependencies |
+| 0.2.17 | 2025-03-29 | [56658](https://github.com/airbytehq/airbyte/pull/56658) | Update dependencies |
+| 0.2.16 | 2025-03-22 | [56054](https://github.com/airbytehq/airbyte/pull/56054) | Update dependencies |
+| 0.2.15 | 2025-03-08 | [55512](https://github.com/airbytehq/airbyte/pull/55512) | Update dependencies |
+| 0.2.14 | 2025-03-01 | [54784](https://github.com/airbytehq/airbyte/pull/54784) | Update dependencies |
+| 0.2.13 | 2025-02-22 | [54315](https://github.com/airbytehq/airbyte/pull/54315) | Update dependencies |
+| 0.2.12 | 2025-02-15 | [53816](https://github.com/airbytehq/airbyte/pull/53816) | Update dependencies |
+| 0.2.11 | 2025-02-08 | [53293](https://github.com/airbytehq/airbyte/pull/53293) | Update dependencies |
+| 0.2.10 | 2025-02-01 | [52833](https://github.com/airbytehq/airbyte/pull/52833) | Update dependencies |
+| 0.2.9 | 2025-01-25 | [52248](https://github.com/airbytehq/airbyte/pull/52248) | Update dependencies |
+| 0.2.8 | 2025-01-18 | [51788](https://github.com/airbytehq/airbyte/pull/51788) | Update dependencies |
+| 0.2.7 | 2025-01-11 | [51150](https://github.com/airbytehq/airbyte/pull/51150) | Update dependencies |
+| 0.2.6 | 2024-12-28 | [50099](https://github.com/airbytehq/airbyte/pull/50099) | Update dependencies |
+| 0.2.5 | 2024-12-14 | [49616](https://github.com/airbytehq/airbyte/pull/49616) | Update dependencies |
+| 0.2.4 | 2024-12-12 | [49232](https://github.com/airbytehq/airbyte/pull/49232) | Update dependencies |
+| 0.2.3 | 2024-12-11 | [48141](https://github.com/airbytehq/airbyte/pull/48141) | Starting with this version, the Docker image is now rootless. Please note that this and future versions will not be compatible with Airbyte versions earlier than 0.64 |
+| 0.2.2 | 2024-10-29 | [47891](https://github.com/airbytehq/airbyte/pull/47891) | Update dependencies |
+| 0.2.1 | 2024-10-28 | [47623](https://github.com/airbytehq/airbyte/pull/47623) | Update dependencies |
+| 0.2.0 | 2024-08-23 | [44615](https://github.com/airbytehq/airbyte/pull/44615) | Refactor connector to manifest-only format |
+| 0.1.16 | 2024-08-17 | [44279](https://github.com/airbytehq/airbyte/pull/44279) | Update dependencies |
+| 0.1.15 | 2024-08-10 | [43552](https://github.com/airbytehq/airbyte/pull/43552) | Update dependencies |
+| 0.1.14 | 2024-08-03 | [43181](https://github.com/airbytehq/airbyte/pull/43181) | Update dependencies |
+| 0.1.13 | 2024-07-27 | [42774](https://github.com/airbytehq/airbyte/pull/42774) | Update dependencies |
+| 0.1.12 | 2024-07-20 | [42365](https://github.com/airbytehq/airbyte/pull/42365) | Update dependencies |
+| 0.1.11 | 2024-07-13 | [41761](https://github.com/airbytehq/airbyte/pull/41761) | Update dependencies |
+| 0.1.10 | 2024-07-10 | [41593](https://github.com/airbytehq/airbyte/pull/41593) | Update dependencies |
+| 0.1.9 | 2024-07-09 | [41203](https://github.com/airbytehq/airbyte/pull/41203) | Update dependencies |
+| 0.1.8 | 2024-07-06 | [40847](https://github.com/airbytehq/airbyte/pull/40847) | Update dependencies |
+| 0.1.7 | 2024-06-25 | [40420](https://github.com/airbytehq/airbyte/pull/40420) | Update dependencies |
+| 0.1.6 | 2024-06-22 | [40173](https://github.com/airbytehq/airbyte/pull/40173) | Update dependencies |
+| 0.1.5 | 2024-06-04 | [38960](https://github.com/airbytehq/airbyte/pull/38960) | [autopull] Upgrade base image to v1.2.1 |
+| 0.1.4 | 2024-05-28 | [38684](https://github.com/airbytehq/airbyte/pull/38684) | Make connector compatible with Builder |
+| 0.1.3 | 2024-04-19 | [37172](https://github.com/airbytehq/airbyte/pull/37172) | Upgrade to CDK 0.80.0 and manage dependencies with Poetry. |
+| 0.1.2 | 2024-04-15 | [37172](https://github.com/airbytehq/airbyte/pull/37172) | Base image migration: remove Dockerfile and use the python-connector-base image |
+| 0.1.1 | 2024-04-12 | [37172](https://github.com/airbytehq/airbyte/pull/37172) | schema descriptions |
+| 0.1.0   | 2022-10-26 | [Init](https://github.com/airbytehq/airbyte/pull/18496)  | Initial commit                                                                  |
+
+</details>
