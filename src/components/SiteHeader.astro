@@ -1,6 +1,6 @@
 ---
 const { contactHref = "/company/contact/", signedIn = false } = Astro.props;
-const authHref = signedIn ? '/logout' : '/login';
+const authHref = signedIn ? '/logout' : 'https://auth.advancedanalytica.co.uk/oauth/';
 const authLabel = signedIn ? 'Sign out' : 'Sign in';
 type NavItem = {
   label: string;
